@@ -1,0 +1,2 @@
+# MathGame
+SPbPU diploma repo
