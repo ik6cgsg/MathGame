@@ -8,6 +8,11 @@ import android.view.View
 import io.github.kexanie.library.MathView
 import android.graphics.Point
 import android.view.WindowManager
+import android.widget.TextView
+import com.twf.api.*
+import com.twf.expressiontree.ExpressionNode
+import com.twf.expressiontree.ExpressionSubstitution
+import com.twf.factstransformations.Expression
 
 class MainActivity : AppCompatActivity() {
     var dX: Float = 0.toFloat()
@@ -16,10 +21,13 @@ class MainActivity : AppCompatActivity() {
     var tex = "$$\\sum_{i=0}^n i^2 = \\frac{(n^2+n)(2n+1)}{6}$$"
     var screenHeight: Int = 0
     var screenWidth: Int = 0
+    var tv: TextView? = null
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.student)
+        //setContentView(R.layout.student)
+        setContentView(R.layout.activity_main)
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
@@ -28,8 +36,29 @@ class MainActivity : AppCompatActivity() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        //formula_two = MathView(this, )
+        tv = findViewById<TextView>(R.id.hello_twf)
+        var form = "tg(x)"
+        tv!!.text = form
     }
+
+
+    fun makeSubst(view: View) {
+        val expression = stringToExpression(tv!!.text.toString())
+        val substitution: ExpressionSubstitution
+        when(view.id) {
+            R.id.subst_sin -> {
+                substitution = expressionSubstitutionFromStrings("x", "sin(x)")
+            }
+            R.id.subst_cos -> {
+                substitution = expressionSubstitutionFromStrings("x","cos(x)")
+            }
+            else -> substitution = expressionSubstitutionFromStrings("","")
+        }
+        val matchedPlaces = findSubstitutionPlacesInExpression(expression, substitution)
+        val applicationResult = applySubstitution(expression, substitution, matchedPlaces.subList(0, 1))
+        tv!!.text = expressionToString(expression)
+    }
+    /*
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onResume() {
@@ -58,4 +87,5 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
+     */
 }
