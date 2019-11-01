@@ -1,0 +1,11 @@
+*.class
+
+*.kotlin_module
+.idea/workspace.xml
+*.xml
+*.lst
+*.xml
+.idea/misc.xml
+.idea/twf.iml
+web/.idea/web.iml
+build
