@@ -1,19 +1,15 @@
 package spbpu.hsamcp.mathgame
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import io.github.kexanie.library.MathView
 import android.graphics.Point
 import android.util.Log
 import android.view.WindowManager
 import android.widget.TextView
 import com.twf.api.*
-import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
-import com.twf.factstransformations.Expression
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -26,12 +22,12 @@ class MainActivity : AppCompatActivity() {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_MOVE -> {
-                // TODO: if inside MathView -> setHovered ??
-                //                     else -> clear MathView
+                // TODO: if inside GlobalMathView -> setHovered ??
+                //                     else -> clear GlobalMathView
                 Log.d(TAG, "MotionEvent.ACTION_MOVE")
             }
             MotionEvent.ACTION_UP -> {
-                // TODO: if inside MathView -> subst
+                // TODO: if inside GlobalMathView -> subst
                 Log.d(TAG, "MotionEvent.ACTION_UP")
             }
         }

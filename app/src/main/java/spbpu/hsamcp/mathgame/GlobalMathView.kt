@@ -15,8 +15,8 @@ import com.twf.api.expressionToString
 import com.twf.api.stringToExpression
 import com.twf.expressiontree.ExpressionNode
 
-class MathView: TextView {
-    private val TAG = "MathView"
+class GlobalMathView: TextView {
+    private val TAG = "GlobalMathView"
     private var formula: ExpressionNode? = null
     private val defaultFontSizeDp: Int = 18
     private val defaultPadding: Int = 10
@@ -31,7 +31,9 @@ class MathView: TextView {
     }
 
     private fun setDefaults() {
-        textSize = convertDpToPx(defaultFontSizeDp)
+        if (textSize.compareTo(0) != 0) {
+            textSize = convertDpToPx(defaultFontSizeDp)
+        }
         setTextColor(Color.BLACK)
         typeface = Typeface.MONOSPACE
         setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
