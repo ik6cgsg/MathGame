@@ -11,14 +11,16 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.util.Log
-import com.twf.api.expressionToString
-import com.twf.api.stringToExpression
+import android.widget.Toast
+import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
+import com.twf.expressiontree.SubstitutionPlace
 
 class GlobalMathView: TextView {
     private val TAG = "GlobalMathView"
     private var formula: ExpressionNode? = null
-    private val defaultFontSizeDp: Int = 18
+    private var currentAtom: ExpressionNode? = null
+    private val defaultFontSizeDp: Int = 12
     private val defaultPadding: Int = 10
 
     /** INITIALIZATION **/
@@ -42,6 +44,30 @@ class GlobalMathView: TextView {
         }
     }
 
+    /** Scene interaction **/
+    fun performSubstitution(substFrom: String, substTo: String) {
+        if (formula == null) {
+            Toast.makeText(context, "Error: no formula!", Toast.LENGTH_SHORT).show()
+        } else {
+            val substitution = expressionSubstitutionFromStrings(substFrom, substTo)
+            val substitutionPlaces = findSubstitutionPlacesInExpression(formula!!, substitution)
+            if (substitutionPlaces.isEmpty()) {
+                Toast.makeText(context, "Error: cant do this substitution!", Toast.LENGTH_SHORT).show()
+            } else if (currentAtom == null) {
+                val applicationResult = applySubstitution(formula!!, substitution, substitutionPlaces)
+                setTextFromFormula()
+            } else {
+                val substPlace = substitutionPlaces.find { it.originalValue == currentAtom!! }
+                if (substPlace == null) {
+                    Toast.makeText(context, "Error: cant do this substitution on selected atom", Toast.LENGTH_SHORT).show()
+                } else {
+                    val applicationResult = applySubstitution(formula!!, substitution, listOf(substPlace))
+                    setTextFromFormula()
+                }
+            }
+        }
+    }
+
     /** TextView OVERRIDES **/
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var res = false
@@ -49,53 +75,19 @@ class GlobalMathView: TextView {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     Log.d(TAG, "MotionEvent.ACTION_DOWN")
+                    selectCurrentAtom(event)
                     res = true
-                    /*
-                    val spans = formula!!.getSpans<ForegroundColorSpan>(0, formula!!.length)
-                    if (spans.isEmpty()) {
-                        formula = SpannableString(formula.toString())
-                        formula!!.setSpan(ForegroundColorSpan(Color.RED), 0, formula!!.length,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        text = formula
-                        res = true
-                    }
-                    */
                 }
                 MotionEvent.ACTION_MOVE -> {
                     Log.d(TAG, "MotionEvent.ACTION_MOVE")
-                    /** TODO:
-                     * [] get offset from coords
-                     * [] get indices of current atom from twf
-                     * [] add ForegroudSpan on theese indices
-                     **/
-                    val x = event.x
-                    val y = event.y.toInt()
-                    if (layout == null) {
-                        text = expressionToString(formula!!)
-                        text = text.drop(1)
-                        text = text.dropLast(1)
-                    } else {
-                        val line = layout.getLineForVertical(y)
-                        val offset = layout.getOffsetForHorizontal(line, x)
-                        val expression = stringToExpression(text.toString())
-                        val atom = searchNodeByOffset(expression, offset)
-                        val newText = SpannableString(text.toString())
-                        if (atom != null) {
-                            newText.setSpan(ForegroundColorSpan(Color.CYAN), atom.startPosition,
-                                atom.endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        } else {
-                            newText.setSpan(ForegroundColorSpan(Color.RED), 0, newText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        }
-                        text = newText
-                    }
+                    //selectCurrentAtom(event)
                     res = true
                 }
                 MotionEvent.ACTION_UP -> {
                     Log.d(TAG, "MotionEvent.ACTION_UP")
                     // reset all styles
                     // TODO: if inside make substitution
-                    text = text.toString()
+                    //text = text.toString()
                     res = true
                 }
             }
@@ -111,6 +103,27 @@ class GlobalMathView: TextView {
     /** View OVERRIDES **/
 
     /** UTILS **/
+    private fun selectCurrentAtom(event: MotionEvent) {
+        val x = event.x
+        val y = event.y.toInt()
+        if (layout == null) {
+            setTextFromFormula()
+        } else {
+            val line = layout.getLineForVertical(y)
+            val offset = layout.getOffsetForHorizontal(line, x)
+            val expression = stringToExpression(text.toString())
+            val atom = searchNodeByOffset(expression, offset)
+            //if (atom != null && atom != currentAtom) {
+                currentAtom = atom
+                val newText = SpannableString(text.toString())
+                newText.setSpan(ForegroundColorSpan(Color.CYAN), currentAtom!!.startPosition,
+                    currentAtom!!.endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                // TODO: clear & set span instead of creating new text
+                text = newText
+            //}
+        }
+    }
+
     private fun searchNodeByOffset(expression: ExpressionNode, offset: Int): ExpressionNode? {
         var resNode: ExpressionNode? = null
         for (node in expression.children) {
@@ -123,6 +136,12 @@ class GlobalMathView: TextView {
             }
         }
         return resNode
+    }
+
+    private fun setTextFromFormula() {
+        text = expressionToString(formula!!)
+        text = text.drop(1)
+        text = text.dropLast(1)
     }
 
     private fun convertDpToPx(dp: Int): Float {

@@ -51,6 +51,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -58,34 +59,33 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:divider="@drawable/divider"
+            android:orientation="horizontal"
+            android:showDividers="middle|beginning|end|none">
 
             <spbpu.hsamcp.mathgame.RuleMathView
                 android:id="@+id/rule1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="x->cos(x)"
-                android:textSize="30sp"
-                tools:ignore="SmallSp" />
+                app:substFrom="cos(x+y)"
+                app:substTo="cos(x)*cos(y)-sin(x)*sin(y)" />
 
             <spbpu.hsamcp.mathgame.RuleMathView
                 android:id="@+id/rule2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="x->sin(x)"
-                android:textSize="30sp"
-                tools:ignore="SmallSp" />
+                app:substFrom="cos(x-y)"
+                app:substTo="cos(x)*cos(y)+sin(x)*sin(y)" />
 
             <spbpu.hsamcp.mathgame.RuleMathView
                 android:id="@+id/rule3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="sin(x)->(1-(cos(x))^2)^0.5"
-                android:textSize="30sp"
-                tools:ignore="SmallSp" />
+                app:substFrom="sin(x)/cos(x)"
+                app:substTo="tg(x)" />
         </LinearLayout>
     </HorizontalScrollView>
 
