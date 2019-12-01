@@ -14,36 +14,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="16dp"
-        android:text="Hello World!"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/subst_sin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:onClick="makeSubst"
-        android:visibility="gone"
-        android:text="x -> sin(x)"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hello_twf" />
-
-    <Button
-        android:id="@+id/subst_cos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:onClick="makeSubst"
-        android:visibility="gone"
-        android:text="x -> cos(x)"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hello_twf" />
 
     <HorizontalScrollView
         android:layout_width="0dp"
@@ -62,6 +37,14 @@
             android:divider="@drawable/divider"
             android:orientation="horizontal"
             android:showDividers="middle|beginning|end|none">
+
+            <spbpu.hsamcp.mathgame.RuleMathView
+                android:id="@+id/rule4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:substFrom="1-cos(x)^2"
+                app:substTo="sin(x)^2" />
 
             <spbpu.hsamcp.mathgame.RuleMathView
                 android:id="@+id/rule1"
@@ -88,5 +71,19 @@
                 app:substTo="tg(x)" />
         </LinearLayout>
     </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:lineSpacingMultiplier="0.7"
+        android:text="TextView"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,11 @@ import android.view.MotionEvent
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
+import android.text.style.SuperscriptSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
+import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
@@ -70,6 +74,7 @@ class GlobalMathView: TextView {
 
     /** TextView OVERRIDES **/
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        super.onTouchEvent(event)
         var res = false
         if (formula != null) {
             when (event.action) {
@@ -95,6 +100,8 @@ class GlobalMathView: TextView {
         return res
     }
 
+
+
     override fun setText(text: CharSequence?, type: BufferType?) {
         super.setText(text, type)
         formula = stringToExpression(text.toString())
@@ -113,14 +120,14 @@ class GlobalMathView: TextView {
             val offset = layout.getOffsetForHorizontal(line, x)
             val expression = stringToExpression(text.toString())
             val atom = searchNodeByOffset(expression, offset)
-            //if (atom != null && atom != currentAtom) {
+            if (atom != null && atom != currentAtom) {
                 currentAtom = atom
                 val newText = SpannableString(text.toString())
                 newText.setSpan(ForegroundColorSpan(Color.CYAN), currentAtom!!.startPosition,
                     currentAtom!!.endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 // TODO: clear & set span instead of creating new text
                 text = newText
-            //}
+            }
         }
     }
 
@@ -139,9 +146,8 @@ class GlobalMathView: TextView {
     }
 
     private fun setTextFromFormula() {
-        text = expressionToString(formula!!)
-        text = text.drop(1)
-        text = text.dropLast(1)
+        val str = expressionToString(formula!!).drop(1).dropLast(1)
+        text = str
     }
 
     private fun convertDpToPx(dp: Int): Float {
