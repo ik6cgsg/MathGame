@@ -6,11 +6,6 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.graphics.Point
 import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.SubscriptSpan
-import android.text.style.SuperscriptSpan
-import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.WindowManager
 import android.widget.TextView
@@ -57,7 +52,12 @@ class MainActivity : AppCompatActivity() {
         // TODO: remove
         val tv: TextView = findViewById(R.id.test)
         //val text = "1+(1/2)*(cos(x)/2)"
-        val text = "(1+10/232+3.78/2)/2"
+        //val text = "1 / 81278 + ((10 / 232 / 3) * (3.78 / 2)) / 2"
+        //val text = "(10/232/2+3/2)/(1/32+1255673645564/33)"
+        //val text = "1/((113 + 4)/2)"
+        val text = "(1/2+((cos(x+3/2)*(tg(x)/ctg(x)))/sin(x+(x+y)/2))*(14*sin(x*y/2)))/(359.878145+x/2)"
+        //val text = "1/2+cos(x+3/2)"
+        //val text = "cos(x)/(1+sin(x))+cos(x)/(1+sin(x/2))"
         tv.text = MathResolver.resolveToPlain(text)
         tv.typeface = Typeface.MONOSPACE
         tv.setTextColor(Color.BLACK)
