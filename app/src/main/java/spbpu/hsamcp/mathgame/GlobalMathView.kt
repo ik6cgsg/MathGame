@@ -19,6 +19,7 @@ import android.widget.Toast
 import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.SubstitutionPlace
+import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 
 class GlobalMathView: TextView {
     private val TAG = "GlobalMathView"
@@ -37,14 +38,22 @@ class GlobalMathView: TextView {
     }
 
     private fun setDefaults() {
-        if (textSize.compareTo(0) != 0) {
-            textSize = convertDpToPx(defaultFontSizeDp)
-        }
         setTextColor(Color.BLACK)
         typeface = Typeface.MONOSPACE
+        textSize = 15f
+        setLineSpacing(0f, 0.5f)
         setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
+        /*
         if (text != null) {
             formula = stringToExpression(text.toString())
+        }
+        */
+    }
+
+    fun setFormula(formulaStr: String) {
+        if (formulaStr.isNotEmpty()) {
+            formula = stringToExpression(formulaStr)
+            text = MathResolver.resolveToPlain(formula!!)
         }
     }
 
@@ -80,7 +89,7 @@ class GlobalMathView: TextView {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     Log.d(TAG, "MotionEvent.ACTION_DOWN")
-                    selectCurrentAtom(event)
+                    //selectCurrentAtom(event)
                     res = true
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -98,13 +107,6 @@ class GlobalMathView: TextView {
             }
         }
         return res
-    }
-
-
-
-    override fun setText(text: CharSequence?, type: BufferType?) {
-        super.setText(text, type)
-        formula = stringToExpression(text.toString())
     }
 
     /** View OVERRIDES **/
