@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.TextView
+import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 
 class RuleMathView: TextView, View.OnLongClickListener {
     private val TAG = "RuleMathView"
@@ -15,6 +16,8 @@ class RuleMathView: TextView, View.OnLongClickListener {
         private set
     var substTo: String? = null
         private set
+    private var defaultSize = 20f
+    private val defaultPadding: Int = 10
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
@@ -30,12 +33,15 @@ class RuleMathView: TextView, View.OnLongClickListener {
     }
 
     private fun setDefaults() {
-        textSize = convertDpToPx(8)
+        textSize = defaultSize
         setTextColor(Color.BLACK)
         typeface = Typeface.MONOSPACE
-        setPadding(10, 10, 10, 10)
+        setLineSpacing(0f, 0.5f)
+        setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
         if (substFrom != null && substTo != null) {
-            val textStr = "$substFrom->$substTo"
+            val from = MathResolver.resolveToPlain(substFrom!!).toString()
+            val to = MathResolver.resolveToPlain(substTo!!).toString()
+            val textStr = MathResolver.getRule(from, to, " -> ")
             text = textStr
         }
     }
@@ -51,8 +57,4 @@ class RuleMathView: TextView, View.OnLongClickListener {
     /** TextView OVERRIDES **/
 
     /** UTILS **/
-    private fun convertDpToPx(dp: Int): Float {
-        return Math.round(dp * context.resources.displayMetrics.xdpi /
-            DisplayMetrics.DENSITY_DEFAULT).toFloat()
-    }
 }

@@ -1,6 +1,5 @@
 package spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes
 
-import android.text.SpannableString
 import com.twf.expressiontree.ExpressionNode
 import spbpu.hsamcp.mathgame.mathResolver.*
 
@@ -13,29 +12,37 @@ class MathResolverNodeFunction(
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
-        val heights = ArrayList<Int>()
         length += op!!.name.length + 2
+        var maxH = 0
         for (node in origin.children) {
             val elem = createNode(node, getNeedBrackets(node))
             elem.setNodesFromExpression()
             children.add(elem)
-            heights.add(elem.height)
+            if (elem.height > maxH) {
+                maxH = elem.height
+                if (elem.op != null && elem.op!!.type != OperationType.POW) {
+                    baseLineOffset = elem.baseLineOffset
+                }
+            }
             length += elem.length
         }
-        height = heights.max()!!
+        height = maxH
+        if (baseLineOffset < 0) {
+            baseLineOffset = height - 1
+        }
     }
 
     override fun setCoordinates(leftTop: Point) {
         super.setCoordinates(leftTop)
         var currLen = leftTop.x + op!!.name.length + 1
         for (child in children) {
-            child.setCoordinates(Point(currLen, leftTop.y + (height - child.height) / 2))
+            child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
             currLen += child.length
         }
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        val curStr = (leftTop.y + rightBottom.y) / 2
+        val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind == 0) {

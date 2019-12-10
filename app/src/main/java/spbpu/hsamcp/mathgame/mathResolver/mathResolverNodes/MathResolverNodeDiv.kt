@@ -1,6 +1,5 @@
 package spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes
 
-import android.text.style.RelativeSizeSpan
 import com.twf.expressiontree.ExpressionNode
 import spbpu.hsamcp.mathgame.mathResolver.*
 import kotlin.math.ceil
@@ -15,16 +14,23 @@ class MathResolverNodeDiv(
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
-        val lengths = ArrayList<Int>()
-        height = origin.children.size - 1
+        var maxLen = 0
         for (node in origin.children) {
             val elem = createNode(node, false)
             elem.setNodesFromExpression()
             children.add(elem)
-            height += elem.height
-            lengths.add(elem.length)
+            height += elem.height + 1
+            if (elem.length > maxLen) {
+                maxLen = elem.length
+                baseLineOffset = if (node != origin.children[origin.children.size - 1]) {
+                    height - 1
+                } else {
+                    height - 2 - elem.height
+                }
+            }
         }
-        length += lengths.max()!!
+        height--
+        length += maxLen
     }
 
     override fun setCoordinates(leftTop: Point) {

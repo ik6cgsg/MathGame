@@ -25,15 +25,14 @@ class MathResolverTest {
     fun test2() {
         val origin = "1 / 81278 + ((10 / 232 / 3) * (3.78 / 2)) / 2"
         val actual = MathResolver.resolveToPlain(origin).toString()
-        // TODO: wrong base
         val expected =
             "       10     \n" +
-            "      ——— 3.78\n" +
-            "  1   232*————\n" +
-            "—————+———   2 \n" +
-            "81278  3      \n" +
-            "      ————————\n" +
-            "          2   \n"
+            "      ———     \n" +
+            "      232 3.78\n" +
+            "      ———*————\n" +
+            "  1    3    2 \n" +
+            "—————+————————\n" +
+            "81278     2   \n"
         assertEquals(expected, actual)
     }
 
@@ -43,10 +42,10 @@ class MathResolverTest {
         val actual = MathResolver.resolveToPlain(origin).toString()
         val expected =
             "       10       \n" +
-            "      ——— 3     \n" +
-            "      232+—     \n" +
-            "      ——— 2     \n" +
-            "       2        \n" +
+            "      ———       \n" +
+            "      232 3     \n" +
+            "      ———+—     \n" +
+            "       2  2     \n" +
             "————————————————\n" +
             " 1 1255673645564\n" +
             "——+—————————————\n" +
@@ -104,12 +103,11 @@ class MathResolverTest {
     fun test7() {
         val origin = "cos(x)/(1+sin(x))+cos(x)/(1+sin(x/2))"
         val actual = MathResolver.resolveToPlain(origin).toString()
-        // TODO: wrong base
         val expected =
-            "          cos(x) \n" +
-            " cos(x)  ————————\n" +
-            "————————+      x \n" +
-            "1+sin(x) 1+sin(—)\n" +
+            " cos(x)   cos(x) \n" +
+            "————————+————————\n" +
+            "1+sin(x)       x \n" +
+            "         1+sin(—)\n" +
             "               2 \n"
         assertEquals(expected, actual)
     }
@@ -135,12 +133,11 @@ class MathResolverTest {
     fun test9() {
         val origin = "(sin(x)/cos(x))^(2^(cos(x/2)/sin((y+4)*2)+8))"
         val actual = MathResolver.resolveToPlain(origin).toString()
-        // TODO: wrong base
         val expected =
             "                 x       \n" +
             "             cos(—)      \n" +
-            "         (       2    +8)\n" +
-            "          ————————————   \n" +
+            "                 2       \n" +
+            "         (————————————+8)\n" +
             "          sin((y+4)*2)   \n" +
             "        2                \n" +
             " sin(x)                  \n" +
@@ -206,6 +203,19 @@ class MathResolverTest {
             " 1  \n" +
             "(—) \n" +
             " 2  \n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun test16() {
+        val origin = "(1/2)*(1+(1/2)/384+4+2^4^3)"
+        val actual = MathResolver.resolveToPlain(origin).toString()
+        val expected =
+            "      1        \n" +
+            "      —      3 \n" +
+            "1     2     4  \n" +
+            "—*(1+———+4+2  )\n" +
+            "2    384       \n"
         assertEquals(expected, actual)
     }
 }

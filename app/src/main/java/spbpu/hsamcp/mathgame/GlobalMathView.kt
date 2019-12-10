@@ -25,7 +25,7 @@ class GlobalMathView: TextView {
     private val TAG = "GlobalMathView"
     private var formula: ExpressionNode? = null
     private var currentAtom: ExpressionNode? = null
-    private val defaultFontSizeDp: Int = 12
+    private var defaultSize = 20f
     private val defaultPadding: Int = 10
 
     /** INITIALIZATION **/
@@ -40,14 +40,9 @@ class GlobalMathView: TextView {
     private fun setDefaults() {
         setTextColor(Color.BLACK)
         typeface = Typeface.MONOSPACE
-        textSize = 15f
+        textSize = defaultSize
         setLineSpacing(0f, 0.5f)
         setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
-        /*
-        if (text != null) {
-            formula = stringToExpression(text.toString())
-        }
-        */
     }
 
     fun setFormula(formulaStr: String) {
@@ -148,12 +143,6 @@ class GlobalMathView: TextView {
     }
 
     private fun setTextFromFormula() {
-        val str = expressionToString(formula!!).drop(1).dropLast(1)
-        text = str
-    }
-
-    private fun convertDpToPx(dp: Int): Float {
-        return Math.round(dp * context.resources.displayMetrics.xdpi /
-            DisplayMetrics.DENSITY_DEFAULT).toFloat()
+        text = MathResolver.resolveToPlain(formula!!)
     }
 }

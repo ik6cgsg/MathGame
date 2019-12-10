@@ -17,17 +17,18 @@ class MathResolverNodeMinus(
         children.add(elem)
         height = elem.height
         length += elem.length + 1
+        baseLineOffset = elem.baseLineOffset
     }
 
     override fun setCoordinates(leftTop: Point) {
         super.setCoordinates(leftTop)
         val currLen = if (!needBrackets) leftTop.x + 1 else leftTop.x + 2
         val child = children[0]
-        child.setCoordinates(Point(currLen, leftTop.y + (height - child.height) / 2))
+        child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        val curStr = (leftTop.y + rightBottom.y) / 2
+        val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         if (needBrackets) {
             stringMatrix[curStr] =

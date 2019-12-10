@@ -19,56 +19,93 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <HorizontalScrollView
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hello_twf"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:divider="@drawable/divider"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:showDividers="middle|beginning|end|none">
 
-            <spbpu.hsamcp.mathgame.RuleMathView
-                android:id="@+id/rule4"
-                android:layout_width="wrap_content"
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:substFrom="1-cos(x)^2"
-                app:substTo="sin(x)^2" />
+                android:scrollbars="none">
 
-            <spbpu.hsamcp.mathgame.RuleMathView
-                android:id="@+id/rule1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:substFrom="cos(x+y)"
-                app:substTo="cos(x)*cos(y)-sin(x)*sin(y)" />
+                <spbpu.hsamcp.mathgame.RuleMathView
+                    android:id="@+id/rule0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:substFrom="cos(x)/(1-sin(x))+cos(x)/(1+sin(x))"
+                    app:substTo="cos(x)*(1/(1-sin(x))+1/(1+sin(x)))" />
+            </HorizontalScrollView>
 
-            <spbpu.hsamcp.mathgame.RuleMathView
-                android:id="@+id/rule2"
-                android:layout_width="wrap_content"
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:substFrom="cos(x-y)"
-                app:substTo="cos(x)*cos(y)+sin(x)*sin(y)" />
+                android:scrollbars="none">
 
-            <spbpu.hsamcp.mathgame.RuleMathView
-                android:id="@+id/rule3"
-                android:layout_width="wrap_content"
+                <spbpu.hsamcp.mathgame.RuleMathView
+                    android:id="@+id/rule1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:substFrom="1/(1-sin(x))+1/(1+sin(x))"
+                    app:substTo="2/((1-sin(x))*(1+sin(x)))" />
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:substFrom="sin(x)/cos(x)"
-                app:substTo="tg(x)" />
+                android:scrollbars="none">
+
+                <spbpu.hsamcp.mathgame.RuleMathView
+                    android:id="@+id/rule2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:substFrom="(1-sin(x))*(1+sin(x))"
+                    app:substTo="1-sin(x)^2" />
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <spbpu.hsamcp.mathgame.RuleMathView
+                    android:id="@+id/rule3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:substFrom="1-sin(x)^2"
+                    app:substTo="cos(x)^2" />
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <spbpu.hsamcp.mathgame.RuleMathView
+                    android:id="@+id/rule4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:substFrom="cos(x)*(2/(cos(x)^2))"
+                    app:substTo="2/cos(x)" />
+            </HorizontalScrollView>
+
         </LinearLayout>
-    </HorizontalScrollView>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

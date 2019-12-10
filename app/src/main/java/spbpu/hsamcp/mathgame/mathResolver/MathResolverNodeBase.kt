@@ -13,6 +13,7 @@ open class MathResolverNodeBase(
     var children: ArrayList<MathResolverNodeBase> = ArrayList()
     lateinit var leftTop: Point
     lateinit var rightBottom: Point
+    var baseLineOffset: Int = 0
 
     companion object {
         fun createNode(expression: ExpressionNode, needBrackets: Boolean): MathResolverNodeBase {

@@ -12,7 +12,7 @@ class MathResolverNodePlus(
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
-        val heights = ArrayList<Int>()
+        var maxH = 0
         length += origin.children.size * op!!.name.length - 1
         for (node in origin.children) {
             val elem = createNode(node, getNeedBrackets(node))
@@ -20,11 +20,19 @@ class MathResolverNodePlus(
             if (elem is MathResolverNodeMinus && node != origin.children[0]) {
                 elem.length -= elem.op!!.name.length
             }
-            heights.add(elem.height)
             children.add(elem)
             length += elem.length
+            if (elem.height > maxH) {
+                maxH = elem.height
+                if (elem.op != null && elem.op!!.type != OperationType.POW) {
+                    baseLineOffset = elem.baseLineOffset
+                }
+            }
         }
-        height = heights.max()!!
+        height = maxH
+        if (baseLineOffset == 0) {
+            baseLineOffset = height - 1
+        }
     }
 
     override fun setCoordinates(leftTop: Point) {
@@ -34,13 +42,13 @@ class MathResolverNodePlus(
             if (child is MathResolverNodeMinus && child != children[0]) {
                 currLen -= op!!.name.length
             }
-            child.setCoordinates(Point(currLen, leftTop.y + (height - child.height) / 2))
+            child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
             currLen += child.length + op!!.name.length
         }
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        val curStr = (leftTop.y + rightBottom.y) / 2
+        val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         if (needBrackets) {
             stringMatrix[curStr] =

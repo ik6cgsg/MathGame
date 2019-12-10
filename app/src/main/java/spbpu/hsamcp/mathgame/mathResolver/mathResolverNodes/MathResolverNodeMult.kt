@@ -13,29 +13,38 @@ class MathResolverNodeMult(
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
-        val heights = ArrayList<Int>()
+        var maxH = 0
         length += origin.children.size * op!!.name.length - 1
         for (node in origin.children) {
             val elem = createNode(node, getNeedBrackets(node))
             elem.setNodesFromExpression()
-            heights.add(elem.height)
             children.add(elem)
             length += elem.length
+            if (elem.height > maxH) {
+                maxH = elem.height
+                if (elem.op != null && elem.op!!.type != OperationType.POW) {
+                    baseLineOffset = elem.baseLineOffset
+                }
+            }
         }
-        height = heights.max()!!
+        height = maxH
+        if (baseLineOffset == 0) {
+            baseLineOffset = height - 1
+        }
     }
 
     override fun setCoordinates(leftTop: Point) {
+        // TODO: baseline
         super.setCoordinates(leftTop)
         var currLen = if (!needBrackets) leftTop.x else leftTop.x + 1
         for (child in children) {
-            child.setCoordinates(Point(currLen, leftTop.y + (height - child.height) / 2))
+            child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
             currLen += child.length + op!!.name.length
         }
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        val curStr = (leftTop.y + rightBottom.y) / 2
+        val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         if (needBrackets) {
             stringMatrix[curStr] =
