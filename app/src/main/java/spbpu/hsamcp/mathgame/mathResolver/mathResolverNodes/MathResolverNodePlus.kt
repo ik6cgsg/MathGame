@@ -1,21 +1,38 @@
 package spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes
 
 import com.twf.expressiontree.ExpressionNode
+import com.twf.expressiontree.NodeType
 import spbpu.hsamcp.mathgame.mathResolver.*
 
 class MathResolverNodePlus(
     origin: ExpressionNode,
     needBrackets: Boolean = false,
-    op: Operation? = null,
+    op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
+    private var operators: ArrayList<String> = ArrayList()
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
         var maxH = 0
         length += origin.children.size * op!!.name.length - 1
-        for (node in origin.children) {
-            val elem = createNode(node, getNeedBrackets(node))
+        origin.children.forEachIndexed { i, node ->
+            lateinit var elem: MathResolverNodeBase
+            if (node.nodeType == NodeType.FUNCTION &&
+                    Operation(node.value).type == OperationType.MINUS && i != 0) {
+                operators.add(node.value)
+                var brackets = false
+                if (node.children[0].nodeType == NodeType.FUNCTION &&
+                    Operation(node.children[0].value).type == OperationType.PLUS) {
+                    brackets = true
+                }
+                elem = createNode(node.children[0], brackets)
+            } else {
+                if (i != 0) {
+                    operators.add(op!!.name)
+                }
+                elem = createNode(node, getNeedBrackets(node))
+            }
             elem.setNodesFromExpression()
             if (elem is MathResolverNodeMinus && node != origin.children[0]) {
                 elem.length -= elem.op!!.name.length
@@ -39,9 +56,6 @@ class MathResolverNodePlus(
         super.setCoordinates(leftTop)
         var currLen = if (!needBrackets) leftTop.x else leftTop.x + 1
         for (child in children) {
-            if (child is MathResolverNodeMinus && child != children[0]) {
-                currLen -= op!!.name.length
-            }
             child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
             currLen += child.length + op!!.name.length
         }
@@ -59,13 +73,9 @@ class MathResolverNodePlus(
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
-                if (child is MathResolverNodeMinus) {
-                    stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, child.op!!.name)
-                    curInd += child.op!!.name.length
-                } else {
-                    stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, op!!.name)
-                    curInd += op!!.name.length
-                }
+                    stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, operators[0])
+                    curInd += operators[0].length
+                    operators.removeAt(0)
             }
             child.getPlainNode(stringMatrix, spannableArray)
             curInd += child.length

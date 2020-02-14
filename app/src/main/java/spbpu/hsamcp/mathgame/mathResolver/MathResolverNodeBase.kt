@@ -24,13 +24,7 @@ open class MathResolverNodeBase(
                 when (operation.type) {
                     OperationType.DIV -> MathResolverNodeDiv(expression, needBrackets, operation)
                     OperationType.POW -> MathResolverNodePow(expression, needBrackets, operation)
-                    OperationType.PLUS -> {
-                        if (expression.children.size == 1 && Operation(expression.children[0].value).type ==  OperationType.MINUS) {
-                            MathResolverNodeMinus(expression.children[0], needBrackets, Operation(expression.children[0].value))
-                        } else {
-                            MathResolverNodePlus(expression, needBrackets, operation)
-                        }
-                    }
+                    OperationType.PLUS -> MathResolverNodePlus(expression, needBrackets, operation)
                     OperationType.MULT -> MathResolverNodeMult(expression, needBrackets, operation)
                     OperationType.FUNCTION -> MathResolverNodeFunction(expression, needBrackets, operation)
                     OperationType.MINUS -> MathResolverNodeMinus(expression, needBrackets, operation)

@@ -7,7 +7,7 @@ import kotlin.math.ceil
 class MathResolverNodeDiv(
     origin: ExpressionNode,
     needBrackets: Boolean = false,
-    op: Operation? = null,
+    op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
     private var divSymbol = "\u2014"

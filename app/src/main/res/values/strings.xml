@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MathGame</string>
+    <string name="tap_on_some_place_in_formula">⬆ Tap on some place in formula ⬆</string>
+    <string name="end_formula_closed">End formula  🔼</string>
+    <string name="end_formula_opened">End formula  🔽</string>
+    <string name="previous">↶</string>
+    <string name="restart">↺</string>
+    <string name="wrong_subs">❌ Can\'t do this ❌</string>
+    <string name="time_out">😢 Time out! 😢</string>
 </resources>

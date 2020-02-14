@@ -1,0 +1,74 @@
+{
+  "name": "Level 1",
+  "difficulty": 2,
+  "stepsNum": 7,
+  "time": 240,
+  "startFormula": "1/a-(a^2-25)/(5*a)+a/5",
+  "endFormula": "6/a",
+  "rules": [
+    {
+      "from": "x/y",
+      "to": "(5*x)/(5*y)"
+    },
+    {
+      "from": "x/y",
+      "to": "(7*x)/(7*y)"
+    },
+    {
+      "from": "x/y",
+      "to": "(3*x)/(3*y)"
+    },
+    {
+      "from": "x/y",
+      "to": "(x^2)/(y*x)"
+    },
+    {
+      "from": "x*1",
+      "to": "x^2"
+    },
+    {
+      "from": "x*1",
+      "to": "x"
+    },
+    {
+      "from": "a/b-c/b+d/b",
+      "to": "(a-c+d)/b"
+    },
+    {
+      "from": "a/b-c/b+d/b",
+      "to": "(a+c+d)/b"
+    },
+    {
+      "from": "a/b-c/b+d/b",
+      "to": "(a+c-d)/b"
+    },
+    {
+      "from": "a-(b-c)+b",
+      "to": "a+c"
+    },
+    {
+      "from": "a-(b-c)+b",
+      "to": "a-c"
+    },
+    {
+      "from": "a-(b-c)+b",
+      "to": "a+b^2"
+    },
+    {
+      "from": "5+25",
+      "to": "30"
+    },
+    {
+      "from": "5-25",
+      "to": "-20"
+    },
+    {
+      "from": "30/(5*x)",
+      "to": "6/x"
+    },
+    {
+      "from": "30/(3*x)",
+      "to": "10/x"
+    }
+  ]
+}

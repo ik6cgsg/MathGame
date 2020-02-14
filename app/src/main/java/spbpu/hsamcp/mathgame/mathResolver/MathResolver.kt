@@ -17,62 +17,73 @@ class MathResolver {
         private var baseString = 0
         private lateinit var currentViewTree: MathResolverNodeBase
         private var spannableArray = ArrayList<SpanInfo>()
+        //private val ruleDelim = " ⟼ "
+        //private const val ruleDelim = " → "
+        private const val ruleDelim = " ~> "
 
-        fun resolveToPlain(expression: ExpressionNode): SpannableStringBuilder {
+        fun resolveToPlain(expression: ExpressionNode): MathResolverPair {
             currentViewTree = MathResolverNodeBase.getTree(expression)
-            return getPlainString()
+            return MathResolverPair(currentViewTree, getPlainString())
         }
 
-        fun resolveToPlain(expression: String): SpannableStringBuilder {
+        fun resolveToPlain(expression: String): MathResolverPair {
             val realExpression = stringToExpression(expression)
             if (realExpression.identifier.contentEquals("()")) {
-                return SpannableStringBuilder("parsing error")
+                return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
             currentViewTree = MathResolverNodeBase.getTree(realExpression)
-            return getPlainString()
+            return MathResolverPair(currentViewTree, getPlainString())
         }
 
-        fun getRule(stringMatrixLeft: String, stringmatrixRight: String, delim: String): String {
-            val matrixLeft = stringMatrixLeft.split("\n")
-            val matrixRight = stringmatrixRight.split("\n")
-            var result = ""
-            val hLeft = matrixLeft.size - 1
-            val hRight = matrixRight.size - 1
-            val maxH = maxOf(hLeft, hRight)
-            val edge = (maxH - minOf(hLeft, hRight)) / 2
-            val middle = maxH / 2
-            if (maxH == hLeft) {
-                for (i in 0 until hLeft) {
-                    result += matrixLeft[i]
-                    result += if (i == middle) {
-                        delim
-                    } else {
-                        " ".repeat(delim.length)
-                    }
-                    result += if (i >= edge && i < hLeft - edge) {
-                        matrixRight[i - edge]
-                    } else {
-                        " ".repeat(matrixRight[0].length)
-                    }
-                    result += "\n"
-                }
+        fun getRule(left: MathResolverPair, right: MathResolverPair): String {
+            val matrixLeft = left.matrix.split("\n") as ArrayList
+            val matrixRight = right.matrix.split("\n") as ArrayList
+            matrixLeft.removeAt(matrixLeft.size - 1)
+            matrixRight.removeAt(matrixRight.size - 1)
+            val leadingTree: MathResolverNodeBase
+            val secTree: MathResolverNodeBase
+            if (left.tree!!.height > right.tree!!.height) {
+                leadingTree = left.tree
+                secTree = right.tree
+                correctMatrix(matrixRight, leadingTree, secTree)
             } else {
-                for (i in 0 until hRight) {
-                    result += if (i >= edge && i < hLeft - edge) {
-                        matrixLeft[i - edge]
-                    } else {
-                        " ".repeat(matrixLeft[0].length)
-                    }
-                    result += if (i == middle) {
-                        delim
-                    } else {
-                        " ".repeat(delim.length)
-                    }
-                    result += matrixRight[i]
-                    result += "\n"
+                leadingTree = right.tree
+                secTree = left.tree
+                correctMatrix(matrixLeft, leadingTree, secTree)
+            }
+            return mergeMatrices(matrixLeft, matrixRight, leadingTree.baseLineOffset)
+        }
+
+        private fun correctMatrix(matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
+                                  secTree: MathResolverNodeBase) {
+            for (i in 0 until leadingTree.height - secTree.height) {
+                matrix.add(" ".repeat(secTree.length))
+            }
+            val diff = leadingTree.baseLineOffset - secTree.baseLineOffset
+            if (diff > 0) {
+                for (i in 0 until diff) {
+                    matrix.add(0, matrix[matrix.size - 1])
+                    matrix.removeAt(matrix.size - 1)
                 }
             }
-            return result
+        }
+
+        private fun mergeMatrices(left: ArrayList<String>, right: ArrayList<String>, baseLine: Int): String {
+            var res = ""
+            val linesNum = left.size
+            for (i in 0 until linesNum) {
+                res += left[i]
+                res += if (i == baseLine) {
+                    ruleDelim
+                } else {
+                    " ".repeat(ruleDelim.length)
+                }
+                res += right[i]
+                if (i != linesNum - 1) {
+                    res += "\n"
+                }
+            }
+            return res
         }
 
         private fun getPlainString(): SpannableStringBuilder {
