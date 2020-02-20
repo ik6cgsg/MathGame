@@ -328,7 +328,9 @@ fun String.trimmedMathML(): String {
         if (remainingExpressionStartsWith(newWhiteSpace, this, startPosition)) {
             startPosition += newWhiteSpace.length
         } else if (remainingExpressionStartsWith(newLineMspace, this, startPosition)) {
-            startPosition += newWhiteSpace.length
+            startPosition += newLineMspace.length
+        } else if (this[startPosition].isWhitespace()) {
+            startPosition += 1
         } else {
             break
         }
@@ -338,7 +340,9 @@ fun String.trimmedMathML(): String {
         if (remainingExpressionStartsWith(newWhiteSpace, this, endPosition - newWhiteSpace.length)) {
             endPosition -= newWhiteSpace.length
         } else if (remainingExpressionStartsWith(newLineMspace, this, endPosition - newLineMspace.length)) {
-            endPosition -= newWhiteSpace.length
+            endPosition -= newLineMspace.length
+        } else if (this[endPosition-1].isWhitespace()) {
+            endPosition -= 1
         } else {
             break
         }
@@ -380,3 +384,7 @@ val mfenced = "mfenced"
 val closing = "</>"
 val newLineMspace = "<mspace linebreak=\"newline\"/>"
 val newWhiteSpace = "<mo>&#xA0;</mo>"
+val openCommentMathML = "<mo>/</mo><mo>*</mo>"
+val openCommentShort = "/*"
+val closeCommentMathML = "<mo>*</mo><mo>/</mo>"
+val closeCommentShort = "*/"

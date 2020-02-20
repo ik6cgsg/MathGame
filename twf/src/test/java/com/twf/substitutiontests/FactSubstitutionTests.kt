@@ -1,10 +1,10 @@
-package substitutiontests
+package com.twf.substitutiontests
 
 import com.twf.config.CompiledConfiguration
 import com.twf.factstransformations.*
-import org.junit.Test
+import com.twf.org.junit.Test
 import com.twf.logs.log
-import org.junit.Ignore
+import com.twf.org.junit.Ignore
 import kotlin.test.assertEquals
 
 class FactSubstitutionTests {

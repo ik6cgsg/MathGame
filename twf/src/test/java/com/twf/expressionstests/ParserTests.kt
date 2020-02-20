@@ -1,8 +1,9 @@
-package expressionstests
+package com.twf.expressionstests
 
+import com.twf.config.FunctionConfiguration
 import com.twf.expressiontree.ExpressionTreeParser
-import org.junit.Ignore
-import org.junit.Test
+import com.twf.org.junit.Ignore
+import com.twf.org.junit.Test
 import kotlin.test.assertEquals
 
 class ParserTests {
@@ -271,7 +272,8 @@ class ParserTests {
 
     @Test
     fun testOneSubfactorial() {
-        val expressionTreeParser = ExpressionTreeParser("!a")
+        val expressionTreeParser = ExpressionTreeParser("!a",
+                functionConfiguration = FunctionConfiguration(setOf("", "subfactorial")))
         expressionTreeParser.parse()
         val root = expressionTreeParser.root
         assert(root.children.size == 1 && root.children[0].value == "subfactorial" &&
@@ -288,8 +290,63 @@ class ParserTests {
     }
 
     @Test
+    fun testSetAndNotMathML() {
+        val expressionTreeParser = ExpressionTreeParser("a&b",
+                functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(and(a;b))", root.toString())
+    }
+
+    @Test
+    fun testSetSub() {
+        val expressionTreeParser = ExpressionTreeParser("a\\b",
+                functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(set-(a;b))", root.toString())
+    }
+
+    @Test
+    fun testImplication() {
+        val expressionTreeParser = ExpressionTreeParser("a->b",
+                functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(implic(a;b))", root.toString())
+    }
+
+    @Test
+    fun testImplicationMathML() {
+        val expressionTreeParser = ExpressionTreeParser("<mi>a</mi><mo>-</mo><mo>&gt;</mo><mi>b</mi>",
+                functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(implic(a;b))", root.toString())
+    }
+
+    @Test
+    fun testSetComplete() {
+        val expressionTreeParser = ExpressionTreeParser("((a\\!b)->0)\\/!(!a/\\!b/\\c)",
+                functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(or(implic(set-(a;not(b));0);not(and(not(a);not(b);c))))", root.toString())
+    }
+
+    @Test
+    fun testSetMathML() {
+        val expressionTreeParser = ExpressionTreeParser("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>(</mo><mi>a</mi><mo>-</mo><mo>&gt;</mo><mi>b</mi><mo>)</mo><mo>\\</mo><mo>/</mo><mo>(</mo><mi>b</mi><mo>&#x2192;</mo><mi>a</mi><mo>)</mo></math>",
+                functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(or(implic(a;b);implic(b;a)))", root.toString())
+    }
+
+    @Test
     fun testOneSubfactorialFactoial() {
-        val expressionTreeParser = ExpressionTreeParser("!a!")
+        val expressionTreeParser = ExpressionTreeParser("!a!",
+                functionConfiguration = FunctionConfiguration(setOf("", "subfactorial")))
         expressionTreeParser.parse()
         val root = expressionTreeParser.root
         assert(root.children.size == 1 && root.children[0].value == "subfactorial" &&
@@ -299,7 +356,8 @@ class ParserTests {
 
     @Test
     fun testTwoSubfactorialFactoial() {
-        val expressionTreeParser = ExpressionTreeParser("! !a!")
+        val expressionTreeParser = ExpressionTreeParser("! !a!",
+                functionConfiguration = FunctionConfiguration(setOf("", "subfactorial")))
         expressionTreeParser.parse()
         val root = expressionTreeParser.root
         assert(root.children.size == 1 && root.children[0].value == "subfactorial" &&
@@ -758,5 +816,46 @@ class ParserTests {
         expressionTreeParser.parse()
         val root = expressionTreeParser.root
         assertEquals("(/(+(^(x;4);^(x;2);1);+(^(x;2);-(x);1)))", root.toString())
+    }
+
+    @Test
+    fun testSumnInSumn() {
+        val expressionTreeParser = ExpressionTreeParser("<munderover><mrow><mo>&#x2211;</mo><mi>j</mi><mo>!</mo><mo>-</mo><mi>i</mi><mo>!</mo><mo>+</mo><mn>67</mn><mo>-</mo><munderover><mo>&#x2211;</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><mi>k</mi></mrow><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>")
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(S(j;1;n;+(factorial(j);-(factorial(i));67;-(S(i;1;k;k)))))", root.toString())
+    }
+
+    @Test
+    fun testSumnInSumnWithMstyle() {
+        val expressionTreeParser = ExpressionTreeParser("<munderover><mrow><mo>&#x2211;</mo><mi>j</mi><mo>!</mo><mo>-</mo><mi>i</mi><mo>!</mo><mo>+</mo><mn>67</mn><mo>-</mo><mstyle displaystyle=\"false\"><munderover><mo>&#x2211;</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover></mstyle><mi>k</mi></mrow><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>")
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(S(j;1;n;+(factorial(j);-(factorial(i));67;-(S(i;1;k;k)))))", root.toString())
+    }
+
+    @Test
+    fun testSumnWithMstyle() {
+        val expressionTreeParser = ExpressionTreeParser("<mstyle displaystyle=\"false\"><munderover><mo>&#x2211;</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover></mstyle><mi>k</mi>")
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(S(i;1;k;k))", root.toString())
+    }
+
+    @Test
+    fun testSumn() {
+        val expressionTreeParser = ExpressionTreeParser("<munderover><mo>&#x2211;</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><mi>k</mi>")
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(S(i;1;k;k))", root.toString())
+    }
+
+    @Test
+    fun testWithPositions() {
+        val expressionTreeParser = ExpressionTreeParser("((cos(x)*cos(y))-cos(x+y))/(cos(x-y)-(sin(x)*sin(y)))")
+        expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("(/(+(*(cos(x);cos(y));-(cos(+(x;y))));+(cos(+(x;-(y)));-(*(sin(x);sin(y))))))", root.toString())
+        assertEquals("(/(+(*(cos(x{6;7}){2;8};cos(y{13;14}){9;15}){1;16};-(cos(+(x{21;22};y{23;24}){20;25}){17;25}){16;25}){0;26};+(cos(+(x{32;33};-(y{34;35}){33;35}){31;36}){28;36};-(*(sin(x{42;43}){38;44};sin(y{49;50}){45;51}){37;52}){36;52}){27;53}){0;53}){0;53}", root.computeIdentifierWithPositions())
     }
 }

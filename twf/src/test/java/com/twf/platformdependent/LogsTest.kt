@@ -9,9 +9,9 @@ import com.twf.factstransformations.parseFromFactIdentifier
 import com.twf.logs.MessageType
 import com.twf.logs.log
 import com.twf.mainpoints.checkFactsInMathML
-import org.junit.Assert
-import org.junit.Ignore
-import org.junit.Test
+import com.twf.org.junit.Assert
+import com.twf.org.junit.Ignore
+import com.twf.org.junit.Test
 import com.twf.standartlibextensions.splitStringByBracketsOnTopLevel
 import kotlin.test.assertEquals
 

@@ -231,9 +231,10 @@ class Expression(
     else false
 
     companion object {
-        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null): Expression? {
+        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration): Expression? {
             val expressionTreeParser = ExpressionTreeParser(string, true,
-                    compiledImmediateVariableReplacements = mapOf<String, String>(*(VariableConfiguration().variableImmediateReplacementRules.map { Pair(it.left, it.right) }.toTypedArray())))
+                    compiledImmediateVariableReplacements = mapOf<String, String>(*(VariableConfiguration().variableImmediateReplacementRules.map { Pair(it.left, it.right) }.toTypedArray())),
+                    functionConfiguration = functionConfiguration)
             val error = expressionTreeParser.parse()
             return Expression(0, 0, expressionTreeParser.root, parent = parent)
         }
@@ -589,11 +590,11 @@ class ExpressionComparison(
     override fun computeSortedOutIdentifier(recomputeIfComputed: Boolean) = computeIdentifier(recomputeIfComputed)
 
     companion object {
-        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null): ExpressionComparison? {
+        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration()): ExpressionComparison? {
             val parts = string.split(";ec;")
             val result = ExpressionComparison(0, 0, emptyExpression(), emptyExpression(), valueOfComparisonType(parts[1]), parent)
-            result.leftExpression = Expression.parseFromFactIdentifier(parts[0])!!
-            result.rightExpression = Expression.parseFromFactIdentifier(parts[2])!!
+            result.leftExpression = Expression.parseFromFactIdentifier(parts[0], functionConfiguration = functionConfiguration)!!
+            result.rightExpression = Expression.parseFromFactIdentifier(parts[2], functionConfiguration = functionConfiguration)!!
             return result
         }
     }

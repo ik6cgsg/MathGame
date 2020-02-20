@@ -31,7 +31,8 @@ fun checkFactsInMathML(
         taskContextExpressionTransformationRules: String = "", //for expression transformation rules based on variables
         allowedVariablesNames: String = "", //Variables expressions for which learner need to deduce, split by configSeparator
         maxDistBetweenDiffSteps: String = "", //is it allowed to differentiate expression in one step
-        forbiddenFunctions: String = "" //functions cannot been used in answer
+        forbiddenFunctions: String = "", //functions cannot been used in answer
+        scopeFilter: String = "" //subject scopes which user representation sings is used
 ): String {
     log.clear()
     val compiledConfiguration = compiledConfigurationBySettings(
@@ -40,7 +41,8 @@ fun checkFactsInMathML(
             maxExpressionTransformationWeight,
             unlimitedWellKnownFunctions,
             taskContextExpressionTransformationRules,
-            maxDistBetweenDiffSteps)
+            maxDistBetweenDiffSteps,
+            scopeFilter)
     log.factConstructorViewer = FactConstructorViewer(compiledConfiguration)
     log.addMessage({ "input transformations in mathML: '''$brushedMathML'''" }, level = 0)
     val mathMLWithoutUnexpectedCodes = replaceAliases(brushedMathML)
@@ -89,11 +91,14 @@ fun checkFactsInMathML(
                     (if (checkingResult.isCorrect) "correct" else "incorrect - ${checkingResult.description}") +
                     "'"
         }, MessageType.USER, level = 0)
-        val resultWithColoredTasks = brushMathMl(transformationChainParser.transformationChain, checkingResult.coloringTasks)
+        val resultWithColoredTasks = brushMathMl(transformationChainParser.originalTransformationChain, checkingResult.coloringTasks)
         val result = setBackgroundColorMathMl(resultWithColoredTasks, compiledConfiguration.checkedFactAccentuation.checkedFactColor.checkedFactBackgroundColor)
         log.addMessage({ "transformations in mathML after brushing: '''$result'''" }, level = 0)
 
         if (!checkingResult.isCorrect) {
+            if (!brushedMathML.startsWith("<")){
+                return errorPrefix + ": " + checkingResult.description
+            }
             return if (shortErrorDescription == "1") {
                 addErrorStringToMathMLSolution(result, "Unclear transformation or incomplete solution. Try to fix errors or to write more details.", errorPrefix)
             } else addErrorStringToMathMLSolution(result, checkingResult.description, errorPrefix)
@@ -170,8 +175,9 @@ fun compiledConfigurationBySettings(
         maxExpressionTransformationWeight: String,
         unlimitedWellKnownFunctions: String,
         taskContextExpressionTransformationRules: String = "",
-        maxDistBetweenDiffSteps: String = ""): CompiledConfiguration {
-    val functionConfiguration = FunctionConfiguration()
+        maxDistBetweenDiffSteps: String = "",
+        scopeFilter: String = ""): CompiledConfiguration {
+    val functionConfiguration = FunctionConfiguration(scopeFilter.split(configSeparator).map { it.trim() }.toSet())
     if (wellKnownFunctions.isNotBlank()) {
         val pairs = pairsFromString(wellKnownFunctions)
         functionConfiguration.notChangesOnVariablesInComparisonFunction = pairs.map { FunctionIdentifier(it.first, it.second.toInt()) }.toMutableList()

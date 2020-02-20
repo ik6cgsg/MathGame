@@ -105,7 +105,8 @@ class ExpressionSubstitution(
         val weight: Double = 1.0,
         val basedOnTaskContext: Boolean = false,
         val name: String = "",
-        val comparisonType: ComparisonType = ComparisonType.EQUAL
+        val comparisonType: ComparisonType = ComparisonType.EQUAL,
+        val leftFunctions: Set<String> = left.getContainedFunctions()
 ) {
     var identifier = ""
     fun computeIdentifier(recomputeIfComputed: Boolean): String {

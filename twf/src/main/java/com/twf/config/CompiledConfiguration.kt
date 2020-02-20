@@ -10,7 +10,7 @@ import com.twf.factstransformations.parseFromFactIdentifier
 
 class CompiledConfiguration(
         val variableConfiguration: VariableConfiguration = VariableConfiguration(),
-        val functionConfiguration: FunctionConfiguration = FunctionConfiguration(),
+        val functionConfiguration: FunctionConfiguration = FunctionConfiguration(setOf("", "subfactorial")),
         val comparisonSettings: ComparisonSettings = ComparisonSettings(),
         val checkedFactAccentuation: CheckedFactAccentuation = CheckedFactAccentuation(),
         val factsLogicConfiguration: FactsLogicConfiguration = FactsLogicConfiguration()) {
@@ -92,8 +92,8 @@ class CompiledConfiguration(
         }
 
         for (factTransformation in factsLogicConfiguration.factsTransformationRules) {
-            val leftTree = parseFromFactIdentifier(factTransformation.definitionLeftFactTree)
-            val rightTree = parseFromFactIdentifier(factTransformation.definitionRightFactTree)
+            val leftTree = parseFromFactIdentifier(factTransformation.definitionLeftFactTree, functionConfiguration = functionConfiguration)
+            val rightTree = parseFromFactIdentifier(factTransformation.definitionRightFactTree, functionConfiguration = functionConfiguration)
             if (leftTree != null && rightTree != null) {
                 leftTree.variableReplacement(compiledImmediateVariableReplacements)
                 rightTree.variableReplacement(compiledImmediateVariableReplacements)

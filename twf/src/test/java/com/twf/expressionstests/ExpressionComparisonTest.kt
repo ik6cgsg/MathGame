@@ -1,11 +1,11 @@
-package expressionstests;
+package com.twf.expressionstests;
 
 import com.twf.api.compareWithoutSubstitutions
 import com.twf.config.ComparisonType
 import com.twf.config.CompiledConfiguration
-import org.junit.Ignore
-import org.junit.Test
-import substitutiontests.parseStringExpression
+import com.twf.org.junit.Ignore
+import com.twf.org.junit.Test
+import com.twf.substitutiontests.parseStringExpression
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -17,7 +17,7 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "2 * sin(x) * cos(x)",
                 "sin(2x)",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
     }
@@ -29,7 +29,7 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "2 * sin(x) * cos(x)",
                 "cos(2x)",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertFalse(result)
     }
@@ -42,7 +42,7 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "ln(1 - sqrt(x)) + ln(y)",
                 "ln(y * (1 - sqrt(x)))",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
     }
@@ -55,7 +55,7 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "x + y",
                 "(x + y) * ((sin(x))^2 + (cos(x))^2) * sqrt(-x^2) / sqrt(-x^2)",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
     }
@@ -67,14 +67,14 @@ class ExpressionComparisonTest {
         var result = compareWithoutSubstitutions(
                 "x + y",
                 "-(-x - y)",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
 
         result = compareWithoutSubstitutions(
                 "x * (1 / y)",
                 "x / y",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
     }
@@ -89,7 +89,7 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "ln(-sqrt(x)) + ln(-y^2) + ln(-z^2)",
                 "ln((y * z)^2 * (-sqrt(x)))",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
     }
@@ -116,7 +116,7 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "ln(1 - sqrt(x)) + ln(y) + ln(z)",
                 "ln(z * y * (1 - sqrt(x)))",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
     }
@@ -130,7 +130,7 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "ln(x) + ln(y) + ln(z)",
                 "ln(z * y * x)",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
     }
@@ -144,8 +144,22 @@ class ExpressionComparisonTest {
         val result = compareWithoutSubstitutions(
                 "m!/(m-n)!",
                 "m*(m-1)!/(m-n)!",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         assertTrue(result)
+    }
+
+    @Test
+    fun testSimpleLessThenTest() {
+        val compiledConfiguration = CompiledConfiguration()
+        compiledConfiguration.comparisonSettings.defaultComparisonType = ComparisonType.LEFT_LESS
+        compiledConfiguration.comparisonSettings.useOldSimpleProbabilityTesting = false
+        val res = compareWithoutSubstitutions(
+                "x",
+                "x + 1",
+                compiledConfiguration = compiledConfiguration
+        )
+        assertTrue(res);
+
     }
 }

@@ -53,22 +53,25 @@ class Level(var fileName: String) {
                 time = levelJson.getInt("time")
                 val startFormulaStr = levelJson.getString("originalExpression")
                 val endFormulaStr = levelJson.getString("finalExpression")
-                startFormula = stringToExpression(startFormulaStr)
-                /*
-                    when (type) {
-
-                    "set" -> stringToExpression(startFormulaStr) // "setTheory"
+                startFormula = when (type) {
+                    "set" -> stringToExpression(startFormulaStr, "setTheory")
                     else -> stringToExpression(startFormulaStr)
                 }
-                */
-                endFormula = stringToExpression(endFormulaStr)
+                endFormula = when (type) {
+                    "set" -> stringToExpression(endFormulaStr, "setTheory")
+                    else -> stringToExpression(endFormulaStr)
+                }
                 endFormulaString = expressionToString(endFormula)
                 val rulesJson = levelJson.getJSONArray("allSubstitutions")
                 for (i in 0 until rulesJson.length()) {
                     val rule = rulesJson.getJSONObject(i)
                     val from = rule.getString("left")
                     val to = rule.getString("right")
-                    rules.add(expressionSubstitutionFromStrings(from, to))
+                    val ruleSubst = when (type) {
+                        "set" -> expressionSubstitutionFromStrings(from, to, "setTheory")
+                        else -> expressionSubstitutionFromStrings(from, to)
+                    }
+                    rules.add(ruleSubst)
                 }
                 // TODO: read last result
                 true

@@ -2,9 +2,9 @@ package com.twf.baseoperations
 
 import com.twf.numbers.Complex
 import com.twf.numbers.toComplex
-import org.junit.Assert.assertTrue
-import org.junit.Test
-import substitutiontests.parseStringExpression
+import com.twf.org.junit.Assert.assertTrue
+import com.twf.org.junit.Test
+import com.twf.substitutiontests.parseStringExpression
 import kotlin.math.*
 
 class BaseOperationsComputationTest {

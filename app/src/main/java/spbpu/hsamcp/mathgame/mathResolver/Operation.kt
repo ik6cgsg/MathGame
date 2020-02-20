@@ -9,7 +9,7 @@ enum class OperationType(val names: Array<String>) {
     PLUS(arrayOf("+")),
     MULT(arrayOf("*")),
     FUNCTION(arrayOf("cos", "sin", "tg", "ctg")),
-    SET_AND(arrayOf("&"))
+    SET_AND(arrayOf("&", "and"))
 }
 
 class Operation(val name: String) {
@@ -26,12 +26,12 @@ class Operation(val name: String) {
     companion object {
         fun getPriority(name: String): Int {
             return when (name) {
-                "^" -> 3
-                "*", "/" -> 2
-                "-" -> 1
-                "+" -> 0
+                in OperationType.POW.names -> 3
+                in OperationType.MULT.names, in OperationType.DIV.names -> 2
+                in OperationType.MINUS.names -> 1
+                in OperationType.PLUS.names -> 0
                 // set
-                "&" -> 1
+                in OperationType.SET_AND.names -> 1
                 else -> -1
             }
         }

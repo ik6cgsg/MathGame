@@ -1,9 +1,10 @@
 import com.twf.baseoperations.BaseOperationsDefinitions
 import com.twf.config.CompiledConfiguration
+import com.twf.expressiontree.ExpressionComporator
 import com.twf.expressiontree.ExpressionNodeConstructor
 import com.twf.expressiontree.ExpressionSubstitution
-import org.junit.Test
-import substitutiontests.parseStringExpression
+import com.twf.org.junit.Test
+import com.twf.substitutiontests.parseStringExpression
 import kotlin.test.assertEquals
 
 class ComparisonTests{

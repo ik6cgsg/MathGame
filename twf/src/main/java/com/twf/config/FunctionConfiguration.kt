@@ -1,5 +1,7 @@
 package com.twf.config
 
+import com.twf.expressiontree.ExpressionNode
+
 enum class StringDefinitionType {
     BINARY_OPERATION,
     UNARY_LEFT_OPERATION,
@@ -34,7 +36,8 @@ data class FunctionStringDefinition(
         val function: FunctionProperties,
         val definitionType: StringDefinitionType,
         val definition: String,
-        val subAsLast: Boolean = false
+        val subAsLast: Boolean = false,
+        val filter: String = ""
 )
 
 data class FunctionDefinition(
@@ -49,7 +52,10 @@ data class TreeTransformationRule(
         val weight: Double = 1.0
 )
 
-class FunctionConfiguration {
+class FunctionConfiguration (
+        val scopeFilter: Set<String> = setOf(""),
+        val notChangesOnVariablesInComparisonFunctionFilter: Set<String> = setOf()
+) {
     var notChangesOnVariablesInComparisonFunction = mutableListOf<FunctionIdentifier>(
             FunctionIdentifier("", 0),
             FunctionIdentifier("", 1),
@@ -80,7 +86,11 @@ class FunctionConfiguration {
             FunctionIdentifier("exp", 1),
             FunctionIdentifier("ln", 1),
             FunctionIdentifier("abs", 1)
-    )
+    ).filter {
+        it.name == "" ||
+            notChangesOnVariablesInComparisonFunctionFilter.isEmpty() ||
+            notChangesOnVariablesInComparisonFunctionFilter.contains(it.name)
+    }
 
     var notChangesOnVariablesInComparisonFunctionWithoutTransformations = notChangesOnVariablesInComparisonFunction
 
@@ -144,7 +154,7 @@ class FunctionConfiguration {
 
     var functionProperties = mutableListOf<FunctionProperties>(
             FunctionProperties("+", "+", 1.0, -1, isCommutativeWithNullWeight = true, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
-            FunctionProperties("-", "+", 1.0, -1, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
+            FunctionProperties("-", "+", 1.0, -1, defaultStringDefinitionType = StringDefinitionType.UNARY_LEFT_OPERATION),
             FunctionProperties("*", "*", 2.0, -1, isCommutativeWithNullWeight = true, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
             FunctionProperties("/", "/", 1.5, -1, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),  //FunctionProperties("/", "*", 2.0, -1)
             FunctionProperties("^", "^", 3.0, -1, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
@@ -174,10 +184,13 @@ class FunctionConfiguration {
 
             FunctionProperties("and", "and", 0.5, -1, isCommutativeWithNullWeight = true, userRepresentation = "&", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
             FunctionProperties("or", "or", 0.5, -1, isCommutativeWithNullWeight = true, userRepresentation = "|", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
-            FunctionProperties("xor", "xor", 0.5, -1, isCommutativeWithNullWeight = true, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
+            FunctionProperties("xor", "xor", 0.5, -1, isCommutativeWithNullWeight = true, userRepresentation = "^", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
             FunctionProperties("alleq", "alleq", 0.5, -1, isCommutativeWithNullWeight = true, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
 
             FunctionProperties("not", "not", 5.0, 1, userRepresentation = "!", defaultStringDefinitionType = StringDefinitionType.UNARY_LEFT_OPERATION),
+
+            FunctionProperties("implic", "implic", 0.5, -1, userRepresentation = "->", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
+            FunctionProperties("set-", "set-", 0.5, -1, userRepresentation = "\\", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
 
             FunctionProperties("sqrt", "sqrt", 5.0, 1), //maybe these functions should be automatically translated to ^ - solved by ImmediateTreeTransformationRules
             FunctionProperties("root", "root", 5.0, 2), //maybe these functions should be automatically translated to ^ - solved by ImmediateTreeTransformationRules
@@ -193,9 +206,9 @@ class FunctionConfiguration {
             FunctionProperties("S2", "S2", 5.0, 2),
             FunctionProperties("F", "F", 5.0, 1), //fib
             FunctionProperties("C", "C", 5.0, 1), //catalan
-            FunctionProperties("factorial", "factorial", 4.0, 1),
-            FunctionProperties("double_factorial", "factorial", 4.0, 1),
-            FunctionProperties("subfactorial", "subfactorial", 4.0, 1),
+            FunctionProperties("factorial", "factorial", 4.0, 1, userRepresentation = "!", defaultStringDefinitionType = StringDefinitionType.UNARY_RIGHT_OPERATION),
+            FunctionProperties("double_factorial", "factorial", 4.0, 1, userRepresentation = "!!", defaultStringDefinitionType = StringDefinitionType.UNARY_RIGHT_OPERATION),
+            FunctionProperties("subfactorial", "subfactorial", 4.0, 1, userRepresentation = "!", defaultStringDefinitionType = StringDefinitionType.UNARY_LEFT_OPERATION),
 
             FunctionProperties("partial_differential", "partial_differential", 0.5, 1),
             FunctionProperties("d", "d", 0.5, 2),
@@ -205,6 +218,8 @@ class FunctionConfiguration {
             FunctionProperties("f", "f", 0.5, 1, isNameForRuleDesignations = true),
             FunctionProperties("g", "g", 0.5, 1, isNameForRuleDesignations = true)
     )
+
+    var boolFunctions: Set<String> = setOf("and", "or", "not", "alleq", "xor", "implic", "set-")
 
     var functionPropertiesByName = functionProperties.associateBy { it.function + "_" + it.numberOfArguments }
 
@@ -217,7 +232,7 @@ class FunctionConfiguration {
             FunctionStringDefinition(functionPropertiesByName["-_-1"]!!, StringDefinitionType.FUNCTION, "sub"),
             FunctionStringDefinition(functionPropertiesByName["factorial_1"]!!, StringDefinitionType.UNARY_RIGHT_OPERATION, "!"),
             FunctionStringDefinition(functionPropertiesByName["double_factorial_1"]!!, StringDefinitionType.UNARY_RIGHT_OPERATION, "!!"),
-            FunctionStringDefinition(functionPropertiesByName["subfactorial_1"]!!, StringDefinitionType.UNARY_LEFT_OPERATION, "!"),
+            FunctionStringDefinition(functionPropertiesByName["subfactorial_1"]!!, StringDefinitionType.UNARY_LEFT_OPERATION, "!", filter = "subfactorial"),
             FunctionStringDefinition(functionPropertiesByName["factorial_1"]!!, StringDefinitionType.FUNCTION, "factorial"),
             FunctionStringDefinition(functionPropertiesByName["double_factorial_1"]!!, StringDefinitionType.FUNCTION, "double_factorial"),
             FunctionStringDefinition(functionPropertiesByName["subfactorial_1"]!!, StringDefinitionType.FUNCTION, "subfactorial"),
@@ -237,17 +252,28 @@ class FunctionConfiguration {
             FunctionStringDefinition(functionPropertiesByName["mod_2"]!!, StringDefinitionType.FUNCTION, "mod"),
 
             FunctionStringDefinition(functionPropertiesByName["and_-1"]!!, StringDefinitionType.BINARY_OPERATION, "&amp"),
+            FunctionStringDefinition(functionPropertiesByName["and_-1"]!!, StringDefinitionType.BINARY_OPERATION, "&"),
             FunctionStringDefinition(functionPropertiesByName["or_-1"]!!, StringDefinitionType.BINARY_OPERATION, "|"),
+            FunctionStringDefinition(functionPropertiesByName["and_-1"]!!, StringDefinitionType.BINARY_OPERATION, "/\\"),
+            FunctionStringDefinition(functionPropertiesByName["or_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\/"),
             FunctionStringDefinition(functionPropertiesByName["and_-1"]!!, StringDefinitionType.BINARY_OPERATION, "&#x2227"),
             FunctionStringDefinition(functionPropertiesByName["or_-1"]!!, StringDefinitionType.BINARY_OPERATION, "&#x2228"),
+            FunctionStringDefinition(functionPropertiesByName["or_-1"]!!, StringDefinitionType.BINARY_OPERATION, "^", filter = "setTheory"),
             FunctionStringDefinition(functionPropertiesByName["xor_-1"]!!, StringDefinitionType.BINARY_OPERATION, "&#x2295"),
             FunctionStringDefinition(functionPropertiesByName["not_1"]!!, StringDefinitionType.UNARY_LEFT_OPERATION, "&#xAC"),
+            FunctionStringDefinition(functionPropertiesByName["not_1"]!!, StringDefinitionType.UNARY_LEFT_OPERATION, "!", filter = "setTheory"),
+            FunctionStringDefinition(functionPropertiesByName["implic_-1"]!!, StringDefinitionType.BINARY_OPERATION, "&#x2192"),
+            FunctionStringDefinition(functionPropertiesByName["implic_-1"]!!, StringDefinitionType.BINARY_OPERATION, "->"),
+            FunctionStringDefinition(functionPropertiesByName["implic_-1"]!!, StringDefinitionType.BINARY_OPERATION, "-</mo><mo>&gt;"),
+            FunctionStringDefinition(functionPropertiesByName["set-_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\"),
 
             FunctionStringDefinition(functionPropertiesByName["and_-1"]!!, StringDefinitionType.FUNCTION, "and"),
             FunctionStringDefinition(functionPropertiesByName["or_-1"]!!, StringDefinitionType.FUNCTION, "or"),
             FunctionStringDefinition(functionPropertiesByName["xor_-1"]!!, StringDefinitionType.FUNCTION, "xor"),
             FunctionStringDefinition(functionPropertiesByName["alleq_-1"]!!, StringDefinitionType.FUNCTION, "alleq"),
             FunctionStringDefinition(functionPropertiesByName["not_1"]!!, StringDefinitionType.FUNCTION, "not"),
+            FunctionStringDefinition(functionPropertiesByName["implic_-1"]!!, StringDefinitionType.FUNCTION, "implic"),
+            FunctionStringDefinition(functionPropertiesByName["set-_-1"]!!, StringDefinitionType.FUNCTION, "setsub"),
 
             FunctionStringDefinition(functionPropertiesByName["partial_differential_1"]!!, StringDefinitionType.UNARY_LEFT_OPERATION, "&#x2202"),
 
@@ -327,15 +353,22 @@ class FunctionConfiguration {
     fun fastFindByNameAndNumberOfArguments(name: String, numberOfArguments: Int) =
             functionStringDefinitionByName.get(FunctionIdentifier.getIdentifier(name, numberOfArguments)) ?: functionStringDefinitionByName.get(FunctionIdentifier.getIdentifier(name, -1))
 
-    fun findFunctionStringDefinition(name: String, type: StringDefinitionType, numberOfArguments: Int, nameIsPossible: Boolean = false, subAsLast: Boolean = false): FunctionStringDefinition? {
-        for (stringDefinition in stringDefinitions) {
+    fun findFunctionStringDefinition(name: String, type: StringDefinitionType, numberOfArguments: Int,
+                                     nameIsPossible: Boolean = false, subAsLast: Boolean = false, filter: Set<String> = scopeFilter): FunctionStringDefinition? {
+        var result: FunctionStringDefinition? = null
+        for (stringDefinition in stringDefinitions.filter { it.filter.isBlank() || it.filter in filter }) {
             if (stringDefinition.definitionType == type && stringDefinition.definition == name && subAsLast == stringDefinition.subAsLast &&
                     (nameIsPossible || !stringDefinition.function.isNameForRuleDesignations))
                 if (stringDefinition.function.numberOfArguments == -1 || stringDefinition.function.numberOfArguments == numberOfArguments ||
-                        (subAsLast && stringDefinition.function.numberOfArguments == 2))
-                    return stringDefinition
+                        (subAsLast && stringDefinition.function.numberOfArguments == 2)) {
+                    if (stringDefinition.filter.isNotBlank()){
+                        return stringDefinition
+                    } else if (result == null || result.filter == ""){
+                        result = stringDefinition
+                    }
+                }
         }
-        return null
+        return result
     }
 
 

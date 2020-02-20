@@ -1,13 +1,14 @@
-package tasksolutions
+package com.twf.tasksolutions
 
 import com.twf.factstransformations.FactConstructorViewer
 import com.twf.factstransformations.parseFromFactIdentifier
 import com.twf.logs.log
 import com.twf.mainpoints.checkFactsInMathML
+import com.twf.mainpoints.compiledConfigurationBySettings
 import com.twf.mainpoints.configSeparator
-import org.junit.Assert
-import org.junit.Ignore
-import org.junit.Test
+import com.twf.org.junit.Assert
+import com.twf.org.junit.Ignore
+import com.twf.org.junit.Test
 
 class Physics {
     val wellKnownFunctions = "" +

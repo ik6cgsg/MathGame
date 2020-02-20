@@ -1,6 +1,6 @@
 import com.twf.baseoperations.BaseOperationsDefinitions
-import org.junit.Test
-import substitutiontests.parseStringExpression
+import com.twf.org.junit.Test
+import com.twf.substitutiontests.parseStringExpression
 import kotlin.test.assertEquals
 
 class BaseOperationsTests {

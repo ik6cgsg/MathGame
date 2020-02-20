@@ -1,9 +1,6 @@
 package com.twf.expressiontree
 
-import com.twf.baseoperations.BaseOperationsComputation
-import com.twf.baseoperations.BaseOperationsDefinitions
-import com.twf.baseoperations.ComputationType
-import com.twf.baseoperations.Domain
+import com.twf.baseoperations.*
 import com.twf.config.CheckingKeyWords.Companion.comparisonTypesConflict
 import com.twf.config.ComparisonType
 import com.twf.config.CompiledConfiguration
@@ -25,9 +22,26 @@ class ExpressionComporator(
         definedFunctionNameNumberOfArgsSet = compiledConfiguration.definedFunctionNameNumberOfArgsSet
     }
 
-    fun compareAsIs(left: ExpressionNode, right: ExpressionNode, nameArgsMap: MutableMap<String, String> = mutableMapOf()): Boolean {
+    fun compareAsIs(left: ExpressionNode, right: ExpressionNode, nameArgsMap: MutableMap<String, String> = mutableMapOf(),
+                    withBracketUnification: Boolean = false): Boolean {
         val normilized = normalizeExpressionsForComparison(left, right)
-        return normilized.first.isNodeSubtreeEquals(normilized.second, nameArgsMap)
+        if (normilized.first.isNodeSubtreeEquals(normilized.second, nameArgsMap)){
+            return true
+        } else if (!withBracketUnification){
+            return false
+        }
+        val lUnified = normilized.first
+        lUnified.dropBracketNodesIfOperationsSame()
+        val rUnified = normilized.second
+        rUnified.dropBracketNodesIfOperationsSame()
+        if (lUnified.isNodeSubtreeEquals(rUnified, nameArgsMap)){
+            return true
+        }
+        lUnified.normalizeSubTree(sorted = true)
+        rUnified.normalizeSubTree(sorted = true)
+        if (lUnified.isNodeSubtreeEquals(rUnified, nameArgsMap)){
+            return true
+        } else return false
     }
 
     fun probabilityTestComparison(leftOrigin: ExpressionNode, rightOrigin: ExpressionNode,
@@ -90,7 +104,6 @@ class ExpressionComporator(
         } else {
             while (numberOfRemainingTests-- > 0) {
                 val pointI = domain.generateNewPoint()
-
                 val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
                         .value.toDoubleOrNull() ?: continue
                 val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
@@ -114,7 +127,7 @@ class ExpressionComporator(
                                     comparisonType: ComparisonType = compiledConfiguration.comparisonSettings.defaultComparisonType,
                                     definedFunctionNameNumberOfArgs: Set<String> = definedFunctionNameNumberOfArgsSet,
                                     justInDomainsIntersection: Boolean = compiledConfiguration.comparisonSettings.justInDomainsIntersection): Boolean {
-        if (compareAsIs(l, r))
+        if (compareAsIs(l, r, withBracketUnification = false))
             return true
         val left = l.clone()
         val right = r.clone()
@@ -124,13 +137,14 @@ class ExpressionComporator(
         right.applyAllSubstitutions(compiledConfiguration.compiledFunctionDefinitions)
         left.normalizeSubTree(sorted = true)
         right.normalizeSubTree(sorted = true)
-        if (compiledConfiguration.comparisonSettings.compareExpressionsWithProbabilityRulesWhenComparingExpressions) {
+        if (compiledConfiguration.comparisonSettings.compareExpressionsWithProbabilityRulesWhenComparingExpressions &&
+                !left.isBoolExpression(compiledConfiguration.functionConfiguration.boolFunctions) && !left.isBoolExpression(compiledConfiguration.functionConfiguration.boolFunctions)) {
             val functionIdentifierToVariableMap = mutableMapOf<ExpressionNode, String>()
             left.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgs, this)
             right.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgs, this)
             return probabilityTestComparison(left, right, comparisonType, justInDomainsIntersection = justInDomainsIntersection)
         }
-        return false
+        return compareAsIs (left, right, withBracketUnification = true)
     }
 
     fun compareWithTreeTransformationRules(leftOriginal: ExpressionNode, rightOriginal: ExpressionNode, transformations: Collection<ExpressionSubstitution>,
@@ -181,7 +195,13 @@ class ExpressionComporator(
                 return true
             }
         }
+        val functionsInExpression = left.getContainedFunctions() + right.getContainedFunctions()
         for (originalTransformation in transformations.filter { it.weight <= maxTransformationWeight }) {
+            if (!originalTransformation.basedOnTaskContext && //taskContextRules contains quite small count of rules and its applicability depends not only on functions
+                    originalTransformation.leftFunctions.isNotEmpty() &&
+                    functionsInExpression.intersect(originalTransformation.leftFunctions).isEmpty()){ //fast check to indicate that rule is not applicable
+                continue
+            }
             val transformation = if (sortOperands) {
                 ExpressionSubstitution(originalTransformation.left.cloneWithSortingChildrenForExpressionSubstitutionComparison(),
                         originalTransformation.right.cloneWithSortingChildrenForExpressionSubstitutionComparison(),

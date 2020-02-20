@@ -1,14 +1,15 @@
-package zhenya
+package com.twf.zhenya
 
 import com.twf.api.*
 import com.twf.config.ComparisonType
 import com.twf.config.CompiledConfiguration
 import com.twf.expressiontree.ExpressionNode
-import org.junit.Assert
-import org.junit.Ignore
-import org.junit.Test
-import java.math.BigDecimal
-import java.math.RoundingMode
+import com.twf.expressiontree.ExpressionSubstitution
+import com.twf.org.junit.Assert
+import com.twf.org.junit.Ignore
+import com.twf.org.junit.Test
+import com.twf.java.math.BigDecimal
+import com.twf.java.math.RoundingMode
 import kotlin.random.Random.Default.nextBoolean
 import kotlin.random.Random.Default.nextDouble
 import kotlin.random.Random.Default.nextInt
@@ -37,7 +38,8 @@ class T1 {
     fun compareTestTrigonometrySinCorrect() {
         val result = compareWithoutSubstitutions(
                 "sin(pi/2)",
-                "-sin(3*pi/2)"
+                "-sin(3*pi/2)",
+                "", ""
         )
         Assert.assertEquals(true, result)
     }
@@ -114,7 +116,7 @@ class T1 {
         val result = compareWithoutSubstitutions(
                 "-sqrt(1-(x-1)^2)*sqrt(-1+(-x+1)^2)*ln(x)",
                 "sqrt(x-2)*sqrt(2-x)",
-                compiledConfiguration
+                compiledConfiguration = compiledConfiguration
         )
         Assert.assertEquals(true, result)
     }

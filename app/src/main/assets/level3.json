@@ -4,12 +4,12 @@
   "type": "set",
   "stepsNum": 10,
   "time": 300,
-  "originalExpression": "A&B",
-  "finalExpression": "A&B",
+  "originalExpression": "A&B&C",
+  "finalExpression": "A&B&C",
   "allSubstitutions": [
     {
-      "left": "A&B",
-      "right": "A&B"
+      "left": "A&B&C",
+      "right": "A&B&C"
     }
   ]
 }

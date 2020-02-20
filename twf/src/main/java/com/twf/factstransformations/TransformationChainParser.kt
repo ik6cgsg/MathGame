@@ -7,11 +7,12 @@ import com.twf.logs.log
 import com.twf.standartlibextensions.*
 
 class TransformationChainParser(
-        val transformationChain: String,
+        val originalTransformationChain: String,
         val nameForRuleDesignationsPossible: Boolean = false,
         val functionConfiguration: FunctionConfiguration = FunctionConfiguration(),
         val factsLogicConfiguration: FactsLogicConfiguration = FactsLogicConfiguration(),
-        val compiledImmediateVariableReplacements: Map<String, String> = mapOf()
+        val compiledImmediateVariableReplacements: Map<String, String> = mapOf(),
+        var transformationChain: String = originalTransformationChain
 ) {
     var root: MainLineAndNode = MainLineAndNode(0, transformationChain.length, null)
 
@@ -38,7 +39,7 @@ class TransformationChainParser(
     }
 
     /**
-     * returns first argument and com.twf.logs it's value; should be used in assigns
+     * returns first argument and logs it's value; should be used in assigns
      */
     private fun assignAndLogParserState(parserState: ParserState, logLevel: Int, currentValue: ParserState): ParserState {
         if (parserState != currentValue) {
@@ -76,6 +77,23 @@ class TransformationChainParser(
         val semanticRangeShift = SemanticRangeShift(mainLineNode.startPosition, mainLineNode.endPosition)
 
         while (currentPosition < mainLineNode.endPosition) {
+            if (remainingExpressionStartsWith(openCommentShort, transformationChain, currentPosition) || remainingExpressionStartsWith(openCommentMathML, transformationChain, currentPosition)) {
+                val commentStartPosition = currentPosition
+                currentPosition += 2
+                while (currentPosition < mainLineNode.endPosition && !(remainingExpressionStartsWith(closeCommentShort, transformationChain, currentPosition) || remainingExpressionStartsWith(closeCommentMathML, transformationChain, currentPosition))){
+                    currentPosition++
+                }
+                currentPosition += if (currentPosition < mainLineNode.endPosition && remainingExpressionStartsWith(closeCommentShort, transformationChain, currentPosition)) {
+                    closeCommentShort.length
+                } else if (currentPosition < mainLineNode.endPosition && remainingExpressionStartsWith(closeCommentMathML, transformationChain, currentPosition)) {
+                    closeCommentMathML.length
+                } else 0
+                log.add(currentPosition, { "comment found and parsed; currentPosition = '" }, { "'" }, currentLogLevel)
+                semanticRangeShift.addTagShift(currentPosition - commentStartPosition, 0)
+                transformationChain = transformationChain.substring(0, commentStartPosition) + " ".repeat(currentPosition - commentStartPosition) +
+                        transformationChain.substring(currentPosition, transformationChain.length)
+                continue
+            }
             if (remainingExpressionStartsWith(newWhiteSpace, transformationChain, currentPosition)) {
                 currentPosition += newWhiteSpace.length
                 log.add(currentPosition, { "whitespace found and parsed; currentPosition = '" }, { "'" }, currentLogLevel)
@@ -228,7 +246,7 @@ class TransformationChainParser(
                     log.add(currentPosition, { "mspace_tag_linebreak_newline found at position = '" }, { "'" }, currentLogLevel)
                     if (parserState != ParserState.NOT_IN_EXPRESSION_END) {
                         //ExpressionComparison (for example, equation) ends: program handles it
-                        if (currentPartStartPosition < currentPosition) {
+                        if (currentPartStartPosition < currentPosition && transformationChain.substring(currentPartStartPosition, currentPosition).isNotBlank()) {
                             log.addMessage({ "currentPartStartPosition < currentPosition; parseExpressionComparisonOrExpressionChainFromTransformationChain" }, level = currentLogLevel)
                             parseExpressionComparisonOrExpressionChainFromTransformationChain(currentPartStartPosition, currentPosition, currentMainLineNode,
                                     semanticRangeShift.currentShiftKeepsSemantic(currentPartStartPosition, currentPosition))

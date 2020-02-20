@@ -741,12 +741,12 @@ class MainLineAndNode(
     }
 
     companion object {
-        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null): MainLineAndNode? {
+        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration()): MainLineAndNode? {
             val mainPart = string.substring("AND_NODE(".length, string.length - ")".length)
             val parts = splitBySubstringOnTopLevel(listOf(";-->>;"), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
             val result = MainLineAndNode(parent = parent)
-            result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent))
-            result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent))
+            result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent, functionConfiguration))
+            result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent, functionConfiguration))
             return result
         }
     }
@@ -912,12 +912,12 @@ class MainLineOrNode(
     }
 
     companion object {
-        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null): MainLineOrNode? {
+        fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration()): MainLineOrNode? {
             val mainPart = string.substring("OR_NODE(".length, string.length - ")".length)
             val parts = splitBySubstringOnTopLevel(listOf(";-->>;"), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
             val result = MainLineOrNode(parent = parent)
-            result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent))
-            result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent))
+            result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent, functionConfiguration))
+            result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent, functionConfiguration))
             return result
         }
     }
@@ -953,23 +953,24 @@ fun getOutFactsFromMainLineNode(factNode: ComparableTransformationsPart) =
         else (factNode as MainLineOrNode).outFacts
 
 
-fun parsePartsFromIdentifier(string: String, parent: MainLineNode? = null): MutableList<MainChainPart> {
+fun parsePartsFromIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration): MutableList<MainChainPart> {
     val parts = splitBySubstringOnTopLevel(listOf(";mn;"), string).map { string.substring(it.startPosition, it.endPosition) }
     val result = mutableListOf<MainChainPart>()
     for (part in parts) {
-        result.add(parseFromFactIdentifier(part, parent) ?: continue)
+        result.add(parseFromFactIdentifier(part, parent, functionConfiguration) ?: continue)
     }
     return result
 }
 
-fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null) = if (string.startsWith("AND_NODE(")) {
-    MainLineAndNode.parseFromFactIdentifier(string, parent)
+fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration())
+        = if (string.startsWith("AND_NODE(")) {
+    MainLineAndNode.parseFromFactIdentifier(string, parent, functionConfiguration)
 } else if (string.startsWith("OR_NODE(")) {
-    MainLineOrNode.parseFromFactIdentifier(string, parent)
+    MainLineOrNode.parseFromFactIdentifier(string, parent, functionConfiguration)
 } else if (string.contains(";ec;")) {
-    ExpressionComparison.parseFromFactIdentifier(string, parent)
+    ExpressionComparison.parseFromFactIdentifier(string, parent, functionConfiguration)
 } else {
-    Expression.parseFromFactIdentifier(string, parent)
+    Expression.parseFromFactIdentifier(string, parent, functionConfiguration)
 }
 
 fun normalizeFactsForComparison(left: MainChainPart, right: MainChainPart): Pair<MainChainPart, MainChainPart> {

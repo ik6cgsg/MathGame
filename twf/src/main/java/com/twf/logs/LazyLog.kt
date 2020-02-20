@@ -194,7 +194,7 @@ class LazyLog {
     }
 
     /**
-     * returns first argument and com.twf.logs it's value; should be used in assigns
+     * returns first argument and logs it's value; should be used in assigns
      */
     fun <T> assignAndLog(data: T, logLevel: Int, variableName: () -> String): T {
         addMessage({ "${variableName.invoke()} = '${data.toString()}'" }, level = logLevel)

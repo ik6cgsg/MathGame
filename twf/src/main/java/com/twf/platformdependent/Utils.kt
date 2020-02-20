@@ -5,6 +5,7 @@ import kotlin.random.Random
 val random = Random
 fun defaultRandom() = random.nextDouble()
 fun random(from: Double, to: Double) = (random.nextDouble() * (to - from) + from)
+fun randomInt(from: Int, to: Int) = random.nextInt(from, to)
 
 fun abs(x: Int) = if (x > 0) x else -x
 

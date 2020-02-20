@@ -1,4 +1,4 @@
-import org.junit.Test
+import com.twf.org.junit.Test
 import com.twf.visualization.ColoringTask
 import com.twf.visualization.brushMathMl
 import com.twf.visualization.dropPerformedBrushing
