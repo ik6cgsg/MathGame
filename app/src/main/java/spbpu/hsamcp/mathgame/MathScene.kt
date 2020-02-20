@@ -8,17 +8,20 @@ import android.graphics.Typeface
 import android.os.CountDownTimer
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.LinearLayout
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 import java.lang.ref.WeakReference
 
 class MathScene {
     companion object {
-        private val TAG = "MathScene"
-        private val messageTime: Long = 2000
+        private const val TAG = "MathScene"
+        private const val messageTime: Long = 2000
+        private val messageTimer = MessageTimer()
 
         private var stepsCount: Int = 0
         private var currentTime: Long = 0
@@ -59,13 +62,16 @@ class MathScene {
             Log.d(TAG, "onFormulaClicked")
             val activity = playActivity.get()!!
             if (activity.globalMathView.currentAtom != null) {
-                val rules = currentLevel!!.getRulesFor(activity.globalMathView.currentAtom!!)
+                val rules = currentLevel!!.getRulesFor(activity.globalMathView.currentAtom!!,
+                    activity.globalMathView.formula!!)
                 if (rules != null) {
                     activity.noRules.visibility = View.GONE
                     activity.rulesScrollView.visibility = View.VISIBLE
                     redrawRules(rules)
                 } else {
+                    showMessage(activity.getString(R.string.no_rules))
                     clearRules()
+                    activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
                 }
             }
         }
@@ -105,7 +111,7 @@ class MathScene {
             }
         }
 
-        private fun clearRules() {
+        fun clearRules() {
             val activity = playActivity.get()!!
             activity.rulesScrollView.visibility = View.INVISIBLE
             activity.noRules.visibility = View.VISIBLE
@@ -116,22 +122,9 @@ class MathScene {
             val activity = playActivity.get()!!
             activity.rulesLinearLayout.removeAllViews()
             for (r in rules) {
-                val horizontalScrollView = HorizontalScrollView(activity)
                 val rule = RuleMathView(activity)
                 rule.setSubst(r)
-                horizontalScrollView.addView(rule)
-                horizontalScrollView.setOnTouchListener {v, event ->
-                    if (event.action == MotionEvent.ACTION_UP) {
-                        if (v.left + event.x >= v.left && v.left + event.x <= v.right &&
-                            v.top + event.y >= v.top && v.top + event.y <= v.bottom) {
-                            rule.onTouchEvent(event)
-                        }
-                        true
-                    } else {
-                        false
-                    }
-                }
-                activity.rulesLinearLayout.addView(horizontalScrollView)
+                activity.rulesLinearLayout.addView(rule)
             }
         }
 
@@ -148,13 +141,15 @@ class MathScene {
             val activity = playActivity.get()!!
             activity.messageView.text = msg
             activity.messageView.visibility = View.VISIBLE
-            val time = object: CountDownTimer(messageTime, messageTime) {
-                override fun onTick(m: Long) {}
-                override fun onFinish() {
-                    activity.messageView.visibility = View.GONE
-                }
+            messageTimer.cancel()
+            messageTimer.start()
+        }
+
+        class MessageTimer : CountDownTimer(messageTime, messageTime) {
+            override fun onTick(m: Long) {}
+            override fun onFinish() {
+                playActivity.get()!!.messageView.visibility = View.GONE
             }
-            time.start()
         }
 
         class MathTimer(time: Long, interval: Long):

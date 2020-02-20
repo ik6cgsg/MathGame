@@ -1,17 +1,17 @@
 package spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes
 
-import android.text.SpannableString
 import com.twf.expressiontree.ExpressionNode
 import spbpu.hsamcp.mathgame.mathResolver.*
 
-class MathResolverNodeMult(
+class MathResolverSetNodeAnd(
     origin: ExpressionNode,
     needBrackets: Boolean = false,
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
+    private val symbol = "∧"
 
-    override fun setNodesFromExpression()  {
+    override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         var maxH = 0
         length += origin.children.size * op!!.name.length - 1
@@ -20,31 +20,36 @@ class MathResolverNodeMult(
             elem.setNodesFromExpression()
             children.add(elem)
             length += elem.length
+            /*
             if (elem.height > maxH) {
                 maxH = elem.height
                 if (elem.op != null) {
                     baseLineOffset = elem.baseLineOffset
                 }
             }
+            */
         }
+        /*
         height = maxH
         if (baseLineOffset == 0) {
             baseLineOffset = height - 1
         }
+        */
+        height = 1
     }
 
     override fun setCoordinates(leftTop: Point) {
-        // TODO: baseline
         super.setCoordinates(leftTop)
         var currLen = if (!needBrackets) leftTop.x else leftTop.x + 1
         for (child in children) {
-            child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
+            child.setCoordinates(Point(currLen, 0))//leftTop.y + baseLineOffset - child.baseLineOffset))
             currLen += child.length + op!!.name.length
         }
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        val curStr = leftTop.y + baseLineOffset
+        //val curStr = leftTop.y + baseLineOffset
+        val curStr = 0
         var curInd = leftTop.x
         if (needBrackets) {
             stringMatrix[curStr] =
@@ -55,8 +60,8 @@ class MathResolverNodeMult(
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
-                stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, op!!.name)
-                curInd += op!!.name.length
+                stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, symbol)
+                curInd += symbol.length
             }
             child.getPlainNode(stringMatrix, spannableArray)
             curInd += child.length

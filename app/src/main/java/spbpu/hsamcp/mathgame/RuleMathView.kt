@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -15,10 +16,13 @@ import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 
 class RuleMathView: TextView {
     private val TAG = "RuleMathView"
+    private val moveTreshold = 5
     var subst: ExpressionSubstitution? = null
         private set
     private var defaultSize = 22f
     private val defaultPadding: Int = 15
+    private var needClick = false
+    private var moveCnt = 0
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
@@ -35,6 +39,10 @@ class RuleMathView: TextView {
 
     private fun setDefaults() {
         textSize = defaultSize
+        setHorizontallyScrolling(true)
+        isHorizontalScrollBarEnabled = true
+        isScrollbarFadingEnabled = true
+        movementMethod = ScrollingMovementMethod()
         setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
         setLineSpacing(0f, 0.5f)
@@ -49,6 +57,7 @@ class RuleMathView: TextView {
         val from = MathResolver.resolveToPlain(subst.left)
         val to = MathResolver.resolveToPlain(subst.right)
         val textStr = MathResolver.getRule(from, to)
+        maxLines = 1 + textStr.count { it == '\n' }
         text = textStr
     }
 
@@ -56,10 +65,29 @@ class RuleMathView: TextView {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
         super.onTouchEvent(event)
-        // TODO: color highlight
-        if (event.action == MotionEvent.ACTION_UP) {
-            MathScene.currentRuleView = this
-            MathScene.onRuleClicked()
+        when {
+            event.action == MotionEvent.ACTION_DOWN -> {
+                needClick = true
+                moveCnt = 0
+            }
+            event.action == MotionEvent.ACTION_UP -> {
+                if (needClick &&
+                    left + event.x >= left && left + event.x <= right &&
+                    top + event.y >= top && top + event.y <= bottom
+                ) {
+                    MathScene.currentRuleView = this
+                    MathScene.onRuleClicked()
+                    needClick = false
+                }
+            }
+            event.action == MotionEvent.ACTION_MOVE -> {
+                if (needClick) {
+                    moveCnt++
+                    if (moveCnt > moveTreshold) {
+                        needClick = false
+                    }
+                }
+            }
         }
         return true
     }

@@ -1,10 +1,13 @@
 package spbpu.hsamcp.mathgame.mathResolver
 
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import com.twf.expressiontree.ExpressionNode
 
 class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStringBuilder) {
@@ -31,7 +34,7 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
 
     fun getColoredAtom(offset: Int, color: Int = Color.RED): ExpressionNode? {
         var resNode: ExpressionNode? = null
-        if (tree != null) {
+        if (tree != null && offset % (tree.length + 1) != tree.length) {
             val lines = offset / (tree.length + 1)
             val correctedOffset = offset - lines
             val y = correctedOffset / tree.length
@@ -44,6 +47,8 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
                     val start = i * (tree.length + 1) + mathNode.leftTop.x
                     val end = i * (tree.length + 1) + mathNode.rightBottom.x + 1
                     matrix.setSpan(ForegroundColorSpan(color),
+                        start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    matrix.setSpan(StyleSpan(Typeface.BOLD),
                         start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
                 }
             }

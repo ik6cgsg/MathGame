@@ -272,4 +272,30 @@ class MathResolverTest {
             "2   \n"
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun test22() {
+        val origin = "1/(1*1^2*1^2^2)"
+        val actual = MathResolver.resolveToPlain(origin).matrix.toString()
+        val expected =
+            "    1   \n" +
+            "————————\n" +
+            "       2\n" +
+            "   2  2 \n" +
+            "1*1 *1  \n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun test23() {
+        val origin = "1/((1*1^2)*1^2^2)"
+        val actual = MathResolver.resolveToPlain(origin).matrix.toString()
+        val expected =
+            "    1   \n" +
+            "————————\n" +
+            "       2\n" +
+            "   2  2 \n" +
+            "1*1 *1  \n"
+        assertEquals(expected, actual)
+    }
 }

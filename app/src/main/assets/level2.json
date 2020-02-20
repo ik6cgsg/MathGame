@@ -1,46 +1,47 @@
 {
   "name": "Level 2",
   "difficulty": 3,
+  "type": "trigonometry",
   "stepsNum": 5,
   "time": 240,
-  "startFormula": "cos(x)/(1-sin(x))+cos(x)/(1+sin(x))",
-  "endFormula": "2/cos(x)",
-  "rules": [
+  "originalExpression": "cos(x)/(1-sin(x))+cos(x)/(1+sin(x))",
+  "finalExpression": "2/cos(x)",
+  "allSubstitutions": [
     {
-      "from": "cos(x)/(1-sin(x))+cos(x)/(1+sin(x))",
-      "to": "cos(x)*(1/(1-sin(x))+1/(1+sin(x)))"
+      "left": "cos(x)/(1-sin(x))+cos(x)/(1+sin(x))",
+      "right": "cos(x)*(1/(1-sin(x))+1/(1+sin(x)))"
     },
     {
-      "from": "1/(1-sin(x))+1/(1+sin(x))",
-      "to": "2/((1-sin(x))*(1+sin(x)))"
+      "left": "1/(1-sin(x))+1/(1+sin(x))",
+      "right": "2/((1-sin(x))*(1+sin(x)))"
     },
     {
-      "from": "(1-sin(x))*(1+sin(x))",
-      "to": "1-sin(x)^2"
+      "left": "(1-sin(x))*(1+sin(x))",
+      "right": "1-sin(x)^2"
     },
     {
-      "from": "1-sin(x)^2",
-      "to": "cos(x)^2"
+      "left": "1-sin(x)^2",
+      "right": "cos(x)^2"
     },
     {
-      "from": "cos(-x)",
-      "to": "cos(x)"
+      "left": "cos(-x)",
+      "right": "cos(x)"
     },
     {
-      "from": "cos(x)",
-      "to": "cos(-x)"
+      "left": "cos(x)",
+      "right": "cos(-x)"
     },
     {
-      "from": "x/x",
-      "to": "1"
+      "left": "x/x",
+      "right": "1"
     },
     {
-      "from": "cos(2*x)",
-      "to": "cos(x)^2-sin(x)^2"
+      "left": "cos(2*x)",
+      "right": "cos(x)^2-sin(x)^2"
     },
     {
-      "from": "cos(x)*(2/(cos(x)^2))",
-      "to": "2/cos(x)"
+      "left": "cos(x)*(2/(cos(x)^2))",
+      "right": "2/cos(x)"
     }
   ]
 }

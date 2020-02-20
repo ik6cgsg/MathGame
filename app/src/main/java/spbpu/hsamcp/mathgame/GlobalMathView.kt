@@ -6,6 +6,10 @@ import android.util.AttributeSet
 import android.widget.TextView
 import android.view.MotionEvent
 import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannedString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -22,8 +26,8 @@ class GlobalMathView: TextView {
     var currentAtom: ExpressionNode? = null
         private set
     private var mathPair: MathResolverPair? = null
-    val defaultSize = 24f
-    val maxSize = 32f
+    val defaultSize = 26f
+    val maxSize = 34f
     private val defaultPadding: Int = 10
 
     /** INITIALIZATION **/
@@ -43,7 +47,7 @@ class GlobalMathView: TextView {
         typeface = Typeface.MONOSPACE
         textSize = defaultSize
         setLineSpacing(0f, 0.5f)
-        setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding + 10)
+        setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
     }
 
     fun setFormula(formulaStr: String) {
@@ -70,10 +74,13 @@ class GlobalMathView: TextView {
         } else {
             val substitutionPlaces = findSubstitutionPlacesInExpression(formula!!, subst)
             if (substitutionPlaces.isNotEmpty()) {
-                val substPlace = substitutionPlaces.find { it.originalValue == currentAtom!! }
+                val substPlace = substitutionPlaces.find {
+                    expressionToString(it.originalValue) == expressionToString(currentAtom!!)
+                }
                 if (substPlace != null) {
-                    res = applySubstitution(formula!!, subst, listOf(substPlace))
+                    applySubstitution(formula!!, subst, listOf(substPlace))
                     setTextFromFormula()
+                    res = formula!!.clone()
                     currentAtom = null
                 }
             }
@@ -81,10 +88,29 @@ class GlobalMathView: TextView {
         return res
     }
 
+    fun recolorCurrentAtom(color: Int) {
+        val newText = SpannableString(text)
+        val colorSpans = (text as SpannedString).getSpans(0, text.length, ForegroundColorSpan::class.java)
+        for (cs in colorSpans) {
+            val start = (text as SpannedString).getSpanStart(cs)
+            val end = (text as SpannedString).getSpanEnd(cs)
+            newText.setSpan(ForegroundColorSpan(color), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        }
+        text = newText
+    }
+
+    fun clearFormula() {
+        currentAtom = null
+        text = text.toString()
+    }
+
     /** TextView OVERRIDES **/
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
         super.onTouchEvent(event)
+        if (event.pointerCount == 2) {
+            return false
+        }
         if (formula != null) {
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.x >= left && event.x <= right && event.y >= top && event.y <= bottom) {
@@ -105,10 +131,17 @@ class GlobalMathView: TextView {
         if (layout != null) {
             val offset = getOffsetForPosition(x, y)
             val atom = mathPair!!.getColoredAtom(offset, Color.CYAN)
-            if (atom != null && atom != currentAtom) {
-                currentAtom = atom
-                text = mathPair!!.matrix
-                MathScene.onFormulaClicked()
+            if (atom != null) {
+                val atomStr = expressionToString(atom)
+                var curAtomStr = ""
+                if (currentAtom != null) {
+                    curAtomStr = expressionToString(currentAtom!!)
+                }
+                if (atomStr != curAtomStr) {
+                    currentAtom = atom
+                    text = mathPair!!.matrix
+                    MathScene.onFormulaClicked()
+                }
             }
         }
     }

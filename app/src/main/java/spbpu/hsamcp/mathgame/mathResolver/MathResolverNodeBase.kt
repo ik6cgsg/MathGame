@@ -1,5 +1,6 @@
 package spbpu.hsamcp.mathgame.mathResolver
 
+import android.graphics.Path
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.NodeType
 import spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes.*
@@ -28,6 +29,7 @@ open class MathResolverNodeBase(
                     OperationType.MULT -> MathResolverNodeMult(expression, needBrackets, operation)
                     OperationType.FUNCTION -> MathResolverNodeFunction(expression, needBrackets, operation)
                     OperationType.MINUS -> MathResolverNodeMinus(expression, needBrackets, operation)
+                    OperationType.SET_AND -> MathResolverSetNodeAnd(expression, needBrackets, operation)
                 }
             }
         }

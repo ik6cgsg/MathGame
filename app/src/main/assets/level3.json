@@ -1,0 +1,15 @@
+{
+  "name": "Level 3",
+  "difficulty": 4,
+  "type": "set",
+  "stepsNum": 10,
+  "time": 300,
+  "originalExpression": "A&B",
+  "finalExpression": "A&B",
+  "allSubstitutions": [
+    {
+      "left": "A&B",
+      "right": "A&B"
+    }
+  ]
+}

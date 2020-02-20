@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.graphics.Point
 import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.BulletSpan
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -28,6 +31,7 @@ class PlayActivity : AppCompatActivity() {
     private val step = 400f
     private lateinit var levels: List<String>
     private var currentLevel = 0
+    private var needClear = false
 
     lateinit var globalMathView: GlobalMathView
     lateinit var endFormulaView: TextView
@@ -40,17 +44,33 @@ class PlayActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
-        if (event.pointerCount == 2) {
-            val action = event.action
-            val pureaction = action and MotionEvent.ACTION_MASK
-            if (pureaction == MotionEvent.ACTION_POINTER_DOWN) {
-                mBaseDist = getDistance(event)
-                mBaseRatio = mRatio
-            } else {
-                val delta = (getDistance(event) - mBaseDist) / step
-                val multi = 2.0.pow(delta.toDouble()).toFloat()
-                mRatio = min(globalMathView.maxSize, max(0.1f, mBaseRatio * multi))
-                globalMathView.textSize = mRatio + globalMathView.defaultSize
+        when {
+            event.pointerCount == 2 -> {
+                needClear = false
+                val action = event.action
+                val pureaction = action and MotionEvent.ACTION_MASK
+                if (pureaction == MotionEvent.ACTION_POINTER_DOWN) {
+                    mBaseDist = getDistance(event)
+                    mBaseRatio = mRatio
+                } else {
+                    val delta = (getDistance(event) - mBaseDist) / step
+                    val multi = 2.0.pow(delta.toDouble()).toFloat()
+                    mRatio = min(globalMathView.maxSize, max(0.1f, mBaseRatio * multi))
+                    globalMathView.textSize = mRatio + globalMathView.defaultSize
+                }
+            }
+            event.pointerCount == 1 -> {
+                when {
+                    event.action == MotionEvent.ACTION_DOWN -> {
+                        needClear = true
+                    }
+                    event.action == MotionEvent.ACTION_UP -> {
+                        if (needClear) {
+                            globalMathView.clearFormula()
+                            MathScene.clearRules()
+                        }
+                    }
+                }
             }
         }
         return true
@@ -76,6 +96,8 @@ class PlayActivity : AppCompatActivity() {
         setOnTouchUpInside(res, ::restart)
         val prev = findViewById<TextView>(R.id.previous)
         setOnTouchUpInside(prev, ::previous)
+        val back = findViewById<TextView>(R.id.back)
+        setOnTouchUpInside(back, ::back)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +109,7 @@ class PlayActivity : AppCompatActivity() {
         levels = assets.list("")!!
             .filter { """level\d+.json""".toRegex().matches(it) }
             .sorted()
-        MathScene.loadLevel(levels[currentLevel])
+        MathScene.loadLevel("level3.json")
         window.decorView.setOnSystemUiVisibilityChangeListener { v: Int ->
             if ((v and View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                 makeFullScreen()
@@ -120,6 +142,11 @@ class PlayActivity : AppCompatActivity() {
         MathScene.loadLevel(MathScene.currentLevel!!.fileName)
     }
 
+    private fun back(v: View?) {
+        // TODO:
+        finish()
+    }
+
     fun showEndFormula(v: View?) {
         if (endFormulaView.visibility == View.GONE) {
             endFormulaViewLabel.text = getString(R.string.end_formula_opened)
@@ -132,11 +159,19 @@ class PlayActivity : AppCompatActivity() {
 
     fun onWin(stepsCount: Int, currentTime: Long, award: String) {
         Log.d(TAG, "onWin")
+        val msgTitle = "You finished level with:"
+        val steps = "\n\tSteps: $stepsCount"
+        val time = "\n\tTime: $currentTime"
+        val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: $award")
+        spannable.setSpan(BulletSpan(5, Color.parseColor("#008577")), msgTitle.length + 1,
+            msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(BulletSpan(5, Color.parseColor("#008577")),
+            msgTitle.length + steps.length + 1, msgTitle.length + steps.length + time.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
             .setTitle("Congratulations!")
-            .setMessage("You finished level with:\n\tSteps: $stepsCount\n\tTime: $currentTime\n\n" +
-                "AWARD: $award")
+            .setMessage(spannable)
             .setPositiveButton("Next") { dialog: DialogInterface, id: Int ->
                 mRatio = 1f
                 if (currentLevel == levels.size - 1) {

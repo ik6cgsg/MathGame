@@ -7,6 +7,8 @@ import com.twf.api.expressionSubstitutionFromStrings
 import com.twf.api.expressionToString
 import com.twf.api.findSubstitutionPlacesInExpression
 import com.twf.api.stringToExpression
+import com.twf.config.CompiledConfiguration
+import com.twf.config.FunctionConfiguration
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import org.json.JSONObject
@@ -19,6 +21,7 @@ class Level(var fileName: String) {
     lateinit var endFormula: ExpressionNode
     lateinit var endFormulaString: String
     lateinit var name: String
+    lateinit var type: String
     var lastResult: Result? = null
     var difficulty = 0
     var stepsNum = 0
@@ -45,18 +48,26 @@ class Level(var fileName: String) {
                 val levelJson = JSONObject(json)
                 name = levelJson.getString("name")
                 difficulty = levelJson.getInt("difficulty")
+                type = levelJson.getString("type")
                 stepsNum = levelJson.getInt("stepsNum")
                 time = levelJson.getInt("time")
-                val startFormulaStr = levelJson.getString("startFormula")
-                val endFormulaStr = levelJson.getString("endFormula")
+                val startFormulaStr = levelJson.getString("originalExpression")
+                val endFormulaStr = levelJson.getString("finalExpression")
                 startFormula = stringToExpression(startFormulaStr)
+                /*
+                    when (type) {
+
+                    "set" -> stringToExpression(startFormulaStr) // "setTheory"
+                    else -> stringToExpression(startFormulaStr)
+                }
+                */
                 endFormula = stringToExpression(endFormulaStr)
                 endFormulaString = expressionToString(endFormula)
-                val rulesJson = levelJson.getJSONArray("rules")
+                val rulesJson = levelJson.getJSONArray("allSubstitutions")
                 for (i in 0 until rulesJson.length()) {
                     val rule = rulesJson.getJSONObject(i)
-                    val from = rule.getString("from")
-                    val to = rule.getString("to")
+                    val from = rule.getString("left")
+                    val to = rule.getString("right")
                     rules.add(expressionSubstitutionFromStrings(from, to))
                 }
                 // TODO: read last result
@@ -67,7 +78,6 @@ class Level(var fileName: String) {
     }
 
     fun checkEnd(formula: ExpressionNode): Boolean {
-        //return compareWithoutSubstitutions(endFormula, formula)
         Log.d(TAG, "checkEnd")
         val currStr = expressionToString(formula)
         Log.d(TAG, "current: $currStr | end: $endFormulaString")
@@ -89,14 +99,22 @@ class Level(var fileName: String) {
         }
     }
 
-    fun getRulesFor(node: ExpressionNode): List<ExpressionSubstitution>? {
+    fun getRulesFor(node: ExpressionNode, formula: ExpressionNode): List<ExpressionSubstitution>? {
         Log.d(TAG, "getRulesFor")
         val operation = node.value
-        val nodeStr = expressionToString(node)
-        val nodeFull = stringToExpression(nodeStr)
         val res = rules
             .filter { it.left.children[0].value == operation }
-            .filter { findSubstitutionPlacesInExpression(nodeFull, it).isNotEmpty() }
+            .filter {
+                val list = findSubstitutionPlacesInExpression(formula, it)
+                if (list.isEmpty()) {
+                    false
+                } else {
+                    val substPlace = list.find { sp ->
+                        expressionToString(sp.originalValue) == expressionToString(node)
+                    }
+                    substPlace != null
+                }
+            }
         if (res.isEmpty()) {
             return null
         }

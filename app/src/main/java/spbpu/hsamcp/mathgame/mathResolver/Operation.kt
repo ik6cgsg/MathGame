@@ -8,8 +8,8 @@ enum class OperationType(val names: Array<String>) {
     MINUS(arrayOf("-")),
     PLUS(arrayOf("+")),
     MULT(arrayOf("*")),
-    FUNCTION(arrayOf("cos", "sin", "tg", "ctg"))
-    // TODO:
+    FUNCTION(arrayOf("cos", "sin", "tg", "ctg")),
+    SET_AND(arrayOf("&"))
 }
 
 class Operation(val name: String) {
@@ -30,6 +30,8 @@ class Operation(val name: String) {
                 "*", "/" -> 2
                 "-" -> 1
                 "+" -> 0
+                // set
+                "&" -> 1
                 else -> -1
             }
         }
