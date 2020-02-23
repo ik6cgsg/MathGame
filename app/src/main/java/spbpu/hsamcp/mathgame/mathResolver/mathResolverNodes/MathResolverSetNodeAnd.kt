@@ -1,5 +1,9 @@
 package spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes
 
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.text.style.RelativeSizeSpan
+import android.text.style.ScaleXSpan
 import com.twf.expressiontree.ExpressionNode
 import spbpu.hsamcp.mathgame.mathResolver.*
 
@@ -9,41 +13,53 @@ class MathResolverSetNodeAnd(
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
-    private val symbol = "∧"
+
+    companion object {
+        private var symbol = "∧"
+        private val mult: Float =
+            fontPaint.measureText(checkSymbol) / fontPaint.measureText(symbol)
+    }
 
     override fun setNodesFromExpression() {
         super.setNodesFromExpression()
+        var maxH = 0
         length += origin.children.size * symbol.length - 1
         for (node in origin.children) {
             val elem = createNode(node, getNeedBrackets(node))
             elem.setNodesFromExpression()
             children.add(elem)
             length += elem.length
+            if (elem.height > maxH) {
+                maxH = elem.height
+            }
         }
-        height = 1
+        height = maxH
+        baseLineOffset = height - 1
     }
 
     override fun setCoordinates(leftTop: Point) {
         super.setCoordinates(leftTop)
         var currLen = if (!needBrackets) leftTop.x else leftTop.x + 1
         for (child in children) {
-            child.setCoordinates(Point(currLen, 0))
+            child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
             currLen += child.length + symbol.length
         }
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
+        val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         if (needBrackets) {
-            stringMatrix[0] =
-                stringMatrix[0].replaceByIndex(curInd, "(")
+            stringMatrix[curStr] =
+                stringMatrix[curStr].replaceByIndex(curInd, "(")
             curInd++
-            stringMatrix[0] =
-                stringMatrix[0].replaceByIndex(rightBottom.x, ")")
+            stringMatrix[curStr] =
+                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
-                stringMatrix[0] = stringMatrix[0].replaceByIndex(curInd, symbol)
+                stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, symbol)
+                spannableArray.add(SpanInfo(ScaleXSpan(mult), curStr, curInd, curInd + symbol.length))
                 curInd += symbol.length
             }
             child.getPlainNode(stringMatrix, spannableArray)

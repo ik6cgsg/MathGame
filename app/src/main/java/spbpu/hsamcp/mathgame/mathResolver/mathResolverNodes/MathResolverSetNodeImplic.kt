@@ -1,15 +1,21 @@
 package spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes
 
+import android.text.style.ScaleXSpan
 import com.twf.expressiontree.ExpressionNode
 import spbpu.hsamcp.mathgame.mathResolver.*
 
-class MathResolverSetNodeMinus(
+class MathResolverSetNodeImplic(
     origin: ExpressionNode,
     needBrackets: Boolean = false,
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
-    private val symbol = "\\"
+
+    companion object {
+        private var symbol = "→"
+        private val mult: Float =
+            fontPaint.measureText(checkSymbol) / fontPaint.measureText(symbol)
+    }
 
     override fun setNodesFromExpression() {
         super.setNodesFromExpression()
@@ -50,6 +56,7 @@ class MathResolverSetNodeMinus(
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
                 stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, symbol)
+                spannableArray.add(SpanInfo(ScaleXSpan(mult), curStr, curInd, curInd + symbol.length))
                 curInd += symbol.length
             }
             child.getPlainNode(stringMatrix, spannableArray)

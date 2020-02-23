@@ -68,7 +68,7 @@ class MathResolverTest {
 
     @Test
     fun test5() {
-        val origin = "((1/2+((cos(x-3/2)*(tg(x)/ctg(x)))/sin(-x+(x+y)/2))*(14*sin(x*y/2)))/(-(-35+x/2)))^(-1/2)"
+        val origin = "((1/2+((cos(x-3/2)*(tg(x)/ctg(x)))/sin(-x+(x+y)/2))*14*sin(x*y/2))/(-(-35+x/2)))^(-1/2)"
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "                                 1 \n" +
@@ -131,7 +131,7 @@ class MathResolverTest {
 
     @Test
     fun test9() {
-        val origin = "(sin(x)/cos(x))^(2^(cos(x/2)/sin((y+4)*2)+8))"
+        val origin = "(sin(x)/cos(x))^2^(cos(x/2)/sin((y+4)*2)+8)"
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "                 x       \n" +
@@ -288,7 +288,7 @@ class MathResolverTest {
 
     @Test
     fun test23() {
-        val origin = "1/((1*1^2)*1^2^2)"
+        val origin = "1/(1*1^2*1^2^2)"
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
         val expected =
             "    1   \n" +
@@ -296,6 +296,22 @@ class MathResolverTest {
             "       2\n" +
             "   2  2 \n" +
             "1*1 *1  \n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun setTest1() {
+        val origin = "(A&B)&C"
+        val actual = MathResolver.resolveToPlain(origin).matrix.toString()
+        val expected = "(A∧B)∧C\n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun setTest2() {
+        val origin = "A&(B&C)"
+        val actual = MathResolver.resolveToPlain(origin).matrix.toString()
+        val expected = "A∧(B∧C)\n"
         assertEquals(expected, actual)
     }
 }

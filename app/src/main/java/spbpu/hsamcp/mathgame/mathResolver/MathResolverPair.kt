@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import androidx.core.text.getSpans
 import com.twf.expressiontree.ExpressionNode
 
 class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStringBuilder) {
@@ -42,7 +43,14 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
             if (insideBox(x, y, tree.leftTop, tree.rightBottom)) {
                 val mathNode = getNode(tree, x, y) ?: tree
                 resNode = mathNode.origin
-                matrix.clearSpans()
+                val colorSpans = matrix.getSpans<ForegroundColorSpan>(0, matrix.length)
+                for (cs in colorSpans) {
+                    matrix.removeSpan(cs)
+                }
+                val boldSpans = matrix.getSpans<StyleSpan>(0, matrix.length)
+                for (bs in boldSpans) {
+                    matrix.removeSpan(bs)
+                }
                 for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
                     val start = i * (tree.length + 1) + mathNode.leftTop.x
                     val end = i * (tree.length + 1) + mathNode.rightBottom.x + 1

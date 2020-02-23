@@ -55,8 +55,8 @@ class PlayActivity : AppCompatActivity() {
                 } else {
                     val delta = (getDistance(event) - mBaseDist) / step
                     val multi = 2.0.pow(delta.toDouble()).toFloat()
-                    mRatio = min(globalMathView.maxSize, max(0.1f, mBaseRatio * multi))
-                    globalMathView.textSize = mRatio + globalMathView.defaultSize
+                    mRatio = min(Constants.centralFormulaMaxSize, max(0.1f, mBaseRatio * multi))
+                    globalMathView.textSize = mRatio + Constants.centralFormulaDefaultSize
                 }
             }
             event.pointerCount == 1 -> {
@@ -163,9 +163,9 @@ class PlayActivity : AppCompatActivity() {
         val steps = "\n\tSteps: $stepsCount"
         val time = "\n\tTime: $currentTime"
         val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: $award")
-        spannable.setSpan(BulletSpan(5, Color.parseColor("#008577")), msgTitle.length + 1,
+        spannable.setSpan(BulletSpan(5, Constants.primaryColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(BulletSpan(5, Color.parseColor("#008577")),
+        spannable.setSpan(BulletSpan(5, Constants.primaryColor),
             msgTitle.length + steps.length + 1, msgTitle.length + steps.length + time.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
@@ -226,10 +226,10 @@ class PlayActivity : AppCompatActivity() {
             val tv = v as TextView
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    tv.setTextColor(Color.parseColor("#008577"))
+                    tv.setTextColor(Constants.primaryColor)
                 }
                 MotionEvent.ACTION_UP -> {
-                    tv.setTextColor(Color.parseColor("#C5C5C5"))
+                    tv.setTextColor(Constants.textColor)
                     if (v.left + event.x >= v.left && v.left + event.x <= v.right &&
                         v.top + event.y >= v.top && v.top + event.y <= v.bottom) {
                         func(v)

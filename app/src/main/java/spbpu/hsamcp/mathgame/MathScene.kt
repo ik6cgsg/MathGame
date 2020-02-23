@@ -84,7 +84,6 @@ class MathScene {
             if (currentLevel != null) {
                 clearRules()
                 activity.globalMathView.setFormula(currentLevel!!.startFormula)
-                activity.globalMathView.textSize = activity.globalMathView.defaultSize
                 activity.endFormulaView.text = MathResolver.resolveToPlain(currentLevel!!.endFormula).matrix
                 if (activity.endFormulaView.visibility != View.VISIBLE) {
                     activity.showEndFormula(null)

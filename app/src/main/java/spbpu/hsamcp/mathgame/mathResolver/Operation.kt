@@ -1,7 +1,5 @@
 package spbpu.hsamcp.mathgame.mathResolver
 
-import com.twf.expressiontree.ExpressionNode
-
 enum class OperationType(val names: Array<String>) {
     POW(arrayOf("^")),
     DIV(arrayOf("/")),
@@ -9,7 +7,11 @@ enum class OperationType(val names: Array<String>) {
     PLUS(arrayOf("+")),
     MULT(arrayOf("*")),
     FUNCTION(arrayOf("cos", "sin", "tg", "ctg")),
-    SET_AND(arrayOf("&", "and"))
+    SET_AND(arrayOf("&", "and")),
+    SET_OR(arrayOf("|", "or")),
+    SET_MINUS(arrayOf("\\", "set-")),
+    SET_NOT(arrayOf("!", "not")),
+    SET_IMPLIC(arrayOf("->", "implic"))
 }
 
 class Operation(val name: String) {
@@ -26,12 +28,16 @@ class Operation(val name: String) {
     companion object {
         fun getPriority(name: String): Int {
             return when (name) {
-                in OperationType.POW.names -> 3
-                in OperationType.MULT.names, in OperationType.DIV.names -> 2
+                in OperationType.POW.names -> 4
+                in OperationType.DIV.names -> 3
+                in OperationType.MULT.names -> 2
                 in OperationType.MINUS.names -> 1
                 in OperationType.PLUS.names -> 0
                 // set
-                in OperationType.SET_AND.names -> 1
+                in OperationType.SET_AND.names -> 3
+                in OperationType.SET_OR.names -> 2
+                in OperationType.SET_MINUS.names -> 1
+                in OperationType.SET_IMPLIC.names -> 0
                 else -> -1
             }
         }

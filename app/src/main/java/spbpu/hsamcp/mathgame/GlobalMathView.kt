@@ -10,9 +10,11 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannedString
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.text.getSpans
 import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
@@ -26,8 +28,6 @@ class GlobalMathView: TextView {
     var currentAtom: ExpressionNode? = null
         private set
     private var mathPair: MathResolverPair? = null
-    val defaultSize = 26f
-    val maxSize = 34f
     private val defaultPadding: Int = 10
 
     /** INITIALIZATION **/
@@ -45,8 +45,8 @@ class GlobalMathView: TextView {
         Log.d(TAG, "setDefaults")
         setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
-        textSize = defaultSize
-        setLineSpacing(0f, 0.5f)
+        textSize = Constants.centralFormulaDefaultSize
+        setLineSpacing(0f, Constants.lineSpacing)
         setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
     }
 
@@ -61,6 +61,7 @@ class GlobalMathView: TextView {
     fun setFormula(formulaNode: ExpressionNode) {
         Log.d(TAG, "setFormula from node")
         formula = formulaNode
+        textSize = Constants.centralFormulaDefaultSize
         currentAtom = null
         setTextFromFormula()
     }
@@ -90,10 +91,10 @@ class GlobalMathView: TextView {
 
     fun recolorCurrentAtom(color: Int) {
         val newText = SpannableString(text)
-        val colorSpans = (text as SpannedString).getSpans(0, text.length, ForegroundColorSpan::class.java)
+        val colorSpans = newText.getSpans<ForegroundColorSpan>(0, text.length)
         for (cs in colorSpans) {
-            val start = (text as SpannedString).getSpanStart(cs)
-            val end = (text as SpannedString).getSpanEnd(cs)
+            val start = newText.getSpanStart(cs)
+            val end = newText.getSpanEnd(cs)
             newText.setSpan(ForegroundColorSpan(color), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         }
         text = newText
@@ -101,7 +102,16 @@ class GlobalMathView: TextView {
 
     fun clearFormula() {
         currentAtom = null
-        text = text.toString()
+        val newText = SpannableString(text)
+        val colorSpans = newText.getSpans<ForegroundColorSpan>(0, text.length)
+        for (cs in colorSpans) {
+            newText.removeSpan(cs)
+        }
+        val boldSpans = newText.getSpans<StyleSpan>(0, text.length)
+        for (bs in boldSpans) {
+            newText.removeSpan(bs)
+        }
+        text = newText
     }
 
     /** TextView OVERRIDES **/

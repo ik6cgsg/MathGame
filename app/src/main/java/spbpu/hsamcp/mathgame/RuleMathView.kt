@@ -2,13 +2,11 @@ package spbpu.hsamcp.mathgame
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Rect
 import android.graphics.Typeface
 import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.widget.TextView
 import com.twf.api.expressionSubstitutionFromStrings
 import com.twf.expressiontree.ExpressionSubstitution
@@ -16,10 +14,9 @@ import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 
 class RuleMathView: TextView {
     private val TAG = "RuleMathView"
-    private val moveTreshold = 5
+    private val moveTreshold = 15
     var subst: ExpressionSubstitution? = null
         private set
-    private var defaultSize = 22f
     private val defaultPadding: Int = 15
     private var needClick = false
     private var moveCnt = 0
@@ -38,14 +35,14 @@ class RuleMathView: TextView {
     }
 
     private fun setDefaults() {
-        textSize = defaultSize
+        textSize = Constants.ruleDefaultSize
         setHorizontallyScrolling(true)
         isHorizontalScrollBarEnabled = true
         isScrollbarFadingEnabled = true
         movementMethod = ScrollingMovementMethod()
         setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
-        setLineSpacing(0f, 0.5f)
+        setLineSpacing(0f, Constants.lineSpacing)
         setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
         if (subst != null) {
             setSubst(subst!!)
@@ -69,6 +66,7 @@ class RuleMathView: TextView {
             event.action == MotionEvent.ACTION_DOWN -> {
                 needClick = true
                 moveCnt = 0
+                setBackgroundColor(Constants.lightGrey)
             }
             event.action == MotionEvent.ACTION_UP -> {
                 if (needClick &&
@@ -85,6 +83,7 @@ class RuleMathView: TextView {
                     moveCnt++
                     if (moveCnt > moveTreshold) {
                         needClick = false
+                        setBackgroundColor(Color.TRANSPARENT)
                     }
                 }
             }

@@ -104,9 +104,7 @@ class Level(var fileName: String) {
 
     fun getRulesFor(node: ExpressionNode, formula: ExpressionNode): List<ExpressionSubstitution>? {
         Log.d(TAG, "getRulesFor")
-        val operation = node.value
         val res = rules
-            .filter { it.left.children[0].value == operation }
             .filter {
                 val list = findSubstitutionPlacesInExpression(formula, it)
                 if (list.isEmpty()) {
