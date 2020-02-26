@@ -24,8 +24,3 @@ files=$(find . -type f -name "*.kt")
 sed -i "s/package /package com.twf./g" ${files}
 sed -i "s/import /import com.twf./g" ${files}
 sed -i "s/import com.twf.kotlin/import kotlin/g" ${files}
-# Fix modules calls
-sed -i "s/ platformdependent./ com.twf.platformdependent./g" ${files}
-sed -i "s/ expressiontree./ com.twf.expressiontree./g" ${files}
-sed -i "s/(platformdependent./(com.twf.platformdependent./g" ${files}
-sed -i "s/(expressiontree./(com.twf.expressiontree./g" ${files}

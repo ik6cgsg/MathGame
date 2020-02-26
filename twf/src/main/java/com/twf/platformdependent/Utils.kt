@@ -18,3 +18,12 @@ fun Int.toStringWithMinLength (minLength: Int, suffixChar: Char): String{
         res
     }
 }
+
+fun escapeCharacters (string: String, characterEscapingDepth: Int = 1): String{
+    return escapeBackSlash(string, characterEscapingDepth)
+}
+
+fun escapeBackSlash (string: String, characterEscapingDepth: Int = 1): String{
+    val replacement = "\\".repeat(characterEscapingDepth)
+    return string.replace("\\", replacement)
+}

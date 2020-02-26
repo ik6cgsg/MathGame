@@ -85,7 +85,7 @@ class LazyLog {
      * Add the message with the expression message on the end (otherwise it will be looked bad).
      */
     fun addMessageWithExpression(message: () -> String,
-                                 expressionNode: com.twf.expressiontree.ExpressionNode,
+                                 expressionNode: ExpressionNode,
                                  messageType: MessageType = MessageType.TECHNICAL,
                                  level: Int? = null,
                                  levelChange: Int = 0) {

@@ -1,6 +1,9 @@
 package com.twf.baseoperations
 
 import com.twf.expressiontree.ExpressionNode
+import com.twf.platformdependent.defaultRandom
+import com.twf.platformdependent.random
+import com.twf.platformdependent.randomInt
 import kotlin.math.max
 import kotlin.math.min
 
@@ -28,7 +31,7 @@ data class DomainSegment(
             to += 1e-9
         }
 
-        return com.twf.platformdependent.random(from, to)
+        return random(from, to)
     }
     companion object {
         fun inclusive(left: Double, right: Double) = DomainSegment(left, true, right, true)
@@ -75,11 +78,11 @@ class DefinitionDomain(
         } else if (segments.isEmpty()) {
             generateFromPoints()
         } else {
-            if (com.twf.platformdependent.defaultRandom() < 0.6) generateFromSegments() else generateFromPoints()
+            if (defaultRandom() < 0.6) generateFromSegments() else generateFromPoints()
         }
 
     private fun generateFromPoints(): Double {
-        val randnum = com.twf.platformdependent.randomInt(0, points.size)
+        val randnum = randomInt(0, points.size)
         var got = 0
         while (got < randnum) {
             for (p in points) {
@@ -91,7 +94,7 @@ class DefinitionDomain(
     }
 
     private fun generateFromSegments(): Double {
-        val randnum = com.twf.platformdependent.randomInt(0, segments.size)
+        val randnum = randomInt(0, segments.size)
         var got = 0
         while (got < randnum) {
             for (p in segments) {

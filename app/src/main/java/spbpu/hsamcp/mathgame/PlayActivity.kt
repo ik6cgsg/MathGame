@@ -2,6 +2,7 @@ package spbpu.hsamcp.mathgame
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.text.style.BulletSpan
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -23,14 +25,12 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class PlayActivity : AppCompatActivity() {
+class PlayActivity: AppCompatActivity() {
     private val TAG = "PlayActivity"
     private var mRatio = 1.0f
     private var mBaseDist: Int = 0
     private var mBaseRatio: Float = 0.toFloat()
     private val step = 400f
-    private lateinit var levels: List<String>
-    private var currentLevel = 0
     private var needClear = false
 
     lateinit var globalMathView: GlobalMathView
@@ -106,30 +106,22 @@ class PlayActivity : AppCompatActivity() {
         setContentView(R.layout.activity_play)
         setViews()
         MathScene.init(this)
-        levels = assets.list("")!!
-            .filter { """level\d+.json""".toRegex().matches(it) }
-            .sorted()
-        MathScene.loadLevel("level3.json")
+        MathScene.loadLevel()
         window.decorView.setOnSystemUiVisibilityChangeListener { v: Int ->
             if ((v and View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                makeFullScreen()
+                AndroidUtil.makeFullScreen(window)
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        makeFullScreen()
+    override fun onBackPressed() {
+        super.onBackPressed()
+        back(null)
     }
 
-    private fun makeFullScreen() {
-        window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    override fun onResume() {
+        super.onResume()
+        AndroidUtil.makeFullScreen(window)
     }
 
     private fun previous(v: View?) {
@@ -139,11 +131,11 @@ class PlayActivity : AppCompatActivity() {
     private fun restart(v: View?) {
         mRatio = 1f
         MathScene.timer.cancel()
-        MathScene.loadLevel(MathScene.currentLevel!!.fileName)
+        MathScene.loadLevel()
     }
 
     private fun back(v: View?) {
-        // TODO:
+        MathScene.timer.cancel()
         finish()
     }
 
@@ -157,12 +149,12 @@ class PlayActivity : AppCompatActivity() {
         }
     }
 
-    fun onWin(stepsCount: Int, currentTime: Long, award: String) {
+    fun onWin(stepsCount: Int, currentTime: Long, award: Award) {
         Log.d(TAG, "onWin")
         val msgTitle = "You finished level with:"
         val steps = "\n\tSteps: $stepsCount"
         val time = "\n\tTime: $currentTime"
-        val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: $award")
+        val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: ${award.str}")
         spannable.setSpan(BulletSpan(5, Constants.primaryColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(BulletSpan(5, Constants.primaryColor),
@@ -174,25 +166,14 @@ class PlayActivity : AppCompatActivity() {
             .setMessage(spannable)
             .setPositiveButton("Next") { dialog: DialogInterface, id: Int ->
                 mRatio = 1f
-                if (currentLevel == levels.size - 1) {
-                    MathScene.loadLevel(MathScene.currentLevel!!.fileName)
-                } else {
-                    currentLevel++
-                    MathScene.loadLevel(levels[currentLevel])
-                }
+                MathScene.nextLevel()
             }
             .setNeutralButton("Menu") { dialog: DialogInterface, id: Int ->
-                // TODO:
-                finish()
+                back(null)
             }
             .setNegativeButton("Previous") { dialog: DialogInterface, id: Int ->
                 mRatio = 1f
-                if (currentLevel == 0) {
-                    MathScene.loadLevel(MathScene.currentLevel!!.fileName)
-                } else {
-                    currentLevel--
-                    MathScene.loadLevel(levels[currentLevel])
-                }
+                MathScene.prevLevel()
             }
         showDialog(builder)
     }
@@ -207,8 +188,7 @@ class PlayActivity : AppCompatActivity() {
                 restart(null)
             }
             .setNegativeButton("Menu") { dialog: DialogInterface, id: Int ->
-                // TODO:
-                finish()
+                back(null)
             }
         showDialog(builder)
     }
@@ -217,6 +197,7 @@ class PlayActivity : AppCompatActivity() {
         builder.setCancelable(false)
         val dialog = builder.create()
         dialog.show()
+        AndroidUtil.makeFullScreen(dialog.window!!)
         dialog.window!!.setBackgroundDrawableResource(R.color.gray)
         dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
     }
@@ -230,8 +211,7 @@ class PlayActivity : AppCompatActivity() {
                 }
                 MotionEvent.ACTION_UP -> {
                     tv.setTextColor(Constants.textColor)
-                    if (v.left + event.x >= v.left && v.left + event.x <= v.right &&
-                        v.top + event.y >= v.top && v.top + event.y <= v.bottom) {
+                    if (AndroidUtil.touchUpInsideView(v, event)) {
                         func(v)
                     }
                 }

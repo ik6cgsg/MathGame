@@ -14,10 +14,9 @@ import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 
 class RuleMathView: TextView {
     private val TAG = "RuleMathView"
-    private val moveTreshold = 15
+    private val moveTreshold = 10
     var subst: ExpressionSubstitution? = null
         private set
-    private val defaultPadding: Int = 15
     private var needClick = false
     private var moveCnt = 0
 
@@ -42,8 +41,9 @@ class RuleMathView: TextView {
         movementMethod = ScrollingMovementMethod()
         setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
-        setLineSpacing(0f, Constants.lineSpacing)
-        setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
+        setLineSpacing(0f, Constants.mathLineSpacing)
+        setPadding(Constants.defaultPadding, Constants.defaultPadding,
+            Constants.defaultPadding, Constants.defaultPadding)
         if (subst != null) {
             setSubst(subst!!)
         }
@@ -54,7 +54,7 @@ class RuleMathView: TextView {
         val from = MathResolver.resolveToPlain(subst.left)
         val to = MathResolver.resolveToPlain(subst.right)
         val textStr = MathResolver.getRule(from, to)
-        maxLines = 1 + textStr.count { it == '\n' }
+        //maxLines = 1 + textStr.count { it == '\n' }
         text = textStr
     }
 
@@ -64,28 +64,37 @@ class RuleMathView: TextView {
         super.onTouchEvent(event)
         when {
             event.action == MotionEvent.ACTION_DOWN -> {
+                Log.d(TAG, "ACTION_DOWN")
                 needClick = true
                 moveCnt = 0
                 setBackgroundColor(Constants.lightGrey)
             }
             event.action == MotionEvent.ACTION_UP -> {
-                if (needClick &&
-                    left + event.x >= left && left + event.x <= right &&
-                    top + event.y >= top && top + event.y <= bottom
-                ) {
+                Log.d(TAG, "ACTION_UP")
+                if (needClick && AndroidUtil.touchUpInsideView(this, event)) {
                     MathScene.currentRuleView = this
                     MathScene.onRuleClicked()
                     needClick = false
+                } else {
+                    setBackgroundColor(Color.TRANSPARENT)
                 }
             }
             event.action == MotionEvent.ACTION_MOVE -> {
+                Log.d(TAG, "ACTION_MOVE")
                 if (needClick) {
                     moveCnt++
                     if (moveCnt > moveTreshold) {
                         needClick = false
                         setBackgroundColor(Color.TRANSPARENT)
                     }
+                } else {
+                    setBackgroundColor(Color.TRANSPARENT)
                 }
+            }
+            event.action == MotionEvent.ACTION_CANCEL -> {
+                Log.d(TAG, "ACTION_CANCEL")
+                needClick = false
+                setBackgroundColor(Color.TRANSPARENT)
             }
         }
         return true

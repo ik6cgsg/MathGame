@@ -31,6 +31,7 @@ class MathScene {
         var currentRuleView: RuleMathView? = null
         var currentLevel: Level? = null
         lateinit var playActivity: WeakReference<PlayActivity>
+        lateinit var levelsActivity: WeakReference<LevelsActivity>
 
         fun init(playActivity: PlayActivity) {
             Log.d(TAG, "init")
@@ -76,14 +77,13 @@ class MathScene {
             }
         }
 
-        fun loadLevel(fileName: String): Boolean {
+        fun loadLevel(): Boolean {
             Log.d(TAG, "loadLevel")
             var res = false
             val activity = playActivity.get()!!
-            currentLevel = Level.create(fileName, activity.assets)
             if (currentLevel != null) {
                 clearRules()
-                activity.globalMathView.setFormula(currentLevel!!.startFormula)
+                activity.globalMathView.setFormula(currentLevel!!.startFormula.clone())
                 activity.endFormulaView.text = MathResolver.resolveToPlain(currentLevel!!.endFormula).matrix
                 if (activity.endFormulaView.visibility != View.VISIBLE) {
                     activity.showEndFormula(null)
@@ -99,13 +99,25 @@ class MathScene {
             return res
         }
 
+        fun nextLevel() {
+            timer.cancel()
+            currentLevel = levelsActivity.get()!!.getNextLevel()
+            loadLevel()
+        }
+
+        fun prevLevel() {
+            timer.cancel()
+            currentLevel = levelsActivity.get()!!.getPrevLevel()
+            loadLevel()
+        }
+
         fun previousStep() {
             Log.d(TAG, "previousStep")
             val state = history.getPreviousStep()
             val activity = playActivity.get()!!
             if (state != null) {
                 clearRules()
-                activity.globalMathView.setFormula(state.formula)
+                activity.globalMathView.setFormula(state.formula, false)
                 stepsCount--
             }
         }
@@ -130,10 +142,13 @@ class MathScene {
         private fun onWin() {
             Log.d(TAG, "onWin")
             val award = currentLevel!!.getAward(currentTime, stepsCount)
-            currentLevel!!.lastResult = Result(stepsCount, currentTime, award)
-            // TODO: saving
-            currentLevel!!.save()
-            playActivity.get()!!.onWin(stepsCount, currentTime, award.str)
+            val newRes = Result(stepsCount, currentTime, award)
+            if (newRes.isBetter(currentLevel!!.lastResult)) {
+                currentLevel!!.lastResult = newRes
+                currentLevel!!.save()
+                levelsActivity.get()!!.updateResult()
+            }
+            playActivity.get()!!.onWin(stepsCount, currentTime, award)
         }
 
         private fun showMessage(msg: String) {

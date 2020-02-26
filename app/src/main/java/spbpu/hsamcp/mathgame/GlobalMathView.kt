@@ -8,12 +8,10 @@ import android.view.MotionEvent
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.SpannedString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
 import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
@@ -28,7 +26,6 @@ class GlobalMathView: TextView {
     var currentAtom: ExpressionNode? = null
         private set
     private var mathPair: MathResolverPair? = null
-    private val defaultPadding: Int = 10
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
@@ -46,8 +43,9 @@ class GlobalMathView: TextView {
         setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
         textSize = Constants.centralFormulaDefaultSize
-        setLineSpacing(0f, Constants.lineSpacing)
-        setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
+        setLineSpacing(0f, Constants.mathLineSpacing)
+        setPadding(Constants.defaultPadding, Constants.defaultPadding,
+            Constants.defaultPadding, Constants.defaultPadding)
     }
 
     fun setFormula(formulaStr: String) {
@@ -58,10 +56,12 @@ class GlobalMathView: TextView {
         }
     }
 
-    fun setFormula(formulaNode: ExpressionNode) {
+    fun setFormula(formulaNode: ExpressionNode, resetSize: Boolean = true) {
         Log.d(TAG, "setFormula from node")
         formula = formulaNode
-        textSize = Constants.centralFormulaDefaultSize
+        if (resetSize) {
+            textSize = Constants.centralFormulaDefaultSize
+        }
         currentAtom = null
         setTextFromFormula()
     }
@@ -76,7 +76,7 @@ class GlobalMathView: TextView {
             val substitutionPlaces = findSubstitutionPlacesInExpression(formula!!, subst)
             if (substitutionPlaces.isNotEmpty()) {
                 val substPlace = substitutionPlaces.find {
-                    expressionToString(it.originalValue) == expressionToString(currentAtom!!)
+                    it.originalValue.nodeId == currentAtom!!.nodeId
                 }
                 if (substPlace != null) {
                     applySubstitution(formula!!, subst, listOf(substPlace))
@@ -121,12 +121,8 @@ class GlobalMathView: TextView {
         if (event.pointerCount == 2) {
             return false
         }
-        if (formula != null) {
-            if (event.action == MotionEvent.ACTION_UP) {
-                if (event.x >= left && event.x <= right && event.y >= top && event.y <= bottom) {
-                    selectCurrentAtom(event)
-                }
-            }
+        if (formula != null && AndroidUtil.touchUpInsideView(this, event)) {
+            selectCurrentAtom(event)
         }
         return true
     }
@@ -142,12 +138,7 @@ class GlobalMathView: TextView {
             val offset = getOffsetForPosition(x, y)
             val atom = mathPair!!.getColoredAtom(offset, Color.CYAN)
             if (atom != null) {
-                val atomStr = expressionToString(atom)
-                var curAtomStr = ""
-                if (currentAtom != null) {
-                    curAtomStr = expressionToString(currentAtom!!)
-                }
-                if (atomStr != curAtomStr) {
+                if (currentAtom == null || currentAtom!!.nodeId != atom.nodeId) {
                     currentAtom = atom
                     text = mathPair!!.matrix
                     MathScene.onFormulaClicked()

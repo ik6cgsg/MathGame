@@ -1,9 +1,9 @@
 {
   "name": "Set: Level 1",
-  "difficulty": 2,
+  "difficulty": 1,
   "type": "set",
   "stepsNum": 2,
-  "time": 300,
+  "time": 180,
   "originalExpression": "!A&!B&!C",
   "finalExpression": "!A&(!B\\C)",
   "allSubstitutions": [

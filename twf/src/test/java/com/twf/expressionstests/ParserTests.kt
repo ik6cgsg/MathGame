@@ -317,6 +317,16 @@ class ParserTests {
     }
 
     @Test
+    fun testDoubleLeftFactorial() {
+        val expressionTreeParser = ExpressionTreeParser("!!a",
+                functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))
+        val error = expressionTreeParser.parse()
+        val root = expressionTreeParser.root
+        assertEquals("()", root.toString())
+        assertEquals("ParserError(position=0, description=Unknown operation: '!!', endPosition=-1)", error.toString())
+    }
+
+    @Test
     fun testImplicationMathML() {
         val expressionTreeParser = ExpressionTreeParser("<mi>a</mi><mo>-</mo><mo>&gt;</mo><mi>b</mi>",
                 functionConfiguration = FunctionConfiguration(setOf("", "setTheory")))

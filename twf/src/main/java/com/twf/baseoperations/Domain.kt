@@ -1,6 +1,7 @@
 package com.twf.baseoperations
 
 import com.twf.expressiontree.ExpressionNode
+import com.twf.platformdependent.random
 
 data class Segment (
         val leftBorder: ExpressionNode? = null,
@@ -42,7 +43,7 @@ class Domain (
         val result = mutableMapOf<String, String>()
         for (variable in variablesSet){
             if (variable.segmentsUnionsIntersection.isEmpty()){
-                result.put(variable.name, com.twf.platformdependent.random(-border, border).toString())
+                result.put(variable.name, random(-border, border).toString())
             } else {
                 TODO()
             }

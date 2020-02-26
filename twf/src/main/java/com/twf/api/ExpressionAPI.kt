@@ -3,6 +3,7 @@ package com.twf.api
 import com.twf.config.CompiledConfiguration
 import com.twf.config.FunctionConfiguration
 import com.twf.expressiontree.*
+import com.twf.platformdependent.escapeCharacters
 
 //expressions
 fun stringToExpression(
@@ -32,8 +33,9 @@ fun expressionToStructureString(
 ) = expressionNode.toString()
 
 fun expressionToString(
-        expressionNode: ExpressionNode
-) = expressionNode.toUserView()
+        expressionNode: ExpressionNode,
+        characterEscapingDepth: Int = 1
+) = escapeCharacters(expressionNode.toUserView(), characterEscapingDepth)
 
 
 //compare expressions without substitutions
@@ -80,6 +82,7 @@ fun applySubstitution(
         substitutionPlaces: List<SubstitutionPlace> //containsPointersOnExpressionPlaces
 ): ExpressionNode {
     substitution.applySubstitution(substitutionPlaces)
+    expression.getTopNode().computeNodeIdsAsNumbersInDirectTraversal()
     return expression
 }
 
@@ -158,6 +161,7 @@ fun applyExpressionBySubstitutionPlaceCoordinates(
         endPosition: Int,
         scope: String = "",
         basedOnTaskContext: Boolean = false,
+        characterEscapingDepth: Int = 1,
         functionConfiguration: FunctionConfiguration = FunctionConfiguration(
                 scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
         ),
@@ -184,7 +188,7 @@ fun applyExpressionBySubstitutionPlaceCoordinates(
         actualExpression
     }
 
-    return expressionToString(result)
+    return escapeCharacters(expressionToString(result), characterEscapingDepth)
 }
 
 fun generateTaskInJSON(
@@ -192,6 +196,7 @@ fun generateTaskInJSON(
         stepsCount: Int,
         originalExpressions: String, //';' separated
         scope: String = "", //';' separated
+        characterEscapingDepth: Int = 1,
         functionConfiguration: FunctionConfiguration = FunctionConfiguration(
                 scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
         ),
@@ -205,7 +210,7 @@ fun generateTaskInJSON(
             stepsCount,
             originalExpressions.split(";").map { stringToExpression(it, compiledConfiguration = compiledConfiguration) }
     )
-    return "{" +
+    return escapeCharacters("{" +
             "\"originalExpression\":\"${expressionToString(expressionTask.originalExpression)}\"," +
             "\"finalExpression\":\"${expressionToString(expressionTask.finalExpression)}\"," +
             "\"requiredSubstitutions\":[${
@@ -214,5 +219,7 @@ fun generateTaskInJSON(
             "\"allSubstitutions\":[${
             expressionTask.allSubstitutions.joinToString (separator = ",") { "{\"left\":\"${expressionToString(it.left)}\",\"right\":\"${expressionToString(it.right)}\"}" }
             }]" +
-            "}"
+            "}",
+            characterEscapingDepth)
 }
+

@@ -3,6 +3,7 @@ package com.twf.baseoperations
 import com.twf.expressiontree.ExpressionNode
 import com.twf.numbers.Complex
 import com.twf.numbers.toComplex
+import com.twf.platformdependent.defaultRandom
 
 enum class ComputationType {COMPLEX, DOUBLE}
 
@@ -209,7 +210,7 @@ class BaseOperationsComputation(private val computationType: ComputationType) {
             if (baseComputationOperations[computationType]!!.containsKey(expressionNode.value)) {
                 baseComputationOperations[computationType]!![expressionNode.value]!!.invoke(listOfArgs)
             } else {
-                stringToNumber(com.twf.platformdependent.defaultRandom().toString())
+                stringToNumber(defaultRandom().toString())
             }
         }
     }

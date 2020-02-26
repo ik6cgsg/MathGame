@@ -208,6 +208,7 @@ class ExpressionTreeParser(
         root.correctPositions()
         root.computeIdentifier()
         root.variableReplacement(compiledImmediateVariableReplacements)
+        root.computeNodeIdsAsNumbersInDirectTraversal()
         return null
     }
 

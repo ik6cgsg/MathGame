@@ -1,75 +1,27 @@
 {
   "name": "Algebra: Level 1",
-  "difficulty": 2,
+  "difficulty": 6,
   "type": "algebra",
   "stepsNum": 7,
-  "time": 240,
+  "time": 360,
   "originalExpression": "1/a-(a^2-25)/(5*a)+a/5",
   "finalExpression": "6/a",
   "allSubstitutions": [
-    {
-      "left": "x/y",
-      "right": "(5*x)/(5*y)"
-    },
-    {
-      "left": "x/y",
-      "right": "(7*x)/(7*y)"
-    },
-    {
-      "left": "x/y",
-      "right": "(3*x)/(3*y)"
-    },
-    {
-      "left": "x/y",
-      "right": "(x^2)/(y*x)"
-    },
-    {
-      "left": "x*1",
-      "right": "x^2"
-    },
-    {
-      "left": "x*1",
-      "right": "x"
-    },
-    {
-      "left": "a/b-c/b+d/b",
-      "right": "(a-c+d)/b"
-    },
-    {
-      "left": "a/b-c/b+d/b",
-      "right": "(a+c+d)/b"
-    },
-    {
-      "left": "a/b-c/b+d/b",
-      "right": "(a+c-d)/b"
-    },
-    {
-      "left": "a-(b-c)+b",
-      "right": "a+c"
-    },
-    {
-      "left": "a-(b-c)+b",
-      "right": "a-c"
-    },
-    {
-      "left": "a-(b-c)+b",
-      "right": "a+b^2"
-    },
-    {
-      "left": "5+25",
-      "right": "30"
-    },
-    {
-      "left": "5-25",
-      "right": "-20"
-    },
-    {
-      "left": "30/(5*x)",
-      "right": "6/x"
-    },
-    {
-      "left": "30/(3*x)",
-      "right": "10/x"
-    }
+    {"left": "x/y", "right": "(5*x)/(5*y)"},
+    {"left": "x/y", "right": "(7*x)/(7*y)"},
+    {"left": "x/y", "right": "(3*x)/(3*y)"},
+    {"left": "x/y", "right": "(x^2)/(y*x)"},
+    {"left": "x*1", "right": "x^2"},
+    {"left": "x*1", "right": "x"},
+    {"left": "a/b-c/b+d/b", "right": "(a-c+d)/b"},
+    {"left": "a/b-c/b+d/b", "right": "(a+c+d)/b"},
+    {"left": "a/b-c/b+d/b", "right": "(a+c-d)/b"},
+    {"left": "a-(b-c)+b", "right": "a+c"},
+    {"left": "a-(b-c)+b", "right": "a-c"},
+    {"left": "a-(b-c)+b", "right": "a+b^2"},
+    {"left": "5+25", "right": "30"},
+    {"left": "5-25", "right": "-20"},
+    {"left": "30/(5*x)", "right": "6/x"},
+    {"left": "30/(3*x)", "right": "10/x"}
   ]
 }

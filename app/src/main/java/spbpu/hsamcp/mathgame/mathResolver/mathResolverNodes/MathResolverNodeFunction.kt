@@ -20,7 +20,7 @@ class MathResolverNodeFunction(
             children.add(elem)
             if (elem.height > maxH) {
                 maxH = elem.height
-                if (elem.op != null && elem.op!!.type != OperationType.POW) {
+                if (elem.op != null) {
                     baseLineOffset = elem.baseLineOffset
                 }
             }

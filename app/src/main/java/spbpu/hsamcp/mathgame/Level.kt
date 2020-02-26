@@ -13,8 +13,6 @@ import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import org.json.JSONObject
 
-data class Rule(val from: String, val to: String)
-
 class Level(var fileName: String) {
     var rules = ArrayList<ExpressionSubstitution>()
     lateinit var startFormula: ExpressionNode
@@ -73,6 +71,7 @@ class Level(var fileName: String) {
                     }
                     rules.add(ruleSubst)
                 }
+                rules.shuffle()
                 // TODO: read last result
                 true
             }
@@ -111,7 +110,7 @@ class Level(var fileName: String) {
                     false
                 } else {
                     val substPlace = list.find { sp ->
-                        expressionToString(sp.originalValue) == expressionToString(node)
+                        sp.originalValue.nodeId == node.nodeId
                     }
                     substPlace != null
                 }

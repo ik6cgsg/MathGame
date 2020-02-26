@@ -27,7 +27,8 @@ data class ExpressionNode(
         var subValue: String = "", //value on bottom lines <msub>
         var parent: ExpressionNode? = null,
         var functionStringDefinition: FunctionStringDefinition? = null, //maybe ExpressionNode also should have string with original representation, not just link on definition kind
-        var identifier: String = ""
+        var identifier: String = "",
+        var nodeId: Int = -1
 ) {
     var children: ArrayList<ExpressionNode> = ArrayList()
 
@@ -66,6 +67,23 @@ data class ExpressionNode(
     fun isNumberValue() = value.isNotBlank() && value.first().isNumberPart() //todo: mb should be changed to 'value.toDoubleOrNull() != null', but it takes more time
 
     fun getNodeValueString() = value
+
+    fun getTopNode(): ExpressionNode {
+        var result = this
+        while (result.parent != null){
+            result = result.parent!!
+        }
+        return result
+    }
+
+    fun computeNodeIdsAsNumbersInDirectTraversal (startId: Int = 0): Int {
+        nodeId = startId
+        var currentStartId = startId + 1
+        for (child in children){
+            currentStartId = child.computeNodeIdsAsNumbersInDirectTraversal(currentStartId)
+        }
+        return currentStartId
+    }
 
     fun correctPositions() {
         for (child in children) {
@@ -111,9 +129,9 @@ data class ExpressionNode(
 
     fun toStringsWithPositions(getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }, offset: String = ""): String {
         if (nodeType == NodeType.VARIABLE) {
-            identifier = offset + getNodeValueString(this) + "  :  [$startPosition; $endPosition)\n"
+            identifier = offset + getNodeValueString(this) + "  :  [$startPosition; $endPosition; $nodeId)\n"
         } else {
-            identifier = offset + value + "  :  [$startPosition; $endPosition)\n"
+            identifier = offset + value + "  :  [$startPosition; $endPosition; $nodeId)\n"
             for (child in children) {
                 identifier += /*if (child.identifier.isEmpty()) */child.toStringsWithPositions(getNodeValueString, offset + "  ")/* else child.identifier*/
             }

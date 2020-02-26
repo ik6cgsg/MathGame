@@ -34,7 +34,6 @@ class MathResolverNodeMult(
     }
 
     override fun setCoordinates(leftTop: Point) {
-        // TODO: baseline
         super.setCoordinates(leftTop)
         var currLen = if (!needBrackets) leftTop.x else leftTop.x + 1
         for (child in children) {

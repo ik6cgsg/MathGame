@@ -19,7 +19,7 @@ class MathResolverNodePow(
             height += elem.height
             length += elem.length
         }
-        baseLineOffset = height - 1
+        baseLineOffset = height - (children[0].height - children[0].baseLineOffset)
     }
 
     override fun setCoordinates(leftTop: Point) {
