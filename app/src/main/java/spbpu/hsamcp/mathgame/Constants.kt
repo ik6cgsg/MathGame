@@ -5,7 +5,7 @@ import android.graphics.Color
 class Constants {
     companion object {
         const val centralFormulaDefaultSize = 28f
-        const val centralFormulaMaxSize = 36f
+        const val centralFormulaMaxSize = 48f
         const val ruleDefaultSize = 23f
         const val levelDefaultSize = 21f
         const val mathLineSpacing = 0.5f

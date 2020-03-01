@@ -151,6 +151,5 @@ class GlobalMathView: TextView {
         Log.d(TAG, "setTextFromFormula")
         mathPair = MathResolver.resolveToPlain(formula!!)
         text = mathPair!!.matrix
-        setLines(text.length / mathPair!!.tree!!.length)
     }
 }

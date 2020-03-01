@@ -2,36 +2,27 @@ package spbpu.hsamcp.mathgame
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.graphics.Point
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import org.w3c.dom.Text
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 class PlayActivity: AppCompatActivity() {
     private val TAG = "PlayActivity"
-    private var mRatio = 1.0f
-    private var mBaseDist: Int = 0
-    private var mBaseRatio: Float = 0.toFloat()
-    private val step = 400f
+    private var scale = 1.0f
     private var needClear = false
+    private var scaleListener = MathScaleListener()
+    private lateinit var scaleDetector: ScaleGestureDetector
 
     lateinit var globalMathView: GlobalMathView
     lateinit var endFormulaView: TextView
@@ -44,43 +35,19 @@ class PlayActivity: AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
+        scaleDetector.onTouchEvent(event)
         when {
-            event.pointerCount == 2 -> {
-                needClear = false
-                val action = event.action
-                val pureaction = action and MotionEvent.ACTION_MASK
-                if (pureaction == MotionEvent.ACTION_POINTER_DOWN) {
-                    mBaseDist = getDistance(event)
-                    mBaseRatio = mRatio
-                } else {
-                    val delta = (getDistance(event) - mBaseDist) / step
-                    val multi = 2.0.pow(delta.toDouble()).toFloat()
-                    mRatio = min(Constants.centralFormulaMaxSize, max(0.1f, mBaseRatio * multi))
-                    globalMathView.textSize = mRatio + Constants.centralFormulaDefaultSize
-                }
+            event.action == MotionEvent.ACTION_DOWN -> {
+                needClear = true
             }
-            event.pointerCount == 1 -> {
-                when {
-                    event.action == MotionEvent.ACTION_DOWN -> {
-                        needClear = true
-                    }
-                    event.action == MotionEvent.ACTION_UP -> {
-                        if (needClear) {
-                            globalMathView.clearFormula()
-                            MathScene.clearRules()
-                        }
-                    }
+            event.action == MotionEvent.ACTION_UP -> {
+                if (needClear) {
+                    globalMathView.clearFormula()
+                    MathScene.clearRules()
                 }
             }
         }
         return true
-    }
-
-    private fun getDistance(event: MotionEvent): Int {
-        Log.d(TAG, "getDistance")
-        val dx = (event.getX(0) - event.getX(1)).toInt()
-        val dy = (event.getY(0) - event.getY(1)).toInt()
-        return sqrt((dx * dx + dy * dy).toDouble()).toInt()
     }
 
     private fun setViews() {
@@ -104,6 +71,7 @@ class PlayActivity: AppCompatActivity() {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
+        scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
         MathScene.init(this)
         MathScene.loadLevel()
@@ -129,7 +97,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun restart(v: View?) {
-        mRatio = 1f
+        scale = 1f
         MathScene.timer.cancel()
         MathScene.loadLevel()
     }
@@ -165,14 +133,14 @@ class PlayActivity: AppCompatActivity() {
             .setTitle("Congratulations!")
             .setMessage(spannable)
             .setPositiveButton("Next") { dialog: DialogInterface, id: Int ->
-                mRatio = 1f
+                scale = 1f
                 MathScene.nextLevel()
             }
             .setNeutralButton("Menu") { dialog: DialogInterface, id: Int ->
                 back(null)
             }
             .setNegativeButton("Previous") { dialog: DialogInterface, id: Int ->
-                mRatio = 1f
+                scale = 1f
                 MathScene.prevLevel()
             }
         showDialog(builder)
@@ -217,6 +185,17 @@ class PlayActivity: AppCompatActivity() {
                 }
             }
             true
+        }
+    }
+
+    inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+            needClear = false
+            scale *= detector.scaleFactor
+            scale = max(Constants.ruleDefaultSize / Constants.centralFormulaDefaultSize,
+                min(scale, Constants.centralFormulaMaxSize / Constants.centralFormulaDefaultSize))
+            globalMathView.textSize = Constants.centralFormulaDefaultSize * scale
+            return true
         }
     }
 }

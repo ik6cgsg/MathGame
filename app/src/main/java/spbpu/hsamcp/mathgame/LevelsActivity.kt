@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -76,10 +77,18 @@ class LevelsActivity: AppCompatActivity() {
             levelView.text = level.name
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)
-                if (AndroidUtil.touchUpInsideView(v, event)) {
-                    MathScene.currentLevel = level
-                    currentLevelIndex = i
-                    startActivity(Intent(this, PlayActivity::class.java))
+                when {
+                    event.action == MotionEvent.ACTION_DOWN -> {
+                        v.background = getDrawable(R.drawable.rect_shape_clicked)
+                    }
+                    event.action == MotionEvent.ACTION_UP -> {
+                        v.background = getDrawable(R.drawable.rect_shape)
+                        if (AndroidUtil.touchUpInsideView(v, event)) {
+                            MathScene.currentLevel = level
+                            currentLevelIndex = i
+                            startActivity(Intent(this, PlayActivity::class.java))
+                        }
+                    }
                 }
                 true
             }
@@ -100,9 +109,7 @@ class LevelsActivity: AppCompatActivity() {
             ConstraintLayout.LayoutParams.WRAP_CONTENT)
         layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
         levelView.layoutParams = layoutParams
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            levelView.background = getDrawable(R.drawable.rule_scroll_shape)
-        }
+        levelView.background = getDrawable(R.drawable.rect_shape)
         levelView.setTextColor(Constants.textColor)
         return levelView
     }
