@@ -1,0 +1,29 @@
+{
+  "name": "Trigonometry: Level 1",
+  "difficulty": 2,
+  "type": "trigonometry",
+  "stepsNum": 5,
+  "time": 240,
+  "originalExpression": "cos(x)/(1-sin(x))+cos(x)/(1+sin(x))",
+  "finalExpression": "2/cos(x)",
+  "allSubstitutions": [
+    {"left": "cos(x)/(1-sin(x))+cos(x)/(1+sin(x))", "right": "cos(x)*(1/(1-sin(x))+1/(1+sin(x)))"},
+    {"left": "1/(1-sin(x))+1/(1+sin(x))", "right": "2/((1-sin(x))*(1+sin(x)))"},
+    {"left": "(1-sin(x))*(1+sin(x))", "right": "1-sin(x)^2"},
+    {"left": "1-sin(x)^2", "right": "cos(x)^2"},
+    {"left": "cos(-x)", "right": "cos(x)"},
+    {"left": "cos(x)", "right": "cos(-x)"},
+    {"left": "x/x", "right": "1"},
+    {"left": "cos(2*x)", "right": "cos(x)^2-sin(x)^2"},
+    {"left": "cos(x)*(2/(cos(x)^2))", "right": "2/cos(x)"},
+    {"left": "sin(x)^2+cos(x)^2", "right": "1"},
+    {"left": "tg(x)", "right": "sin(x)/cos(x)"},
+    {"left": "tg(x)*ctg(x)", "right": "1"},
+    {"left": "sin(-x)", "right": "-sin(x)"},
+    {"left": "sin(x)", "right": "-sin(-x)"},
+    {"left": "sin(x)^2", "right": "1-cos(2*x)/2"},
+    {"left": "sin(x)", "right": "2*sin(x/2)*cos(x/2)"},
+    {"left": "cos(x)", "right": "1-2*sin(x/2)^2"},
+    {"left": "1", "right": "sin(x)^2+cos(x)^2"}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Trigonometry: Level 2",
+  "difficulty": 5,
+  "type": "trigonometry",
+  "stepsNum": 6,
+  "time": 300,
+  "originalExpression": "cos(x)^2-cos(x)^4+sin(x)^4",
+  "finalExpression": "sin(x)^2",
+  "allSubstitutions":[
+    {"left": "a-b+c", "right": "(a-b)+c"},
+    {"left": "a^2-a^4", "right": "a^2*(1-a^2)"},
+    {"left": "a*b^2+b^4", "right": "b^2*(a+b^2)"},
+    {"left": "a*1", "right": "a"},
+    {"left": "(1-sin(x))*(1+sin(x))", "right": "1-sin(x)^2"},
+    {"left": "1-sin(x)^2", "right": "cos(x)^2"},
+    {"left": "1-cos(x)^2", "right": "sin(x)^2"},
+    {"left": "cos(-x)", "right": "cos(x)"},
+    {"left": "cos(x)", "right": "cos(-x)"},
+    {"left": "x/x", "right": "1"},
+    {"left": "cos(2*x)", "right": "cos(x)^2-sin(x)^2"},
+    {"left": "cos(x)*(2/(cos(x)^2))", "right": "2/cos(x)"},
+    {"left": "sin(x)^2+cos(x)^2", "right": "1"},
+    {"left": "cos(x)^2+sin(x)^2", "right": "1"},
+    {"left": "tg(x)", "right": "sin(x)/cos(x)"},
+    {"left": "tg(x)*ctg(x)", "right": "1"},
+    {"left": "sin(-x)", "right": "-sin(x)"},
+    {"left": "sin(x)", "right": "-sin(-x)"},
+    {"left": "sin(x)^2", "right": "1-cos(2*x)/2"},
+    {"left": "sin(x)", "right": "2*sin(x/2)*cos(x/2)"},
+    {"left": "cos(x)", "right": "1-2*sin(x/2)^2"},
+    {"left": "1", "right": "sin(x)^2+cos(x)^2"}
+  ]
+}

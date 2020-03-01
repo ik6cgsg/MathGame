@@ -1,7 +1,7 @@
 package com.twf.numbers
 
-import org.junit.Test
-import org.junit.jupiter.api.Assertions
+import com.twf.org.junit.Test
+import com.twf.org.junit.jupiter.api.Assertions
 import kotlin.math.PI
 import kotlin.math.exp
 import kotlin.math.ln

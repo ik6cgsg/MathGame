@@ -6,7 +6,7 @@ import spbpu.hsamcp.mathgame.mathResolver.*
 class MathResolverNodePow(
     origin: ExpressionNode,
     needBrackets: Boolean = false,
-    op: Operation? = null,
+    op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
 
@@ -19,7 +19,7 @@ class MathResolverNodePow(
             height += elem.height
             length += elem.length
         }
-        baseLineOffset = height - 1
+        baseLineOffset = height - (children[0].height - children[0].baseLineOffset)
     }
 
     override fun setCoordinates(leftTop: Point) {
@@ -34,6 +34,13 @@ class MathResolverNodePow(
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
+        val curStr = leftTop.y + baseLineOffset
+        if (needBrackets) {
+            stringMatrix[curStr] =
+                stringMatrix[curStr].replaceByIndex(leftTop.x, "(")
+            stringMatrix[curStr] =
+                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
+        }
         children.forEach { it.getPlainNode(stringMatrix, spannableArray) }
     }
 }

@@ -1,15 +1,39 @@
 package com.twf.factstransformations
 
 import com.twf.config.CompiledConfiguration
-import org.junit.Assert.*
-import org.junit.Test
+import com.twf.org.junit.Assert.*
+import com.twf.org.junit.Test
 
 class TransformationChainParserTest{
     val compiledConfiguration = CompiledConfiguration()
 
     @Test
+    fun testMiltyPlacementFunctionsEqualProveParsing (){
+        val transformationChainParser = TransformationChainParser("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><munderover><mrow><mo>&#x2211;</mo><mi>i</mi><mo>!</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>=</mo><mi>i</mi><mo>+</mo><munderover><mrow><mo>&#x2211;</mo><mi>j</mi><mo>!</mo><mo>-</mo><mi>i</mi><mo>!</mo><mo>+</mo><mn>67</mn><mo>-</mo><mstyle displaystyle=\"false\"><munderover><mo>&#x2211;</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover></mstyle><mi>k</mi></mrow><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>=</mo><munderover><mrow><mo>&#x220F;</mo><mi>i</mi><mo>!</mo></mrow><mrow><mi>i</mi><mo>=</mo><mi>j</mi></mrow><mi>n</mi></munderover><mo>+</mo><munderover><mrow><mo>&#x2211;</mo><mi>i</mi><mo>^</mo><mn>2</mn></mrow><mrow><mi>I</mi><mo>=</mo><mn>1</mn></mrow><mn>5</mn></munderover><mo>=</mo><mn>678</mn></math>")
+        val error = transformationChainParser.parse()
+        assertEquals(null, error)
+        assertEquals("AND_NODE(transformation chains:((S(i;1;n;factorial(i)))=(+(i;S(j;1;n;+(factorial(j);-(factorial(i));67;-(S(i;1;k;k))))))=(+(P(i;j;n;factorial(i));S(I;1;5;^(i;2))))=(678));)", transformationChainParser.root.toString())
+    }
+
+    @Test
     fun testSimpleEqualProveParsing (){
         val transformationChainParser = TransformationChainParser("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><msup><mo>)</mo><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>&#xA0;</mo><mo>=</mo><mo>&#xA0;</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>")
+        val error = transformationChainParser.parse()
+        assertEquals(null, error)
+        assertEquals("AND_NODE(transformation chains:((^(+(a;b);2))=(+(^(a;2);*(a;b);*(a;b);^(b;2)))=(+(^(a;2);*(2;a;b);^(b;2))));)", transformationChainParser.root.toString())
+    }
+
+    @Test
+    fun testSimpleEqualWithDoubleEqualProveParsing (){
+        val transformationChainParser = TransformationChainParser("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><msup><mo>)</mo><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>&#xA0;</mo><mo>=</mo><mspace linebreak=\"newline\"/><mspace linebreak=\"newline\"/><mo>=</mo><mo>&#xA0;</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>")
+        val error = transformationChainParser.parse()
+        assertEquals(null, error)
+        assertEquals("AND_NODE(transformation chains:((^(+(a;b);2))=(+(^(a;2);*(a;b);*(a;b);^(b;2)))=(+(^(a;2);*(2;a;b);^(b;2))));)", transformationChainParser.root.toString())
+    }
+
+    @Test
+    fun testSimpleEqualWithDoubleEqualProveParsingWithComment (){
+        val transformationChainParser = TransformationChainParser("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>(</mo><mi>a</mi><mo>+</mo><mi>b</mi><msup><mo>)</mo><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>&#xA0;</mo><mo>=</mo><mspace linebreak=\"newline\"/><mo>/</mo><mo>*</mo><mi>c</mi><mi>o</mi><mi>m</mi><mi>m</mi><mi>e</mi><mi>n</mi><mi>t</mi><mo>*</mo><mo>/</mo><mspace linebreak=\"newline\"/><mo>=</mo><mo>&#xA0;</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mo>*</mo><mi>b</mi><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></math>")
         val error = transformationChainParser.parse()
         assertEquals(null, error)
         assertEquals("AND_NODE(transformation chains:((^(+(a;b);2))=(+(^(a;2);*(a;b);*(a;b);^(b;2)))=(+(^(a;2);*(2;a;b);^(b;2))));)", transformationChainParser.root.toString())

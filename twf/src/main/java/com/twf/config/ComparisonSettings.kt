@@ -25,6 +25,7 @@ fun valueFromMathMLString(value: String) = when (value) {
 }
 
 fun getAllComparisonTypeMathML() = listOf(
+        "=",
         "<mo>=</mo>",
         "<mo>&gt;</mo><mo>=</mo>",
         "<mo>&lt;</mo><mo>=</mo>",

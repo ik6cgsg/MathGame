@@ -85,7 +85,7 @@ class LazyLog {
      * Add the message with the expression message on the end (otherwise it will be looked bad).
      */
     fun addMessageWithExpression(message: () -> String,
-                                 expressionNode: com.twf.expressiontree.ExpressionNode,
+                                 expressionNode: ExpressionNode,
                                  messageType: MessageType = MessageType.TECHNICAL,
                                  level: Int? = null,
                                  levelChange: Int = 0) {
@@ -194,7 +194,7 @@ class LazyLog {
     }
 
     /**
-     * returns first argument and com.twf.logs it's value; should be used in assigns
+     * returns first argument and logs it's value; should be used in assigns
      */
     fun <T> assignAndLog(data: T, logLevel: Int, variableName: () -> String): T {
         addMessage({ "${variableName.invoke()} = '${data.toString()}'" }, level = logLevel)

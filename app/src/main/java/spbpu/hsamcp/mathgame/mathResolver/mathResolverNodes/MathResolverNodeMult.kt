@@ -7,7 +7,7 @@ import spbpu.hsamcp.mathgame.mathResolver.*
 class MathResolverNodeMult(
     origin: ExpressionNode,
     needBrackets: Boolean = false,
-    op: Operation? = null,
+    op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
 
@@ -22,7 +22,7 @@ class MathResolverNodeMult(
             length += elem.length
             if (elem.height > maxH) {
                 maxH = elem.height
-                if (elem.op != null && elem.op!!.type != OperationType.POW) {
+                if (elem.op != null) {
                     baseLineOffset = elem.baseLineOffset
                 }
             }
@@ -34,7 +34,6 @@ class MathResolverNodeMult(
     }
 
     override fun setCoordinates(leftTop: Point) {
-        // TODO: baseline
         super.setCoordinates(leftTop)
         var currLen = if (!needBrackets) leftTop.x else leftTop.x + 1
         for (child in children) {

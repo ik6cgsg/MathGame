@@ -210,7 +210,7 @@ class FactComporator(
         }
     }
 
-    //use function compareWithTreeTransformationRules as com.twf.api if user specify additional rules - user thought that system should check rules
+    //use function compareWithTreeTransformationRules as api if user specify additional rules - user thought that system should check rules
     fun compareWithTreeTransformationRules(leftOriginal: MainChainPart, rightOriginal: MainChainPart, additionalFacts: List<MainChainPart>,
                                            transformations: Collection<FactSubstitution>,
                                            maxTransformationWeight: Double = compiledConfiguration.comparisonSettings.maxTransformationWeight,

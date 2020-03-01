@@ -1,6 +1,8 @@
 package com.twf.expressiontree
 
-import org.junit.Test
+import com.twf.org.junit.Test
+
+import com.twf.org.junit.Assert.*
 
 class DifferentialKtTest {
 

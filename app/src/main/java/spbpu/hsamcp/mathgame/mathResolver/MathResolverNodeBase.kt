@@ -1,7 +1,12 @@
 package spbpu.hsamcp.mathgame.mathResolver
 
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Typeface
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.NodeType
+import spbpu.hsamcp.mathgame.Constants
+import spbpu.hsamcp.mathgame.GlobalMathView
 import spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes.*
 
 open class MathResolverNodeBase(
@@ -16,6 +21,15 @@ open class MathResolverNodeBase(
     var baseLineOffset: Int = 0
 
     companion object {
+        var checkSymbol = "A"
+        var fontPaint: Paint = {
+            val fp = Paint(Paint.ANTI_ALIAS_FLAG)
+            fp.textSize = Constants.centralFormulaDefaultSize
+            fp.typeface = Typeface.MONOSPACE
+            fp.style = Paint.Style.STROKE
+            fp
+        }()
+
         fun createNode(expression: ExpressionNode, needBrackets: Boolean): MathResolverNodeBase {
             return if (expression.nodeType == NodeType.VARIABLE) {
                 MathResolverNodeBase(expression, false, null, expression.value.length, 1)
@@ -24,16 +38,15 @@ open class MathResolverNodeBase(
                 when (operation.type) {
                     OperationType.DIV -> MathResolverNodeDiv(expression, needBrackets, operation)
                     OperationType.POW -> MathResolverNodePow(expression, needBrackets, operation)
-                    OperationType.PLUS -> {
-                        if (expression.children.size == 1 && Operation(expression.children[0].value).type ==  OperationType.MINUS) {
-                            MathResolverNodeMinus(expression.children[0], needBrackets, Operation(expression.children[0].value))
-                        } else {
-                            MathResolverNodePlus(expression, needBrackets, operation)
-                        }
-                    }
+                    OperationType.PLUS -> MathResolverNodePlus(expression, needBrackets, operation)
                     OperationType.MULT -> MathResolverNodeMult(expression, needBrackets, operation)
                     OperationType.FUNCTION -> MathResolverNodeFunction(expression, needBrackets, operation)
                     OperationType.MINUS -> MathResolverNodeMinus(expression, needBrackets, operation)
+                    OperationType.SET_AND -> MathResolverSetNodeAnd(expression, needBrackets, operation)
+                    OperationType.SET_OR -> MathResolverSetNodeOr(expression, needBrackets, operation)
+                    OperationType.SET_MINUS -> MathResolverSetNodeMinus(expression, needBrackets, operation)
+                    OperationType.SET_NOT -> MathResolverSetNodeNot(expression, needBrackets, operation)
+                    OperationType.SET_IMPLIC -> MathResolverSetNodeImplic(expression, needBrackets, operation)
                 }
             }
         }
@@ -64,7 +77,7 @@ open class MathResolverNodeBase(
     fun getNeedBrackets(node: ExpressionNode): Boolean {
         return if (node.nodeType == NodeType.FUNCTION) {
             val nextPriority = Operation.getPriority(node.value)
-            nextPriority != -1 && nextPriority < op!!.priority
+            nextPriority != -1 && nextPriority <= op!!.priority
         } else {
             false
         }

@@ -1,5 +1,6 @@
 package com.twf.config
 
+import com.twf.factstransformations.FactSubstitution
 import com.twf.factstransformations.SubstitutionDirection
 
 data class FactTransformationRule(

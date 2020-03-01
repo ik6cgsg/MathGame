@@ -6,7 +6,7 @@ import spbpu.hsamcp.mathgame.mathResolver.*
 class MathResolverNodeFunction(
     origin: ExpressionNode,
     needBrackets: Boolean = false,
-    op: Operation? = null,
+    op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
 
@@ -20,7 +20,7 @@ class MathResolverNodeFunction(
             children.add(elem)
             if (elem.height > maxH) {
                 maxH = elem.height
-                if (elem.op != null && elem.op!!.type != OperationType.POW) {
+                if (elem.op != null) {
                     baseLineOffset = elem.baseLineOffset
                 }
             }

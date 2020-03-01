@@ -1,6 +1,6 @@
 package com.twf.numbers
 
-import org.junit.Test
+import com.twf.org.junit.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.math.*
