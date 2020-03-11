@@ -1,4 +1,4 @@
-package spbpu.hsamcp.mathgame
+package spbpu.hsamcp.mathgame.activities
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -13,9 +13,14 @@ import android.view.*
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import spbpu.hsamcp.mathgame.level.Award
+import spbpu.hsamcp.mathgame.common.GlobalMathView
+import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.common.AndroidUtil
+import spbpu.hsamcp.mathgame.common.Constants
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.sqrt
 
 class PlayActivity: AppCompatActivity() {
     private val TAG = "PlayActivity"
@@ -98,12 +103,11 @@ class PlayActivity: AppCompatActivity() {
 
     private fun restart(v: View?) {
         scale = 1f
-        MathScene.timer.cancel()
-        MathScene.loadLevel()
+        MathScene.restart()
     }
 
     private fun back(v: View?) {
-        MathScene.timer.cancel()
+        MathScene.menu()
         finish()
     }
 
@@ -117,12 +121,16 @@ class PlayActivity: AppCompatActivity() {
         }
     }
 
+    fun endFormulaHide(): Boolean {
+        return endFormulaView.visibility != View.VISIBLE
+    }
+
     fun onWin(stepsCount: Int, currentTime: Long, award: Award) {
         Log.d(TAG, "onWin")
         val msgTitle = "You finished level with:"
         val steps = "\n\tSteps: $stepsCount"
         val time = "\n\tTime: $currentTime"
-        val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: ${award.str}")
+        val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: ${award.value.str}")
         spannable.setSpan(BulletSpan(5, Constants.primaryColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(BulletSpan(5, Constants.primaryColor),
@@ -192,7 +200,8 @@ class PlayActivity: AppCompatActivity() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             needClear = false
             scale *= detector.scaleFactor
-            scale = max(Constants.ruleDefaultSize / Constants.centralFormulaDefaultSize,
+            scale = max(
+                Constants.ruleDefaultSize / Constants.centralFormulaDefaultSize,
                 min(scale, Constants.centralFormulaMaxSize / Constants.centralFormulaDefaultSize))
             globalMathView.textSize = Constants.centralFormulaDefaultSize * scale
             return true

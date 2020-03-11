@@ -1,4 +1,4 @@
-package spbpu.hsamcp.mathgame
+package spbpu.hsamcp.mathgame.common
 
 import android.content.Context
 import android.graphics.Color
@@ -16,6 +16,7 @@ import androidx.core.text.getSpans
 import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
+import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 import spbpu.hsamcp.mathgame.mathResolver.MathResolverPair
 
@@ -44,7 +45,8 @@ class GlobalMathView: TextView {
         typeface = Typeface.MONOSPACE
         textSize = Constants.centralFormulaDefaultSize
         setLineSpacing(0f, Constants.mathLineSpacing)
-        setPadding(Constants.defaultPadding, Constants.defaultPadding,
+        setPadding(
+            Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
     }
 

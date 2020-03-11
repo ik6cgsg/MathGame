@@ -1,4 +1,4 @@
-package spbpu.hsamcp.mathgame
+package spbpu.hsamcp.mathgame.common
 
 import android.view.MotionEvent
 import android.view.View

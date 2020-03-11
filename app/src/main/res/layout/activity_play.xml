@@ -7,7 +7,7 @@
     android:background="@color/backgroud"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context=".PlayActivity">
+    tools:context=".activities.PlayActivity">
 
     <HorizontalScrollView
         android:id="@+id/global_formula_view"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/end_formula_view"
         app:layout_constraintVertical_bias="0.25">
 
-        <spbpu.hsamcp.mathgame.GlobalMathView
+        <spbpu.hsamcp.mathgame.common.GlobalMathView
             android:id="@+id/global_formula"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package spbpu.hsamcp.mathgame
+package spbpu.hsamcp.mathgame.common
 
 import android.content.Context
 import android.graphics.Color
@@ -10,6 +10,8 @@ import android.view.MotionEvent
 import android.widget.TextView
 import com.twf.api.expressionSubstitutionFromStrings
 import com.twf.expressiontree.ExpressionSubstitution
+import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 
 class RuleMathView: TextView {
@@ -42,7 +44,8 @@ class RuleMathView: TextView {
         setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
         setLineSpacing(0f, Constants.mathLineSpacing)
-        setPadding(Constants.defaultPadding, Constants.defaultPadding,
+        setPadding(
+            Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
         if (subst != null) {
             setSubst(subst!!)

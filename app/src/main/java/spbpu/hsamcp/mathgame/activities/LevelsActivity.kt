@@ -1,9 +1,8 @@
-package spbpu.hsamcp.mathgame
+package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -12,6 +11,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import spbpu.hsamcp.mathgame.level.Level
+import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.common.AndroidUtil
+import spbpu.hsamcp.mathgame.common.Constants
 import java.lang.ref.WeakReference
 
 class LevelsActivity: AppCompatActivity() {
@@ -20,6 +24,7 @@ class LevelsActivity: AppCompatActivity() {
     private lateinit var levelViews: ArrayList<TextView>
     private lateinit var levelsList: LinearLayout
     private var currentLevelIndex = -1
+    private var levelTouched: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
@@ -67,7 +72,7 @@ class LevelsActivity: AppCompatActivity() {
 
     fun updateResult() {
         levelViews[currentLevelIndex].text = levels[currentLevelIndex].name + "\n" +
-            levels[currentLevelIndex].lastResult!!.award.str
+            levels[currentLevelIndex].lastResult!!.award.value.str
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -78,16 +83,18 @@ class LevelsActivity: AppCompatActivity() {
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)
                 when {
-                    event.action == MotionEvent.ACTION_DOWN -> {
+                    event.action == MotionEvent.ACTION_DOWN && levelTouched == null -> {
+                        levelTouched = v
                         v.background = getDrawable(R.drawable.rect_shape_clicked)
                     }
-                    event.action == MotionEvent.ACTION_UP -> {
+                    event.action == MotionEvent.ACTION_UP && levelTouched == v -> {
                         v.background = getDrawable(R.drawable.rect_shape)
                         if (AndroidUtil.touchUpInsideView(v, event)) {
                             MathScene.currentLevel = level
                             currentLevelIndex = i
                             startActivity(Intent(this, PlayActivity::class.java))
                         }
+                        levelTouched = null
                     }
                 }
                 true
@@ -103,7 +110,8 @@ class LevelsActivity: AppCompatActivity() {
         levelView.textSize = Constants.levelDefaultSize
         levelView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         levelView.setLineSpacing(0f, Constants.levelLineSpacing)
-        levelView.setPadding(Constants.defaultPadding, Constants.defaultPadding * 2,
+        levelView.setPadding(
+            Constants.defaultPadding, Constants.defaultPadding * 2,
             Constants.defaultPadding, Constants.defaultPadding * 2)
         val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.WRAP_CONTENT)
