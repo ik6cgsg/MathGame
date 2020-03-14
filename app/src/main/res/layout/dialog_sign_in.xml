@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#F44336"
+        android:fontFamily="monospace"
+        android:hint="Login"
+        android:singleLine="true"
+        android:text="cgsgilich" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#F44336"
+        android:fontFamily="monospace"
+        android:hint="Name"
+        android:singleLine="true"
+        android:text="Ilya" />
+
+    <EditText
+        android:id="@+id/surname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#F44336"
+        android:fontFamily="monospace"
+        android:hint="Surname"
+        android:singleLine="true"
+        android:text="Kozlov" />
+
+    <EditText
+        android:id="@+id/secondName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:fontFamily="monospace"
+        android:hint="Second name"
+        android:singleLine="true"
+        android:text="Alexeevich" />
+
+    <EditText
+        android:id="@+id/group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:fontFamily="monospace"
+        android:hint="Group"
+        android:inputType="number"
+        android:singleLine="true"
+        android:text="2" />
+
+    <EditText
+        android:id="@+id/institution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="monospace"
+        android:hint="Institution"
+        android:singleLine="true"
+        android:text="SPbPU" />
+
+    <EditText
+        android:id="@+id/age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="monospace"
+        android:hint="Age"
+        android:inputType="number"
+        android:singleLine="true"
+        android:text="22" />
+
+    <Switch
+        android:id="@+id/statistics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:checked="true"
+        android:fontFamily="monospace"
+        android:text="Send statistics"
+        android:textSize="18sp"
+        tools:checked="true" />
+</LinearLayout>

@@ -10,8 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import spbpu.hsamcp.mathgame.level.Level
@@ -19,6 +18,9 @@ import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.statistics.AuthInfo
+import spbpu.hsamcp.mathgame.statistics.Statistics
+import java.lang.Exception
 import java.lang.ref.WeakReference
 
 class LevelsActivity: AppCompatActivity() {
@@ -28,6 +30,8 @@ class LevelsActivity: AppCompatActivity() {
     private lateinit var levelsList: LinearLayout
     private var currentLevelIndex = -1
     private var levelTouched: View? = null
+    private lateinit var resetDialog: AlertDialog
+    private lateinit var signInDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
@@ -44,23 +48,27 @@ class LevelsActivity: AppCompatActivity() {
             }
         }
         levels.sortBy { it.difficulty }
-        window.decorView.setOnSystemUiVisibilityChangeListener { v: Int ->
-            if ((v and View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                AndroidUtil.makeFullScreen(window)
-            }
-        }
         levelViews = ArrayList()
         levelsList = findViewById(R.id.levels_list)
         generateList()
+        resetDialog = createResetAlert()
+        signInDialog = createSignAlert()
     }
 
     override fun onResume() {
         super.onResume()
-        AndroidUtil.makeFullScreen(window)
+        val prefs = getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        if (!prefs.getBoolean(AuthInfo.AUTHORIZED.str, false)) {
+            AndroidUtil.showDialog(signInDialog)
+        }
     }
 
     fun reset(v: View?) {
-        resetAlert()
+        AndroidUtil.showDialog(resetDialog)
+    }
+
+    fun settings(v: View?) {
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     fun getNextLevel(): Level {
@@ -132,7 +140,7 @@ class LevelsActivity: AppCompatActivity() {
         return levelView
     }
 
-    private fun resetAlert() {
+    private fun createResetAlert(): AlertDialog {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
             .setTitle("ARE YOU SURE?")
@@ -140,6 +148,13 @@ class LevelsActivity: AppCompatActivity() {
             .setPositiveButton("Yes \uD83D\uDE22") { dialog: DialogInterface, id: Int ->
                 val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
                 val prefEdit = prefs.edit()
+                /*
+                for (key in prefs.all.keys) {
+                    if (key.startsWith(LevelField.RESULT.str)) {
+                      prefEdit.remove(key)
+                    }
+                }
+                */
                 prefEdit.clear()
                 prefEdit.commit()
                 recreate()
@@ -147,10 +162,69 @@ class LevelsActivity: AppCompatActivity() {
             .setNegativeButton("Cancel ☺") { dialog: DialogInterface, id: Int ->
             }
             .setCancelable(true)
+        return builder.create()
+    }
+
+    private fun createSignAlert(): AlertDialog {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val view = layoutInflater.inflate(R.layout.dialog_sign_in, null)
+        builder
+            .setView(view)
+            .setTitle("Please sign in")
+            .setPositiveButton("Sign in") { dialog: DialogInterface, id: Int -> }
+            .setNegativeButton("Exit") { dialog: DialogInterface, id: Int ->
+                val homeIntent = Intent(Intent.ACTION_MAIN)
+                homeIntent.addCategory(Intent.CATEGORY_HOME)
+                homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                startActivity(homeIntent)
+            }
+            .setCancelable(false)
         val dialog = builder.create()
-        dialog.show()
-        AndroidUtil.makeFullScreen(dialog.window!!)
-        dialog.window!!.setBackgroundDrawableResource(R.color.gray)
-        dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
+        setOnSignClick(dialog, view)
+        return dialog
+    }
+
+    private fun setOnSignClick(dialog: AlertDialog, view: View) {
+        val loginView = view.findViewById(R.id.login) as EditText
+        val nameView = view.findViewById(R.id.name) as EditText
+        val surnameView = view.findViewById(R.id.surname) as EditText
+        val secondNameView = view.findViewById(R.id.secondName) as EditText
+        val groupView = view.findViewById(R.id.group) as EditText
+        val institutionView = view.findViewById(R.id.institution) as EditText
+        val ageView = view.findViewById(R.id.age) as EditText
+        val statisticsView = view.findViewById(R.id.statistics) as Switch
+        dialog.setOnShowListener {
+            val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            okButton.setOnClickListener {
+                if (loginView.text.isNotBlank() && nameView.text.isNotBlank() &&
+                    surnameView.text.isNotBlank()) {
+                    try {
+                        val age = ageView.text.toString().toInt()
+                        if (age in 10..100) {
+                            val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
+                            val prefEdit = prefs.edit()
+                            prefEdit.putString(AuthInfo.LOGIN.str, loginView.text.toString())
+                            prefEdit.putString(AuthInfo.NAME.str, nameView.text.toString())
+                            prefEdit.putString(AuthInfo.SURNAME.str, surnameView.text.toString())
+                            prefEdit.putString(AuthInfo.SECOND_NAME.str, secondNameView.text.toString())
+                            prefEdit.putString(AuthInfo.GROUP.str, groupView.text.toString())
+                            prefEdit.putString(AuthInfo.INSTITUTION.str, institutionView.text.toString())
+                            prefEdit.putInt(AuthInfo.AGE.str, ageView.text.toString().toInt())
+                            prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticsView.isChecked)
+                            prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
+                            prefEdit.commit()
+                            Statistics.logSign(this)
+                            dialog.dismiss()
+                        } else {
+                            Toast.makeText(this, "Appearances are deceptive...", Toast.LENGTH_LONG).show()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Are you sure that's your age (even not integer...)?", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Please, fill required fields!", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 }

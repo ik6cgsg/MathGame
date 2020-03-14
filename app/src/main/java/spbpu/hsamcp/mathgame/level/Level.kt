@@ -129,7 +129,6 @@ class Level(var fileName: String) {
             }
             rules.add(ruleSubst)
         }
-        // TODO: read last resultx
         return true
     }
 

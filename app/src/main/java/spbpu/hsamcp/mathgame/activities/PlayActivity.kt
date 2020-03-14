@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
@@ -28,6 +27,8 @@ class PlayActivity: AppCompatActivity() {
     private var needClear = false
     private var scaleListener = MathScaleListener()
     private lateinit var scaleDetector: ScaleGestureDetector
+    private lateinit var looseDialog: AlertDialog
+    private lateinit var winDialog: AlertDialog
 
     lateinit var globalMathView: GlobalMathView
     lateinit var endFormulaView: TextView
@@ -80,11 +81,8 @@ class PlayActivity: AppCompatActivity() {
         setViews()
         MathScene.init(this)
         MathScene.loadLevel()
-        window.decorView.setOnSystemUiVisibilityChangeListener { v: Int ->
-            if ((v and View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                AndroidUtil.makeFullScreen(window)
-            }
-        }
+        looseDialog = createLooseDialog()
+        winDialog = createWinDialog()
     }
 
     override fun onBackPressed() {
@@ -94,7 +92,6 @@ class PlayActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        AndroidUtil.makeFullScreen(window)
     }
 
     private fun previous(v: View?) {
@@ -136,10 +133,20 @@ class PlayActivity: AppCompatActivity() {
         spannable.setSpan(BulletSpan(5, Constants.primaryColor),
             msgTitle.length + steps.length + 1, msgTitle.length + steps.length + time.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        winDialog.setMessage(spannable)
+        AndroidUtil.showDialog(winDialog)
+    }
+
+    fun onLoose() {
+        AndroidUtil.showDialog(looseDialog)
+    }
+
+    private fun createWinDialog(): AlertDialog {
+        Log.d(TAG, "createWinDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
             .setTitle("Congratulations!")
-            .setMessage(spannable)
+            .setMessage("")
             .setPositiveButton("Next") { dialog: DialogInterface, id: Int ->
                 scale = 1f
                 MathScene.nextLevel()
@@ -151,11 +158,12 @@ class PlayActivity: AppCompatActivity() {
                 scale = 1f
                 MathScene.prevLevel()
             }
-        showDialog(builder)
+            .setCancelable(false)
+        return builder.create()
     }
 
-    fun onLoose() {
-        Log.d(TAG, "onLoose")
+    private fun createLooseDialog(): AlertDialog {
+        Log.d(TAG, "createLooseDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
             .setTitle("Time out!")
@@ -166,16 +174,8 @@ class PlayActivity: AppCompatActivity() {
             .setNegativeButton("Menu") { dialog: DialogInterface, id: Int ->
                 back(null)
             }
-        showDialog(builder)
-    }
-
-    private fun showDialog(builder: AlertDialog.Builder) {
-        builder.setCancelable(false)
-        val dialog = builder.create()
-        dialog.show()
-        AndroidUtil.makeFullScreen(dialog.window!!)
-        dialog.window!!.setBackgroundDrawableResource(R.color.gray)
-        dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
+            .setCancelable(false)
+        return builder.create()
     }
 
     private fun setOnTouchUpInside(view: View, func: (v: View?) -> Unit) {

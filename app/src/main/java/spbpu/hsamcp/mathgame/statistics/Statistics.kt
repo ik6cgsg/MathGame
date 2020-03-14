@@ -3,16 +3,29 @@ package spbpu.hsamcp.mathgame.statistics
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.twf.api.expressionToString
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
-import spbpu.hsamcp.mathgame.BuildConfig.LOG_STAT
 import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.Award
+
+enum class AuthInfo(val str: String) {
+    LOGIN("userLogin"),
+    NAME("userName"),
+    SURNAME("userSurname"),
+    SECOND_NAME("userSecondName"),
+    GROUP("userGroup"),
+    INSTITUTION("userInstitution"),
+    AGE("userAge"),
+    STATISTICS("userStatistics"),
+    AUTHORIZED("userAuthorized")
+}
 
 class Statistics {
     companion object {
-        private var login: String = "cgsgilich"
+        private var login: String = "cgsgilich_test"
         private var name: String = "Ilya"
         private var surname: String = "Kozlov"
         private var secondName: String = "Alexeevich"
@@ -173,9 +186,15 @@ class Statistics {
             sendLog(mathLog, activity)
         }
 
+        fun logSign(context: Context) {
+            val mathLog = MathGameLog(action = Action.SIGN.str)
+            sendLog(mathLog, context)
+        }
+
         private fun sendLog(log: MathGameLog, context: Context) {
-            setDefault(log)
-            if (LOG_STAT) {
+            setDefault(log, context)
+            val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
+            if (prefs.getBoolean(AuthInfo.STATISTICS.str, false)) {
                 if (isConnectedToNetwork(context)) {
                     if (logArray.isNotEmpty()) {
                         for (l in logArray) {
@@ -204,14 +223,15 @@ class Statistics {
             return connectivityManager?.activeNetworkInfo?.isConnected ?: false
         }
 
-        private fun setDefault(log: MathGameLog) {
-            log.login = login
-            log.name = name
-            log.surname = surname
-            log.secondName = secondName
-            log.group = group
-            log.institution = institution
-            log.age = age
+        private fun setDefault(log: MathGameLog, context: Context) {
+            val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
+            log.login = prefs.getString(AuthInfo.LOGIN.str, login)!!
+            log.name = prefs.getString(AuthInfo.NAME.str, name)!!
+            log.surname = prefs.getString(AuthInfo.SURNAME.str, surname)!!
+            log.secondName = prefs.getString(AuthInfo.SECOND_NAME.str, secondName)!!
+            log.group = prefs.getString(AuthInfo.GROUP.str, group)!!
+            log.institution = prefs.getString(AuthInfo.INSTITUTION.str, institution)!!
+            log.age = prefs.getInt(AuthInfo.AGE.str, age)
             val time = System.currentTimeMillis()
             log.timeFromLastActionMS = time - lastActionTime
             lastActionTime = time

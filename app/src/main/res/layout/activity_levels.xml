@@ -63,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:onClick="settings"
         android:text="⚙"
         android:textColor="@color/textColor"
         android:textSize="25sp"
