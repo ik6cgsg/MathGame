@@ -1,5 +1,6 @@
 package spbpu.hsamcp.mathgame.level
 
+import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
 import com.twf.api.expressionSubstitutionFromStrings
@@ -10,11 +11,33 @@ import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import org.json.JSONObject
 import java.lang.Exception
+import android.content.Context.MODE_PRIVATE
+import spbpu.hsamcp.mathgame.common.Constants
 
 enum class Type(val str: String) {
     SET("setTheory"),
     ALGEBRA("algebra"),
     TRIGONOMETRY("trigonometry")
+}
+
+enum class LevelField(val str: String) {
+    TASK_ID("taskId"),
+    NAME("name"),
+    DIFFICULTY("difficulty"),
+    TYPE("type"),
+    STEPS_NUM("stepsNum"),
+    TIME("time"),
+    AWARD_COEFFS("awardCoeffs"),
+    SHOW_WRONG_RULES("showWrongRules"),
+    SHOW_SUBST_RESULT("showSubstResult"),
+    UNDO_CONSIDERING_POLICY("undoConsideringPolicy"),
+    LONG_EXPRESSION_CROPPING_POLICY("longExpressionCroppingPolicy"),
+    ORIGINAL_EXPRESSION("originalExpression"),
+    FINAL_EXPRESSION("finalExpression"),
+    ALL_SUBSTITUTIONS("allSubstitutions"),
+    RULE_LEFT("left"),
+    RULE_RIGHT("right"),
+    RESULT("resultTaskId"),
 }
 
 class Level(var fileName: String) {
@@ -38,67 +61,76 @@ class Level(var fileName: String) {
     companion object {
         private val TAG = "Level"
 
-        fun create(fileName: String, assets: AssetManager? = null): Level? {
+        fun create(fileName: String, context: Context): Level? {
             Log.d(TAG, "create")
             var res: Level? = Level(fileName)
-            if (!res!!.load(assets)) {
+            if (!res!!.load(context)) {
                 res = null
             }
             return res
         }
     }
 
-    fun load(assets: AssetManager? = null): Boolean {
+    fun load(context: Context): Boolean {
         Log.d(TAG, "load")
         return when {
-            assets != null -> {
-                val json = assets.open(fileName).bufferedReader().use { it.readText() }
+            context.assets != null -> {
+                val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
                 val levelJson = JSONObject(json)
-                taskId = levelJson.optInt("taskId", taskId)
-                name = levelJson.optString("name", name)
-                difficulty = levelJson.optInt("difficulty", difficulty)
-                val typeStr = levelJson.getString("type")
-                try {
-                    type = Type.valueOf(typeStr.toUpperCase())
-                } catch (e: Exception) {
-                    return false
+                if (parse(levelJson)) {
+                    loadResult(context)
+                    rules.shuffle()
+                    true
+                } else {
+                    false
                 }
-                stepsNum = levelJson.optInt("stepsNum", stepsNum)
-                time = levelJson.optLong("time", time)
-                awardCoeffs = levelJson.optString("awardCoeffs", awardCoeffs)
-                showWrongRules = levelJson.optBoolean("showWrongRules", showWrongRules)
-                showSubstResult = levelJson.optBoolean("showSubstResult", showSubstResult)
-                undoConsideringPolicy = levelJson.optString("undoConsideringPolicy", undoConsideringPolicy)
-                longExpressionCroppingPolicy = levelJson.optString("longExpressionCroppingPolicy",
-                    longExpressionCroppingPolicy)
-                val startFormulaStr = levelJson.getString("originalExpression")
-                val endFormulaStr = levelJson.getString("finalExpression")
-                startFormula = when (type) {
-                    Type.SET -> stringToExpression(startFormulaStr, type.str)
-                    else -> stringToExpression(startFormulaStr)
-                }
-                endFormula = when (type) {
-                    Type.SET -> stringToExpression(endFormulaStr, type.str)
-                    else -> stringToExpression(endFormulaStr)
-                }
-                endFormulaString = expressionToString(endFormula)
-                val rulesJson = levelJson.getJSONArray("allSubstitutions")
-                for (i in 0 until rulesJson.length()) {
-                    val rule = rulesJson.getJSONObject(i)
-                    val from = rule.getString("left")
-                    val to = rule.getString("right")
-                    val ruleSubst = when (type) {
-                        Type.SET -> expressionSubstitutionFromStrings(from, to, type.str)
-                        else -> expressionSubstitutionFromStrings(from, to)
-                    }
-                    rules.add(ruleSubst)
-                }
-                rules.shuffle()
-                // TODO: read last resultx
-                true
             }
             else -> false
         }
+    }
+
+    private fun parse(levelJson: JSONObject): Boolean {
+        taskId = levelJson.optInt(LevelField.TASK_ID.str, taskId)
+        name = levelJson.optString(LevelField.NAME.str, name)
+        difficulty = levelJson.optInt(LevelField.DIFFICULTY.str, difficulty)
+        val typeStr = levelJson.getString(LevelField.TYPE.str)
+        try {
+            type = Type.valueOf(typeStr.toUpperCase())
+        } catch (e: Exception) {
+            return false
+        }
+        stepsNum = levelJson.optInt(LevelField.STEPS_NUM.str, stepsNum)
+        time = levelJson.optLong(LevelField.TIME.str, time)
+        awardCoeffs = levelJson.optString(LevelField.AWARD_COEFFS.str, awardCoeffs)
+        showWrongRules = levelJson.optBoolean(LevelField.SHOW_WRONG_RULES.str, showWrongRules)
+        showSubstResult = levelJson.optBoolean(LevelField.SHOW_SUBST_RESULT.str, showSubstResult)
+        undoConsideringPolicy = levelJson.optString(LevelField.UNDO_CONSIDERING_POLICY.str, undoConsideringPolicy)
+        longExpressionCroppingPolicy = levelJson.optString(LevelField.LONG_EXPRESSION_CROPPING_POLICY.str,
+            longExpressionCroppingPolicy)
+        val startFormulaStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
+        val endFormulaStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
+        startFormula = when (type) {
+            Type.SET -> stringToExpression(startFormulaStr, type.str)
+            else -> stringToExpression(startFormulaStr)
+        }
+        endFormula = when (type) {
+            Type.SET -> stringToExpression(endFormulaStr, type.str)
+            else -> stringToExpression(endFormulaStr)
+        }
+        endFormulaString = expressionToString(endFormula)
+        val rulesJson = levelJson.getJSONArray(LevelField.ALL_SUBSTITUTIONS.str)
+        for (i in 0 until rulesJson.length()) {
+            val rule = rulesJson.getJSONObject(i)
+            val from = rule.getString(LevelField.RULE_LEFT.str)
+            val to = rule.getString(LevelField.RULE_RIGHT.str)
+            val ruleSubst = when (type) {
+                Type.SET -> expressionSubstitutionFromStrings(from, to, type.str)
+                else -> expressionSubstitutionFromStrings(from, to)
+            }
+            rules.add(ruleSubst)
+        }
+        // TODO: read last resultx
+        return true
     }
 
     fun checkEnd(formula: ExpressionNode): Boolean {
@@ -110,17 +142,22 @@ class Level(var fileName: String) {
 
     fun getAward(resultTime: Long, resultStepsNum: Int): Award {
         Log.d(TAG, "getAward")
-        return if (resultStepsNum < stepsNum) {
-            Award(AwardType.PLATINUM, 1.0)
+        val mark = if (resultStepsNum < stepsNum) {
+            1.0
         } else {
-            val awards = awardCoeffs.split(" ").map { it.toDouble() }
-            val mark = (1 - resultTime.toDouble() / time + stepsNum.toDouble() / resultStepsNum) / 2
-            when {
-                mark >= awards[0] -> Award(AwardType.GOLD, mark)
-                awards[1] <= mark && mark < awards[0] -> Award(AwardType.SILVER, mark)
-                awards[2] <= mark && mark < awards[1] -> Award(AwardType.BRONZE, mark)
-                else -> Award(AwardType.NONE, mark)
-            }
+            (1 - resultTime.toDouble() / time + stepsNum.toDouble() / resultStepsNum) / 2
+        }
+        return Award(getAwardByCoeff(mark), mark)
+    }
+
+    private fun getAwardByCoeff(mark: Double): AwardType {
+        val awards = awardCoeffs.split(" ").map { it.toDouble() }
+        return when {
+            mark == 1.0 -> AwardType.PLATINUM
+            mark >= awards[0] -> AwardType.GOLD
+            awards[1] <= mark && mark < awards[0] -> AwardType.SILVER
+            awards[2] <= mark && mark < awards[1] -> AwardType.BRONZE
+            else -> AwardType.NONE
         }
     }
 
@@ -145,7 +182,23 @@ class Level(var fileName: String) {
         return res
     }
 
-    fun save() {
-        // TODO: save result
+    fun save(context: Context) {
+        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        val resultStr = "${lastResult!!.steps} ${lastResult!!.time} ${lastResult!!.award.coeff}"
+        val resultId = "${LevelField.RESULT.str}${taskId}"
+        prefEdit.putString(resultId, resultStr)
+        prefEdit.commit()
+    }
+
+    fun loadResult(context: Context) {
+        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        val resultId = "${LevelField.RESULT.str}${taskId}"
+        val resultStr = prefs.getString(resultId, "")
+        if (!resultStr.isNullOrEmpty()) {
+            val resultVals = resultStr.split(" ", limit = 3)
+            lastResult = Result(resultVals[0].toInt(), resultVals[1].toLong(),
+                Award(getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
+        }
     }
 }

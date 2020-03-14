@@ -13,10 +13,6 @@
       "right":"A&(B&C)"
     },
     {
-      "left":"A&!B",
-      "right":"A\\B"
-    },
-    {
       "left":"A|(B|C)",
       "right":"A|B|C"
     },

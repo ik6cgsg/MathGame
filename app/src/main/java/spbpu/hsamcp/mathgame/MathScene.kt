@@ -10,18 +10,14 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
-import com.twf.api.expressionToString
 import spbpu.hsamcp.mathgame.activities.LevelsActivity
 import spbpu.hsamcp.mathgame.activities.PlayActivity
-import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.common.RuleMathView
 import spbpu.hsamcp.mathgame.level.History
 import spbpu.hsamcp.mathgame.level.Level
 import spbpu.hsamcp.mathgame.level.Result
 import spbpu.hsamcp.mathgame.level.State
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
-import spbpu.hsamcp.mathgame.statistics.Action
-import spbpu.hsamcp.mathgame.statistics.MathGameLog
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.lang.ref.WeakReference
 
@@ -51,8 +47,9 @@ class MathScene {
             Log.d(TAG, "onRuleClicked")
             val activity = playActivity.get()!!
             val prev = activity.globalMathView.formula!!.clone()
-            val place = expressionToString(activity.globalMathView.currentAtom!!)
+            val place = activity.globalMathView.currentAtom!!.clone()
             val oldSteps = stepsCount
+            var levelPassed = false
             if (currentRuleView!!.subst != null) {
                 val res = activity.globalMathView.performSubstitution(currentRuleView!!.subst!!)
                 if (res != null) {
@@ -60,31 +57,21 @@ class MathScene {
                     history.saveState(State(prev))
                     if (currentLevel!!.checkEnd(res)) {
                         timer.cancel()
+                        levelPassed = true
+                        Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.formula!!,
+                            currentRuleView!!.subst, place)
                         onWin()
                     }
                     clearRules()
                 } else {
                     showMessage(activity.getString(R.string.wrong_subs))
                 }
+
             }
-            val curr = expressionToString(prev)
-            val next = expressionToString(activity.globalMathView.formula!!)
-            val rule = if (currentRuleView!!.subst == null) {
-                ""
-            } else {
-                expressionToString(currentRuleView!!.subst!!.left) +
-                    " : " + expressionToString(currentRuleView!!.subst!!.right)
+            if (!levelPassed) {
+                Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.formula!!,
+                    currentRuleView!!.subst, place)
             }
-            val mathLog = MathGameLog(
-                currStepsNumber = oldSteps,
-                nextStepsNumber = stepsCount,
-                currExpression = curr,
-                nextExpression = next,
-                currRule = rule,
-                currSelectedPlace = place
-            )
-            mathLog.addInfoFrom(activity, currentLevel!!, Action.RULE)
-            Statistics.sendLog(mathLog)
         }
 
         fun onFormulaClicked() {
@@ -103,16 +90,7 @@ class MathScene {
                     activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
                 }
             }
-            val curr = expressionToString(activity.globalMathView.formula!!)
-            val mathLog = MathGameLog(
-                currStepsNumber = stepsCount,
-                nextStepsNumber = stepsCount,
-                currExpression = curr,
-                nextExpression = curr,
-                currSelectedPlace = expressionToString(activity.globalMathView.currentAtom!!)
-            )
-            mathLog.addInfoFrom(activity, currentLevel!!, Action.PLACE)
-            Statistics.sendLog(mathLog)
+            Statistics.logPlace(stepsCount, activity.globalMathView.formula!!, activity.globalMathView.currentAtom!!)
         }
 
         fun loadLevel(): Boolean {
@@ -134,16 +112,7 @@ class MathScene {
                 showMessage("\uD83C\uDF40 ${currentLevel!!.name} \uD83C\uDF40")
                 Statistics.setStartTime()
                 res = true
-                // Logging...
-                val exprStr = expressionToString(currentLevel!!.startFormula)
-                val mathLog = MathGameLog(
-                    currStepsNumber = 0,
-                    nextStepsNumber = 0,
-                    currExpression = exprStr,
-                    nextExpression = exprStr
-                )
-                mathLog.addInfoFrom(activity, currentLevel!!, Action.START)
-                Statistics.sendLog(mathLog)
+                Statistics.logStart()
             }
             return res
         }
@@ -172,45 +141,15 @@ class MathScene {
                 // TODO: smek with undo policy
                 stepsCount--
             }
-            // Logging...
-            val curr = expressionToString(oldFormula)
-            val next = expressionToString(activity.globalMathView.formula!!)
-            val place = if (activity.globalMathView.currentAtom == null) {
-                ""
-            } else {
-                expressionToString(activity.globalMathView.currentAtom!!)
-            }
-            val mathLog = MathGameLog(
-                currStepsNumber = oldSteps,
-                nextStepsNumber = stepsCount,
-                currExpression = curr,
-                nextExpression = next,
-                currSelectedPlace = place
-            )
-            mathLog.addInfoFrom(activity, currentLevel!!, Action.UNDO)
-            Statistics.sendLog(mathLog)
+            Statistics.logUndo(oldSteps, stepsCount, oldFormula,
+                activity.globalMathView.formula!!, activity.globalMathView.currentAtom)
         }
 
         fun restart() {
             Log.d(TAG, "restart")
             timer.cancel()
             val activity = playActivity.get()!!
-            val curr = expressionToString(activity.globalMathView.formula!!)
-            val next = expressionToString(currentLevel!!.startFormula)
-            val place = if (activity.globalMathView.currentAtom == null) {
-                ""
-            } else {
-                expressionToString(activity.globalMathView.currentAtom!!)
-            }
-            val mathLog = MathGameLog(
-                currStepsNumber = stepsCount,
-                nextStepsNumber = 0,
-                currExpression = curr,
-                nextExpression = next,
-                currSelectedPlace = place
-            )
-            mathLog.addInfoFrom(activity, currentLevel!!, Action.RESTART)
-            Statistics.sendLog(mathLog)
+            Statistics.logRestart(stepsCount, activity.globalMathView.formula!!, activity.globalMathView.currentAtom)
             loadLevel()
         }
 
@@ -218,21 +157,7 @@ class MathScene {
             Log.d(TAG, "menu")
             timer.cancel()
             val activity = playActivity.get()!!
-            val curr = expressionToString(activity.globalMathView.formula!!)
-            val place = if (activity.globalMathView.currentAtom == null) {
-                ""
-            } else {
-                expressionToString(activity.globalMathView.currentAtom!!)
-            }
-            val mathLog = MathGameLog(
-                currStepsNumber = stepsCount,
-                nextStepsNumber = stepsCount,
-                currExpression = curr,
-                nextExpression = curr,
-                currSelectedPlace = place
-            )
-            mathLog.addInfoFrom(activity, currentLevel!!, Action.MENU)
-            Statistics.sendLog(mathLog)
+            Statistics.logMenu(stepsCount, activity.globalMathView.formula!!, activity.globalMathView.currentAtom)
         }
 
         fun clearRules() {
@@ -259,37 +184,18 @@ class MathScene {
             val newRes = Result(stepsCount, currentTime, award)
             if (newRes.isBetter(currentLevel!!.lastResult)) {
                 currentLevel!!.lastResult = newRes
-                currentLevel!!.save()
+                currentLevel!!.save(activity)
                 levelsActivity.get()!!.updateResult()
             }
             activity.onWin(stepsCount, currentTime, award)
-            // Logging...
-            val exprStr = expressionToString(currentLevel!!.endFormula)
-            val mathLog = MathGameLog(
-                currStepsNumber = stepsCount,
-                nextStepsNumber = stepsCount,
-                currAwardCoef = award.coeff.toFloat(),
-                currExpression = exprStr,
-                nextExpression = exprStr
-            )
-            mathLog.addInfoFrom(activity, currentLevel!!, Action.WIN)
-            Statistics.sendLog(mathLog)
+            Statistics.logWin(stepsCount, award)
         }
 
         private fun onLoose() {
             Log.d(TAG, "onLoose")
             val activity = playActivity.get()!!
             activity.onLoose()
-            // Logging...
-            val exprStr = expressionToString(activity.globalMathView.formula!!)
-            val mathLog = MathGameLog(
-                currStepsNumber = stepsCount,
-                nextStepsNumber = stepsCount,
-                currExpression = exprStr,
-                nextExpression = exprStr
-            )
-            mathLog.addInfoFrom(activity, currentLevel!!, Action.LOOSE)
-            Statistics.sendLog(mathLog)
+            Statistics.logLoose(stepsCount, activity.globalMathView.formula!!, activity.globalMathView.currentAtom)
         }
 
         private fun showMessage(msg: String) {

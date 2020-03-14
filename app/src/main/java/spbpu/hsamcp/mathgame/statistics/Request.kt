@@ -63,7 +63,16 @@ class Request {
             return response
         }
 
-        fun doRequest(requestData: RequestData): ResponseData {
+        fun doAsyncRequest(requestData: RequestData) {
+            GlobalScope.launch {
+                val job = async {
+                    asyncRequest(requestData)
+                }
+                job.await()
+            }
+        }
+
+        fun doSyncRequest(requestData: RequestData): ResponseData {
             var response = ResponseData()
             val requestTask = GlobalScope.launch {
                 val job = async {

@@ -1,6 +1,9 @@
 package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
@@ -35,7 +38,7 @@ class LevelsActivity: AppCompatActivity() {
             .filter { """level\d+.json""".toRegex().matches(it) }
         levels = ArrayList()
         for (name in levelNames) {
-            val loadedLevel = Level.create(name, assets)
+            val loadedLevel = Level.create(name, this)
             if (loadedLevel != null) {
                 levels.add(loadedLevel)
             }
@@ -54,6 +57,10 @@ class LevelsActivity: AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         AndroidUtil.makeFullScreen(window)
+    }
+
+    fun reset(v: View?) {
+        resetAlert()
     }
 
     fun getNextLevel(): Level {
@@ -80,6 +87,9 @@ class LevelsActivity: AppCompatActivity() {
         levels.forEachIndexed { i, level ->
             val levelView = createLevelView()
             levelView.text = level.name
+            if (level.lastResult != null) {
+                levelView.text = level.name + "\n" + level.lastResult!!.award.value.str
+            }
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)
                 when {
@@ -120,5 +130,27 @@ class LevelsActivity: AppCompatActivity() {
         levelView.background = getDrawable(R.drawable.rect_shape)
         levelView.setTextColor(Constants.textColor)
         return levelView
+    }
+
+    private fun resetAlert() {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        builder
+            .setTitle("ARE YOU SURE?")
+            .setMessage("This action will reset all your achievements")
+            .setPositiveButton("Yes \uD83D\uDE22") { dialog: DialogInterface, id: Int ->
+                val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
+                val prefEdit = prefs.edit()
+                prefEdit.clear()
+                prefEdit.commit()
+                recreate()
+            }
+            .setNegativeButton("Cancel ☺") { dialog: DialogInterface, id: Int ->
+            }
+            .setCancelable(true)
+        val dialog = builder.create()
+        dialog.show()
+        AndroidUtil.makeFullScreen(dialog.window!!)
+        dialog.window!!.setBackgroundDrawableResource(R.color.gray)
+        dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
     }
 }
