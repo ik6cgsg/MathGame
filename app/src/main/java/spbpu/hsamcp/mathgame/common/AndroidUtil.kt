@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.graphics.Typeface
 import android.view.MotionEvent
 import android.view.View
-import android.view.Window
 import android.widget.TextView
 import spbpu.hsamcp.mathgame.R
 
@@ -19,9 +18,27 @@ class AndroidUtil {
             return false
         }
 
+        fun setOnTouchUpInside(view: View, func: (v: View?) -> Unit) {
+            view.setOnTouchListener { v, event ->
+                val tv = v as TextView
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        tv.setTextColor(Constants.primaryColor)
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        tv.setTextColor(Constants.textColor)
+                        if (touchUpInsideView(v, event)) {
+                            func(v)
+                        }
+                    }
+                }
+                true
+            }
+        }
+
         fun showDialog(dialog: AlertDialog) {
             dialog.show()
-            dialog.window!!.setBackgroundDrawableResource(R.color.gray)
+            dialog.window!!.setBackgroundDrawableResource(R.drawable.alert_shape)
             dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
         }
     }

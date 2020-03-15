@@ -15,5 +15,6 @@ class Constants {
         val textColor = Color.parseColor("#C5C5C5")
         val lightGrey = Color.parseColor("#8B8484")
         const val storage = "MATH_GAME_PREFS"
+        const val deviceId = "DEVICE_UUID"
     }
 }

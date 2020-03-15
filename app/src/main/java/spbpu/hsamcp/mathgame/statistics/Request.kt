@@ -6,6 +6,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
+import kotlin.collections.HashMap
 
 enum class RequestMethod(val value: String) {
     POST("POST"),
@@ -27,6 +29,8 @@ data class ResponseData(
 
 class Request {
     companion object {
+        private var reqQueue = LinkedList<RequestData>()
+
         private fun asyncRequest(requestData: RequestData): ResponseData {
             val response = ResponseData()
             try {
@@ -63,13 +67,23 @@ class Request {
             return response
         }
 
-        fun doAsyncRequest(requestData: RequestData) {
+        fun send(requestData: RequestData) {
+            reqQueue.addFirst(requestData)
             GlobalScope.launch {
                 val job = async {
-                    asyncRequest(requestData)
+                    while (reqQueue.isNotEmpty()) {
+                        val response = asyncRequest(reqQueue.last)
+                        if (response.returnValue != 500 || response.returnValue != 404) {
+                            reqQueue.removeLast()
+                        }
+                    }
                 }
                 job.await()
             }
+        }
+
+        fun sendWithoutInternet(requestData: RequestData) {
+            reqQueue.addFirst(requestData)
         }
 
         fun doSyncRequest(requestData: RequestData): ResponseData {

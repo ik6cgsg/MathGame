@@ -9,9 +9,10 @@ import android.text.SpannableString
 import android.text.style.BulletSpan
 import android.util.Log
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import spbpu.hsamcp.mathgame.level.Award
 import spbpu.hsamcp.mathgame.common.GlobalMathView
 import spbpu.hsamcp.mathgame.MathScene
@@ -29,6 +30,7 @@ class PlayActivity: AppCompatActivity() {
     private lateinit var scaleDetector: ScaleGestureDetector
     private lateinit var looseDialog: AlertDialog
     private lateinit var winDialog: AlertDialog
+    private lateinit var progress: ProgressBar
 
     lateinit var globalMathView: GlobalMathView
     lateinit var endFormulaView: TextView
@@ -66,11 +68,11 @@ class PlayActivity: AppCompatActivity() {
         noRules = findViewById(R.id.no_rules)
         timerView = findViewById(R.id.timer_view)
         val res = findViewById<TextView>(R.id.restart)
-        setOnTouchUpInside(res, ::restart)
+        AndroidUtil.setOnTouchUpInside(res, ::restart)
         val prev = findViewById<TextView>(R.id.previous)
-        setOnTouchUpInside(prev, ::previous)
+        AndroidUtil.setOnTouchUpInside(prev, ::previous)
         val back = findViewById<TextView>(R.id.back)
-        setOnTouchUpInside(back, ::back)
+        AndroidUtil.setOnTouchUpInside(back, ::back)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,9 +82,10 @@ class PlayActivity: AppCompatActivity() {
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
         MathScene.init(this)
-        MathScene.loadLevel()
+        progress = findViewById(R.id.progress)
         looseDialog = createLooseDialog()
         winDialog = createWinDialog()
+        createLevelUI()
     }
 
     override fun onBackPressed() {
@@ -90,8 +93,21 @@ class PlayActivity: AppCompatActivity() {
         back(null)
     }
 
-    override fun onResume() {
-        super.onResume()
+    fun createLevelUI() {
+        timerView.text = ""
+        globalMathView.text = ""
+        endFormulaView.text = ""
+        progress.visibility = View.VISIBLE
+        GlobalScope.launch {
+            val job = async {
+                MathScene.preLoad()
+                runOnUiThread {
+                    MathScene.loadLevel()
+                    progress.visibility = View.GONE
+                }
+            }
+            job.await()
+        }
     }
 
     private fun previous(v: View?) {
@@ -122,7 +138,7 @@ class PlayActivity: AppCompatActivity() {
         return endFormulaView.visibility != View.VISIBLE
     }
 
-    fun onWin(stepsCount: Int, currentTime: Long, award: Award) {
+    fun onWin(stepsCount: Float, currentTime: Long, award: Award) {
         Log.d(TAG, "onWin")
         val msgTitle = "You finished level with:"
         val steps = "\n\tSteps: $stepsCount"
@@ -147,19 +163,32 @@ class PlayActivity: AppCompatActivity() {
         builder
             .setTitle("Congratulations!")
             .setMessage("")
-            .setPositiveButton("Next") { dialog: DialogInterface, id: Int ->
-                scale = 1f
-                MathScene.nextLevel()
-            }
-            .setNeutralButton("Menu") { dialog: DialogInterface, id: Int ->
-                back(null)
-            }
-            .setNegativeButton("Previous") { dialog: DialogInterface, id: Int ->
-                scale = 1f
-                MathScene.prevLevel()
-            }
+            .setPositiveButton("Next") { dialog: DialogInterface, id: Int -> }
+            .setNeutralButton("Menu") { dialog: DialogInterface, id: Int -> back(null) }
+            .setNegativeButton("Previous") { dialog: DialogInterface, id: Int -> }
             .setCancelable(false)
-        return builder.create()
+        val dialog = builder.create()
+        dialog.setOnShowListener {
+            val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            val negButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            okButton.setOnClickListener {
+                scale = 1f
+                if (!MathScene.nextLevel()) {
+                    Toast.makeText(this, "Sorry, that's last level!", Toast.LENGTH_SHORT).show()
+                } else {
+                    dialog.dismiss()
+                }
+            }
+            negButton.setOnClickListener {
+                scale = 1f
+                if (!MathScene.prevLevel()) {
+                    Toast.makeText(this, "Sorry, no negative levels!", Toast.LENGTH_SHORT).show()
+                } else {
+                    dialog.dismiss()
+                }
+            }
+        }
+        return dialog
     }
 
     private fun createLooseDialog(): AlertDialog {
@@ -176,24 +205,6 @@ class PlayActivity: AppCompatActivity() {
             }
             .setCancelable(false)
         return builder.create()
-    }
-
-    private fun setOnTouchUpInside(view: View, func: (v: View?) -> Unit) {
-        view.setOnTouchListener { v, event ->
-            val tv = v as TextView
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    tv.setTextColor(Constants.primaryColor)
-                }
-                MotionEvent.ACTION_UP -> {
-                    tv.setTextColor(Constants.textColor)
-                    if (AndroidUtil.touchUpInsideView(v, event)) {
-                        func(v)
-                    }
-                }
-            }
-            true
-        }
     }
 
     inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {

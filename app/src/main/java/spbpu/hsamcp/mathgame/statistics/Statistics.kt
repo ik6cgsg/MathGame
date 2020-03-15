@@ -2,6 +2,7 @@ package spbpu.hsamcp.mathgame.statistics
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Build
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.twf.api.expressionToString
@@ -10,6 +11,8 @@ import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.Award
+import androidx.core.content.ContextCompat.getSystemService
+import android.telephony.TelephonyManager
 
 enum class AuthInfo(val str: String) {
     LOGIN("userLogin"),
@@ -20,7 +23,8 @@ enum class AuthInfo(val str: String) {
     INSTITUTION("userInstitution"),
     AGE("userAge"),
     STATISTICS("userStatistics"),
-    AUTHORIZED("userAuthorized")
+    AUTHORIZED("userAuthorized"),
+    PREFIX("user")
 }
 
 class Statistics {
@@ -46,7 +50,7 @@ class Statistics {
             return System.currentTimeMillis() - startTime
         }
 
-        fun logRule(currSteps: Int, nextSteps: Int, currExpr: ExpressionNode, nextExpr: ExpressionNode,
+        fun logRule(currSteps: Float, nextSteps: Float, currExpr: ExpressionNode, nextExpr: ExpressionNode,
                     currRule: ExpressionSubstitution?, place: ExpressionNode) {
             val activity = MathScene.playActivity.get()!!
             val rule = if (currRule == null) {
@@ -66,7 +70,7 @@ class Statistics {
             sendLog(mathLog, activity)
         }
 
-        fun logPlace(currSteps: Int, currExpr: ExpressionNode, place: ExpressionNode) {
+        fun logPlace(currSteps: Float, currExpr: ExpressionNode, place: ExpressionNode) {
             val currExprStr = expressionToString(currExpr)
             val mathLog = MathGameLog(
                 currStepsNumber = currSteps,
@@ -83,8 +87,8 @@ class Statistics {
         fun logStart() {
             val exprStr = expressionToString(MathScene.currentLevel!!.startFormula)
             val mathLog = MathGameLog(
-                currStepsNumber = 0,
-                nextStepsNumber = 0,
+                currStepsNumber = 0f,
+                nextStepsNumber = 0f,
                 currExpression = exprStr,
                 nextExpression = exprStr
             )
@@ -93,7 +97,7 @@ class Statistics {
             sendLog(mathLog, activity)
         }
 
-        fun logUndo(currSteps: Int, nextSteps: Int, currExpr: ExpressionNode,
+        fun logUndo(currSteps: Float, nextSteps: Float, currExpr: ExpressionNode,
                     nextExpr: ExpressionNode, currPlace: ExpressionNode?) {
             val curr = expressionToString(currExpr)
             val next = expressionToString(nextExpr)
@@ -114,7 +118,7 @@ class Statistics {
             sendLog(mathLog, activity)
         }
 
-        fun logRestart(currSteps: Int, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
+        fun logRestart(currSteps: Float, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
             val activity = MathScene.playActivity.get()!!
             val curr = expressionToString(currExpr)
             val next = expressionToString(MathScene.currentLevel!!.startFormula)
@@ -125,16 +129,17 @@ class Statistics {
             }
             val mathLog = MathGameLog(
                 currStepsNumber = currSteps,
-                nextStepsNumber = 0,
+                nextStepsNumber = 0f,
                 currExpression = curr,
                 nextExpression = next,
                 currSelectedPlace = place
             )
             mathLog.addInfoFrom(activity, MathScene.currentLevel!!, Action.RESTART)
             sendLog(mathLog, activity)
+            startTime = 0
         }
 
-        fun logMenu(currSteps: Int, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
+        fun logMenu(currSteps: Float, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
             val activity = MathScene.playActivity.get()!!
             val curr = expressionToString(currExpr)
             val place = if (currPlace == null) {
@@ -151,9 +156,10 @@ class Statistics {
             )
             mathLog.addInfoFrom(activity, MathScene.currentLevel!!, Action.MENU)
             sendLog(mathLog, activity)
+            startTime = 0
         }
 
-        fun logWin(currSteps: Int, award: Award) {
+        fun logWin(currSteps: Float, award: Award) {
             val exprStr = expressionToString(MathScene.currentLevel!!.endFormula)
             val mathLog = MathGameLog(
                 currStepsNumber = currSteps,
@@ -165,9 +171,10 @@ class Statistics {
             val activity = MathScene.playActivity.get()!!
             mathLog.addInfoFrom(activity, MathScene.currentLevel!!, Action.WIN)
             sendLog(mathLog, activity)
+            startTime = 0
         }
 
-        fun logLoose(currSteps: Int, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
+        fun logLoose(currSteps: Float, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
             val exprStr = expressionToString(currExpr)
             val place = if (currPlace == null) {
                 ""
@@ -184,38 +191,47 @@ class Statistics {
             val activity = MathScene.playActivity.get()!!
             mathLog.addInfoFrom(activity, MathScene.currentLevel!!, Action.LOOSE)
             sendLog(mathLog, activity)
+            startTime = 0
+        }
+
+        fun getHwInfo(): String {
+            return "Model: ${Build.MODEL}; Id: ${Build.ID}; Manufacture: ${Build.MANUFACTURER}; " +
+                "Incremental: ${Build.VERSION.INCREMENTAL}; " +
+                "Sdk: ${Build.VERSION.SDK}; Board: ${Build.BOARD}; Brand: ${Build.BRAND}; " +
+                "Host: ${Build.HOST}; Fingerprint: ${Build.FINGERPRINT}; Version Code: ${Build.VERSION.RELEASE}"
         }
 
         fun logSign(context: Context) {
-            val mathLog = MathGameLog(action = Action.SIGN.str)
+            val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
+            val id = prefs.getString(Constants.deviceId, "")!!
+            val mathLog = MathGameLog(action = Action.SIGN.str, hardwareProperties = getHwInfo(),
+                hardwareDeviceId = id)
+            sendLog(mathLog, context)
+        }
+
+        fun logMark(context: Context, mark: Float, comment: String) {
+            val mathLog = MathGameLog(action = Action.MARK.str, userMark = mark.toString(), userComment = comment)
             sendLog(mathLog, context)
         }
 
         private fun sendLog(log: MathGameLog, context: Context) {
+            Log.d("Statistics", "MathGameLog: $log}")
             setDefault(log, context)
             val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
             if (prefs.getBoolean(AuthInfo.STATISTICS.str, false)) {
-                if (isConnectedToNetwork(context)) {
-                    if (logArray.isNotEmpty()) {
-                        for (l in logArray) {
-                            sendOneLog(l)
-                        }
-                    }
-                    logArray.clear()
-                    sendOneLog(log)
-                } else {
-                    logArray.add(log)
-                }
-            } else {
-                Log.d("Statistics", "MathGameLog: $log}")
+                sendOneLog(log, context)
             }
         }
 
-        private fun sendOneLog(log: MathGameLog) {
+        private fun sendOneLog(log: MathGameLog, context: Context) {
             val req = RequestData()
             req.body = log.toString()
             req.headers["Content-type"] = "application/json"
-            Request.doAsyncRequest(req)
+            if (isConnectedToNetwork(context)) {
+                Request.send(req)
+            } else {
+                Request.sendWithoutInternet(req)
+            }
         }
 
         private fun isConnectedToNetwork(context: Context): Boolean {
@@ -225,6 +241,8 @@ class Statistics {
 
         private fun setDefault(log: MathGameLog, context: Context) {
             val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
+            val time = System.currentTimeMillis()
+            log.deviceTs = time
             log.login = prefs.getString(AuthInfo.LOGIN.str, login)!!
             log.name = prefs.getString(AuthInfo.NAME.str, name)!!
             log.surname = prefs.getString(AuthInfo.SURNAME.str, surname)!!
@@ -232,7 +250,6 @@ class Statistics {
             log.group = prefs.getString(AuthInfo.GROUP.str, group)!!
             log.institution = prefs.getString(AuthInfo.INSTITUTION.str, institution)!!
             log.age = prefs.getInt(AuthInfo.AGE.str, age)
-            val time = System.currentTimeMillis()
             log.timeFromLastActionMS = time - lastActionTime
             lastActionTime = time
             if (startTime > 0) { // Level was created and set

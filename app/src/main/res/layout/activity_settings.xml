@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:onClick="back"
         android:text="@string/back"
         android:textColor="@color/textColor"
         android:textSize="30sp"
@@ -29,6 +30,7 @@
         android:layout_marginEnd="16dp"
         android:checked="true"
         android:fontFamily="monospace"
+        android:onClick="switchStatistics"
         android:text="Send statistics"
         android:textColor="@color/textColor"
         android:textSize="21sp"
@@ -64,10 +66,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+        android:max="5"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -95,7 +95,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="x"
         android:textColor="@color/textColor"
         android:textSize="20sp"
         android:typeface="monospace"
@@ -111,7 +110,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:lineSpacingMultiplier="0.5"
-        android:text="x"
         android:textColor="@color/textColor"
         android:textSize="20sp"
         android:typeface="monospace"
@@ -200,6 +198,19 @@
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/timer_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

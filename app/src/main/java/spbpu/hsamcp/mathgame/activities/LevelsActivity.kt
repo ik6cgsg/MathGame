@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -18,10 +19,13 @@ import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.level.LevelField
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.lang.Exception
 import java.lang.ref.WeakReference
+import java.util.*
+import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity() {
     private val TAG = "LevelsActivity"
@@ -58,6 +62,11 @@ class LevelsActivity: AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val prefs = getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        if (!prefs.contains(Constants.deviceId)) {
+            val prefEdit = prefs.edit()
+            prefEdit.putString(Constants.deviceId, UUID.randomUUID().toString())
+            prefEdit.commit()
+        }
         if (!prefs.getBoolean(AuthInfo.AUTHORIZED.str, false)) {
             AndroidUtil.showDialog(signInDialog)
         }
@@ -98,6 +107,7 @@ class LevelsActivity: AppCompatActivity() {
             if (level.lastResult != null) {
                 levelView.text = level.name + "\n" + level.lastResult!!.award.value.str
             }
+            levelView.background = getBackgroundByDif(level.difficulty)
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)
                 when {
@@ -106,12 +116,16 @@ class LevelsActivity: AppCompatActivity() {
                         v.background = getDrawable(R.drawable.rect_shape_clicked)
                     }
                     event.action == MotionEvent.ACTION_UP && levelTouched == v -> {
-                        v.background = getDrawable(R.drawable.rect_shape)
+                        v.background = getBackgroundByDif(level.difficulty)
                         if (AndroidUtil.touchUpInsideView(v, event)) {
                             MathScene.currentLevel = level
                             currentLevelIndex = i
                             startActivity(Intent(this, PlayActivity::class.java))
                         }
+                        levelTouched = null
+                    }
+                    event.action == MotionEvent.ACTION_CANCEL && levelTouched == v -> {
+                        v.background = getBackgroundByDif(level.difficulty)
                         levelTouched = null
                     }
                 }
@@ -135,9 +149,25 @@ class LevelsActivity: AppCompatActivity() {
             ConstraintLayout.LayoutParams.WRAP_CONTENT)
         layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
         levelView.layoutParams = layoutParams
-        levelView.background = getDrawable(R.drawable.rect_shape)
         levelView.setTextColor(Constants.textColor)
         return levelView
+    }
+
+    private fun getBackgroundByDif(dif: Int): Drawable? {
+        return when {
+            dif < 3 -> getDrawable(R.drawable.level_easy)
+            dif < 5 -> getDrawable(R.drawable.level_medium)
+            dif < 9 -> getDrawable(R.drawable.level_hard)
+            else -> getDrawable(R.drawable.level_insane)
+        }
+    }
+
+    private fun restartLevelsActivity() {
+        levels.forEachIndexed{ i, lvl ->
+            lvl.lastResult = null
+            levelViews[i].text = lvl.name
+        }
+        AndroidUtil.showDialog(signInDialog)
     }
 
     private fun createResetAlert(): AlertDialog {
@@ -148,16 +178,13 @@ class LevelsActivity: AppCompatActivity() {
             .setPositiveButton("Yes \uD83D\uDE22") { dialog: DialogInterface, id: Int ->
                 val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
                 val prefEdit = prefs.edit()
-                /*
                 for (key in prefs.all.keys) {
-                    if (key.startsWith(LevelField.RESULT.str)) {
+                    if (key.startsWith(LevelField.RESULT.str) || key.startsWith(AuthInfo.PREFIX.str)) {
                       prefEdit.remove(key)
                     }
                 }
-                */
-                prefEdit.clear()
                 prefEdit.commit()
-                recreate()
+                restartLevelsActivity()
             }
             .setNegativeButton("Cancel ☺") { dialog: DialogInterface, id: Int ->
             }
@@ -185,14 +212,14 @@ class LevelsActivity: AppCompatActivity() {
     }
 
     private fun setOnSignClick(dialog: AlertDialog, view: View) {
-        val loginView = view.findViewById(R.id.login) as EditText
-        val nameView = view.findViewById(R.id.name) as EditText
-        val surnameView = view.findViewById(R.id.surname) as EditText
-        val secondNameView = view.findViewById(R.id.secondName) as EditText
-        val groupView = view.findViewById(R.id.group) as EditText
-        val institutionView = view.findViewById(R.id.institution) as EditText
-        val ageView = view.findViewById(R.id.age) as EditText
-        val statisticsView = view.findViewById(R.id.statistics) as Switch
+        val loginView = view.findViewById<EditText>(R.id.login)
+        val nameView = view.findViewById<EditText>(R.id.name)
+        val surnameView = view.findViewById<EditText>(R.id.surname)
+        val secondNameView = view.findViewById<EditText>(R.id.secondName)
+        val groupView = view.findViewById<EditText>(R.id.group)
+        val institutionView = view.findViewById<EditText>(R.id.institution)
+        val ageView = view.findViewById<EditText>(R.id.age)
+        val statisticsView = view.findViewById<Switch>(R.id.statistics)
         dialog.setOnShowListener {
             val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
             okButton.setOnClickListener {

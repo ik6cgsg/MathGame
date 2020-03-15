@@ -1,6 +1,6 @@
 package spbpu.hsamcp.mathgame.level
 
-class Result(val steps: Int, val time: Long, val award: Award) {
+class Result(val steps: Float, val time: Long, val award: Award) {
     fun isBetter(other: Result?): Boolean {
         if (other == null) {
             return true

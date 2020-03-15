@@ -14,13 +14,16 @@ enum class Action(val str: String) {
     RULE("rule"),
     PLACE("place"),
     SIGN("sign"),
+    MARK("mark"),
     HELP("help")
 }
 
 data class MathGameLog (
     var game: String = "MathGame_IK_an",
-    var action: String = "", // "start" | "win" | "loose" | "undo" | "menu" | "restart" | "rule" | "place" | "sign" | "help"
+    var action: String = "", // "start" | "win" | "loose" | "undo" | "menu" | "restart" | "rule" | "place" | "sign" | "mark"
     var comment: String = "", // additional field for any optional information (programm errors, explanations, ...)
+    // time
+    var deviceTs: Long = -1,
     //user info
     var login: String = "",
     var name: String = "",
@@ -55,8 +58,8 @@ data class MathGameLog (
     var endExpressionHide: Boolean = false,
     var expressionSize: Float = 0f,
     // Need to set implicitly
-    var currStepsNumber: Int = -1,
-    var nextStepsNumber: Int = -1, // * action == rule || action == restart || action == undo
+    var currStepsNumber: Float = 0f,
+    var nextStepsNumber: Float = 0f, // * action == rule || action == restart || action == undo
     var currAwardCoef: Float = 0f, // * action == win
     var currRule: String = "", // * action == rule
     var currSelectedPlace: String = "",
@@ -75,7 +78,7 @@ data class MathGameLog (
         this.awardCoefs = level.awardCoeffs
         this.showWrongRules = level.showWrongRules
         this.showSubstResult = level.showSubstResult
-        this.undoConsideringPolicy = level.undoConsideringPolicy
+        this.undoConsideringPolicy = level.undoPolicy.str
         this.longExpressionCroppingPolicy = level.longExpressionCroppingPolicy
         // UI statistics
         this.endExpressionHide = activity.endFormulaHide()
@@ -87,6 +90,7 @@ data class MathGameLog (
         root.put("game", game)
         root.put("action", action)
         root.put("comment", comment)
+        root.put("deviceTs", deviceTs)
         root.put("login", login)
         root.put("name", name)
         root.put("surname", surname)

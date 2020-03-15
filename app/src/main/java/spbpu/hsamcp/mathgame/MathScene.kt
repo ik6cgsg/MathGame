@@ -13,10 +13,7 @@ import android.util.Log
 import spbpu.hsamcp.mathgame.activities.LevelsActivity
 import spbpu.hsamcp.mathgame.activities.PlayActivity
 import spbpu.hsamcp.mathgame.common.RuleMathView
-import spbpu.hsamcp.mathgame.level.History
-import spbpu.hsamcp.mathgame.level.Level
-import spbpu.hsamcp.mathgame.level.Result
-import spbpu.hsamcp.mathgame.level.State
+import spbpu.hsamcp.mathgame.level.*
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.lang.ref.WeakReference
@@ -27,7 +24,7 @@ class MathScene {
         private const val messageTime: Long = 2000
         private val messageTimer = MessageTimer()
 
-        private var stepsCount: Int = 0
+        private var stepsCount: Float = 0f
         private var currentTime: Long = 0
         lateinit var timer: MathTimer
             private set
@@ -93,6 +90,12 @@ class MathScene {
             Statistics.logPlace(stepsCount, activity.globalMathView.formula!!, activity.globalMathView.currentAtom!!)
         }
 
+        fun preLoad() {
+            if (!currentLevel!!.fullyLoaded) {
+                currentLevel!!.loadExpressions()
+            }
+        }
+
         fun loadLevel(): Boolean {
             Log.d(TAG, "loadLevel")
             var res = false
@@ -104,7 +107,7 @@ class MathScene {
                 if (activity.endFormulaView.visibility != View.VISIBLE) {
                     activity.showEndFormula(null)
                 }
-                stepsCount = 0
+                stepsCount = 0f
                 currentTime = 0
                 timer = MathTimer(currentLevel!!.time, 1)
                 timer.start()
@@ -117,16 +120,26 @@ class MathScene {
             return res
         }
 
-        fun nextLevel() {
+        fun nextLevel(): Boolean {
             timer.cancel()
-            currentLevel = levelsActivity.get()!!.getNextLevel()
-            loadLevel()
+            val level = levelsActivity.get()!!.getNextLevel()
+            if (level == currentLevel!!) {
+                return false
+            }
+            currentLevel = level
+            playActivity.get()!!.createLevelUI()
+            return true
         }
 
-        fun prevLevel() {
+        fun prevLevel(): Boolean {
             timer.cancel()
-            currentLevel = levelsActivity.get()!!.getPrevLevel()
-            loadLevel()
+            val level = levelsActivity.get()!!.getPrevLevel()
+            if (level == currentLevel!!) {
+                return false
+            }
+            currentLevel = level
+            playActivity.get()!!.createLevelUI()
+            return true
         }
 
         fun previousStep() {
@@ -138,8 +151,8 @@ class MathScene {
             if (state != null) {
                 clearRules()
                 activity.globalMathView.setFormula(state.formula, false)
-                // TODO: smek with undo policy
-                stepsCount--
+                val penalty = UndoPolicyHandler.getPenalty(currentLevel!!.undoPolicy, state.depth)
+                stepsCount = stepsCount - 1 + penalty
             }
             Statistics.logUndo(oldSteps, stepsCount, oldFormula,
                 activity.globalMathView.formula!!, activity.globalMathView.currentAtom)
