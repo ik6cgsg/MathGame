@@ -211,14 +211,14 @@ class Statistics {
 
         fun logMark(context: Context, mark: Float, comment: String) {
             val mathLog = MathGameLog(action = Action.MARK.str, userMark = mark.toString(), userComment = comment)
-            sendLog(mathLog, context)
+            sendLog(mathLog, context, true)
         }
 
-        private fun sendLog(log: MathGameLog, context: Context) {
+        private fun sendLog(log: MathGameLog, context: Context, forced: Boolean = false) {
             Log.d("Statistics", "MathGameLog: $log}")
             setDefault(log, context)
             val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
-            if (prefs.getBoolean(AuthInfo.STATISTICS.str, false)) {
+            if (prefs.getBoolean(AuthInfo.STATISTICS.str, false) || forced) {
                 sendOneLog(log, context)
             }
         }
@@ -243,6 +243,7 @@ class Statistics {
             val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
             val time = System.currentTimeMillis()
             log.deviceTs = time
+            log.hardwareDeviceId = prefs.getString(Constants.deviceId, "")!!
             log.login = prefs.getString(AuthInfo.LOGIN.str, login)!!
             log.name = prefs.getString(AuthInfo.NAME.str, name)!!
             log.surname = prefs.getString(AuthInfo.SURNAME.str, surname)!!

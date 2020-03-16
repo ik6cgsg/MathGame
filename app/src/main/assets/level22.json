@@ -1,10 +1,10 @@
 {
   "taskId": 22,
   "name": "Set Tests: Level 15",
-  "difficulty": 5,
+  "difficulty": 6,
   "undoConsideringPolicy": "square",
   "type": "set",
-  "stepsNum": 8,
+  "stepsNum": 10,
   "time": 240,
   "originalExpression": "((A\\B)\\C)|(!B|C)",
   "finalExpression": "(A->(B|C))->(B->C)",

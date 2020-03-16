@@ -47,9 +47,9 @@ class Level(var fileName: String) {
     private var rules = ArrayList<ExpressionSubstitution>()
     private var rulesStr = ArrayList<RuleStr>()
     lateinit var startFormula: ExpressionNode
-    lateinit var startFormulaStr: String
+    private lateinit var startFormulaStr: String
     lateinit var endFormula: ExpressionNode
-    lateinit var endFormulaStr: String
+    private lateinit var endFormulaStr: String
     lateinit var type: Type
     var taskId = 0
     var name = "test"
@@ -103,6 +103,7 @@ class Level(var fileName: String) {
             Type.SET -> stringToExpression(endFormulaStr, type.str)
             else -> stringToExpression(endFormulaStr)
         }
+        endFormulaStr = expressionToString(endFormula)
         for (ruleStr in rulesStr) {
             val ruleSubst = when (type) {
                 Type.SET -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right, type.str)

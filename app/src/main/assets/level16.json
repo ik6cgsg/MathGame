@@ -4,8 +4,8 @@
   "difficulty": 4,
   "undoConsideringPolicy": "linear",
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 5,
+  "time": 150,
   "originalExpression": "!(A&(B\\C))",
   "finalExpression": "!A|!B|C",
   "allSubstitutions":[

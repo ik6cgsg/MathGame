@@ -1,10 +1,10 @@
 {
   "taskId": 13,
   "name": "Set Tests: Level 6",
-  "difficulty": 2,
+  "difficulty": 3,
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 6,
+  "time": 180,
   "originalExpression": "A\\(B|C)",
   "finalExpression": "(A\\B)\\C",
   "allSubstitutions":[

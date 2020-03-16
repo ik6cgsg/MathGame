@@ -3,8 +3,8 @@
   "name": "Set Tests: Level 7",
   "difficulty": 2,
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 3,
+  "time": 120,
   "originalExpression": "A|(B\\A)",
   "finalExpression": "A|B",
   "allSubstitutions":[

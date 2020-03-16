@@ -1,11 +1,11 @@
 {
   "taskId": 20,
   "name": "Set Tests: Level 13",
-  "difficulty": 4,
+  "difficulty": 3,
   "undoConsideringPolicy": "linear",
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 3,
+  "time": 120,
   "originalExpression":"!A&!B&!(C->B)",
   "finalExpression":"!(A|B)&!(!C|B)",
   "allSubstitutions":[

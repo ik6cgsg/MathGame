@@ -4,8 +4,8 @@
   "difficulty": 4,
   "undoConsideringPolicy": "linear",
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 4,
+  "time": 90,
   "originalExpression": "!A&!B->C",
   "finalExpression": "A|B|C",
   "allSubstitutions":[

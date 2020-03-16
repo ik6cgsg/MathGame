@@ -1,11 +1,11 @@
 {
   "taskId": 25,
   "name": "Set Tests: Level 18",
-  "difficulty": 5,
+  "difficulty": 3,
   "undoConsideringPolicy": "square",
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 3,
+  "time": 120,
   "originalExpression": "(!A\\B)|C",
   "finalExpression": "A|B->C",
   "allSubstitutions":[

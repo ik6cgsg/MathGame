@@ -1,7 +1,7 @@
 {
   "taskId": 9,
   "name": "Set Tests: Level 2",
-  "difficulty": 2,
+  "difficulty": 5,
   "type": "set",
   "stepsNum": 8,
   "time": 240,

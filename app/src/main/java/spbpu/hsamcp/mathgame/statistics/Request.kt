@@ -30,6 +30,28 @@ data class ResponseData(
 class Request {
     companion object {
         private var reqQueue = LinkedList<RequestData>()
+        private var isConnected = false
+
+        fun startWorkCycle() {
+            GlobalScope.launch {
+                async {
+                    while (true) {
+                        while (reqQueue.isNotEmpty() && isConnected) {
+                            val response = asyncRequest(reqQueue.last)
+                            Log.d("Request", "sended")
+                            if (response.returnValue != 500 || response.returnValue != 404) {
+                                try {
+                                    reqQueue.removeLast()
+                                    Log.d("Request", "removed")
+                                } catch (e: Exception) {
+                                    Log.e("Request", e.message)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         private fun asyncRequest(requestData: RequestData): ResponseData {
             val response = ResponseData()
@@ -68,21 +90,13 @@ class Request {
         }
 
         fun send(requestData: RequestData) {
+            Log.d("Request", "Request body: ${requestData.body}")
             reqQueue.addFirst(requestData)
-            GlobalScope.launch {
-                val job = async {
-                    while (reqQueue.isNotEmpty()) {
-                        val response = asyncRequest(reqQueue.last)
-                        if (response.returnValue != 500 || response.returnValue != 404) {
-                            reqQueue.removeLast()
-                        }
-                    }
-                }
-                job.await()
-            }
+            isConnected = true
         }
 
         fun sendWithoutInternet(requestData: RequestData) {
+            isConnected = false
             reqQueue.addFirst(requestData)
         }
 

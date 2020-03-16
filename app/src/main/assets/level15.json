@@ -1,10 +1,10 @@
 {
   "taskId": 15,
   "name": "Set Tests: Level 8",
-  "difficulty": 2,
+  "difficulty": 4,
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 6,
+  "time": 200,
   "originalExpression": "!(A&!B)|B",
   "finalExpression": "A->B",
   "allSubstitutions":[

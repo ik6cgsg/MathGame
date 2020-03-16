@@ -1,10 +1,10 @@
 {
   "taskId": 19,
   "name": "Set Tests: Level 12",
-  "difficulty": 4,
+  "difficulty": 3,
   "undoConsideringPolicy": "linear",
   "type": "set",
-  "stepsNum": 7,
+  "stepsNum": 4,
   "time": 180,
   "originalExpression":"!A&!B&!C",
   "finalExpression":"!(A|B|C)",

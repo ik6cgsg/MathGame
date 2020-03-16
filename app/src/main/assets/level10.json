@@ -1,10 +1,10 @@
 {
   "taskId": 10,
   "name": "Set Tests: Level 3",
-  "difficulty": 2,
+  "difficulty": 4,
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 6,
+  "time": 200,
   "originalExpression": "A\\(A\\B)",
   "finalExpression": "A&B",
   "allSubstitutions":[
@@ -37,6 +37,7 @@
     {"left":"A|A","right":"A"},
     {"left":"A","right":"A|A"},
     {"left":"A&A","right":"A"},
-    {"left":"A","right":"A&A"}
+    {"left":"A","right":"A&A"},
+    {"left":"(A&!A)|(A&B)","right":"A&B"}
   ]
 }

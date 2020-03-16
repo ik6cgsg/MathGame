@@ -1,11 +1,11 @@
 {
   "taskId": 27,
   "name": "Set Tests: Level 20",
-  "difficulty": 9,
+  "difficulty": 2,
   "undoConsideringPolicy": "square",
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 3,
+  "time": 150,
   "originalExpression": "!(!A|B)",
   "finalExpression": "A\\B",
   "allSubstitutions":[

@@ -21,6 +21,8 @@ import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.LevelField
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
+import spbpu.hsamcp.mathgame.statistics.Request
+import spbpu.hsamcp.mathgame.statistics.RequestData
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.lang.Exception
 import java.lang.ref.WeakReference
@@ -57,6 +59,7 @@ class LevelsActivity: AppCompatActivity() {
         generateList()
         resetDialog = createResetAlert()
         signInDialog = createSignAlert()
+        Request.startWorkCycle()
     }
 
     override fun onResume() {
@@ -95,8 +98,7 @@ class LevelsActivity: AppCompatActivity() {
     }
 
     fun updateResult() {
-        levelViews[currentLevelIndex].text = levels[currentLevelIndex].name + "\n" +
-            levels[currentLevelIndex].lastResult!!.award.value.str
+        levelViews[currentLevelIndex].text = "${levels[currentLevelIndex].name}\n${levels[currentLevelIndex].lastResult!!}"
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -105,7 +107,7 @@ class LevelsActivity: AppCompatActivity() {
             val levelView = createLevelView()
             levelView.text = level.name
             if (level.lastResult != null) {
-                levelView.text = level.name + "\n" + level.lastResult!!.award.value.str
+                levelView.text = "${level.name}\n${level.lastResult!!}"
             }
             levelView.background = getBackgroundByDif(level.difficulty)
             levelView.setOnTouchListener { v, event ->

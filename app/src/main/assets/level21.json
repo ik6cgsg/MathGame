@@ -1,11 +1,11 @@
 {
   "taskId": 21,
   "name": "Set Tests: Level 14",
-  "difficulty": 5,
+  "difficulty": 4,
   "undoConsideringPolicy": "square",
   "type": "set",
-  "stepsNum": 8,
-  "time": 240,
+  "stepsNum": 7,
+  "time": 210,
   "originalExpression": "(A&B)->(!C|B)",
   "finalExpression": "A->(B->(C->B))",
   "allSubstitutions":[
