@@ -92,7 +92,7 @@ class MathScene {
 
         fun preLoad() {
             if (!currentLevel!!.fullyLoaded) {
-                currentLevel!!.loadExpressions()
+                currentLevel!!.fullyLoad(playActivity.get()!!)
             }
         }
 

@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -20,9 +21,9 @@ import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.LevelField
+import spbpu.hsamcp.mathgame.level.UndoPolicy
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
 import spbpu.hsamcp.mathgame.statistics.Request
-import spbpu.hsamcp.mathgame.statistics.RequestData
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.lang.Exception
 import java.lang.ref.WeakReference
@@ -225,35 +226,66 @@ class LevelsActivity: AppCompatActivity() {
         dialog.setOnShowListener {
             val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
             okButton.setOnClickListener {
-                if (loginView.text.isNotBlank() && nameView.text.isNotBlank() &&
-                    surnameView.text.isNotBlank()) {
+                if (loginView.text.isBlank() || nameView.text.isBlank() ||
+                    surnameView.text.isBlank()) {
+                    Toast.makeText(this, "Please, fill required fields!", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+                val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
+                val prefEdit = prefs.edit()
+                if (ageView.text.toString().isNotBlank()) {
                     try {
                         val age = ageView.text.toString().toInt()
-                        if (age in 10..100) {
-                            val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-                            val prefEdit = prefs.edit()
-                            prefEdit.putString(AuthInfo.LOGIN.str, loginView.text.toString())
-                            prefEdit.putString(AuthInfo.NAME.str, nameView.text.toString())
-                            prefEdit.putString(AuthInfo.SURNAME.str, surnameView.text.toString())
-                            prefEdit.putString(AuthInfo.SECOND_NAME.str, secondNameView.text.toString())
-                            prefEdit.putString(AuthInfo.GROUP.str, groupView.text.toString())
-                            prefEdit.putString(AuthInfo.INSTITUTION.str, institutionView.text.toString())
-                            prefEdit.putInt(AuthInfo.AGE.str, ageView.text.toString().toInt())
-                            prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticsView.isChecked)
-                            prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
-                            prefEdit.commit()
-                            Statistics.logSign(this)
-                            dialog.dismiss()
-                        } else {
+                        if (age !in 10..100) {
                             Toast.makeText(this, "Appearances are deceptive...", Toast.LENGTH_LONG).show()
+                            return@setOnClickListener
+                        } else {
+                            prefEdit.putInt(AuthInfo.AGE.str, age)
                         }
                     } catch (e: Exception) {
                         Toast.makeText(this, "Are you sure that's your age (even not integer...)?", Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
                     }
-                } else {
-                    Toast.makeText(this, "Please, fill required fields!", Toast.LENGTH_LONG).show()
                 }
+                prefEdit.putString(AuthInfo.LOGIN.str, loginView.text.toString())
+                prefEdit.putString(AuthInfo.NAME.str, nameView.text.toString())
+                prefEdit.putString(AuthInfo.SURNAME.str, surnameView.text.toString())
+                prefEdit.putString(AuthInfo.SECOND_NAME.str, secondNameView.text.toString())
+                prefEdit.putString(AuthInfo.GROUP.str, groupView.text.toString())
+                prefEdit.putString(AuthInfo.INSTITUTION.str, institutionView.text.toString())
+                prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticsView.isChecked)
+                prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
+                generateLevelsMultCoeffs(prefEdit)
+                prefEdit.commit()
+                Statistics.logSign(this)
+                resetLevelsCoeffs()
+                dialog.dismiss()
             }
         }
+    }
+
+    private fun resetLevelsCoeffs() {
+        for (level in levels) {
+            level.coeffsSet = false
+        }
+    }
+
+    private fun generateLevelsMultCoeffs(prefEdit: SharedPreferences.Editor) {
+        val undoCoeff = Random().nextInt(UndoPolicy.values().size)
+        prefEdit.putInt(AuthInfo.UNDO_COEFF.str, undoCoeff)
+        val timeCoeff = getByNormDist(1f, Constants.timeDeviation)
+        prefEdit.putFloat(AuthInfo.TIME_COEFF.str, timeCoeff)
+        val awardCoeff = getByNormDist(1f, Constants.awardDeviation)
+        prefEdit.putFloat(AuthInfo.AWARD_COEFF.str, awardCoeff)
+    }
+
+    private fun getByNormDist(mean: Float, deviation: Float): Float {
+        var res: Float
+        val left = mean - deviation
+        val right = mean + deviation
+        do {
+            res = Random().nextGaussian().toFloat() * deviation + mean
+        } while (res !in left..right)
+        return res
     }
 }

@@ -16,5 +16,7 @@ class Constants {
         val lightGrey = Color.parseColor("#8B8484")
         const val storage = "MATH_GAME_PREFS"
         const val deviceId = "DEVICE_UUID"
+        const val timeDeviation = 0.2f
+        const val awardDeviation = 0.1f
     }
 }

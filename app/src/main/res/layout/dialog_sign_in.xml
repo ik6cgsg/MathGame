@@ -15,9 +15,8 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/rect_shape_required"
         android:fontFamily="monospace"
-        android:hint="Login"
-        android:singleLine="true"
-        android:text="cgsgilich" />
+        android:hint="❗Login 🔡"
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/name"
@@ -29,9 +28,8 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/rect_shape_required"
         android:fontFamily="monospace"
-        android:hint="Name"
-        android:singleLine="true"
-        android:text="Ilya" />
+        android:hint="❗Name 🔡"
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/surname"
@@ -43,9 +41,8 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/rect_shape_required"
         android:fontFamily="monospace"
-        android:hint="Surname"
-        android:singleLine="true"
-        android:text="Kozlov" />
+        android:hint="❗Surname 🔡"
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/secondName"
@@ -57,9 +54,8 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/rect_shape_non_required"
         android:fontFamily="monospace"
-        android:hint="Second name"
-        android:singleLine="true"
-        android:text="Alexeevich" />
+        android:hint="Second name 🔡"
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/group"
@@ -71,10 +67,9 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/rect_shape_non_required"
         android:fontFamily="monospace"
-        android:hint="Group"
+        android:hint="Group 🔢"
         android:inputType="number"
-        android:singleLine="true"
-        android:text="2" />
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/institution"
@@ -86,9 +81,8 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/rect_shape_non_required"
         android:fontFamily="monospace"
-        android:hint="Institution"
-        android:singleLine="true"
-        android:text="SPbPU" />
+        android:hint="Institution 🔡"
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/age"
@@ -100,10 +94,9 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/rect_shape_non_required"
         android:fontFamily="monospace"
-        android:hint="Age"
+        android:hint="Age 🔢"
         android:inputType="number"
-        android:singleLine="true"
-        android:text="22" />
+        android:singleLine="true" />
 
     <Switch
         android:id="@+id/statistics"
@@ -116,7 +109,7 @@
         android:background="@drawable/rect_shape_non_required"
         android:checked="true"
         android:fontFamily="monospace"
-        android:text="Send statistics"
+        android:text="Send statistics 📈"
         android:textSize="18sp"
         tools:checked="true" />
 </LinearLayout>

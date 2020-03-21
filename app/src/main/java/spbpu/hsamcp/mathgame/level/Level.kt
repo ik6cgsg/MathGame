@@ -14,6 +14,7 @@ import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
 import com.twf.factstransformations.Rule
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.statistics.AuthInfo
 
 data class RuleStr(val left: String, val right: String)
 
@@ -54,6 +55,7 @@ class Level(var fileName: String) {
     var taskId = 0
     var name = "test"
     var awardCoeffs = "0.88 0.65 0.45"
+    var awardMultCoeff = 1f
     var showWrongRules = false
     var showSubstResult = false
     var undoPolicy = UndoPolicy.NONE
@@ -62,7 +64,11 @@ class Level(var fileName: String) {
     var difficulty = 0
     var stepsNum = 1
     var time: Long = 180
-    var fullyLoaded = false
+    var timeMultCoeff = 1f
+    private var exprSet = false
+    var coeffsSet = false
+    val fullyLoaded: Boolean
+        get() = this.exprSet && this.coeffsSet
 
     companion object {
         private val TAG = "Level"
@@ -84,6 +90,7 @@ class Level(var fileName: String) {
                 val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
                 val levelJson = JSONObject(json)
                 if (parse(levelJson)) {
+                    setGlobalCoeffs(context)
                     loadResult(context)
                     true
                 } else {
@@ -94,25 +101,40 @@ class Level(var fileName: String) {
         }
     }
 
-    fun loadExpressions() {
-        startFormula = when (type) {
-            Type.SET -> stringToExpression(startFormulaStr, type.str)
-            else -> stringToExpression(startFormulaStr)
-        }
-        endFormula = when (type) {
-            Type.SET -> stringToExpression(endFormulaStr, type.str)
-            else -> stringToExpression(endFormulaStr)
-        }
-        endFormulaStr = expressionToString(endFormula)
-        for (ruleStr in rulesStr) {
-            val ruleSubst = when (type) {
-                Type.SET -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right, type.str)
-                else -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right)
+    fun fullyLoad(context: Context) {
+        setGlobalCoeffs(context)
+        if (!exprSet) {
+            startFormula = when (type) {
+                Type.SET -> stringToExpression(startFormulaStr, type.str)
+                else -> stringToExpression(startFormulaStr)
             }
-            rules.add(ruleSubst)
+            endFormula = when (type) {
+                Type.SET -> stringToExpression(endFormulaStr, type.str)
+                else -> stringToExpression(endFormulaStr)
+            }
+            endFormulaStr = expressionToString(endFormula)
+            for (ruleStr in rulesStr) {
+                val ruleSubst = when (type) {
+                    Type.SET -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right, type.str)
+                    else -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right)
+                }
+                rules.add(ruleSubst)
+            }
+            rules.shuffle()
+            exprSet = true
         }
-        rules.shuffle()
-        fullyLoaded = true
+    }
+
+    private fun setGlobalCoeffs(context: Context) {
+        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        if (prefs.getBoolean(AuthInfo.AUTHORIZED.str, false) && !coeffsSet) {
+            val undoInd = prefs.getInt(AuthInfo.UNDO_COEFF.str, 0)
+            undoPolicy = UndoPolicy.values()[undoInd]
+            timeMultCoeff = prefs.getFloat(AuthInfo.TIME_COEFF.str, timeMultCoeff)
+            time = (time * timeMultCoeff).toLong()
+            awardMultCoeff = prefs.getFloat(AuthInfo.AWARD_COEFF.str, awardMultCoeff)
+            coeffsSet = true
+        }
     }
 
     private fun parse(levelJson: JSONObject): Boolean {
@@ -172,7 +194,7 @@ class Level(var fileName: String) {
     }
 
     private fun getAwardByCoeff(mark: Double): AwardType {
-        val awards = awardCoeffs.split(" ").map { it.toDouble() }
+        val awards = awardCoeffs.split(" ").map { it.toDouble() * awardMultCoeff }
         return when {
             mark == 1.0 -> AwardType.PLATINUM
             mark >= awards[0] -> AwardType.GOLD

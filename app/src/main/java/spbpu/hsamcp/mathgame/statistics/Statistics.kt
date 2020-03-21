@@ -24,18 +24,14 @@ enum class AuthInfo(val str: String) {
     AGE("userAge"),
     STATISTICS("userStatistics"),
     AUTHORIZED("userAuthorized"),
+    TIME_COEFF("userTimeCoeff"),
+    AWARD_COEFF("userAwardCoeff"),
+    UNDO_COEFF("userUndoCoeff"),
     PREFIX("user")
 }
 
 class Statistics {
     companion object {
-        private var login: String = "cgsgilich_test"
-        private var name: String = "Ilya"
-        private var surname: String = "Kozlov"
-        private var secondName: String = "Alexeevich"
-        private var group: String = "2"
-        private var institution: String = "SPbPU"
-        private var age: Int = 22
         private var startTime: Long = -1
         private var lastActionTime: Long = -1
 
@@ -214,6 +210,11 @@ class Statistics {
             sendLog(mathLog, context, true)
         }
 
+        fun logProblem(context: Context, comment: String) {
+            val mathLog = MathGameLog(action = Action.PROBLEM.str, userComment = comment)
+            sendLog(mathLog, context, true)
+        }
+
         private fun sendLog(log: MathGameLog, context: Context, forced: Boolean = false) {
             Log.d("Statistics", "MathGameLog: $log}")
             setDefault(log, context)
@@ -243,14 +244,16 @@ class Statistics {
             val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
             val time = System.currentTimeMillis()
             log.deviceTs = time
-            log.hardwareDeviceId = prefs.getString(Constants.deviceId, "")!!
-            log.login = prefs.getString(AuthInfo.LOGIN.str, login)!!
-            log.name = prefs.getString(AuthInfo.NAME.str, name)!!
-            log.surname = prefs.getString(AuthInfo.SURNAME.str, surname)!!
-            log.secondName = prefs.getString(AuthInfo.SECOND_NAME.str, secondName)!!
-            log.group = prefs.getString(AuthInfo.GROUP.str, group)!!
-            log.institution = prefs.getString(AuthInfo.INSTITUTION.str, institution)!!
-            log.age = prefs.getInt(AuthInfo.AGE.str, age)
+            log.hardwareDeviceId = prefs.getString(Constants.deviceId, log.hardwareDeviceId)!!
+            log.totalTimeMultCoef = prefs.getFloat(AuthInfo.TIME_COEFF.str, log.totalTimeMultCoef)
+            log.totalAwardMultCoef = prefs.getFloat(AuthInfo.AWARD_COEFF.str, log.totalAwardMultCoef)
+            log.login = prefs.getString(AuthInfo.LOGIN.str, log.login)!!
+            log.name = prefs.getString(AuthInfo.NAME.str, log.name)!!
+            log.surname = prefs.getString(AuthInfo.SURNAME.str, log.surname)!!
+            log.secondName = prefs.getString(AuthInfo.SECOND_NAME.str, log.secondName )!!
+            log.group = prefs.getString(AuthInfo.GROUP.str, log.group)!!
+            log.institution = prefs.getString(AuthInfo.INSTITUTION.str, log.institution )!!
+            log.age = prefs.getInt(AuthInfo.AGE.str, log.age)
             log.timeFromLastActionMS = time - lastActionTime
             lastActionTime = time
             if (startTime > 0) { // Level was created and set

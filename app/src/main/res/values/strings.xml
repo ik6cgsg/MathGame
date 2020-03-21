@@ -9,4 +9,11 @@
     <string name="wrong_subs">❌ Can\'t do this ❌</string>
     <string name="time_out">😢Time out!😢</string>
     <string name="no_rules">🙅 No rules for this 🙅</string>
+    <string name="levels">LEVELS</string>
+    <string name="reset">❌</string>
+    <string name="gear">⚙</string>
+    <string name="settings">⚙ SETTINGS ⚙</string>
+    <string name="send_statistics">Send statistics 📈</string>
+    <string name="report_bug">Report bug 🐛</string>
+    <string name="version_view">MathGame v</string>
 </resources>

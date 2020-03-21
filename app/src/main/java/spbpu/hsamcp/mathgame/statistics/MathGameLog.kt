@@ -15,6 +15,7 @@ enum class Action(val str: String) {
     PLACE("place"),
     SIGN("sign"),
     MARK("mark"),
+    PROBLEM("problem"),
     HELP("help")
 }
 
@@ -34,9 +35,12 @@ data class MathGameLog (
     var age: Int = -1, // произвольная строка, необязательна для заполнения игроком
     var userMark: String = "", //user mark about situation (in future warning button must appear in all games and allow user to click on it and to leave a mark)
     var userComment: String = "", //user comment about situation (in future warning button must appear in all games and allow user to click on it and to leave a comment)
-    //user device info
+    // user device info
     var hardwareDeviceId: String = "", //empty if the device is not known
     var hardwareProperties: String = "",
+    // user level info
+    var totalTimeMultCoef: Float = 1f,
+    var totalAwardMultCoef: Float = 1f,
     // Хар-ки уровня
     // * заполняются на каждый action (кроме sign)
     var taskId: Int = -1,
@@ -102,6 +106,8 @@ data class MathGameLog (
         root.put("userComment", userComment)
         root.put("hardwareDeviceId", hardwareDeviceId)
         root.put("hardwareProperties", hardwareProperties)
+        root.put("totalTimeMultCoef", totalTimeMultCoef)
+        root.put("totalAwardMultCoef", totalAwardMultCoef)
         root.put("taskId", taskId)
         root.put("taskType", taskType)
         root.put("totalTimeMS", totalTimeMS)

@@ -21,24 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/statistics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:checked="true"
-        android:fontFamily="monospace"
-        android:onClick="switchStatistics"
-        android:text="Send statistics"
-        android:textColor="@color/textColor"
-        android:textSize="21sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings"
-        tools:checked="true" />
-
     <TextView
         android:id="@+id/settings"
         android:layout_width="wrap_content"
@@ -46,7 +28,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="SETTINGS"
+        android:text="@string/settings"
         android:textColor="@color/textColor"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -76,14 +58,59 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="MathGame v0.1.0"
+        android:text="@string/version_view"
         android:textColor="@color/lightGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:divider="@drawable/divider"
+        android:orientation="vertical"
+        android:showDividers="middle|end"
+        app:layout_constraintBottom_toTopOf="@+id/rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Switch
+            android:id="@+id/statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:fontFamily="monospace"
+            android:onClick="switchStatistics"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/send_statistics"
+            android:textColor="@color/textColor"
+            android:textSize="21sp"
+            android:typeface="monospace"
+            tools:checked="true" />
+
+        <TextView
+            android:id="@+id/report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="reportProblem"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/report_bug"
+            android:textColor="@color/textColor"
+            android:textSize="21sp"
+            android:typeface="monospace" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

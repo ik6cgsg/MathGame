@@ -177,7 +177,6 @@
         android:layout_marginBottom="24dp"
         android:lines="1"
         android:singleLine="true"
-        android:text="x"
         android:textColor="@color/textColor"
         android:textSize="16sp"
         android:typeface="monospace"
