@@ -1,8 +1,7 @@
 {
-  "taskId": 26,
-  "name": "Set Tests: Level 19",
+  "taskId": 119,
+  "name": "Level 20 Most Difficult",
   "difficulty": 6,
-  "undoConsideringPolicy": "square",
   "type": "set",
   "stepsNum": 7,
   "time": 90,
@@ -13,6 +12,7 @@
     {"left":"A|B|C","right":"A|(B|C)"},
     {"left":"A&(B&C)","right":"A&B&C"},
     {"left":"A&B&C","right":"A&(B&C)"},
+    {"left":"A&(B&C)","right":"(A&B)&C"},
     {"left":"(A|B)|C","right":"A|B|C"},
     {"left":"A|B|C","right":"(A|B)|C"},
     {"left":"(A&B)&C","right":"A&B&C"},
@@ -22,8 +22,11 @@
     {"left":"A&(B|C)","right":"(A&B)|(A&C)"},
     {"left":"(A&B)|(A&C)","right":"A&(B|C)"},
     {"left":"!(A&B)","right":"!A|!B"},
+    {"left":"!(A&B)","right":"!(B&A)"},
     {"left":"!A|!B","right":"!(A&B)"},
     {"left":"!(A|B)","right":"!A&!B"},
+    {"left":"!(A|B)","right":"!B&!A"},
+    {"left":"!(A|B)","right":"!(B|A)"},
     {"left":"!A&!B","right":"!(A|B)"},
     {"left":"!A|B","right":"A->B"},
     {"left":"A->B","right":"!A|B"},
@@ -31,14 +34,13 @@
     {"left":"A\\B","right":"A&!B"},
     {"left":"!(!A)","right":"A"},
     {"left":"A","right":"!(!A)"},
-    {"left":"A|(A&B)","right":"A"},
-    {"left":"A","right":"A|(A&B)"},
     {"left":"A&(A|B)","right":"A"},
     {"left":"A","right":"A&(A|B)"},
     {"left":"A|A","right":"A"},
     {"left":"A","right":"A|A"},
     {"left":"A&A","right":"A"},
-    {"left":"A","right":"A&A"},
-    {"left":"A&(B|!B)","right":"A"}
+    {"left":"A&B","right":"B&A"},
+    {"left":"A|B","right":"B|A"},
+    {"left":"A","right":"A&A"}
   ]
 }

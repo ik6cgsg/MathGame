@@ -77,7 +77,7 @@ data class MathGameLog (
         this.taskId = level.taskId
         this.taskType = level.type.str
         this.totalTimeMS = level.time * 1000
-        this.difficulty = level.difficulty.toFloat()
+        this.difficulty = level.difficulty
         this.minSteps = level.stepsNum
         this.awardCoefs = level.awardCoeffs
         this.showWrongRules = level.showWrongRules

@@ -61,7 +61,7 @@ class Level(var fileName: String) {
     var undoPolicy = UndoPolicy.NONE
     var longExpressionCroppingPolicy = ""
     var lastResult: Result? = null
-    var difficulty = 0
+    var difficulty = 0f
     var stepsNum = 1
     var time: Long = 180
     var timeMultCoeff = 1f
@@ -144,7 +144,7 @@ class Level(var fileName: String) {
         }
         taskId = levelJson.getInt(LevelField.TASK_ID.str)
         name = levelJson.getString(LevelField.NAME.str)
-        difficulty = levelJson.getInt(LevelField.DIFFICULTY.str)
+        difficulty = levelJson.getDouble(LevelField.DIFFICULTY.str).toFloat()
         val typeStr = levelJson.getString(LevelField.TYPE.str)
         try {
             type = Type.valueOf(typeStr.toUpperCase())

@@ -32,6 +32,7 @@ import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity() {
     private val TAG = "LevelsActivity"
+    private val sigmaWidth = 3
     private lateinit var levels: ArrayList<Level>
     private lateinit var levelViews: ArrayList<TextView>
     private lateinit var levelsList: LinearLayout
@@ -156,7 +157,7 @@ class LevelsActivity: AppCompatActivity() {
         return levelView
     }
 
-    private fun getBackgroundByDif(dif: Int): Drawable? {
+    private fun getBackgroundByDif(dif: Float): Drawable? {
         return when {
             dif < 3 -> getDrawable(R.drawable.level_easy)
             dif < 5 -> getDrawable(R.drawable.level_medium)
@@ -279,12 +280,12 @@ class LevelsActivity: AppCompatActivity() {
         prefEdit.putFloat(AuthInfo.AWARD_COEFF.str, awardCoeff)
     }
 
-    private fun getByNormDist(mean: Float, deviation: Float): Float {
+    private fun getByNormDist(mean: Float, sigma: Float): Float {
         var res: Float
-        val left = mean - deviation
-        val right = mean + deviation
+        val left = mean - sigmaWidth * sigma
+        val right = mean + sigmaWidth * sigma
         do {
-            res = Random().nextGaussian().toFloat() * deviation + mean
+            res = Random().nextGaussian().toFloat() * sigma + mean
         } while (res !in left..right)
         return res
     }

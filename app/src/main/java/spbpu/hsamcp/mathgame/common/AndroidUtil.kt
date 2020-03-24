@@ -2,6 +2,7 @@ package spbpu.hsamcp.mathgame.common
 
 import android.app.AlertDialog
 import android.graphics.Typeface
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
@@ -40,6 +41,7 @@ class AndroidUtil {
             dialog.show()
             dialog.window!!.setBackgroundDrawableResource(R.drawable.alert_shape)
             dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
+            dialog.window!!.setGravity(Gravity.BOTTOM)
         }
     }
 }
