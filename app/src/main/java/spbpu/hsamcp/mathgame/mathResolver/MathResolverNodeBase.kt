@@ -1,12 +1,10 @@
 package spbpu.hsamcp.mathgame.mathResolver
 
 import android.graphics.Paint
-import android.graphics.Path
 import android.graphics.Typeface
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.NodeType
-import spbpu.hsamcp.mathgame.Constants
-import spbpu.hsamcp.mathgame.GlobalMathView
+import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.mathResolver.mathResolverNodes.*
 
 open class MathResolverNodeBase(

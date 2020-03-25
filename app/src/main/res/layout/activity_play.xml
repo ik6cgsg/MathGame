@@ -7,7 +7,7 @@
     android:background="@color/backgroud"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context=".PlayActivity">
+    tools:context=".activities.PlayActivity">
 
     <HorizontalScrollView
         android:id="@+id/global_formula_view"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/end_formula_view"
         app:layout_constraintVertical_bias="0.25">
 
-        <spbpu.hsamcp.mathgame.GlobalMathView
+        <spbpu.hsamcp.mathgame.common.GlobalMathView
             android:id="@+id/global_formula"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -95,7 +95,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="x"
         android:textColor="@color/textColor"
         android:textSize="20sp"
         android:typeface="monospace"
@@ -111,7 +110,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:lineSpacingMultiplier="0.5"
-        android:text="x"
         android:textColor="@color/textColor"
         android:textSize="20sp"
         android:typeface="monospace"
@@ -179,7 +177,6 @@
         android:layout_marginBottom="24dp"
         android:lines="1"
         android:singleLine="true"
-        android:text="x"
         android:textColor="@color/textColor"
         android:textSize="16sp"
         android:typeface="monospace"
@@ -200,6 +197,19 @@
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/timer_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

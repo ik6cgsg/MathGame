@@ -1,4 +1,4 @@
-package spbpu.hsamcp.mathgame
+package spbpu.hsamcp.mathgame.common
 
 import android.graphics.Color
 
@@ -14,5 +14,9 @@ class Constants {
         val primaryColor = Color.parseColor("#008577")
         val textColor = Color.parseColor("#C5C5C5")
         val lightGrey = Color.parseColor("#8B8484")
+        const val storage = "MATH_GAME_PREFS"
+        const val deviceId = "DEVICE_UUID"
+        const val timeDeviation = 0.2f
+        const val awardDeviation = 0.1f
     }
 }
