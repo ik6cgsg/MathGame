@@ -42,6 +42,10 @@
     {"left":"A&B","right":"B&A"},
     {"left":"A|B","right":"B|A"},
     {"left":"A","right":"A&A"},
-    {"left":"(A|B)&(A|!A)","right":"A|B"}
+    {"left":"(A|B)&(A|!A)","right":"A|B"},
+    {"left":"A\\B","right":"!(B->A)"},
+    {"left":"!(B->A)","right":"A\\B"},
+    {"left":"B->A","right":"!(A\\B)"},
+    {"left":"!(A\\B)","right":"B->A"}
   ]
 }

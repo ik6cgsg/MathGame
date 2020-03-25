@@ -4,7 +4,7 @@
   "difficulty": 3.3,
   "type": "set",
   "stepsNum": 3,
-  "time": 150,
+  "time": 90,
   "originalExpression": "!(!A|B)",
   "finalExpression": "A\\B",
   "allSubstitutions":[
@@ -41,6 +41,10 @@
     {"left":"A&A","right":"A"},
     {"left":"A&B","right":"B&A"},
     {"left":"A|B","right":"B|A"},
-    {"left":"A","right":"A&A"}
+    {"left":"A","right":"A&A"},
+    {"left":"A\\B","right":"!(B->A)"},
+    {"left":"!(B->A)","right":"A\\B"},
+    {"left":"B->A","right":"!(A\\B)"},
+    {"left":"!(A\\B)","right":"B->A"}
   ]
 }

@@ -4,7 +4,7 @@
   "difficulty": 5.9,
   "type": "set",
   "stepsNum": 10,
-  "time": 240,
+  "time": 300,
   "originalExpression": "((A\\B)\\C)|(!B|C)",
   "finalExpression": "(A->(B|C))->(B->C)",
   "allSubstitutions":[
@@ -41,6 +41,10 @@
     {"left":"A&A","right":"A"},
     {"left":"A&B","right":"B&A"},
     {"left":"A|B","right":"B|A"},
-    {"left":"A","right":"A&A"}
+    {"left":"A","right":"A&A"},
+    {"left":"A\\B","right":"!(B->A)"},
+    {"left":"!(B->A)","right":"A\\B"},
+    {"left":"B->A","right":"!(A\\B)"},
+    {"left":"!(A\\B)","right":"B->A"}
   ]
 }

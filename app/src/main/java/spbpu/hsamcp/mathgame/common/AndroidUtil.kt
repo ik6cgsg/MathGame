@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.Window
 import android.widget.TextView
 import spbpu.hsamcp.mathgame.R
 
@@ -38,10 +39,11 @@ class AndroidUtil {
         }
 
         fun showDialog(dialog: AlertDialog) {
+            dialog.window!!.setGravity(Gravity.BOTTOM)
+            dialog.window!!.attributes.verticalMargin = 0.05f
             dialog.show()
             dialog.window!!.setBackgroundDrawableResource(R.drawable.alert_shape)
             dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
-            dialog.window!!.setGravity(Gravity.BOTTOM)
         }
     }
 }

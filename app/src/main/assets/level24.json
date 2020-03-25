@@ -3,10 +3,10 @@
   "name": "Level 18 Difficult",
   "difficulty": 5.1,
   "type": "set",
-  "stepsNum": 2,
-  "time": 15,
-  "originalExpression": "(!B->C)",
-  "finalExpression": "B|C",
+  "stepsNum": 5,
+  "time": 220,
+  "originalExpression": "!A&(!B\\C)",
+  "finalExpression": "!((!A->B)|C)",
   "allSubstitutions":[
     {"left":"A|(B|C)","right":"A|B|C"},
     {"left":"A|B|C","right":"A|(B|C)"},
@@ -41,6 +41,10 @@
     {"left":"A&A","right":"A"},
     {"left":"A&B","right":"B&A"},
     {"left":"A|B","right":"B|A"},
-    {"left":"A","right":"A&A"}
+    {"left":"A","right":"A&A"},
+    {"left":"A\\B","right":"!(B->A)"},
+    {"left":"!(B->A)","right":"A\\B"},
+    {"left":"B->A","right":"!(A\\B)"},
+    {"left":"!(A\\B)","right":"B->A"}
   ]
 }
