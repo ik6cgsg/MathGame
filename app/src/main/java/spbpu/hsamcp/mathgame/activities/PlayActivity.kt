@@ -26,6 +26,7 @@ class PlayActivity: AppCompatActivity() {
     private val TAG = "PlayActivity"
     private var scale = 1.0f
     private var needClear = false
+    private var loading = false
     private var scaleListener = MathScaleListener()
     private lateinit var scaleDetector: ScaleGestureDetector
     private lateinit var looseDialog: AlertDialog
@@ -89,11 +90,14 @@ class PlayActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        back(null)
+        if (!loading) {
+            super.onBackPressed()
+            back(null)
+        }
     }
 
     fun createLevelUI() {
+        loading = true
         timerView.text = ""
         globalMathView.text = ""
         endFormulaView.text = ""
@@ -104,6 +108,7 @@ class PlayActivity: AppCompatActivity() {
                 runOnUiThread {
                     MathScene.loadLevel()
                     progress.visibility = View.GONE
+                    loading = false
                 }
             }
             job.await()
@@ -111,17 +116,23 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun previous(v: View?) {
-        MathScene.previousStep()
+        if (!loading) {
+            MathScene.previousStep()
+        }
     }
 
     private fun restart(v: View?) {
-        scale = 1f
-        MathScene.restart()
+        if (!loading) {
+            scale = 1f
+            MathScene.restart()
+        }
     }
 
     private fun back(v: View?) {
-        MathScene.menu()
-        finish()
+        if (!loading) {
+            MathScene.menu()
+            finish()
+        }
     }
 
     fun showEndFormula(v: View?) {

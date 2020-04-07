@@ -41,5 +41,13 @@ class Operation(val name: String) {
                 else -> -1
             }
         }
+
+        fun isSetOperation(name: String): Boolean {
+            return when (name) {
+                in OperationType.SET_AND.names, in OperationType.SET_OR.names,
+                    in OperationType.SET_MINUS.names, in OperationType.SET_IMPLIC.names -> true
+                else -> false
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@ package spbpu.hsamcp.mathgame.mathResolver
 
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.text.style.ScaleXSpan
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.NodeType
 import spbpu.hsamcp.mathgame.common.Constants
@@ -17,6 +18,7 @@ open class MathResolverNodeBase(
     lateinit var leftTop: Point
     lateinit var rightBottom: Point
     var baseLineOffset: Int = 0
+    var numberMult: Float = 1f
 
     companion object {
         var checkSymbol = "A"
@@ -69,7 +71,34 @@ open class MathResolverNodeBase(
     }
 
     open fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        stringMatrix[leftTop.y] = stringMatrix[leftTop.y].replaceByIndex(leftTop.x, origin.value)
+        val value = getPrettyValue()
+        stringMatrix[leftTop.y] = stringMatrix[leftTop.y].replaceByIndex(leftTop.x, value)
+        if (!numberMult.equals(1f)) {
+            spannableArray.add(SpanInfo(ScaleXSpan(numberMult), leftTop.y, leftTop.x, leftTop.x + value.length))
+        }
+    }
+
+    private fun getPrettyValue(): String {
+        if (origin.parent == null) {
+            return origin.value
+        }
+        return if (Operation.isSetOperation(origin.parent!!.value)) {
+            when (origin.value) {
+                "0" -> {
+                    val zero = "∅"
+                    numberMult = fontPaint.measureText(checkSymbol) / fontPaint.measureText(zero)
+                    zero
+                }
+                "1" -> {
+                    val one = "U"
+                    numberMult = fontPaint.measureText(checkSymbol) / fontPaint.measureText(one)
+                    one
+                }
+                else -> origin.value
+            }
+        } else {
+            origin.value
+        }
     }
 
     fun getNeedBrackets(node: ExpressionNode): Boolean {
