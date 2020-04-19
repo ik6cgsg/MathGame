@@ -1,13 +1,12 @@
 {
-  "ignore": true,
-  "taskId": 117,
-  "name": "Level 18 Difficult",
-  "difficulty": 5.1,
+  "taskId": 1021,
+  "name": "Level 21 Custom",
+  "difficulty": 3.3,
   "type": "set",
-  "stepsNum": 5,
-  "time": 220,
-  "originalExpression": "!A&(!B\\C)",
-  "finalExpression": "!((!A->B)|C)",
+  "stepsNum": 7,
+  "time": 90,
+  "originalExpression": "!(A&B)\\B",
+  "finalExpression": "!B",
   "allSubstitutions":[
     {"left":"A|(B|C)","right":"A|B|C"},
     {"left":"A|B|C","right":"A|(B|C)"},
@@ -35,8 +34,6 @@
     {"left":"A\\B","right":"A&!B"},
     {"left":"!(!A)","right":"A"},
     {"left":"A","right":"!(!A)"},
-    {"left":"A&(A|B)","right":"A"},
-    {"left":"A","right":"A&(A|B)"},
     {"left":"A|A","right":"A"},
     {"left":"A","right":"A|A"},
     {"left":"A&A","right":"A"},
@@ -46,6 +43,30 @@
     {"left":"A\\B","right":"!(B->A)"},
     {"left":"!(B->A)","right":"A\\B"},
     {"left":"B->A","right":"!(A\\B)"},
-    {"left":"!(A\\B)","right":"B->A"}
+    {"left":"!(A\\B)","right":"B->A"},
+
+    {"left":"A|!A","right":"1"},
+    {"left":"!A|A","right":"1"},
+    {"left":"A&!A","right":"0"},
+    {"left":"!A&A","right":"0"},
+    {"left":"A|1","right":"1"},
+    {"left":"1|A","right":"1"},
+    {"left":"A&1","right":"A"},
+    {"left":"1&A","right":"A"},
+    {"left":"A|0","right":"A"},
+    {"left":"0|A","right":"A"},
+    {"left":"A&0","right":"0"},
+    {"left":"0&A","right":"0"},
+
+    {"left":"A","right":"A|0"},
+    {"left":"A","right":"A&1"},
+    {"left":"A\\0","right":"A"},
+    {"left":"A","right":"A\\0"},
+    {"left":"A\\1","right":"0"},
+    {"left":"0\\A","right":"0"},
+    {"left":"1\\A","right":"!A"},
+
+    {"left":"!0","right":"1"},
+    {"left":"!1","right":"0"}
   ]
 }

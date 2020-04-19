@@ -1,5 +1,6 @@
 {
-  "taskIdd": 6,
+  "ignore": true,
+  "taskId": 6,
   "name": "Trigonometry: Level 2",
   "difficulty": 5,
   "type": "trigonometry",

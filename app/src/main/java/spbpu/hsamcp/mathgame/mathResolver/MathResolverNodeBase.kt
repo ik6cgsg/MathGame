@@ -18,7 +18,8 @@ open class MathResolverNodeBase(
     lateinit var leftTop: Point
     lateinit var rightBottom: Point
     var baseLineOffset: Int = 0
-    var numberMult: Float = 1f
+    private var customized = false
+    lateinit var outputValue: String
 
     companion object {
         var checkSymbol = "A"
@@ -32,7 +33,8 @@ open class MathResolverNodeBase(
 
         fun createNode(expression: ExpressionNode, needBrackets: Boolean): MathResolverNodeBase {
             return if (expression.nodeType == NodeType.VARIABLE) {
-                MathResolverNodeBase(expression, false, null, expression.value.length, 1)
+                val (value, _) = CustomSymbolsHandler.getPrettyValue(expression)
+                MathResolverNodeBase(expression, false, null, value.length, 1)
             } else {
                 val operation = Operation(expression.value)
                 when (operation.type) {
@@ -66,38 +68,23 @@ open class MathResolverNodeBase(
     }
 
     open fun setCoordinates(leftTop: Point) {
+        val (value, customized) = CustomSymbolsHandler.getPrettyValue(origin)
+        if (customized) {
+            outputValue = value
+            this.customized = customized
+        } else {
+            outputValue = origin.value
+        }
         this.leftTop = leftTop
         rightBottom = Point(leftTop.x + length - 1, leftTop.y + height - 1)
     }
 
     open fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        val value = getPrettyValue()
-        stringMatrix[leftTop.y] = stringMatrix[leftTop.y].replaceByIndex(leftTop.x, value)
-        if (!numberMult.equals(1f)) {
-            spannableArray.add(SpanInfo(ScaleXSpan(numberMult), leftTop.y, leftTop.x, leftTop.x + value.length))
-        }
-    }
-
-    private fun getPrettyValue(): String {
-        if (origin.parent == null) {
-            return origin.value
-        }
-        return if (Operation.isSetOperation(origin.parent!!.value)) {
-            when (origin.value) {
-                "0" -> {
-                    val zero = "∅"
-                    numberMult = fontPaint.measureText(checkSymbol) / fontPaint.measureText(zero)
-                    zero
-                }
-                "1" -> {
-                    val one = "U"
-                    numberMult = fontPaint.measureText(checkSymbol) / fontPaint.measureText(one)
-                    one
-                }
-                else -> origin.value
-            }
-        } else {
-            origin.value
+        stringMatrix[leftTop.y] = stringMatrix[leftTop.y].replaceByIndex(leftTop.x, outputValue)
+        if (customized) {
+            val checkStr = checkSymbol.repeat(outputValue.length)
+            val numberMult = fontPaint.measureText(checkStr) / fontPaint.measureText(outputValue)
+            spannableArray.add(SpanInfo(ScaleXSpan(numberMult), leftTop.y, leftTop.x, leftTop.x + outputValue.length))
         }
     }
 

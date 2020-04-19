@@ -37,15 +37,15 @@ class Request {
                 async {
                     while (true) {
                         while (reqQueue.isNotEmpty() && isConnected) {
-                            val response = asyncRequest(reqQueue.last)
-                            Log.d("Request", "sended")
-                            if (response.returnValue != 500 || response.returnValue != 404) {
-                                try {
+                            try {
+                                val response = asyncRequest(reqQueue.last)
+                                Log.d("Request", "sended")
+                                if (response.returnValue != 500 || response.returnValue != 404) {
                                     reqQueue.removeLast()
                                     Log.d("Request", "removed")
-                                } catch (e: Exception) {
-                                    Log.e("Request", e.message)
                                 }
+                            } catch (e: Exception) {
+                                Log.e("Request", e.message)
                             }
                         }
                     }

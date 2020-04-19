@@ -1,5 +1,6 @@
 {
-  "taskIdd": 1,
+  "ignore": true,
+  "taskId": 1,
   "name": "Algebra: Level 1",
   "difficulty": 6,
   "type": "algebra",

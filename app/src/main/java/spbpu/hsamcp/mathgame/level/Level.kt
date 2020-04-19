@@ -19,10 +19,12 @@ data class RuleStr(val left: String, val right: String)
 enum class Type(val str: String) {
     SET("setTheory"),
     ALGEBRA("algebra"),
-    TRIGONOMETRY("trigonometry")
+    TRIGONOMETRY("trigonometry"),
+    OTHER("other")
 }
 
 enum class LevelField(val str: String) {
+    IGNORE("ignore"),
     TASK_ID("taskId"),
     NAME("name"),
     DIFFICULTY("difficulty"),
@@ -144,7 +146,11 @@ class Level(var fileName: String) {
 
     private fun parse(levelJson: JSONObject): Boolean {
         if (!levelJson.has(LevelField.TASK_ID.str) || !levelJson.has(LevelField.NAME.str) ||
-            !levelJson.has(LevelField.DIFFICULTY.str) || !levelJson.has(LevelField.TYPE.str)) {
+            !levelJson.has(LevelField.DIFFICULTY.str) || !levelJson.has(LevelField.TYPE.str) ||
+            !levelJson.has(LevelField.ORIGINAL_EXPRESSION.str) || !levelJson.has(LevelField.FINAL_EXPRESSION.str)) {
+            return false
+        }
+        if (levelJson.optBoolean(LevelField.IGNORE.str, false)) {
             return false
         }
         taskId = levelJson.getInt(LevelField.TASK_ID.str)
@@ -171,7 +177,7 @@ class Level(var fileName: String) {
             longExpressionCroppingPolicy)
         startFormulaStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
         endFormulaStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
-        endPatternStr = if (levelJson.has(LevelField.FINAL_PATTERN.str)) levelJson.getString(LevelField.FINAL_PATTERN.str) else ""
+        endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         val rulesJson = levelJson.getJSONArray(LevelField.ALL_SUBSTITUTIONS.str)
         for (i in 0 until rulesJson.length()) {
             val rule = rulesJson.getJSONObject(i)
@@ -184,14 +190,14 @@ class Level(var fileName: String) {
 
     fun checkEnd(formula: ExpressionNode): Boolean {
         Log.d(TAG, "checkEnd")
-        if (endPatternStr.isNullOrBlank()) {
+        return if (endPatternStr.isBlank()) {
             val currStr = expressionToString(formula)
             Log.d(TAG, "current: $currStr | end: $endFormulaStr")
-            return currStr == endFormulaStr
+            currStr == endFormulaStr
         } else {
             val currStr = expressionToString(formula)
-            Log.d(TAG, "current: $currStr | end: $endPatternStr")
-            return compareByPattern(formula, endPattern)
+            Log.d(TAG, "current: $currStr | pattern: $endPatternStr")
+            compareByPattern(formula, endPattern)
         }
     }
 

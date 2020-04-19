@@ -59,13 +59,13 @@ class MathResolver {
                 leftCorr = correctMatrix(matrixLeft, leadingTree, secTree)
             }
             val ruleStr = SpannableStringBuilder(mergeMatrices(matrixLeft, matrixRight, leadingTree.baseLineOffset))
-            val totalLen = left.tree.length + ruleDelim.length + right.tree.length + 1
+            val totalLen = matrixLeft[0].length + ruleDelim.length + matrixRight[0].length + 1
             for (ls in leftSpans) {
                 val offset = (ls.strInd + leftCorr) * totalLen
                 ruleStr.setSpan(ls.span, offset + ls.start, offset + ls.end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             }
             for (rs in rightSpans) {
-                val offset = (rs.strInd + rightCorr) * totalLen + left.tree.length + ruleDelim.length
+                val offset = (rs.strInd + rightCorr) * totalLen + matrixLeft[0].length + ruleDelim.length
                 ruleStr.setSpan(rs.span, offset + rs.start, offset + rs.end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             }
             return ruleStr

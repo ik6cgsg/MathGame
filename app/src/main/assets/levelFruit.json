@@ -1,0 +1,15 @@
+{
+  "ignore": false,
+  "taskId": 3030,
+  "name": "Fruit level",
+  "difficulty": 1,
+  "type": "other",
+  "stepsNum": 1,
+  "time": 180,
+  "originalExpression": "cherry * cherry",
+  "finalExpression": "cherry ^ 2",
+  "allSubstitutions": [
+    {"left": "cherry * cherry", "right": "cherry ^ 2"},
+    {"left": "cherry * cherry", "right": "(cherry ^ 2 / (cherry + cherry)) * 2 * cherry"}
+  ]
+}

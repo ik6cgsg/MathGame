@@ -1,5 +1,6 @@
 {
-  "taskIdd": 5,
+  "ignore": true,
+  "taskId": 5,
   "name": "Set: Level 3",
   "difficulty": 4,
   "type": "set",

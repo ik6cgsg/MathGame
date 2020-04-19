@@ -47,7 +47,7 @@ class LevelsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_levels)
         MathScene.levelsActivity = WeakReference(this)
         val levelNames = assets.list("")!!
-            .filter { """level\d+.json""".toRegex().matches(it) }
+            .filter { """level.*.json""".toRegex(RegexOption.DOT_MATCHES_ALL).matches(it) }
         levels = ArrayList()
         for (name in levelNames) {
             val loadedLevel = Level.create(name, this)
@@ -206,7 +206,7 @@ class LevelsActivity: AppCompatActivity() {
             .setNegativeButton("Exit") { dialog: DialogInterface, id: Int ->
                 val homeIntent = Intent(Intent.ACTION_MAIN)
                 homeIntent.addCategory(Intent.CATEGORY_HOME)
-                homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(homeIntent)
             }
             .setCancelable(false)
