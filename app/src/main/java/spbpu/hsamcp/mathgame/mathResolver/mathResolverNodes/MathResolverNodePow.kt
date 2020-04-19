@@ -13,7 +13,7 @@ class MathResolverNodePow(
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
         for (node in origin.children) {
-            val elem = createNode(node, getNeedBrackets(node))
+            val elem = createNode(node, getNeedBrackets(node), style)
             elem.setNodesFromExpression()
             children.add(elem)
             height += elem.height

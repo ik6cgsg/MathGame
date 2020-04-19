@@ -1,0 +1,22 @@
+{
+  "taskId": 0,
+  "name": "Level 0 Tutorial",
+  "difficulty": 0,
+  "type": "other",
+  "stepsNum": 1,
+  "time": 60,
+  "originalExpression": "2+2",
+  "finalExpression": "4",
+  "allSubstitutions":[
+    {"left":"2+2","right":"4"},
+    {"left":"2+2","right":"4-1+1"},
+    {"left":"2+2","right":"2*2"},
+    {"left":"2+2","right":"2^2"},
+    {"left":"2+2","right":"4^1"},
+    {"left":"2+2","right":"1+3"},
+    {"left":"2+2","right":"1+2+1"},
+    {"left":"2+2","right":"1+1+1+1"},
+    {"left":"2+2","right":"2^1*2^1"},
+    {"left":"2+2","right":"3+1"}
+  ]
+}

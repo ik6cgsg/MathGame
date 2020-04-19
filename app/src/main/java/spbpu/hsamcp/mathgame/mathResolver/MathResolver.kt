@@ -14,6 +14,11 @@ fun String.replaceByIndex(i: Int, replacement: String): String {
     return this.substring(0, i) + replacement + this.substring(i + replacement.length)
 }
 
+enum class VariableStyle {
+    DEFAULT,
+    GREEK
+}
+
 class MathResolver {
     companion object {
         private lateinit var stringMatrix: ArrayList<String>
@@ -24,17 +29,17 @@ class MathResolver {
         //private const val ruleDelim = " → "
         private const val ruleDelim = " ~> "
 
-        fun resolveToPlain(expression: ExpressionNode): MathResolverPair {
-            currentViewTree = MathResolverNodeBase.getTree(expression)
+        fun resolveToPlain(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT): MathResolverPair {
+            currentViewTree = MathResolverNodeBase.getTree(expression, style)
             return MathResolverPair(currentViewTree, getPlainString())
         }
 
-        fun resolveToPlain(expression: String): MathResolverPair {
+        fun resolveToPlain(expression: String, style: VariableStyle = VariableStyle.DEFAULT): MathResolverPair {
             val realExpression = stringToExpression(expression)
             if (realExpression.identifier.contentEquals("()")) {
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
-            currentViewTree = MathResolverNodeBase.getTree(realExpression)
+            currentViewTree = MathResolverNodeBase.getTree(realExpression, style)
             return MathResolverPair(currentViewTree, getPlainString())
         }
 

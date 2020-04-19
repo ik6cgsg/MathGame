@@ -18,8 +18,9 @@ open class MathResolverNodeBase(
     lateinit var leftTop: Point
     lateinit var rightBottom: Point
     var baseLineOffset: Int = 0
+    lateinit var style: VariableStyle
     private var customized = false
-    lateinit var outputValue: String
+    private lateinit var outputValue: String
 
     companion object {
         var checkSymbol = "A"
@@ -31,10 +32,17 @@ open class MathResolverNodeBase(
             fp
         }()
 
-        fun createNode(expression: ExpressionNode, needBrackets: Boolean): MathResolverNodeBase {
-            return if (expression.nodeType == NodeType.VARIABLE) {
-                val (value, _) = CustomSymbolsHandler.getPrettyValue(expression)
-                MathResolverNodeBase(expression, false, null, value.length, 1)
+        fun createNode(expression: ExpressionNode, needBrackets: Boolean, style: VariableStyle): MathResolverNodeBase {
+            val node = if (expression.nodeType == NodeType.VARIABLE) {
+                val (value, customized) = CustomSymbolsHandler.getPrettyValue(expression, style)
+                val variable = MathResolverNodeBase(expression, false, null, value.length, 1)
+                variable.customized = customized
+                variable.outputValue =  if (customized) {
+                    value
+                } else {
+                    expression.value
+                }
+                variable
             } else {
                 val operation = Operation(expression.value)
                 when (operation.type) {
@@ -51,10 +59,12 @@ open class MathResolverNodeBase(
                     OperationType.SET_IMPLIC -> MathResolverSetNodeImplic(expression, needBrackets, operation)
                 }
             }
+            node.style = style
+            return node
         }
 
-        fun getTree(expression: ExpressionNode): MathResolverNodeBase {
-            val root = createNode(expression.children[0], false)
+        fun getTree(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT): MathResolverNodeBase {
+            val root = createNode(expression.children[0], false, style)
             root.setNodesFromExpression()
             root.setCoordinates(Point(0, 0))
             return root
@@ -68,13 +78,6 @@ open class MathResolverNodeBase(
     }
 
     open fun setCoordinates(leftTop: Point) {
-        val (value, customized) = CustomSymbolsHandler.getPrettyValue(origin)
-        if (customized) {
-            outputValue = value
-            this.customized = customized
-        } else {
-            outputValue = origin.value
-        }
         this.leftTop = leftTop
         rightBottom = Point(leftTop.x + length - 1, leftTop.y + height - 1)
     }

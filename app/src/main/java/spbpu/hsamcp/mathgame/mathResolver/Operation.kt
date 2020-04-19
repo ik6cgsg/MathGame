@@ -6,7 +6,7 @@ enum class OperationType(val names: Array<String>) {
     MINUS(arrayOf("-")),
     PLUS(arrayOf("+")),
     MULT(arrayOf("*")),
-    FUNCTION(arrayOf("cos", "sin", "tg", "ctg")),
+    FUNCTION(arrayOf("")),
     SET_AND(arrayOf("&", "and")),
     SET_OR(arrayOf("|", "or")),
     SET_MINUS(arrayOf("\\", "set-")),
@@ -20,9 +20,14 @@ class Operation(val name: String) {
 
     init {
         priority = getPriority(name)
-        type = OperationType.values().filter {
+        val types = OperationType.values().filter {
             name in it.names
-        }[0]
+        }
+        type = if (types.isEmpty()) {
+            OperationType.FUNCTION
+        } else {
+            types[0]
+        }
     }
 
     companion object {

@@ -1,0 +1,14 @@
+{
+  "ignore": false,
+  "taskId": 3031,
+  "name": "Test combinatorics output",
+  "difficulty": 3,
+  "type": "other",
+  "stepsNum": 1,
+  "time": 60,
+  "originalExpression": "V(m, n) / A(k, k-m+1)",
+  "finalExpression": "A(m+n-1, m+n-1-k) / P(n)",
+  "allSubstitutions": [
+    {"left": "V(m, n) / A(k, k-m+1)", "right": "A(m+n-1, m+n-1-k) / P(n)"}
+  ]
+}

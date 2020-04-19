@@ -9,13 +9,14 @@ class MathResolverNodeFunction(
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
+    private val delim = ", "
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
-        length += op!!.name.length + 2
+        length += op!!.name.length + 2 + delim.length * (origin.children.size - 1)
         var maxH = 0
         for (node in origin.children) {
-            val elem = createNode(node, getNeedBrackets(node))
+            val elem = createNode(node, getNeedBrackets(node), style)
             elem.setNodesFromExpression()
             children.add(elem)
             if (elem.height > maxH) {
@@ -37,7 +38,7 @@ class MathResolverNodeFunction(
         var currLen = leftTop.x + op!!.name.length + 1
         for (child in children) {
             child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
-            currLen += child.length
+            currLen += child.length + delim.length
         }
     }
 
@@ -51,7 +52,10 @@ class MathResolverNodeFunction(
             }
             child.getPlainNode(stringMatrix, spannableArray)
             curInd += child.length
-            if (ind == children.size - 1) {
+            if (ind != children.size - 1) {
+                stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, delim)
+                curInd += delim.length
+            } else {
                 stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, ")")
             }
         }

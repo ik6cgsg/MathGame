@@ -16,7 +16,7 @@ class MathResolverNodeDiv(
         super.setNodesFromExpression()
         var maxLen = 0
         for (node in origin.children) {
-            val elem = createNode(node, false)
+            val elem = createNode(node, false, style)
             elem.setNodesFromExpression()
             children.add(elem)
             height += elem.height + 1
