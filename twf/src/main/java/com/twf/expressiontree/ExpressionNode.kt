@@ -6,6 +6,7 @@ import com.twf.config.FunctionStringDefinition
 import com.twf.config.StringDefinitionType
 import com.twf.standartlibextensions.abs
 import com.twf.standartlibextensions.isNumberPart
+import com.twf.standartlibextensions.isSign
 import kotlin.math.max
 
 enum class NodeType {
@@ -142,7 +143,19 @@ data class ExpressionNode(
     fun toUserView(functionConfiguration: FunctionConfiguration = FunctionConfiguration(), getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }): String {
         var result = toUserViewRec(functionConfiguration, getNodeValueString)
         if (result.first() == '(' && result.last() == ')') {
-            result = result.substring(1, result.length - 1)
+            var numberOfOpenBrackets = 1
+            var currentIndex = 1
+            while (currentIndex < result.length && numberOfOpenBrackets > 0){
+                if (result[currentIndex] == '('){
+                    numberOfOpenBrackets++
+                } else if (result[currentIndex] == ')') {
+                    numberOfOpenBrackets--
+                }
+                currentIndex++
+            }
+            if (currentIndex >= result.lastIndex) {
+                result = result.substring(1, result.length - 1)
+            }
         }
         return result
     }
@@ -183,10 +196,20 @@ data class ExpressionNode(
                     }
                 }
                 StringDefinitionType.UNARY_LEFT_OPERATION -> {
-                    identifier = functionIdentifier.userRepresentation + children.first().toUserViewRec(functionConfiguration)
+                    val childUserRepresentation = children.first().toUserViewRec(functionConfiguration)
+                    identifier = functionIdentifier.userRepresentation + if (childUserRepresentation.first().isSign(false)){
+                        "($childUserRepresentation)"
+                    } else {
+                        childUserRepresentation
+                    }
                 }
                 StringDefinitionType.UNARY_RIGHT_OPERATION -> {
-                    identifier = children.first().toUserViewRec(functionConfiguration) + functionIdentifier.userRepresentation
+                    val childUserRepresentation = children.first().toUserViewRec(functionConfiguration)
+                    identifier = if (childUserRepresentation.first().isSign(false)){
+                        "($childUserRepresentation)"
+                    } else {
+                        childUserRepresentation
+                    } + functionIdentifier.userRepresentation
                 }
             }
         } else {
@@ -243,6 +266,17 @@ data class ExpressionNode(
             return max(maxMinNumberOfPointsForEquality, functionStringDefinition?.function?.minNumberOfPointsForEquality
                     ?: 1)
         }
+    }
+
+    fun containsVariables(): Boolean {
+        if (nodeType == NodeType.VARIABLE) {
+            if (value.toDoubleOrNull() == null)
+                return true
+        } else for (child in children) {
+            if (child.containsVariables())
+                return true
+        }
+        return false
     }
 
     fun getVariableNames(): Set<String> {
@@ -541,7 +575,7 @@ class ExpressionNodeConstructor(val functionConfiguration: FunctionConfiguration
                     else if (identifier[i] == ')') openBracketCount--
                 }
             }
-            newNode.functionStringDefinition = functionConfiguration.fastFindByNameAndNumberOfArguments(newNode.value, newNode.children.size)
+            newNode.functionStringDefinition = functionConfiguration.fastFindStringDefinitionByNameAndNumberOfArguments(newNode.value, newNode.children.size)
             return newNode
         } else {
             val newValue = compiledImmediateVariableReplacements.get(identifier)

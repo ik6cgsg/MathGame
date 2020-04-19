@@ -3,15 +3,13 @@ package spbpu.hsamcp.mathgame.level
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
-import com.twf.api.expressionSubstitutionFromStrings
-import com.twf.api.expressionToString
-import com.twf.api.findSubstitutionPlacesInExpression
-import com.twf.api.stringToExpression
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import org.json.JSONObject
 import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
+import com.twf.api.*
+import com.twf.expressiontree.ExpressionStructureConditionNode
 import com.twf.factstransformations.Rule
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
@@ -38,6 +36,7 @@ enum class LevelField(val str: String) {
     LONG_EXPRESSION_CROPPING_POLICY("longExpressionCroppingPolicy"),
     ORIGINAL_EXPRESSION("originalExpression"),
     FINAL_EXPRESSION("finalExpression"),
+    FINAL_PATTERN("finalPattern"),
     ALL_SUBSTITUTIONS("allSubstitutions"),
     RULE_LEFT("left"),
     RULE_RIGHT("right"),
@@ -50,7 +49,9 @@ class Level(var fileName: String) {
     lateinit var startFormula: ExpressionNode
     private lateinit var startFormulaStr: String
     lateinit var endFormula: ExpressionNode
-    private lateinit var endFormulaStr: String
+    lateinit var endFormulaStr: String
+    lateinit var endPattern: ExpressionStructureConditionNode
+    lateinit var endPatternStr: String
     lateinit var type: Type
     var taskId = 0
     var name = "test"
@@ -113,6 +114,10 @@ class Level(var fileName: String) {
                 else -> stringToExpression(endFormulaStr)
             }
             endFormulaStr = expressionToString(endFormula)
+            endPattern = when (type) {
+                Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
+                else -> stringToExpressionStructurePattern(endPatternStr)
+            }
             for (ruleStr in rulesStr) {
                 val ruleSubst = when (type) {
                     Type.SET -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right, type.str)
@@ -166,6 +171,7 @@ class Level(var fileName: String) {
             longExpressionCroppingPolicy)
         startFormulaStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
         endFormulaStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
+        endPatternStr = if (levelJson.has(LevelField.FINAL_PATTERN.str)) levelJson.getString(LevelField.FINAL_PATTERN.str) else ""
         val rulesJson = levelJson.getJSONArray(LevelField.ALL_SUBSTITUTIONS.str)
         for (i in 0 until rulesJson.length()) {
             val rule = rulesJson.getJSONObject(i)
@@ -178,9 +184,15 @@ class Level(var fileName: String) {
 
     fun checkEnd(formula: ExpressionNode): Boolean {
         Log.d(TAG, "checkEnd")
-        val currStr = expressionToString(formula)
-        Log.d(TAG, "current: $currStr | end: $endFormulaStr")
-        return currStr == endFormulaStr
+        if (endPatternStr.isNullOrBlank()) {
+            val currStr = expressionToString(formula)
+            Log.d(TAG, "current: $currStr | end: $endFormulaStr")
+            return currStr == endFormulaStr
+        } else {
+            val currStr = expressionToString(formula)
+            Log.d(TAG, "current: $currStr | end: $endPatternStr")
+            return compareByPattern(formula, endPattern)
+        }
     }
 
     fun getAward(resultTime: Long, resultStepsNum: Float): Award {

@@ -6,7 +6,8 @@
   "stepsNum": 1,
   "time": 60,
   "originalExpression": "A&(A|B)",
-  "finalExpression": "A",
+  "finalExpression": "DNF",
+  "finalPattern": "or : (and) : : : not",
   "allSubstitutions":[
     {"left":"A|(B|C)","right":"A|B|C"},
     {"left":"A|B|C","right":"A|(B|C)"},

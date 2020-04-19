@@ -103,7 +103,11 @@ class MathScene {
             if (currentLevel != null) {
                 clearRules()
                 activity.globalMathView.setFormula(currentLevel!!.startFormula.clone())
-                activity.endFormulaView.text = MathResolver.resolveToPlain(currentLevel!!.endFormula).matrix
+                activity.endFormulaView.text = if (currentLevel!!.endPatternStr.isBlank()){
+                    MathResolver.resolveToPlain(currentLevel!!.endFormula).matrix
+                } else {
+                    currentLevel!!.endFormulaStr
+                }
                 if (activity.endFormulaView.visibility != View.VISIBLE) {
                     activity.showEndFormula(null)
                 }

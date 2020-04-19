@@ -9,6 +9,7 @@ import com.twf.platformdependent.escapeCharacters
 fun stringToExpression(
         string: String,
         scope: String = "",
+        isMathMl: Boolean = false,
         functionConfiguration: FunctionConfiguration = FunctionConfiguration(
                 scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
         ),
@@ -16,15 +17,29 @@ fun stringToExpression(
 ): ExpressionNode {
     val expressionTreeParser = ExpressionTreeParser(string,
             functionConfiguration = compiledConfiguration.functionConfiguration,
-            compiledImmediateVariableReplacements = compiledConfiguration.compiledImmediateVariableReplacements)
+            compiledImmediateVariableReplacements = compiledConfiguration.compiledImmediateVariableReplacements, isMathML = isMathMl)
     expressionTreeParser.parse()
     return expressionTreeParser.root
 }
 
+fun stringToStructureString(
+        string: String,
+        scope: String = "",
+        isMathMl: Boolean = false,
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
+        ),
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration(functionConfiguration = functionConfiguration)
+) = expressionToStructureString(stringToExpression(string, scope, isMathMl, functionConfiguration, compiledConfiguration))
+
 fun structureStringToExpression(
-        structureString: String
+        structureString: String,
+        scope: String = "",
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
+        )
 ): ExpressionNode {
-    val expressionNodeConstructor = ExpressionNodeConstructor()
+    val expressionNodeConstructor = ExpressionNodeConstructor(functionConfiguration)
     return expressionNodeConstructor.construct(structureString)
 }
 
@@ -49,6 +64,25 @@ fun compareWithoutSubstitutions(
 ) = compiledConfiguration.factComporator.expressionComporator.compareWithoutSubstitutions(left, right)
 
 
+//compare expression by pattern
+fun compareByPattern(
+        expression: ExpressionNode,
+        pattern: ExpressionStructureConditionNode
+) = checkExpressionStructure(expression, pattern)
+
+
+fun stringToExpressionStructurePattern (
+        string: String,
+        scope: String = "",
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
+        )
+): ExpressionStructureConditionNode {
+    val expressionStructureConditionConstructor = ExpressionStructureConditionConstructor()
+    return expressionStructureConditionConstructor.parse(string)
+}
+
+
 //substitutions
 fun expressionSubstitutionFromStrings(
         left: String,
@@ -62,6 +96,17 @@ fun expressionSubstitutionFromStrings(
 ) = ExpressionSubstitution(
         stringToExpression(left, compiledConfiguration = compiledConfiguration),
         stringToExpression(right, compiledConfiguration = compiledConfiguration),
+        basedOnTaskContext = basedOnTaskContext
+)
+
+//substitutions
+fun expressionSubstitutionFromStructureStrings(
+        leftStructureString: String,
+        rightStructureString: String,
+        basedOnTaskContext: Boolean = false
+) = ExpressionSubstitution(
+        structureStringToExpression(leftStructureString),
+        structureStringToExpression(rightStructureString),
         basedOnTaskContext = basedOnTaskContext
 )
 
@@ -110,6 +155,37 @@ fun compareWithoutSubstitutions(
         compiledConfiguration = compiledConfiguration
 )
 
+fun compareByPattern(
+        expression: String,
+        pattern: String,
+        scope: String = "",
+        notChangesOnVariablesFunction: String = "+;-;*;/;^",
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet(),
+                notChangesOnVariablesInComparisonFunctionFilter = notChangesOnVariablesFunction.split(";").filter { it.isNotEmpty() }.toSet()
+        ),
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration(functionConfiguration = functionConfiguration)
+) = compareByPattern(
+        stringToExpression(expression, compiledConfiguration = compiledConfiguration),
+        stringToExpressionStructurePattern(pattern, functionConfiguration = functionConfiguration)
+)
+
+fun compareWithoutSubstitutionsStructureStrings(
+        leftStructureString: String,
+        rightStructureString: String,
+        scope: String = "",
+        notChangesOnVariablesFunction: String = "+;-;*;/;^",
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet(),
+                notChangesOnVariablesInComparisonFunctionFilter = notChangesOnVariablesFunction.split(";").filter { it.isNotEmpty() }.toSet()
+        ),
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration(functionConfiguration = functionConfiguration)
+) = compareWithoutSubstitutions(
+        structureStringToExpression(leftStructureString),
+        structureStringToExpression(rightStructureString),
+        compiledConfiguration = compiledConfiguration
+)
+
 data class SubstitutionPlaceOfflineData(
         val parentStartPosition: Int,
         val parentEndPosition: Int,
@@ -139,6 +215,33 @@ fun findSubstitutionPlacesCoordinatesInExpressionJSON(
             stringToExpression(expression, compiledConfiguration = compiledConfiguration),
             expressionSubstitutionFromStrings(substitutionLeft, substitutionRight,
                     basedOnTaskContext = basedOnTaskContext, compiledConfiguration = compiledConfiguration)
+    )
+
+    val data = substitutionPlaces.map {
+        SubstitutionPlaceOfflineData(
+                it.nodeParent.startPosition, it.nodeParent.endPosition,
+                it.nodeParent.children[it.nodeChildIndex].startPosition,
+                it.nodeParent.children[it.nodeChildIndex].endPosition)
+    }.joinToString(separator = ",") { it.toJSON() }
+
+    return "{\"substitutionPlaces\":[$data]}"
+}
+
+fun findStructureStringsSubstitutionPlacesCoordinatesInExpressionJSON(
+        expression: String,
+        substitutionLeftStructureString: String,
+        substitutionRightStructureString: String,
+        scope: String = "",
+        basedOnTaskContext: Boolean = false,
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
+        ),
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration(functionConfiguration = functionConfiguration)
+): String {
+    val substitutionPlaces = findSubstitutionPlacesInExpression(
+            stringToExpression(expression, compiledConfiguration = compiledConfiguration),
+            expressionSubstitutionFromStructureStrings(substitutionLeftStructureString, substitutionRightStructureString,
+                    basedOnTaskContext = basedOnTaskContext)
     )
 
     val data = substitutionPlaces.map {
@@ -191,6 +294,46 @@ fun applyExpressionBySubstitutionPlaceCoordinates(
     return escapeCharacters(expressionToString(result), characterEscapingDepth)
 }
 
+fun applyExpressionByStructureStringsSubstitutionPlaceCoordinates(
+        expression: String,
+        substitutionLeftStructureString: String,
+        substitutionRightStructureString: String,
+        parentStartPosition: Int,
+        parentEndPosition: Int,
+        startPosition: Int,
+        endPosition: Int,
+        scope: String = "",
+        basedOnTaskContext: Boolean = false,
+        characterEscapingDepth: Int = 1,
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
+        ),
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration(functionConfiguration = functionConfiguration)
+): String {
+    val actualExpression = stringToExpression(expression, compiledConfiguration = compiledConfiguration)
+    val actualSubstitution = expressionSubstitutionFromStructureStrings(substitutionLeftStructureString, substitutionRightStructureString,
+            basedOnTaskContext = basedOnTaskContext)
+    val substitutionPlaces = findSubstitutionPlacesInExpression(
+            actualExpression,
+            actualSubstitution
+    )
+
+    val actualPlace = substitutionPlaces.filter {
+        it.nodeParent.startPosition == parentStartPosition &&
+                it.nodeParent.endPosition == parentEndPosition &&
+                it.nodeParent.children[it.nodeChildIndex].startPosition == startPosition &&
+                it.nodeParent.children[it.nodeChildIndex].endPosition == endPosition
+    }
+
+    val result = if (actualPlace.isNotEmpty()) {
+        applySubstitution(actualExpression, actualSubstitution, actualPlace)
+    } else {
+        actualExpression
+    }
+
+    return escapeCharacters(expressionToString(result), characterEscapingDepth)
+}
+
 fun generateTaskInJSON(
         expressionSubstitutions: String, //';' separated equalities
         stepsCount: Int,
@@ -206,6 +349,38 @@ fun generateTaskInJSON(
             expressionSubstitutions.split(";").map {
                 val parts = it.split("=")
                 expressionSubstitutionFromStrings(parts.first(), parts.last(), compiledConfiguration = compiledConfiguration)
+            },
+            stepsCount,
+            originalExpressions.split(";").map { stringToExpression(it, compiledConfiguration = compiledConfiguration) }
+    )
+    return escapeCharacters("{" +
+            "\"originalExpression\":\"${expressionToString(expressionTask.originalExpression)}\"," +
+            "\"finalExpression\":\"${expressionToString(expressionTask.finalExpression)}\"," +
+            "\"requiredSubstitutions\":[${
+            expressionTask.requiredSubstitutions.joinToString (separator = ",") { "{\"left\":\"${expressionToString(it.left)}\",\"right\":\"${expressionToString(it.right)}\"}" }
+            }]," +
+            "\"allSubstitutions\":[${
+            expressionTask.allSubstitutions.joinToString (separator = ",") { "{\"left\":\"${expressionToString(it.left)}\",\"right\":\"${expressionToString(it.right)}\"}" }
+            }]" +
+            "}",
+            characterEscapingDepth)
+}
+
+fun generateTaskByStructureStringsSubstitutionsInJSON(
+        expressionSubstitutions: String, //';' separated equalities
+        stepsCount: Int,
+        originalExpressions: String, //';' separated
+        scope: String = "", //';' separated
+        characterEscapingDepth: Int = 1,
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(
+                scopeFilter = scope.split(";").filter { it.isNotEmpty() }.toSet()
+        ),
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration(functionConfiguration = functionConfiguration)
+): String {
+    val expressionTask = generateTask(
+            expressionSubstitutions.split(";").map {
+                val parts = it.split("=")
+                expressionSubstitutionFromStructureStrings(parts.first(), parts.last())
             },
             stepsCount,
             originalExpressions.split(";").map { stringToExpression(it, compiledConfiguration = compiledConfiguration) }

@@ -6,7 +6,8 @@
   "stepsNum": 3,
   "time": 150,
   "originalExpression": "A\\(B|C)",
-  "finalExpression": "(A\\B)\\C",
+  "finalExpression": "KNF",
+  "finalPattern": "and : (or) : : : not",
   "allSubstitutions":[
     {"left":"A|(B|C)","right":"A|B|C"},
     {"left":"A|B|C","right":"A|(B|C)"},

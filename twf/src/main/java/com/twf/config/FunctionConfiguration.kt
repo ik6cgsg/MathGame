@@ -1,7 +1,5 @@
 package com.twf.config
 
-import com.twf.expressiontree.ExpressionNode
-
 enum class StringDefinitionType {
     BINARY_OPERATION,
     UNARY_LEFT_OPERATION,
@@ -117,9 +115,9 @@ class FunctionConfiguration (
     )
 
     var treeTransformationRules = mutableListOf<TreeTransformationRule>(
-            TreeTransformationRule("sin(x)^2", "1 - cos(x)^2"),
+            TreeTransformationRule("sin(x)^2", "1 - cos(x)^2"), //
             TreeTransformationRule("sin(pi/2 - x)", "cos(x)"),
-            TreeTransformationRule("sin(x)^2", "1 - cos(x)^2"),
+            TreeTransformationRule("sin(x)^2", "1 - cos(x)^2"), // is it ok???
             TreeTransformationRule("S(i, a, a, f(i))", "f(a)"),
             TreeTransformationRule("S(i, a, b, f(i))", "S(i, a, b-1, f(i)) + f(b)"),
             TreeTransformationRule("S(i, a, b, f(i))", "S(i, a+1, b, f(i)) + f(a)"),
@@ -346,22 +344,32 @@ class FunctionConfiguration (
             FunctionStringDefinition(functionPropertiesByName["g_1"]!!, StringDefinitionType.FUNCTION, "g")
     )
 
-    var functionStringDefinitionByName = stringDefinitions
+    var functionStringDefinitionByIdentifier = stringDefinitions
             .filter { it.definitionType == StringDefinitionType.FUNCTION }
             .associateBy { FunctionIdentifier.getIdentifier(it.definition, it.function.numberOfArguments) }
 
+    var stringDefinitionByName = stringDefinitions.groupBy { it.definition }
+
+    var stringDefinitionByFunctionName = stringDefinitions.groupBy { it.function.function }
+
+    fun fastFindStringDefinitionByNameAndNumberOfArguments(name: String, numberOfArguments: Int): FunctionStringDefinition? {
+        val actualStringDefinitions = stringDefinitionByFunctionName.get(name) ?: return null
+        return actualStringDefinitions.firstOrNull { numberOfArguments == it.function.numberOfArguments } ?: actualStringDefinitions.firstOrNull { it.function.numberOfArguments == -1 }
+    }
+
     fun fastFindByNameAndNumberOfArguments(name: String, numberOfArguments: Int) =
-            functionStringDefinitionByName.get(FunctionIdentifier.getIdentifier(name, numberOfArguments)) ?: functionStringDefinitionByName.get(FunctionIdentifier.getIdentifier(name, -1))
+            functionStringDefinitionByIdentifier.get(FunctionIdentifier.getIdentifier(name, numberOfArguments)) ?: functionStringDefinitionByIdentifier.get(FunctionIdentifier.getIdentifier(name, -1))
 
     fun findFunctionStringDefinition(name: String, type: StringDefinitionType, numberOfArguments: Int,
                                      nameIsPossible: Boolean = false, subAsLast: Boolean = false, filter: Set<String> = scopeFilter): FunctionStringDefinition? {
         var result: FunctionStringDefinition? = null
-        for (stringDefinition in stringDefinitions.filter { it.filter.isBlank() || it.filter in filter }) {
-            if (stringDefinition.definitionType == type && stringDefinition.definition == name && subAsLast == stringDefinition.subAsLast &&
+        val actualStringDefinitions = stringDefinitionByName.get(name) ?: return result
+        for (stringDefinition in actualStringDefinitions.filter { it.filter.isBlank() || it.filter in filter }) {
+            if (stringDefinition.definitionType == type && subAsLast == stringDefinition.subAsLast &&
                     (nameIsPossible || !stringDefinition.function.isNameForRuleDesignations))
                 if (stringDefinition.function.numberOfArguments == -1 || stringDefinition.function.numberOfArguments == numberOfArguments ||
                         (subAsLast && stringDefinition.function.numberOfArguments == 2)) {
-                    if (stringDefinition.filter.isNotBlank()){
+                    if (stringDefinition.filter.isNotBlank()) {
                         return stringDefinition
                     } else if (result == null || result.filter == ""){
                         result = stringDefinition
