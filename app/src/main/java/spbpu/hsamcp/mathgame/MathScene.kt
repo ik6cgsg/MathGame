@@ -153,8 +153,8 @@ class MathScene {
         }
 
         fun wasLevelPaused(): Boolean {
-            return currentLevel!!.endless && currentLevel!!.lastResult != null &&
-                currentLevel!!.lastResult!!.award.value == AwardType.PAUSED
+            return currentLevel!!.endless && (currentLevel!!.lastResult == null ||
+                currentLevel!!.lastResult!!.award.value == AwardType.PAUSED)
         }
 
         fun nextLevel(): Boolean {
@@ -216,7 +216,7 @@ class MathScene {
             } else if (wasLevelPaused()) {
                 currentLevel!!.lastResult = null
                 currentLevel!!.save(activity)
-                levelsActivity.get()!!.updat    eResult()
+                levelsActivity.get()!!.updateResult()
             }
             Statistics.logMenu(stepsCount, activity.globalMathView.formula!!, activity.globalMathView.currentAtom)
         }
