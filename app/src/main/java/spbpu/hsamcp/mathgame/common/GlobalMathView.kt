@@ -17,6 +17,7 @@ import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.level.Type
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 import spbpu.hsamcp.mathgame.mathResolver.MathResolverPair
 
@@ -50,10 +51,15 @@ class GlobalMathView: TextView {
             Constants.defaultPadding, Constants.defaultPadding)
     }
 
-    fun setFormula(formulaStr: String) {
+    fun setFormula(formulaStr: String, type: Type) {
         Log.d(TAG, "setFormula from str")
         if (formulaStr.isNotEmpty()) {
-            formula = stringToExpression(formulaStr)
+            formula = when (type) {
+                Type.SET -> stringToExpression(formulaStr, type.str)
+                else -> stringToExpression(formulaStr)
+            }
+            textSize = Constants.centralFormulaDefaultSize
+            currentAtom = null
             setTextFromFormula()
         }
     }

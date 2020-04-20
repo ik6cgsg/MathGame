@@ -4,7 +4,7 @@
   "difficulty": 0,
   "type": "other",
   "stepsNum": 1,
-  "time": 60,
+  "time": 40,
   "originalExpression": "2+2",
   "finalExpression": "4",
   "allSubstitutions":[

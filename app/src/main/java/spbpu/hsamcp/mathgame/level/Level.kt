@@ -31,6 +31,7 @@ enum class LevelField(val str: String) {
     TYPE("type"),
     STEPS_NUM("stepsNum"),
     TIME("time"),
+    ENDLESS("endless"),
     AWARD_COEFFS("awardCoeffs"),
     SHOW_WRONG_RULES("showWrongRules"),
     SHOW_SUBST_RESULT("showSubstResult"),
@@ -68,6 +69,7 @@ class Level(var fileName: String) {
     var stepsNum = 1
     var time: Long = 180
     var timeMultCoeff = 1f
+    var endless = true
     private var exprSet = false
     var coeffsSet = false
     val fullyLoaded: Boolean
@@ -164,6 +166,7 @@ class Level(var fileName: String) {
         }
         stepsNum = levelJson.optInt(LevelField.STEPS_NUM.str, stepsNum)
         time = levelJson.optLong(LevelField.TIME.str, time)
+        endless = levelJson.optBoolean(LevelField.ENDLESS.str, endless)
         awardCoeffs = levelJson.optString(LevelField.AWARD_COEFFS.str, awardCoeffs)
         showWrongRules = levelJson.optBoolean(LevelField.SHOW_WRONG_RULES.str, showWrongRules)
         showSubstResult = levelJson.optBoolean(LevelField.SHOW_SUBST_RESULT.str, showSubstResult)
@@ -203,10 +206,10 @@ class Level(var fileName: String) {
 
     fun getAward(resultTime: Long, resultStepsNum: Float): Award {
         Log.d(TAG, "getAward")
-        val mark = if (resultStepsNum < stepsNum) {
-            1.0
-        } else {
-            (1 - resultTime.toDouble() / time + stepsNum.toDouble() / resultStepsNum) / 2
+        val mark = when {
+            resultStepsNum < stepsNum -> 1.0
+            resultTime > time -> 0.0
+            else -> (1 - resultTime.toDouble() / time + stepsNum.toDouble() / resultStepsNum) / 2
         }
         return Award(getAwardByCoeff(mark), mark)
     }
@@ -214,10 +217,11 @@ class Level(var fileName: String) {
     private fun getAwardByCoeff(mark: Double): AwardType {
         val awards = awardCoeffs.split(" ").map { it.toDouble() * awardMultCoeff }
         return when {
-            mark == 1.0 -> AwardType.PLATINUM
+            mark.equals(1.0) -> AwardType.PLATINUM
             mark >= awards[0] -> AwardType.GOLD
             awards[1] <= mark && mark < awards[0] -> AwardType.SILVER
             awards[2] <= mark && mark < awards[1] -> AwardType.BRONZE
+            mark.equals(-1.0) -> AwardType.PAUSED
             else -> AwardType.NONE
         }
     }
@@ -246,9 +250,12 @@ class Level(var fileName: String) {
     fun save(context: Context) {
         val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
         val prefEdit = prefs.edit()
-        val resultStr = "${lastResult!!.steps} ${lastResult!!.time} ${lastResult!!.award.coeff}"
         val resultId = "${LevelField.RESULT.str}${taskId}"
-        prefEdit.putString(resultId, resultStr)
+        if (lastResult == null) {
+            prefEdit.remove(resultId)
+        } else {
+            prefEdit.putString(resultId, lastResult!!.saveString())
+        }
         prefEdit.commit()
     }
 
@@ -257,9 +264,12 @@ class Level(var fileName: String) {
         val resultId = "${LevelField.RESULT.str}${taskId}"
         val resultStr = prefs.getString(resultId, "")
         if (!resultStr.isNullOrEmpty()) {
-            val resultVals = resultStr.split(" ", limit = 3)
+            val resultVals = resultStr.split(" ", limit = 4)
             lastResult = Result(resultVals[0].toFloat(), resultVals[1].toLong(),
                 Award(getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
+            if (resultVals.size == 4) {
+                lastResult!!.expression = resultVals[3]
+            }
         }
     }
 }

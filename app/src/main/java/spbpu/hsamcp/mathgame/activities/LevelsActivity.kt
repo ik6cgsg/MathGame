@@ -100,7 +100,12 @@ class LevelsActivity: AppCompatActivity() {
     }
 
     fun updateResult() {
-        levelViews[currentLevelIndex].text = "${levels[currentLevelIndex].name}\n${levels[currentLevelIndex].lastResult!!}"
+        levelViews[currentLevelIndex].text = "${levels[currentLevelIndex].name}" +
+            if (levels[currentLevelIndex].lastResult != null) {
+                "\n${levels[currentLevelIndex].lastResult}"
+            } else {
+                ""
+            }
     }
 
     @SuppressLint("ClickableViewAccessibility")

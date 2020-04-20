@@ -31,6 +31,8 @@ class PlayActivity: AppCompatActivity() {
     private lateinit var scaleDetector: ScaleGestureDetector
     private lateinit var looseDialog: AlertDialog
     private lateinit var winDialog: AlertDialog
+    private lateinit var backDialog: AlertDialog
+    private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
 
     lateinit var globalMathView: GlobalMathView
@@ -86,17 +88,26 @@ class PlayActivity: AppCompatActivity() {
         progress = findViewById(R.id.progress)
         looseDialog = createLooseDialog()
         winDialog = createWinDialog()
-        createLevelUI()
+        backDialog = createBackDialog()
+        continueDialog = createContinueDialog()
+        startCreatingLevelUI()
     }
 
     override fun onBackPressed() {
         if (!loading) {
-            super.onBackPressed()
             back(null)
         }
     }
 
-    fun createLevelUI() {
+    fun startCreatingLevelUI() {
+        if (MathScene.wasLevelPaused()) {
+            AndroidUtil.showDialog(continueDialog)
+        } else {
+            createLevelUI(false)
+        }
+    }
+
+    private fun createLevelUI(continueGame: Boolean) {
         loading = true
         timerView.text = ""
         globalMathView.text = ""
@@ -106,7 +117,7 @@ class PlayActivity: AppCompatActivity() {
             val job = async {
                 MathScene.preLoad()
                 runOnUiThread {
-                    MathScene.loadLevel()
+                    MathScene.loadLevel(continueGame)
                     progress.visibility = View.GONE
                     loading = false
                 }
@@ -130,9 +141,17 @@ class PlayActivity: AppCompatActivity() {
 
     private fun back(v: View?) {
         if (!loading) {
-            MathScene.menu()
-            finish()
+            if (MathScene.currentLevel!!.endless) {
+                AndroidUtil.showDialog(backDialog)
+            } else {
+                returnToMenu(false)
+            }
         }
+    }
+
+    private fun returnToMenu(save: Boolean) {
+        MathScene.menu(save)
+        finish()
     }
 
     fun showEndFormula(v: View?) {
@@ -175,7 +194,10 @@ class PlayActivity: AppCompatActivity() {
             .setTitle("Congratulations!")
             .setMessage("")
             .setPositiveButton("Next") { dialog: DialogInterface, id: Int -> }
-            .setNeutralButton("Menu") { dialog: DialogInterface, id: Int -> back(null) }
+            .setNeutralButton("Menu") { dialog: DialogInterface, id: Int ->
+                MathScene.menu(false)
+                finish()
+            }
             .setNegativeButton("Previous") { dialog: DialogInterface, id: Int -> }
             .setCancelable(false)
         val dialog = builder.create()
@@ -213,6 +235,39 @@ class PlayActivity: AppCompatActivity() {
             }
             .setNegativeButton("Menu") { dialog: DialogInterface, id: Int ->
                 back(null)
+            }
+            .setCancelable(false)
+        return builder.create()
+    }
+
+    private fun createBackDialog(): AlertDialog {
+        Log.d(TAG, "createBackDialog")
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        builder
+            .setTitle("Attention!")
+            .setMessage("Save your current state?")
+            .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
+                returnToMenu(true)
+            }
+            .setNegativeButton("No") { dialog: DialogInterface, id: Int ->
+                returnToMenu(false)
+            }
+            .setNeutralButton("Cancel") { dialog: DialogInterface, id: Int -> }
+            .setCancelable(false)
+        return builder.create()
+    }
+
+    private fun createContinueDialog(): AlertDialog {
+        Log.d(TAG, "createContinueDialog")
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        builder
+            .setTitle("Welcome back!")
+            .setMessage("Continue from where you stopped?")
+            .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
+                createLevelUI(true)
+            }
+            .setNegativeButton("No") { dialog: DialogInterface, id: Int ->
+                createLevelUI(false)
             }
             .setCancelable(false)
         return builder.create()

@@ -1,7 +1,8 @@
 {
   "ignore": false,
+  "endless": false,
   "taskId": 3031,
-  "name": "Test combinatorics output",
+  "name": "Test combinatorics output (Finite level)",
   "difficulty": 3,
   "type": "other",
   "stepsNum": 1,
