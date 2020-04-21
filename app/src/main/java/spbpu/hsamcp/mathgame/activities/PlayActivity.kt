@@ -172,7 +172,8 @@ class PlayActivity: AppCompatActivity() {
         Log.d(TAG, "onWin")
         val msgTitle = "You finished level with:"
         val steps = "\n\tSteps: $stepsCount"
-        val time = "\n\tTime: $currentTime"
+        val sec = "${currentTime % 60}".padStart(2, '0')
+        val time = "\n\tTime: ${currentTime / 60}:$sec"
         val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: ${award.value.str}")
         spannable.setSpan(BulletSpan(5, Constants.primaryColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import spbpu.hsamcp.mathgame.level.Level
 import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.TutorialScene
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.LevelField
@@ -127,9 +128,13 @@ class LevelsActivity: AppCompatActivity() {
                     event.action == MotionEvent.ACTION_UP && levelTouched == v -> {
                         v.background = getBackgroundByDif(level.difficulty)
                         if (AndroidUtil.touchUpInsideView(v, event)) {
-                            MathScene.currentLevel = level
-                            currentLevelIndex = i
-                            startActivity(Intent(this, PlayActivity::class.java))
+                            if (level.taskId == 0) {
+                                TutorialScene.start(this, level)
+                            } else {
+                                MathScene.currentLevel = level
+                                currentLevelIndex = i
+                                startActivity(Intent(this, PlayActivity::class.java))
+                            }
                         }
                         levelTouched = null
                     }

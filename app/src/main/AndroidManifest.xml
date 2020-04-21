@@ -23,6 +23,9 @@
         <activity android:name=".activities.PlayActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activities.TutorialActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait">
         </activity>

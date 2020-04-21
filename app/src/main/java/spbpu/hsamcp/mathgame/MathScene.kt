@@ -13,6 +13,7 @@ import android.util.Log
 import com.twf.api.expressionToString
 import spbpu.hsamcp.mathgame.activities.LevelsActivity
 import spbpu.hsamcp.mathgame.activities.PlayActivity
+import spbpu.hsamcp.mathgame.activities.TutorialActivity
 import spbpu.hsamcp.mathgame.common.RuleMathView
 import spbpu.hsamcp.mathgame.level.*
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
@@ -37,6 +38,7 @@ class MathScene {
         var currentLevel: Level? = null
         lateinit var playActivity: WeakReference<PlayActivity>
         lateinit var levelsActivity: WeakReference<LevelsActivity>
+        var tutorialProcessing = false
 
         fun init(playActivity: PlayActivity) {
             Log.d(TAG, "init")
@@ -46,6 +48,10 @@ class MathScene {
 
         fun onRuleClicked() {
             Log.d(TAG, "onRuleClicked")
+            if (tutorialProcessing) {
+                TutorialScene.onRuleClicked(currentRuleView!!)
+                return
+            }
             val activity = playActivity.get()!!
             val prev = activity.globalMathView.formula!!.clone()
             val place = activity.globalMathView.currentAtom!!.clone()
@@ -77,6 +83,10 @@ class MathScene {
 
         fun onFormulaClicked() {
             Log.d(TAG, "onFormulaClicked")
+            if (tutorialProcessing) {
+                TutorialScene.onFormulaClicked()
+                return
+            }
             val activity = playActivity.get()!!
             if (activity.globalMathView.currentAtom != null) {
                 val rules = currentLevel!!.getRulesFor(activity.globalMathView.currentAtom!!,
@@ -163,6 +173,10 @@ class MathScene {
             if (level == currentLevel!!) {
                 return false
             }
+            if (level.taskId == 0) {
+                TutorialScene.start(levelsActivity.get()!!, level)
+                playActivity.get()!!.finish()
+            }
             currentLevel = level
             playActivity.get()!!.startCreatingLevelUI()
             return true
@@ -173,6 +187,10 @@ class MathScene {
             val level = levelsActivity.get()!!.getPrevLevel()
             if (level == currentLevel!!) {
                 return false
+            }
+            if (level.taskId == 0) {
+                TutorialScene.start(levelsActivity.get()!!, level)
+                playActivity.get()!!.finish()
             }
             currentLevel = level
             playActivity.get()!!.startCreatingLevelUI()
