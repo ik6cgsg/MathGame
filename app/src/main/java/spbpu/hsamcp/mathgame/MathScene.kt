@@ -153,7 +153,7 @@ class MathScene {
         }
 
         fun wasLevelPaused(): Boolean {
-            return currentLevel!!.endless && (currentLevel!!.lastResult == null ||
+            return currentLevel!!.endless && (currentLevel!!.lastResult != null &&
                 currentLevel!!.lastResult!!.award.value == AwardType.PAUSED)
         }
 
