@@ -129,7 +129,8 @@ class Level(var fileName: String) {
                 }
                 rules.add(ruleSubst)
             }
-            rules.shuffle()
+            //rules.shuffle()
+            rules.sortByDescending { it.left.identifier.length }
             exprSet = true
         }
     }
