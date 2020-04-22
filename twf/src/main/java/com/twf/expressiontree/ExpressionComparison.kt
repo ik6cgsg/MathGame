@@ -39,17 +39,17 @@ class ExpressionComporator(
         }
         lUnified.normalizeSubTree(sorted = true)
         rUnified.normalizeSubTree(sorted = true)
-        if (lUnified.isNodeSubtreeEquals(rUnified, nameArgsMap)){
-            return true
-        } else return false
+        return lUnified.isNodeSubtreeEquals(rUnified, nameArgsMap)
     }
 
     fun probabilityTestComparison(leftOrigin: ExpressionNode, rightOrigin: ExpressionNode,
                                   comparisonType: ComparisonType = compiledConfiguration.comparisonSettings.defaultComparisonType,
                                   justInDomainsIntersection: Boolean = compiledConfiguration.comparisonSettings.justInDomainsIntersection,
+
                                   maxMinNumberOfPointsForEquality: Int = compiledConfiguration.comparisonSettings.minNumberOfPointsForEquality,
                                   allowedPartOfErrorTests: Double = compiledConfiguration.comparisonSettings.allowedPartOfErrorTests,
-                                  testWithUndefinedResultIncreasingCoef: Double = compiledConfiguration.comparisonSettings.testWithUndefinedResultIncreasingCoef): Boolean {
+                                  testWithUndefinedResultIncreasingCoef: Double = compiledConfiguration.comparisonSettings.testWithUndefinedResultIncreasingCoef,
+                                  useCleverDomain: Boolean = false): Boolean {
         val normalized = normalizeExpressionsForComparison(leftOrigin, rightOrigin)
         val left = normalized.first
         val right = normalized.second
@@ -60,9 +60,9 @@ class ExpressionComporator(
         }
         baseOperationsDefinitions.computeExpressionTree(left.children[0])
         baseOperationsDefinitions.computeExpressionTree(right.children[0])
-        val domain = Domain(baseOperationsDefinitions, arrayListOf(left, right))
         var numberOfRemainingTests = (left.getCountOfNodes() + right.getCountOfNodes()).toDouble()
         if (comparisonType == ComparisonType.EQUAL) {
+            val domain = PointGenerator(baseOperationsDefinitions, arrayListOf(left, right))
             val baseOperationsComputationComplex = BaseOperationsComputation(ComputationType.COMPLEX)
             val baseOperationsComputationDouble = BaseOperationsComputation(ComputationType.DOUBLE)
             val totalTests = numberOfRemainingTests
@@ -96,30 +96,56 @@ class ExpressionComporator(
                     return true
                 }
             }
-            return  if ((passedTests >= totalTests * (1 - allowedPartOfErrorTests) && passedTests >= minNumberOfPointsForEquality) || (passedTests >= totalTests)){
-                true
-            } else {
-                false
-            }
+            return (passedTests >= totalTests * (1 - allowedPartOfErrorTests) && passedTests >= minNumberOfPointsForEquality) || (passedTests >= totalTests)
         } else {
-            while (numberOfRemainingTests-- > 0) {
-                val pointI = domain.generateNewPoint()
-                val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
-                        .value.toDoubleOrNull() ?: continue
-                val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
-                        .value.toDoubleOrNull() ?: continue
-                if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
-                    return false
-                } else if (!l.isFinite() || !r.isFinite()) { //todo (optimization: identify this cases with help of computing just domain: if point not in domain - fall here, if in domain - continue data value computation using domain parts values)
-                    numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
-                } else when (comparisonType) {
-                    ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
-                    ComparisonType.LEFT_MORE -> if (l <= r) return false
-                    ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
-                    ComparisonType.LEFT_LESS -> if (l >= r) return false
+            if (useCleverDomain) {
+                val domain = DomainPointGenerator(arrayListOf(left, right), baseOperationsDefinitions)
+                while (numberOfRemainingTests-- > 0) {
+                    val pointI = domain.generateNewPoint()
+//                    for ((key, value) in pointI)
+//                        println("clever " + key + ": " + value)
+                    val L = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
+//                    println(L.value)
+                    val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
+                            .value.toDoubleOrNull() ?: continue
+                    val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
+                            .value.toDoubleOrNull() ?: continue
+                    if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
+                        return false
+                    } else if (!l.isFinite() || !r.isFinite()) { //todo (optimization: identify this cases with help of computing just domain: if point not in domain - fall here, if in domain - continue data value computation using domain parts values)
+                        numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
+                    } else when (comparisonType) {
+                        ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
+                        ComparisonType.LEFT_MORE -> if (l <= r) return false
+                        ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
+                        ComparisonType.LEFT_LESS -> if (l >= r) return false
+                    }
                 }
+                return true
+            } else {
+                val domain = PointGenerator(baseOperationsDefinitions, arrayListOf(left, right))
+                while (numberOfRemainingTests-- > 0) {
+                    val pointI = domain.generateNewPoint()
+//                    for ((key, value) in pointI)
+//                        println("simple " + key + ": " + value)
+
+                    val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
+                            .value.toDoubleOrNull() ?: continue
+                    val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
+                            .value.toDoubleOrNull() ?: continue
+                    if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
+                        return false
+                    } else if (!l.isFinite() || !r.isFinite()) { //todo (optimization: identify this cases with help of computing just domain: if point not in domain - fall here, if in domain - continue data value computation using domain parts values)
+                        numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
+                    } else when (comparisonType) {
+                        ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
+                        ComparisonType.LEFT_MORE -> if (l <= r) return false
+                        ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
+                        ComparisonType.LEFT_LESS -> if (l >= r) return false
+                    }
+                }
+                return true
             }
-            return true
         }
     }
 

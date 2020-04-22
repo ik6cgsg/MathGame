@@ -12,7 +12,7 @@ class MathResolverNodeMinus(
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
-        val elem = createNode(origin.children[0], getNeedBrackets(origin.children[0]))
+        val elem = createNode(origin.children[0], getNeedBrackets(origin.children[0]), style, taskType)
         elem.setNodesFromExpression()
         children.add(elem)
         height = elem.height

@@ -14,6 +14,16 @@ fun String.replaceByIndex(i: Int, replacement: String): String {
     return this.substring(0, i) + replacement + this.substring(i + replacement.length)
 }
 
+enum class VariableStyle {
+    DEFAULT,
+    GREEK
+}
+
+enum class TaskType(val str: String) {
+    DEFAULT(""),
+    SET("setTheory")
+}
+
 class MathResolver {
     companion object {
         private lateinit var stringMatrix: ArrayList<String>
@@ -24,17 +34,19 @@ class MathResolver {
         //private const val ruleDelim = " → "
         private const val ruleDelim = " ~> "
 
-        fun resolveToPlain(expression: ExpressionNode): MathResolverPair {
-            currentViewTree = MathResolverNodeBase.getTree(expression)
+        fun resolveToPlain(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT,
+                           taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
+            currentViewTree = MathResolverNodeBase.getTree(expression, style, taskType)
             return MathResolverPair(currentViewTree, getPlainString())
         }
 
-        fun resolveToPlain(expression: String): MathResolverPair {
+        fun resolveToPlain(expression: String, style: VariableStyle = VariableStyle.DEFAULT,
+                           taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
             val realExpression = stringToExpression(expression)
             if (realExpression.identifier.contentEquals("()")) {
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
-            currentViewTree = MathResolverNodeBase.getTree(realExpression)
+            currentViewTree = MathResolverNodeBase.getTree(realExpression, style, taskType)
             return MathResolverPair(currentViewTree, getPlainString())
         }
 
@@ -59,13 +71,13 @@ class MathResolver {
                 leftCorr = correctMatrix(matrixLeft, leadingTree, secTree)
             }
             val ruleStr = SpannableStringBuilder(mergeMatrices(matrixLeft, matrixRight, leadingTree.baseLineOffset))
-            val totalLen = left.tree.length + ruleDelim.length + right.tree.length + 1
+            val totalLen = matrixLeft[0].length + ruleDelim.length + matrixRight[0].length + 1
             for (ls in leftSpans) {
                 val offset = (ls.strInd + leftCorr) * totalLen
                 ruleStr.setSpan(ls.span, offset + ls.start, offset + ls.end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             }
             for (rs in rightSpans) {
-                val offset = (rs.strInd + rightCorr) * totalLen + left.tree.length + ruleDelim.length
+                val offset = (rs.strInd + rightCorr) * totalLen + matrixLeft[0].length + ruleDelim.length
                 ruleStr.setSpan(rs.span, offset + rs.start, offset + rs.end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             }
             return ruleStr

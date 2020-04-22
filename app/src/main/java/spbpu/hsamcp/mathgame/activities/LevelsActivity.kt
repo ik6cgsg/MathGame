@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import spbpu.hsamcp.mathgame.level.Level
 import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.TutorialScene
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.LevelField
@@ -47,7 +48,7 @@ class LevelsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_levels)
         MathScene.levelsActivity = WeakReference(this)
         val levelNames = assets.list("")!!
-            .filter { """level\d+.json""".toRegex().matches(it) }
+            .filter { """level.*.json""".toRegex(RegexOption.DOT_MATCHES_ALL).matches(it) }
         levels = ArrayList()
         for (name in levelNames) {
             val loadedLevel = Level.create(name, this)
@@ -100,7 +101,12 @@ class LevelsActivity: AppCompatActivity() {
     }
 
     fun updateResult() {
-        levelViews[currentLevelIndex].text = "${levels[currentLevelIndex].name}\n${levels[currentLevelIndex].lastResult!!}"
+        levelViews[currentLevelIndex].text = "${levels[currentLevelIndex].name}" +
+            if (levels[currentLevelIndex].lastResult != null) {
+                "\n${levels[currentLevelIndex].lastResult}"
+            } else {
+                ""
+            }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -122,9 +128,13 @@ class LevelsActivity: AppCompatActivity() {
                     event.action == MotionEvent.ACTION_UP && levelTouched == v -> {
                         v.background = getBackgroundByDif(level.difficulty)
                         if (AndroidUtil.touchUpInsideView(v, event)) {
-                            MathScene.currentLevel = level
-                            currentLevelIndex = i
-                            startActivity(Intent(this, PlayActivity::class.java))
+                            if (level.taskId == 0) {
+                                TutorialScene.start(this, level)
+                            } else {
+                                MathScene.currentLevel = level
+                                currentLevelIndex = i
+                                startActivity(Intent(this, PlayActivity::class.java))
+                            }
                         }
                         levelTouched = null
                     }
@@ -206,7 +216,7 @@ class LevelsActivity: AppCompatActivity() {
             .setNegativeButton("Exit") { dialog: DialogInterface, id: Int ->
                 val homeIntent = Intent(Intent.ACTION_MAIN)
                 homeIntent.addCategory(Intent.CATEGORY_HOME)
-                homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(homeIntent)
             }
             .setCancelable(false)

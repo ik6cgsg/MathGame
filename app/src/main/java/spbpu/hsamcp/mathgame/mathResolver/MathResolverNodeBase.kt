@@ -2,6 +2,7 @@ package spbpu.hsamcp.mathgame.mathResolver
 
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.text.style.ScaleXSpan
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.NodeType
 import spbpu.hsamcp.mathgame.common.Constants
@@ -17,20 +18,33 @@ open class MathResolverNodeBase(
     lateinit var leftTop: Point
     lateinit var rightBottom: Point
     var baseLineOffset: Int = 0
+    lateinit var style: VariableStyle
+    lateinit var taskType: TaskType
+    private var customized = false
+    private lateinit var outputValue: String
 
     companion object {
         var checkSymbol = "A"
         var fontPaint: Paint = {
             val fp = Paint(Paint.ANTI_ALIAS_FLAG)
-            fp.textSize = Constants.centralFormulaDefaultSize
+            fp.textSize = Constants.centralExpressionDefaultSize
             fp.typeface = Typeface.MONOSPACE
             fp.style = Paint.Style.STROKE
             fp
         }()
 
-        fun createNode(expression: ExpressionNode, needBrackets: Boolean): MathResolverNodeBase {
-            return if (expression.nodeType == NodeType.VARIABLE) {
-                MathResolverNodeBase(expression, false, null, expression.value.length, 1)
+        fun createNode(expression: ExpressionNode, needBrackets: Boolean,
+                       style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
+            val node = if (expression.nodeType == NodeType.VARIABLE) {
+                val (value, customized) = CustomSymbolsHandler.getPrettyValue(expression, style, taskType)
+                val variable = MathResolverNodeBase(expression, false, null, value.length, 1)
+                variable.customized = customized
+                variable.outputValue =  if (customized) {
+                    value
+                } else {
+                    expression.value
+                }
+                variable
             } else {
                 val operation = Operation(expression.value)
                 when (operation.type) {
@@ -47,10 +61,13 @@ open class MathResolverNodeBase(
                     OperationType.SET_IMPLIC -> MathResolverSetNodeImplic(expression, needBrackets, operation)
                 }
             }
+            node.style = style
+            node.taskType = taskType
+            return node
         }
 
-        fun getTree(expression: ExpressionNode): MathResolverNodeBase {
-            val root = createNode(expression.children[0], false)
+        fun getTree(expression: ExpressionNode, style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
+            val root = createNode(expression.children[0], false, style, taskType)
             root.setNodesFromExpression()
             root.setCoordinates(Point(0, 0))
             return root
@@ -69,7 +86,12 @@ open class MathResolverNodeBase(
     }
 
     open fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        stringMatrix[leftTop.y] = stringMatrix[leftTop.y].replaceByIndex(leftTop.x, origin.value)
+        stringMatrix[leftTop.y] = stringMatrix[leftTop.y].replaceByIndex(leftTop.x, outputValue)
+        if (customized) {
+            val checkStr = checkSymbol.repeat(outputValue.length)
+            val numberMult = fontPaint.measureText(checkStr) / fontPaint.measureText(outputValue)
+            spannableArray.add(SpanInfo(ScaleXSpan(numberMult), leftTop.y, leftTop.x, leftTop.x + outputValue.length))
+        }
     }
 
     fun getNeedBrackets(node: ExpressionNode): Boolean {

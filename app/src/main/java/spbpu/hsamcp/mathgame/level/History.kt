@@ -3,7 +3,7 @@ package spbpu.hsamcp.mathgame.level
 import android.util.Log
 import com.twf.expressiontree.ExpressionNode
 
-data class State(var formula: ExpressionNode, var depth: Int = 0)
+data class State(var expression: ExpressionNode, var depth: Int = 0)
 
 class History {
     private val TAG = "History"

@@ -1,8 +1,6 @@
 package com.twf.expressiontree
 
-import com.twf.config.FunctionConfiguration
-import com.twf.config.FunctionStringDefinition
-import com.twf.config.StringDefinitionType
+import com.twf.config.*
 import com.twf.standartlibextensions.*
 
 data class MathMlTagTreeNode(
@@ -226,7 +224,7 @@ class ExpressionTreeParser(
                 continue
             }
             val startPosition = currentPosition
-            if (expression[currentPosition] == '<' && (isComplicatedTag(expression, currentPosition) || actualParent.type == MathMlTagTreeNode.Type.MATH_ML_FUNCTION)) {
+            if (isMathML && expression[currentPosition] == '<' && (isComplicatedTag(expression, currentPosition) || actualParent.type == MathMlTagTreeNode.Type.MATH_ML_FUNCTION)) {
                 val tagStartPosition = currentPosition
                 currentPosition++ // skip '<'
                 if (remainingExpressionStartsWith("/", expression, currentPosition)) { //close tag
@@ -434,18 +432,18 @@ class ExpressionTreeParser(
                         currentPosition++
                         continue
                     }
-                    if (remainingExpressionStartsWith("&#xA0;", node.value, currentPosition)) {
+                    if (isMathML && remainingExpressionStartsWith("&#xA0;", node.value, currentPosition)) {
                         currentPosition += 6
                         continue
                     }
-                    if (node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
+                    if (isMathML && node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
                         currentPosition = skipFromRemainingExpressionWhile({ it != '>' }, node.value, currentPosition)
                         currentPosition++
                         continue
                     }
                     val startPosition = currentPosition
                     val completeSign = getCompleteBinarySign(node.value, currentPosition)
-                    if (isBinarySignPart(node.value[currentPosition]) || completeSign.isNotBlank()) {
+                    if (isBinarySignPart(node.value[currentPosition], isMathML) || completeSign.isNotBlank()) {
                         if (completeSign.isBlank()) {
                             value += node.value[currentPosition]
                             currentPosition++
@@ -454,13 +452,13 @@ class ExpressionTreeParser(
                             currentPosition += completeSign.length
                         }
                         while (currentPosition < node.value.length) {
-                            if (node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
+                            if (isMathML && node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
                                 currentPosition = skipFromRemainingExpressionWhile({ it != '>' }, node.value, currentPosition)
                                 currentPosition++
                                 continue
                             }
                             val completeSignWhile = getCompleteBinarySign(node.value, currentPosition)
-                            if (isBinarySignPart(node.value[currentPosition]) || completeSignWhile.isNotBlank()) {
+                            if (isBinarySignPart(node.value[currentPosition], isMathML) || completeSignWhile.isNotBlank()) {
                                 if (completeSignWhile.isBlank()) {
                                     value += node.value[currentPosition]
                                     currentPosition++
@@ -480,7 +478,7 @@ class ExpressionTreeParser(
                         value += node.value[currentPosition]
                         currentPosition++
                         while (currentPosition < node.value.length) {
-                            if (node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
+                            if (isMathML && node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
                                 currentPosition = skipFromRemainingExpressionWhile({ it != '>' }, node.value, currentPosition)
                                 currentPosition++
                                 continue
@@ -508,7 +506,7 @@ class ExpressionTreeParser(
                             value += specialSymbol + ";"
                         }
                         while (currentPosition < node.value.length) {
-                            if (node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
+                            if (isMathML && node.value[currentPosition] == '<' && !isComplicatedTag(node.value, currentPosition)) {
                                 currentPosition = skipFromRemainingExpressionWhile({ it != '>' }, node.value, currentPosition)
                                 currentPosition++
                                 continue
@@ -526,30 +524,30 @@ class ExpressionTreeParser(
                             } else {
                                 var i = 0
                                 while (i < value.length) {
-                                    var currentValue = ""
+                                    var currentValue = StringBuilder()
                                     val startI = i
                                     if (value[i].isDigit() || value[i] == '.') {
                                         while (i < value.length && (value[i].isDigit() || value[i] == '.')) {
-                                            currentValue += value[i]
+                                            currentValue.append(value[i])
                                             i++
                                         }
                                         if (currentValue.isNotEmpty())
-                                            actualParent.addChild(MathMlTagTreeNode(MathMlTagTreeNode.Type.NAME, currentValue,
+                                            actualParent.addChild(MathMlTagTreeNode(MathMlTagTreeNode.Type.NAME, currentValue.toString(),
                                                     node.startPosition + startPosition + startI, node.startPosition + startPosition + i))
                                     } else if (value[i] == '&') {
                                         val specialSymbol = readFromRemainingExpressionWhile({ it != ';' }, value, i)
                                         i += specialSymbol.length + 1
-                                        currentValue += specialSymbol
-                                        if (currentValue != "&#xA0")
-                                            actualParent.addChild(MathMlTagTreeNode(MathMlTagTreeNode.Type.NAME, currentValue,
+                                        currentValue.append(specialSymbol)
+                                        if (!currentValue.startsWith("&#xA0"))
+                                            actualParent.addChild(MathMlTagTreeNode(MathMlTagTreeNode.Type.NAME, currentValue.toString(),
                                                     node.startPosition + startPosition + startI, node.startPosition + startPosition + i))
                                     } else {
                                         while (i < value.length && value[i] != '.' && value[i] != '&') {
-                                            currentValue += value[i]
+                                            currentValue.append(value[i])
                                             i++
                                         }
                                         if (currentValue.isNotEmpty())
-                                            actualParent.addChild(MathMlTagTreeNode(MathMlTagTreeNode.Type.NAME, currentValue,
+                                            actualParent.addChild(MathMlTagTreeNode(MathMlTagTreeNode.Type.NAME, currentValue.toString(),
                                                     node.startPosition + startPosition + startI, node.startPosition + startPosition + i))
                                     }
                                 }
@@ -565,10 +563,10 @@ class ExpressionTreeParser(
                     newTreeActualParent.children.removeAt(newTreeActualParent.children.lastIndex)
                 }
             } else {
-                if (node.value == "math" || node.value == "mn" || node.value == "mo" || node.value == "mi" ||
-                        node.value == "mspace" || node.value == "mtext" || node.value == "mstack" || node.value == "maction")
+                if (isMathML && (node.value == "math" || node.value == "mn" || node.value == "mo" || node.value == "mi" ||
+                        node.value == "mspace" || node.value == "mtext" || node.value == "mstack" || node.value == "maction"))
                     node.value = ""
-                if (node.value != "mstyle") {
+                if (!isMathML || (node.value != "mstyle")) {
                     newTreeActualParent.addChild(node.copy())
                     state = ParserState.NUMBER_READ
                     val res = parseLeaveStringExpressionParts(node, newTreeActualParent.children.last())
@@ -685,7 +683,7 @@ class ExpressionTreeParser(
                 val mainValue = oldTreeActualParent.children[i].children[0].getNodeString()
                 val subValue = oldTreeActualParent.children[i].children[1].getNodeString()
                 val newValue = mainValue + "," + subValue
-                if (isUnarySignPart(newValue[0]) || isBinarySignPart(newValue[0]) || isCompleteBinarySign(newValue, 0)) {
+                if (isUnarySignPart(newValue[0]) || isBinarySignPart(newValue[0], isMathML) || isCompleteBinarySign(newValue, 0)) {
                     val functionDefinition = functionConfiguration.findFunctionStringDefinition(newValue,
                             oldTreeActualParent.children[i].stringDefinitionType!!, -1)
                     if (functionDefinition == null)
@@ -771,14 +769,14 @@ class ExpressionTreeParser(
                         continue
                     }
                 }
-                val iPlusOneTypeOperation = (isUnarySignPart(mainValue[0]) || isBinarySignPart(mainValue[0]) ||
+                val iPlusOneTypeOperation = (isUnarySignPart(mainValue[0]) || isBinarySignPart(mainValue[0], isMathML) ||
                         isCompleteBinarySign(mainValue, 0))
-                val iTypeOperation = (isUnarySignPart(oldTreeActualParent.children[i].value[0]) || isBinarySignPart(oldTreeActualParent.children[i].value[0]) ||
+                val iTypeOperation = (isUnarySignPart(oldTreeActualParent.children[i].value[0]) || isBinarySignPart(oldTreeActualParent.children[i].value[0], isMathML) ||
                         isCompleteBinarySign(oldTreeActualParent.children[i].value, 0))
                 if (iPlusOneTypeOperation == iTypeOperation) {
                     val subValue = oldTreeActualParent.children[i + 1].children[1].getNodeString()
                     val newValue = oldTreeActualParent.children[i].value + mainValue + "," + subValue
-                    if (isUnarySignPart(newValue[0]) || isBinarySignPart(newValue[0]) || isCompleteBinarySign(newValue, 0)) {
+                    if (isUnarySignPart(newValue[0]) || isBinarySignPart(newValue[0], isMathML) || isCompleteBinarySign(newValue, 0)) {
                         val functionDefinition = functionConfiguration.findFunctionStringDefinition(newValue,
                                 oldTreeActualParent.children[i].stringDefinitionType!!, -1)
                         if (functionDefinition == null)
@@ -1017,10 +1015,6 @@ class ExpressionTreeParser(
             }
         }
     }
-
-    private fun isUnarySignPart(c: Char): Boolean = (c == '!' || c == '#' || c == '\'')
-    private fun isBinarySignPart(c: Char): Boolean = (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '%' || c == '|' || c == '\\' || (c == '&' && !isMathML))
-    private fun Char.isSign() = isUnarySignPart(this) || isBinarySignPart(this)
 
     private fun isComplicatedTag(expression: String = this.expression, currentPosition: Int = this.currentPosition) = (remainingExpressionStartsWith("<", expression, currentPosition) && (!(
             remainingExpressionStartsWith("<mo", expression, currentPosition) ||

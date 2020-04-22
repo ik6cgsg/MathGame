@@ -85,7 +85,7 @@ data class MathGameLog (
         this.undoConsideringPolicy = level.undoPolicy.str
         this.longExpressionCroppingPolicy = level.longExpressionCroppingPolicy
         // UI statistics
-        this.endExpressionHide = activity.endFormulaHide()
+        this.endExpressionHide = activity.endExpressionHide()
         this.expressionSize = activity.globalMathView.textSize
     }
 

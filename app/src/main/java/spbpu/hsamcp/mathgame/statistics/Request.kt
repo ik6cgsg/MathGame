@@ -4,10 +4,11 @@ import android.util.Log
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.net.HttpURLConnection
 import java.net.URL
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import java.util.*
-import kotlin.collections.HashMap
+import javax.net.ssl.*
 
 enum class RequestMethod(val value: String) {
     POST("POST"),
@@ -27,25 +28,54 @@ data class ResponseData(
     var headers: HashMap<String, String> = hashMapOf()
 )
 
+class MathHelperSpaceHostnameVerifier : HostnameVerifier {
+    override fun verify(hostname: String?, session: SSLSession?): Boolean {
+        return true
+    }
+}
+
+class TrustAllCertsManager : X509TrustManager {
+    override fun getAcceptedIssuers (): Array<X509Certificate?>? = null
+
+    override fun checkClientTrusted(
+        certs: Array<X509Certificate?>?,
+        authType: String?
+    ) {
+    }
+
+    override fun checkServerTrusted(
+        certs: Array<X509Certificate?>?,
+        authType: String?
+    ) {
+    }
+}
+
 class Request {
     companion object {
         private var reqQueue = LinkedList<RequestData>()
         private var isConnected = false
 
         fun startWorkCycle() {
+            // Install the all-trusting trust manager
+            val sc: SSLContext = SSLContext.getInstance("SSL")
+            sc.init(null, arrayOf<TrustManager> (TrustAllCertsManager()), SecureRandom())
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory())
+
+            HttpsURLConnection.setDefaultHostnameVerifier(MathHelperSpaceHostnameVerifier())
+
             GlobalScope.launch {
                 async {
                     while (true) {
                         while (reqQueue.isNotEmpty() && isConnected) {
-                            val response = asyncRequest(reqQueue.last)
-                            Log.d("Request", "sended")
-                            if (response.returnValue != 500 || response.returnValue != 404) {
-                                try {
+                            try {
+                                val response = asyncRequest(reqQueue.last)
+                                Log.d("Request", "sended")
+                                if (response.returnValue != 500 || response.returnValue != 404) {
                                     reqQueue.removeLast()
                                     Log.d("Request", "removed")
-                                } catch (e: Exception) {
-                                    Log.e("Request", e.message)
                                 }
+                            } catch (e: Exception) {
+                                Log.e("Request", e.message)
                             }
                         }
                     }
@@ -57,7 +87,7 @@ class Request {
             val response = ResponseData()
             try {
                 val url = URL(requestData.url)
-                with(url.openConnection() as HttpURLConnection)
+                with(url.openConnection() as HttpsURLConnection)
                 {
                     // Setting request
                     requestMethod = requestData.method.value
@@ -72,8 +102,8 @@ class Request {
                         response.headers.put(it.key, it.value[0])
                     }
                     response.returnValue = responseCode
-                    if (responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
-                        val inStream = if (responseCode != HttpURLConnection.HTTP_OK) {
+                    if (responseCode != HttpsURLConnection.HTTP_NO_CONTENT) {
+                        val inStream = if (responseCode != HttpsURLConnection.HTTP_OK) {
                             errorStream
                         } else {
                             inputStream

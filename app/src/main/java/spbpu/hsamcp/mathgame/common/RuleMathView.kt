@@ -12,7 +12,10 @@ import com.twf.api.expressionSubstitutionFromStrings
 import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.level.Type
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
+import spbpu.hsamcp.mathgame.mathResolver.TaskType
+import spbpu.hsamcp.mathgame.mathResolver.VariableStyle
 
 class RuleMathView: TextView {
     private val TAG = "RuleMathView"
@@ -48,16 +51,21 @@ class RuleMathView: TextView {
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
         if (subst != null) {
-            setSubst(subst!!)
+            setSubst(subst!!, Type.OTHER)
         }
     }
 
-    fun setSubst(subst: ExpressionSubstitution) {
+    fun setSubst(subst: ExpressionSubstitution, type: Type) {
         this.subst = subst
-        val from = MathResolver.resolveToPlain(subst.left)
-        val to = MathResolver.resolveToPlain(subst.right)
+        val from = when (type) {
+            Type.SET -> MathResolver.resolveToPlain(subst.left, VariableStyle.GREEK, TaskType.SET)
+            else -> MathResolver.resolveToPlain(subst.left, VariableStyle.GREEK)
+        }
+        val to = when (type) {
+            Type.SET -> MathResolver.resolveToPlain(subst.right, VariableStyle.GREEK, TaskType.SET)
+            else -> MathResolver.resolveToPlain(subst.right, VariableStyle.GREEK)
+        }
         val textStr = MathResolver.getRule(from, to)
-        //maxLines = 1 + textStr.count { it == '\n' }
         text = textStr
     }
 

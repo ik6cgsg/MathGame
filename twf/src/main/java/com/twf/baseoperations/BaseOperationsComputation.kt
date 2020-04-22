@@ -4,6 +4,8 @@ import com.twf.expressiontree.ExpressionNode
 import com.twf.numbers.Complex
 import com.twf.numbers.toComplex
 import com.twf.platformdependent.defaultRandom
+import com.twf.standartlibextensions.abs
+import kotlin.system.exitProcess
 
 enum class ComputationType {COMPLEX, DOUBLE}
 
@@ -211,6 +213,42 @@ class BaseOperationsComputation(private val computationType: ComputationType) {
                 baseComputationOperations[computationType]!![expressionNode.value]!!.invoke(listOfArgs)
             } else {
                 stringToNumber(defaultRandom().toString())
+            }
+        }
+    }
+
+    fun calculatePenalty(value: Any, operatorType: String = "") : Double {
+        if (operatorType == "ln" || operatorType == "asin" || operatorType == "acos") {
+            val re = value.toString().toComplex().getReal().value.abs()
+            val im = value.toString().toComplex().getImaginary().value.abs()
+            return re * im
+        }
+        return value.toString().toComplex().getImaginary().value.abs()
+    }
+
+    fun computeWithPenalty(expressionNode : ExpressionNode) : Pair<Any, Double> {
+        return if (expressionNode.children.isEmpty()) {
+            val value = stringToNumber(expressionNode.value)
+            return Pair(value, calculatePenalty(value))
+        } else {
+            if (isFoldedExpression(expressionNode)) {
+                val value = calculateFoldedExpression(expressionNode)
+                return Pair(value, calculatePenalty(value))
+            }
+            var penalty = 0.0
+            val listOfArgs = mutableListOf<Any>()
+            for (childNode in expressionNode.children) {
+                val (value, pen) = computeWithPenalty(childNode)
+                penalty += pen
+                listOfArgs.add(value)
+            }
+
+            if (baseComputationOperations[computationType]!!.containsKey(expressionNode.value)) {
+                val value = baseComputationOperations[computationType]!![expressionNode.value]!!.invoke(listOfArgs)
+                return Pair(value, penalty + calculatePenalty(value, expressionNode.value))
+            } else {
+                val value = stringToNumber(defaultRandom().toString())
+                return Pair(value, penalty + calculatePenalty(value))
             }
         }
     }

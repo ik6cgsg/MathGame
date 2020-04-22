@@ -81,7 +81,7 @@ class Statistics {
         }
 
         fun logStart() {
-            val exprStr = expressionToString(MathScene.currentLevel!!.startFormula)
+            val exprStr = expressionToString(MathScene.currentLevel!!.startExpression)
             val mathLog = MathGameLog(
                 currStepsNumber = 0f,
                 nextStepsNumber = 0f,
@@ -117,7 +117,7 @@ class Statistics {
         fun logRestart(currSteps: Float, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
             val activity = MathScene.playActivity.get()!!
             val curr = expressionToString(currExpr)
-            val next = expressionToString(MathScene.currentLevel!!.startFormula)
+            val next = expressionToString(MathScene.currentLevel!!.startExpression)
             val place = if (currPlace == null) {
                 ""
             } else {
@@ -156,7 +156,7 @@ class Statistics {
         }
 
         fun logWin(currSteps: Float, award: Award) {
-            val exprStr = expressionToString(MathScene.currentLevel!!.endFormula)
+            val exprStr = expressionToString(MathScene.currentLevel!!.endExpression)
             val mathLog = MathGameLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,

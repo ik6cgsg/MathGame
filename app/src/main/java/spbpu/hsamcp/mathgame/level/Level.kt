@@ -3,15 +3,13 @@ package spbpu.hsamcp.mathgame.level
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
-import com.twf.api.expressionSubstitutionFromStrings
-import com.twf.api.expressionToString
-import com.twf.api.findSubstitutionPlacesInExpression
-import com.twf.api.stringToExpression
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import org.json.JSONObject
 import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
+import com.twf.api.*
+import com.twf.expressiontree.ExpressionStructureConditionNode
 import com.twf.factstransformations.Rule
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
@@ -21,16 +19,19 @@ data class RuleStr(val left: String, val right: String)
 enum class Type(val str: String) {
     SET("setTheory"),
     ALGEBRA("algebra"),
-    TRIGONOMETRY("trigonometry")
+    TRIGONOMETRY("trigonometry"),
+    OTHER("other")
 }
 
 enum class LevelField(val str: String) {
+    IGNORE("ignore"),
     TASK_ID("taskId"),
     NAME("name"),
     DIFFICULTY("difficulty"),
     TYPE("type"),
     STEPS_NUM("stepsNum"),
     TIME("time"),
+    ENDLESS("endless"),
     AWARD_COEFFS("awardCoeffs"),
     SHOW_WRONG_RULES("showWrongRules"),
     SHOW_SUBST_RESULT("showSubstResult"),
@@ -38,6 +39,7 @@ enum class LevelField(val str: String) {
     LONG_EXPRESSION_CROPPING_POLICY("longExpressionCroppingPolicy"),
     ORIGINAL_EXPRESSION("originalExpression"),
     FINAL_EXPRESSION("finalExpression"),
+    FINAL_PATTERN("finalPattern"),
     ALL_SUBSTITUTIONS("allSubstitutions"),
     RULE_LEFT("left"),
     RULE_RIGHT("right"),
@@ -47,10 +49,12 @@ enum class LevelField(val str: String) {
 class Level(var fileName: String) {
     private var rules = ArrayList<ExpressionSubstitution>()
     private var rulesStr = ArrayList<RuleStr>()
-    lateinit var startFormula: ExpressionNode
-    private lateinit var startFormulaStr: String
-    lateinit var endFormula: ExpressionNode
-    private lateinit var endFormulaStr: String
+    lateinit var startExpression: ExpressionNode
+    private lateinit var startExpressionStr: String
+    lateinit var endExpression: ExpressionNode
+    lateinit var endExpressionStr: String
+    lateinit var endPattern: ExpressionStructureConditionNode
+    lateinit var endPatternStr: String
     lateinit var type: Type
     var taskId = 0
     var name = "test"
@@ -65,6 +69,7 @@ class Level(var fileName: String) {
     var stepsNum = 1
     var time: Long = 180
     var timeMultCoeff = 1f
+    var endless = true
     private var exprSet = false
     var coeffsSet = false
     val fullyLoaded: Boolean
@@ -104,15 +109,19 @@ class Level(var fileName: String) {
     fun fullyLoad(context: Context) {
         setGlobalCoeffs(context)
         if (!exprSet) {
-            startFormula = when (type) {
-                Type.SET -> stringToExpression(startFormulaStr, type.str)
-                else -> stringToExpression(startFormulaStr)
+            startExpression = when (type) {
+                Type.SET -> stringToExpression(startExpressionStr, type.str)
+                else -> stringToExpression(startExpressionStr)
             }
-            endFormula = when (type) {
-                Type.SET -> stringToExpression(endFormulaStr, type.str)
-                else -> stringToExpression(endFormulaStr)
+            endExpression = when (type) {
+                Type.SET -> stringToExpression(endExpressionStr, type.str)
+                else -> stringToExpression(endExpressionStr)
             }
-            endFormulaStr = expressionToString(endFormula)
+            endExpressionStr = expressionToString(endExpression)
+            endPattern = when (type) {
+                Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
+                else -> stringToExpressionStructurePattern(endPatternStr)
+            }
             for (ruleStr in rulesStr) {
                 val ruleSubst = when (type) {
                     Type.SET -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right, type.str)
@@ -120,7 +129,8 @@ class Level(var fileName: String) {
                 }
                 rules.add(ruleSubst)
             }
-            rules.shuffle()
+            //rules.shuffle()
+            rules.sortByDescending { it.left.identifier.length }
             exprSet = true
         }
     }
@@ -139,7 +149,11 @@ class Level(var fileName: String) {
 
     private fun parse(levelJson: JSONObject): Boolean {
         if (!levelJson.has(LevelField.TASK_ID.str) || !levelJson.has(LevelField.NAME.str) ||
-            !levelJson.has(LevelField.DIFFICULTY.str) || !levelJson.has(LevelField.TYPE.str)) {
+            !levelJson.has(LevelField.DIFFICULTY.str) || !levelJson.has(LevelField.TYPE.str) ||
+            !levelJson.has(LevelField.ORIGINAL_EXPRESSION.str) || !levelJson.has(LevelField.FINAL_EXPRESSION.str)) {
+            return false
+        }
+        if (levelJson.optBoolean(LevelField.IGNORE.str, false)) {
             return false
         }
         taskId = levelJson.getInt(LevelField.TASK_ID.str)
@@ -153,6 +167,7 @@ class Level(var fileName: String) {
         }
         stepsNum = levelJson.optInt(LevelField.STEPS_NUM.str, stepsNum)
         time = levelJson.optLong(LevelField.TIME.str, time)
+        endless = levelJson.optBoolean(LevelField.ENDLESS.str, endless)
         awardCoeffs = levelJson.optString(LevelField.AWARD_COEFFS.str, awardCoeffs)
         showWrongRules = levelJson.optBoolean(LevelField.SHOW_WRONG_RULES.str, showWrongRules)
         showSubstResult = levelJson.optBoolean(LevelField.SHOW_SUBST_RESULT.str, showSubstResult)
@@ -164,8 +179,9 @@ class Level(var fileName: String) {
         }
         longExpressionCroppingPolicy = levelJson.optString(LevelField.LONG_EXPRESSION_CROPPING_POLICY.str,
             longExpressionCroppingPolicy)
-        startFormulaStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
-        endFormulaStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
+        startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
+        endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
+        endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         val rulesJson = levelJson.getJSONArray(LevelField.ALL_SUBSTITUTIONS.str)
         for (i in 0 until rulesJson.length()) {
             val rule = rulesJson.getJSONObject(i)
@@ -176,19 +192,25 @@ class Level(var fileName: String) {
         return true
     }
 
-    fun checkEnd(formula: ExpressionNode): Boolean {
+    fun checkEnd(expression: ExpressionNode): Boolean {
         Log.d(TAG, "checkEnd")
-        val currStr = expressionToString(formula)
-        Log.d(TAG, "current: $currStr | end: $endFormulaStr")
-        return currStr == endFormulaStr
+        return if (endPatternStr.isBlank()) {
+            val currStr = expressionToString(expression)
+            Log.d(TAG, "current: $currStr | end: $endExpressionStr")
+            currStr == endExpressionStr
+        } else {
+            val currStr = expressionToString(expression)
+            Log.d(TAG, "current: $currStr | pattern: $endPatternStr")
+            compareByPattern(expression, endPattern)
+        }
     }
 
     fun getAward(resultTime: Long, resultStepsNum: Float): Award {
         Log.d(TAG, "getAward")
-        val mark = if (resultStepsNum < stepsNum) {
-            1.0
-        } else {
-            (1 - resultTime.toDouble() / time + stepsNum.toDouble() / resultStepsNum) / 2
+        val mark = when {
+            resultStepsNum < stepsNum -> 1.0
+            resultTime > time -> 0.0
+            else -> (1 - resultTime.toDouble() / time + stepsNum.toDouble() / resultStepsNum) / 2
         }
         return Award(getAwardByCoeff(mark), mark)
     }
@@ -196,20 +218,21 @@ class Level(var fileName: String) {
     private fun getAwardByCoeff(mark: Double): AwardType {
         val awards = awardCoeffs.split(" ").map { it.toDouble() * awardMultCoeff }
         return when {
-            mark == 1.0 -> AwardType.PLATINUM
+            mark.equals(1.0) -> AwardType.PLATINUM
             mark >= awards[0] -> AwardType.GOLD
             awards[1] <= mark && mark < awards[0] -> AwardType.SILVER
             awards[2] <= mark && mark < awards[1] -> AwardType.BRONZE
+            mark.equals(-1.0) -> AwardType.PAUSED
             else -> AwardType.NONE
         }
     }
 
-    fun getRulesFor(node: ExpressionNode, formula: ExpressionNode): List<ExpressionSubstitution>? {
+    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
         Log.d(TAG, "getRulesFor")
         // TODO: smek with showWrongRules flag
         val res = rules
             .filter {
-                val list = findSubstitutionPlacesInExpression(formula, it)
+                val list = findSubstitutionPlacesInExpression(expression, it)
                 if (list.isEmpty()) {
                     false
                 } else {
@@ -228,9 +251,12 @@ class Level(var fileName: String) {
     fun save(context: Context) {
         val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
         val prefEdit = prefs.edit()
-        val resultStr = "${lastResult!!.steps} ${lastResult!!.time} ${lastResult!!.award.coeff}"
         val resultId = "${LevelField.RESULT.str}${taskId}"
-        prefEdit.putString(resultId, resultStr)
+        if (lastResult == null) {
+            prefEdit.remove(resultId)
+        } else {
+            prefEdit.putString(resultId, lastResult!!.saveString())
+        }
         prefEdit.commit()
     }
 
@@ -239,9 +265,12 @@ class Level(var fileName: String) {
         val resultId = "${LevelField.RESULT.str}${taskId}"
         val resultStr = prefs.getString(resultId, "")
         if (!resultStr.isNullOrEmpty()) {
-            val resultVals = resultStr.split(" ", limit = 3)
+            val resultVals = resultStr.split(" ", limit = 4)
             lastResult = Result(resultVals[0].toFloat(), resultVals[1].toLong(),
                 Award(getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
+            if (resultVals.size == 4) {
+                lastResult!!.expression = resultVals[3]
+            }
         }
     }
 }

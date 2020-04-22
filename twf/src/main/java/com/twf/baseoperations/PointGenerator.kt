@@ -21,7 +21,7 @@ data class VariableProperties (
         val unableToCompute: Boolean = false
 )
 
-class Domain (
+class PointGenerator (
         val baseOperationsDefinitions: BaseOperationsDefinitions = BaseOperationsDefinitions(),
         val expressions: ArrayList<ExpressionNode> = arrayListOf(),
         val maxValueMultiplier: Double = 10.0

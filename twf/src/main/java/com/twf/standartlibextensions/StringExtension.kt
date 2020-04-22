@@ -16,6 +16,10 @@ fun Char.isOpenBracket() = this == '(' || this == '{' || this == '['
 fun Char.isCloseBracket() = this == ')' || this == '}' || this == ']'
 fun Char.isBracket() = this.isOpenBracket() || this.isCloseBracket()
 
+fun isUnarySignPart(c: Char): Boolean = (c == '!' || c == '#' || c == '\'')
+fun isBinarySignPart(c: Char, isMathML: Boolean = false): Boolean = (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '%' || c == '|' || c == '\\' || (c == '&' && !isMathML))
+fun Char.isSign(isMathML: Boolean = false) = isUnarySignPart(this) || isBinarySignPart(this, isMathML)
+
 fun remainingExpressionStartsWith(string: String, expression: String, currentPosition: Int): Boolean {
     if (currentPosition < 0) {
         return false
