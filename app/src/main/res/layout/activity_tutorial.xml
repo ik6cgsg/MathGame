@@ -11,7 +11,7 @@
     tools:context=".activities.PlayActivity">
 
     <HorizontalScrollView
-        android:id="@+id/global_formula_view"
+        android:id="@+id/global_expression_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,11 +30,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_formula_view"
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_view"
         app:layout_constraintVertical_bias="0.25">
 
         <spbpu.hsamcp.mathgame.common.GlobalMathView
-            android:id="@+id/global_formula"
+            android:id="@+id/global_expression"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="0dp"
@@ -51,12 +51,12 @@
         android:layout_marginTop="64dp"
         android:layout_marginBottom="16dp"
         android:clickable="false"
-        android:text="@string/tap_on_some_place_in_formula"
+        android:text="@string/tap_on_some_place_in_expression"
         android:textAlignment="center"
         android:textColor="@color/textColor"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/global_formula_view"
+        app:layout_constraintTop_toBottomOf="@+id/global_expression_view"
         tools:layout_editor_absoluteX="8dp" />
 
     <ScrollView
@@ -80,7 +80,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/global_formula_view"
+        app:layout_constraintTop_toBottomOf="@+id/global_expression_view"
         app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
@@ -110,7 +110,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/end_formula_view"
+        android:id="@+id/end_expression_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -123,10 +123,10 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_formula_label" />
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_label" />
 
     <TextView
-        android:id="@+id/end_formula_label"
+        android:id="@+id/end_expression_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -134,9 +134,9 @@
         android:layout_marginEnd="16dp"
         android:clickable="false"
         android:focusable="true"
-        android:labelFor="@id/end_formula_view"
-        android:onClick="showEndFormula"
-        android:text="@string/end_formula_opened"
+        android:labelFor="@id/end_expression_view"
+        android:onClick="showEndExpression"
+        android:text="@string/end_expression_opened"
         android:textColor="@color/textColor"
         android:textSize="20sp"
         android:typeface="monospace"
@@ -191,10 +191,10 @@
         android:textSize="16sp"
         android:typeface="monospace"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/global_formula_view"
+        app:layout_constraintBottom_toTopOf="@+id/global_expression_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_formula_view" />
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_view" />
 
     <TextView
         android:id="@+id/back"
@@ -239,7 +239,7 @@
         android:textColor="@color/textColor"
         android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/global_formula_view"
+        app:layout_constraintBottom_toTopOf="@+id/global_expression_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
@@ -262,7 +262,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.683"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/global_formula_view" />
+        app:layout_constraintTop_toTopOf="@+id/global_expression_view" />
 
     <TextView
         android:id="@+id/pointer_end"
@@ -280,7 +280,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_formula_label"
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_label"
         app:layout_constraintVertical_bias="0.39" />
 
     <TextView

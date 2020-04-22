@@ -1,7 +1,6 @@
 package spbpu.hsamcp.mathgame.mathResolver
 
 import com.twf.expressiontree.ExpressionNode
-import spbpu.hsamcp.mathgame.mathResolver.VariableStyle.GREEK
 
 class CustomSymbolsHandler {
     companion object {
@@ -43,14 +42,14 @@ class CustomSymbolsHandler {
             "cherry" to "\uD83C\uDF52"
         )
 
-        fun getPrettyValue(origin: ExpressionNode, style: VariableStyle): Pair<String, Boolean> {
+        fun getPrettyValue(origin: ExpressionNode, style: VariableStyle, taskType: TaskType): Pair<String, Boolean> {
             if (origin.parent == null) {
                 return Pair(origin.value, false)
             }
             return when {
-                style == GREEK && greekSymbols.containsKey(origin.value.toUpperCase()) ->
+                style == VariableStyle.GREEK && greekSymbols.containsKey(origin.value.toUpperCase()) ->
                     Pair(greekSymbols[origin.value.toUpperCase()]!!, true)
-                Operation.isSetOperation(origin.parent!!.value) && setCustomSymbols.containsKey(origin.value) ->
+                taskType == TaskType.SET && setCustomSymbols.containsKey(origin.value) ->
                     Pair(setCustomSymbols[origin.value]!!, true)
                 otherCustomSymbols.containsKey(origin.value) -> Pair(otherCustomSymbols[origin.value]!!, true)
                 else -> Pair(origin.value, false)

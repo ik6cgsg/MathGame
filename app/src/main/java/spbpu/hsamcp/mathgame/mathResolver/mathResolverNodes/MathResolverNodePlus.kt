@@ -26,12 +26,12 @@ class MathResolverNodePlus(
                     Operation(node.children[0].value).type == OperationType.PLUS) {
                     brackets = true
                 }
-                elem = createNode(node.children[0], brackets, style)
+                elem = createNode(node.children[0], brackets, style, taskType)
             } else {
                 if (i != 0) {
                     operators.add(op!!.name)
                 }
-                elem = createNode(node, getNeedBrackets(node), style)
+                elem = createNode(node, getNeedBrackets(node), style, taskType)
             }
             elem.setNodesFromExpression()
             if (elem is MathResolverNodeMinus && node != origin.children[0]) {

@@ -11,7 +11,9 @@ import spbpu.hsamcp.mathgame.activities.PlayActivity
 import spbpu.hsamcp.mathgame.activities.TutorialActivity
 import spbpu.hsamcp.mathgame.common.RuleMathView
 import spbpu.hsamcp.mathgame.level.Level
+import spbpu.hsamcp.mathgame.level.Type
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
+import spbpu.hsamcp.mathgame.mathResolver.TaskType
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.lang.ref.WeakReference
 
@@ -42,15 +44,18 @@ class TutorialScene {
             Log.d(TAG, "loadLevel")
             val activity = tutorialActivity.get()!!
             clearRules()
-            activity.endFormulaView.text = if (tutorialLevel.endPatternStr.isBlank()){
-                MathResolver.resolveToPlain(tutorialLevel.endFormula).matrix
+            activity.endExpressionView.text = if (tutorialLevel.endPatternStr.isBlank()) {
+                when (tutorialLevel.type) {
+                    Type.SET -> MathResolver.resolveToPlain(tutorialLevel.endExpression, taskType = TaskType.SET).matrix
+                    else -> MathResolver.resolveToPlain(tutorialLevel.endExpression).matrix
+                }
             } else {
-                tutorialLevel.endFormulaStr
+                tutorialLevel.endExpressionStr
             }
-            if (activity.endFormulaView.visibility != View.VISIBLE) {
-                activity.showEndFormula(null)
+            if (activity.endExpressionView.visibility != View.VISIBLE) {
+                activity.showEndExpression(null)
             }
-            tutorialActivity.get()!!.globalMathView.setFormula(tutorialLevel.startFormula.clone())
+            tutorialActivity.get()!!.globalMathView.setExpression(tutorialLevel.startExpression.clone(), tutorialLevel.type)
         }
 
         fun onRuleClicked(ruleView: RuleMathView) {
@@ -73,20 +78,22 @@ class TutorialScene {
             }
         }
 
-        fun onFormulaClicked() {
-            Log.d(TAG, "onFormulaClicked")
+        fun onExpressionClicked() {
+            Log.d(TAG, "onExpressionClicked")
             if (wantedZoom) {
                 return
             }
             val activity = tutorialActivity.get()!!
             if (activity.globalMathView.currentAtom != null) {
                 val rules = tutorialLevel.getRulesFor(activity.globalMathView.currentAtom!!,
-                    activity.globalMathView.formula!!)
+                    activity.globalMathView.expression!!)
                 if (rules != null) {
                     activity.noRules.visibility = View.GONE
                     activity.rulesScrollView.visibility = View.VISIBLE
                     if (wantedClick) {
                         activity.expressionClickSucceeded()
+                    } else {
+                        showMessage("\uD83D\uDC4F A good choice! \uD83D\uDC4F")
                     }
                     redrawRules(rules)
                 } else {
@@ -109,7 +116,7 @@ class TutorialScene {
             activity.rulesLinearLayout.removeAllViews()
             for (r in rules) {
                 val rule = RuleMathView(activity)
-                rule.setSubst(r)
+                rule.setSubst(r, tutorialLevel.type)
                 activity.rulesLinearLayout.addView(rule)
             }
         }

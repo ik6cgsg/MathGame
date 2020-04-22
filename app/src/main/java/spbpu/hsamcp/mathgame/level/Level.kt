@@ -49,10 +49,10 @@ enum class LevelField(val str: String) {
 class Level(var fileName: String) {
     private var rules = ArrayList<ExpressionSubstitution>()
     private var rulesStr = ArrayList<RuleStr>()
-    lateinit var startFormula: ExpressionNode
-    private lateinit var startFormulaStr: String
-    lateinit var endFormula: ExpressionNode
-    lateinit var endFormulaStr: String
+    lateinit var startExpression: ExpressionNode
+    private lateinit var startExpressionStr: String
+    lateinit var endExpression: ExpressionNode
+    lateinit var endExpressionStr: String
     lateinit var endPattern: ExpressionStructureConditionNode
     lateinit var endPatternStr: String
     lateinit var type: Type
@@ -109,15 +109,15 @@ class Level(var fileName: String) {
     fun fullyLoad(context: Context) {
         setGlobalCoeffs(context)
         if (!exprSet) {
-            startFormula = when (type) {
-                Type.SET -> stringToExpression(startFormulaStr, type.str)
-                else -> stringToExpression(startFormulaStr)
+            startExpression = when (type) {
+                Type.SET -> stringToExpression(startExpressionStr, type.str)
+                else -> stringToExpression(startExpressionStr)
             }
-            endFormula = when (type) {
-                Type.SET -> stringToExpression(endFormulaStr, type.str)
-                else -> stringToExpression(endFormulaStr)
+            endExpression = when (type) {
+                Type.SET -> stringToExpression(endExpressionStr, type.str)
+                else -> stringToExpression(endExpressionStr)
             }
-            endFormulaStr = expressionToString(endFormula)
+            endExpressionStr = expressionToString(endExpression)
             endPattern = when (type) {
                 Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
                 else -> stringToExpressionStructurePattern(endPatternStr)
@@ -179,8 +179,8 @@ class Level(var fileName: String) {
         }
         longExpressionCroppingPolicy = levelJson.optString(LevelField.LONG_EXPRESSION_CROPPING_POLICY.str,
             longExpressionCroppingPolicy)
-        startFormulaStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
-        endFormulaStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
+        startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
+        endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
         endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         val rulesJson = levelJson.getJSONArray(LevelField.ALL_SUBSTITUTIONS.str)
         for (i in 0 until rulesJson.length()) {
@@ -192,16 +192,16 @@ class Level(var fileName: String) {
         return true
     }
 
-    fun checkEnd(formula: ExpressionNode): Boolean {
+    fun checkEnd(expression: ExpressionNode): Boolean {
         Log.d(TAG, "checkEnd")
         return if (endPatternStr.isBlank()) {
-            val currStr = expressionToString(formula)
-            Log.d(TAG, "current: $currStr | end: $endFormulaStr")
-            currStr == endFormulaStr
+            val currStr = expressionToString(expression)
+            Log.d(TAG, "current: $currStr | end: $endExpressionStr")
+            currStr == endExpressionStr
         } else {
-            val currStr = expressionToString(formula)
+            val currStr = expressionToString(expression)
             Log.d(TAG, "current: $currStr | pattern: $endPatternStr")
-            compareByPattern(formula, endPattern)
+            compareByPattern(expression, endPattern)
         }
     }
 
@@ -227,12 +227,12 @@ class Level(var fileName: String) {
         }
     }
 
-    fun getRulesFor(node: ExpressionNode, formula: ExpressionNode): List<ExpressionSubstitution>? {
+    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
         Log.d(TAG, "getRulesFor")
         // TODO: smek with showWrongRules flag
         val res = rules
             .filter {
-                val list = findSubstitutionPlacesInExpression(formula, it)
+                val list = findSubstitutionPlacesInExpression(expression, it)
                 if (list.isEmpty()) {
                     false
                 } else {

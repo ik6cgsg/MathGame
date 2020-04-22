@@ -16,7 +16,7 @@ class MathResolverNodeFunction(
         length += op!!.name.length + 2 + delim.length * (origin.children.size - 1)
         var maxH = 0
         for (node in origin.children) {
-            val elem = createNode(node, getNeedBrackets(node), style)
+            val elem = createNode(node, getNeedBrackets(node), style, taskType)
             elem.setNodesFromExpression()
             children.add(elem)
             if (elem.height > maxH) {

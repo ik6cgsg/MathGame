@@ -36,8 +36,8 @@ class PlayActivity: AppCompatActivity() {
     private lateinit var progress: ProgressBar
 
     lateinit var globalMathView: GlobalMathView
-    lateinit var endFormulaView: TextView
-    lateinit var endFormulaViewLabel: TextView
+    lateinit var endExpressionView: TextView
+    lateinit var endExpressionViewLabel: TextView
     lateinit var messageView: TextView
     lateinit var rulesLinearLayout: LinearLayout
     lateinit var rulesScrollView: ScrollView
@@ -53,7 +53,7 @@ class PlayActivity: AppCompatActivity() {
             }
             event.action == MotionEvent.ACTION_UP -> {
                 if (needClear) {
-                    globalMathView.clearFormula()
+                    globalMathView.clearExpression()
                     MathScene.clearRules()
                 }
             }
@@ -62,9 +62,9 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun setViews() {
-        globalMathView = findViewById(R.id.global_formula)
-        endFormulaView = findViewById(R.id.end_formula_view)
-        endFormulaViewLabel = findViewById(R.id.end_formula_label)
+        globalMathView = findViewById(R.id.global_expression)
+        endExpressionView = findViewById(R.id.end_expression_view)
+        endExpressionViewLabel = findViewById(R.id.end_expression_label)
         messageView = findViewById(R.id.message_view)
         rulesLinearLayout = findViewById(R.id.rules_linear_layout)
         rulesScrollView = findViewById(R.id.rules_scroll_view)
@@ -111,7 +111,7 @@ class PlayActivity: AppCompatActivity() {
         loading = true
         timerView.text = ""
         globalMathView.text = ""
-        endFormulaView.text = ""
+        endExpressionView.text = ""
         progress.visibility = View.VISIBLE
         GlobalScope.launch {
             val job = async {
@@ -154,18 +154,18 @@ class PlayActivity: AppCompatActivity() {
         finish()
     }
 
-    fun showEndFormula(v: View?) {
-        if (endFormulaView.visibility == View.GONE) {
-            endFormulaViewLabel.text = getString(R.string.end_formula_opened)
-            endFormulaView.visibility = View.VISIBLE
+    fun showEndExpression(v: View?) {
+        if (endExpressionView.visibility == View.GONE) {
+            endExpressionViewLabel.text = getString(R.string.end_expression_opened)
+            endExpressionView.visibility = View.VISIBLE
         } else {
-            endFormulaViewLabel.text = getString(R.string.end_formula_closed)
-            endFormulaView.visibility = View.GONE
+            endExpressionViewLabel.text = getString(R.string.end_expression_closed)
+            endExpressionView.visibility = View.GONE
         }
     }
 
-    fun endFormulaHide(): Boolean {
-        return endFormulaView.visibility != View.VISIBLE
+    fun endExpressionHide(): Boolean {
+        return endExpressionView.visibility != View.VISIBLE
     }
 
     fun onWin(stepsCount: Float, currentTime: Long, award: Award) {
@@ -279,9 +279,9 @@ class PlayActivity: AppCompatActivity() {
             needClear = false
             scale *= detector.scaleFactor
             scale = max(
-                Constants.ruleDefaultSize / Constants.centralFormulaDefaultSize,
-                min(scale, Constants.centralFormulaMaxSize / Constants.centralFormulaDefaultSize))
-            globalMathView.textSize = Constants.centralFormulaDefaultSize * scale
+                Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
+                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize))
+            globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
             return true
         }
     }

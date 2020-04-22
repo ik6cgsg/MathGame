@@ -19,6 +19,11 @@ enum class VariableStyle {
     GREEK
 }
 
+enum class TaskType(val str: String) {
+    DEFAULT(""),
+    SET("setTheory")
+}
+
 class MathResolver {
     companion object {
         private lateinit var stringMatrix: ArrayList<String>
@@ -29,17 +34,19 @@ class MathResolver {
         //private const val ruleDelim = " → "
         private const val ruleDelim = " ~> "
 
-        fun resolveToPlain(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT): MathResolverPair {
-            currentViewTree = MathResolverNodeBase.getTree(expression, style)
+        fun resolveToPlain(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT,
+                           taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
+            currentViewTree = MathResolverNodeBase.getTree(expression, style, taskType)
             return MathResolverPair(currentViewTree, getPlainString())
         }
 
-        fun resolveToPlain(expression: String, style: VariableStyle = VariableStyle.DEFAULT): MathResolverPair {
+        fun resolveToPlain(expression: String, style: VariableStyle = VariableStyle.DEFAULT,
+                           taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
             val realExpression = stringToExpression(expression)
             if (realExpression.identifier.contentEquals("()")) {
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
-            currentViewTree = MathResolverNodeBase.getTree(realExpression, style)
+            currentViewTree = MathResolverNodeBase.getTree(realExpression, style, taskType)
             return MathResolverPair(currentViewTree, getPlainString())
         }
 

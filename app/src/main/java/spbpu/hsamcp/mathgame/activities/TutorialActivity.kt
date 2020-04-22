@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -19,12 +20,15 @@ import spbpu.hsamcp.mathgame.TutorialScene
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
 import java.lang.ref.WeakReference
+import kotlin.collections.ArrayList
 import kotlin.math.max
 import kotlin.math.min
 
 class TutorialActivity: AppCompatActivity() {
     private val TAG = "TutorialActivity"
     private var scale = 1.0f
+    private val duration = 600.toLong()
+    private val translate = -30f
     private var needClear = false
     private var loading = false
     private var scaleListener = MathScaleListener()
@@ -32,11 +36,15 @@ class TutorialActivity: AppCompatActivity() {
     private var currentAnimView: View? = null
     private lateinit var scaleDetector: ScaleGestureDetector
     private lateinit var leaveDialog: AlertDialog
+    private lateinit var restartDialog: AlertDialog
+    private lateinit var tutorialDialog: AlertDialog
     private lateinit var progress: ProgressBar
+    private lateinit var steps: ArrayList<() -> Unit>
+    private var currentStep = -1
 
     lateinit var globalMathView: GlobalMathView
-    lateinit var endFormulaView: TextView
-    lateinit var endFormulaViewLabel: TextView
+    lateinit var endExpressionView: TextView
+    lateinit var endExpressionViewLabel: TextView
     lateinit var messageView: TextView
     lateinit var rulesLinearLayout: LinearLayout
     lateinit var rulesScrollView: ScrollView
@@ -58,7 +66,7 @@ class TutorialActivity: AppCompatActivity() {
             }
             event.action == MotionEvent.ACTION_UP -> {
                 if (needClear) {
-                    globalMathView.clearFormula()
+                    globalMathView.clearExpression()
                     TutorialScene.clearRules()
                 }
             }
@@ -67,9 +75,9 @@ class TutorialActivity: AppCompatActivity() {
     }
 
     private fun setViews() {
-        globalMathView = findViewById(R.id.global_formula)
-        endFormulaView = findViewById(R.id.end_formula_view)
-        endFormulaViewLabel = findViewById(R.id.end_formula_label)
+        globalMathView = findViewById(R.id.global_expression)
+        endExpressionView = findViewById(R.id.end_expression_view)
+        endExpressionViewLabel = findViewById(R.id.end_expression_label)
         messageView = findViewById(R.id.message_view)
         rulesLinearLayout = findViewById(R.id.rules_linear_layout)
         rulesScrollView = findViewById(R.id.rules_scroll_view)
@@ -81,8 +89,9 @@ class TutorialActivity: AppCompatActivity() {
         pointerBackView = findViewById(R.id.pointer_back)
         pointerRestartView = findViewById(R.id.pointer_restart)
         pointerUndoView = findViewById(R.id.pointer_undo)
+        progress = findViewById(R.id.progress)
         val res = findViewById<TextView>(R.id.restart)
-        //AndroidUtil.setOnTouchUpInside(res, ::restart)
+        AndroidUtil.setOnTouchUpInside(res, ::restart)
         val prev = findViewById<TextView>(R.id.previous)
         //AndroidUtil.setOnTouchUpInside(prev, ::previous)
         val back = findViewById<TextView>(R.id.back)
@@ -96,8 +105,18 @@ class TutorialActivity: AppCompatActivity() {
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
         TutorialScene.tutorialActivity = WeakReference(this)
-        progress = findViewById(R.id.progress)
         leaveDialog = createLeaveDialog()
+        tutorialDialog = createTutorialDialog()
+        restartDialog = createRestartDialog()
+        steps = arrayListOf(
+            ::messageTutorial,
+            ::endExpressionTutorial,
+            ::centralExpressionTutorial,
+            ::backTutorial,
+            ::restartTutorial,
+            ::undoTutorial,
+            ::startDynamicTutorial
+        )
         createLevelUI()
     }
 
@@ -109,11 +128,15 @@ class TutorialActivity: AppCompatActivity() {
         AndroidUtil.showDialog(leaveDialog)
     }
 
+    fun restart(v: View?) {
+        AndroidUtil.showDialog(restartDialog)
+    }
+
     private fun createLevelUI() {
         loading = true
         timerView.text = "⏰ 1:23"
         globalMathView.text = ""
-        endFormulaView.text = ""
+        endExpressionView.text = ""
         progress.visibility = View.VISIBLE
         startDialog()
         GlobalScope.launch {
@@ -130,28 +153,28 @@ class TutorialActivity: AppCompatActivity() {
     }
 
     private fun animateLeftUp(view: View) {
-        val animationX = ObjectAnimator.ofFloat(view, "translationX", -30f)
+        val animationX = ObjectAnimator.ofFloat(view, "translationX", translate)
         animationX.repeatMode = ValueAnimator.REVERSE
         animationX.repeatCount = ValueAnimator.INFINITE
-        val animationY = ObjectAnimator.ofFloat(view, "translationY", -30f)
+        val animationY = ObjectAnimator.ofFloat(view, "translationY", translate)
         animationY.repeatMode = ValueAnimator.REVERSE
         animationY.repeatCount = ValueAnimator.INFINITE
         val set = AnimatorSet()
         set.play(animationX)
             .with(animationY)
-        set.duration = 600
+        set.duration = duration
         set.start()
         currentAnim = set
         currentAnimView = view
     }
 
     private fun animateUp(view: View) {
-        val animationY = ObjectAnimator.ofFloat(view, "translationY", -30f)
+        val animationY = ObjectAnimator.ofFloat(view, "translationY", translate)
         animationY.repeatMode = ValueAnimator.REVERSE
         animationY.repeatCount = ValueAnimator.INFINITE
         val set = AnimatorSet()
         set.play(animationY)
-        set.duration = 600
+        set.duration = duration
         set.start()
         currentAnim = set
         currentAnimView = view
@@ -159,20 +182,23 @@ class TutorialActivity: AppCompatActivity() {
 
     private fun stopAnimation() {
         if (currentAnim != null) {
+            currentAnim!!.removeAllListeners()
+            currentAnim!!.end()
             currentAnim!!.cancel()
+            currentAnim = null
+            currentAnimView!!.translationY = 0f
+            currentAnimView!!.translationX = 0f
             currentAnimView!!.visibility = View.GONE
         }
     }
 
-    fun showEndFormula(v: View?) {
-        if (endFormulaView.isClickable) {
-            if (endFormulaView.visibility == View.GONE) {
-                endFormulaViewLabel.text = getString(R.string.end_formula_opened)
-                endFormulaView.visibility = View.VISIBLE
-            } else {
-                endFormulaViewLabel.text = getString(R.string.end_formula_closed)
-                endFormulaView.visibility = View.GONE
-            }
+    fun showEndExpression(v: View?) {
+        if (endExpressionView.visibility == View.GONE) {
+            endExpressionViewLabel.text = getString(R.string.end_expression_opened)
+            endExpressionView.visibility = View.VISIBLE
+        } else {
+            endExpressionViewLabel.text = getString(R.string.end_expression_closed)
+            endExpressionView.visibility = View.GONE
         }
     }
 
@@ -180,13 +206,75 @@ class TutorialActivity: AppCompatActivity() {
         Log.d(TAG, "createLeaveDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Attention ❗️")
+            .setTitle("❗️ Attention ❗️")
             .setMessage("Wanna leave?")
             .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
                 TutorialScene.leave()
             }
             .setNegativeButton("Cancel") { dialog: DialogInterface, id: Int ->
             }
+        return builder.create()
+    }
+
+    private fun createRestartDialog(): AlertDialog {
+        Log.d(TAG, "createRestartDialog")
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        builder
+            .setTitle("❗️ Attention ❗️")
+            .setMessage("Restart tutorial?")
+            .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
+                TutorialScene.loadLevel()
+                currentStep = -1
+                nextStep()
+            }
+            .setNegativeButton("Cancel") { dialog: DialogInterface, id: Int ->
+            }
+        return builder.create()
+    }
+
+    private fun nextStep() {
+        currentStep++
+        if (currentStep == steps.size) {
+            return
+        }
+        tutorialDialog.setTitle("Tutorial: ${currentStep + 1}️⃣ / ${steps.size}️⃣")
+        steps[currentStep]()
+    }
+
+    private fun prevStep() {
+        // TODO: animation bug
+        currentStep--
+        if (currentStep == -1) {
+            startDialog()
+        } else {
+            tutorialDialog.setTitle("Tutorial: ${currentStep + 1}️⃣ / ${steps.size}️⃣")
+            steps[currentStep]()
+        }
+    }
+
+    private fun createTutorialDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        builder
+            .setTitle("")
+            .setMessage("Got it?")
+            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
+                messageView.text = ""
+                stopAnimation()
+                Handler().postDelayed({
+                    nextStep()
+                }, 100)
+            }
+            .setNegativeButton("Step back") { dialog: DialogInterface, id: Int ->
+                messageView.text = ""
+                stopAnimation()
+                Handler().postDelayed({
+                    prevStep()
+                }, 100)
+            }
+            .setNeutralButton("Leave") { dialog: DialogInterface, id: Int ->
+                TutorialScene.leave()
+            }
+            .setCancelable(false)
         return builder.create()
     }
 
@@ -197,7 +285,7 @@ class TutorialActivity: AppCompatActivity() {
             .setTitle("\uD83D\uDE4B\u200D♀ Hi! \uD83D\uDE4B\u200D♂")
             .setMessage("Welcome to our tutorial!\nWanna start?")
             .setPositiveButton("Yes! \uD83E\uDD29") { dialog: DialogInterface, id: Int ->
-                messageTutorial()
+                nextStep()
             }
             .setNegativeButton("Nope, I'm pro \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
                 TutorialScene.leave()
@@ -209,159 +297,84 @@ class TutorialActivity: AppCompatActivity() {
 
     private fun messageTutorial() {
         Log.d(TAG, "messageTutorial")
-        TutorialScene.showMessage("\uD83C\uDF40 Welcome! \uD83C\uDF40\nThat's a place for short\nimportant messages")
+        TutorialScene.showMessage("\uD83C\uDF40 Welcome! \uD83C\uDF40\nThat's a place for short\nimportant (and funny) messages")
         pointerMsgView.visibility = View.VISIBLE
         animateLeftUp(pointerMsgView)
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
-        builder
-            .setTitle("Tutorial: 1️⃣ / 7️⃣")
-            .setMessage("Got it?")
-            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
-                messageView.text = ""
-                stopAnimation()
-                backTutorial()
-            }
-            .setNegativeButton("Leave tutorial") { dialog: DialogInterface, id: Int ->
-                TutorialScene.leave()
-            }
-            .setCancelable(false)
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, false)
+        AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     private fun backTutorial() {
         Log.d(TAG, "backTutorial")
-        TutorialScene.showMessage("This can return to menu...\nAnd even save your progress!")
+        TutorialScene.showMessage("← This can return to menu... ←\nAnd even \uD83D\uDCBE your progress!")
         pointerBackView.visibility = View.VISIBLE
         animateLeftUp(pointerBackView)
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
-        builder
-            .setTitle("Tutorial: 2️⃣ / 7️⃣")
-            .setMessage("Got it?")
-            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
-                messageView.text = ""
-                stopAnimation()
-                restartTutorial()
-            }
-            .setNegativeButton("Leave tutorial") { dialog: DialogInterface, id: Int ->
-                TutorialScene.leave()
-            }
-            .setCancelable(false)
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, false)
+        tutorialDialog.setMessage("Got it?")
+        AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     private fun restartTutorial() {
         Log.d(TAG, "restartTutorial")
-        TutorialScene.showMessage("Restart level button")
+        TutorialScene.showMessage("↺ Restart level button ↺")
         pointerRestartView.visibility = View.VISIBLE
         animateUp(pointerRestartView)
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
-        builder
-            .setTitle("Tutorial: 3️⃣ / 7️⃣")
-            .setMessage("Got it?")
-            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
-                messageView.text = ""
-                stopAnimation()
-                undoTutorial()
-            }
-            .setNegativeButton("Leave tutorial") { dialog: DialogInterface, id: Int ->
-                TutorialScene.leave()
-            }
-            .setCancelable(false)
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, false)
+        tutorialDialog.setMessage("Got it?")
+        AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     private fun undoTutorial() {
         Log.d(TAG, "restartTutorial")
-        TutorialScene.showMessage("Undo your last operations")
+        TutorialScene.showMessage("↶ Undo your last operations ↶")
         pointerUndoView.visibility = View.VISIBLE
         animateUp(pointerUndoView)
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
-        builder
-            .setTitle("Tutorial: 4️⃣ / 7️⃣")
-            .setMessage("Got it?")
-            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
-                messageView.text = ""
-                stopAnimation()
-                endFormulaTutorial()
-            }
-            .setNegativeButton("Leave tutorial") { dialog: DialogInterface, id: Int ->
-                TutorialScene.leave()
-            }
-            .setCancelable(false)
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, false)
+        tutorialDialog.setMessage("Got it?")
+        AndroidUtil.showDialog(tutorialDialog, false)
     }
 
-    private fun endFormulaTutorial() {
-        Log.d(TAG, "endFormulaTutorial")
-        TutorialScene.showMessage("⬆️ Good old end formula ⬆️")
+    private fun endExpressionTutorial() {
+        Log.d(TAG, "endExpressionTutorial")
+        TutorialScene.showMessage("⬆️ Good old end expression ⬆️")
         pointerEndView.visibility = View.VISIBLE
         animateLeftUp(pointerEndView)
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
-        builder
-            .setTitle("Tutorial: 5️⃣ / 7️⃣")
-            .setMessage("This is final formula - the answer for current task!\n" +
-                "You need to reduce central expression to this\n\n" +
-                "P.S. You can toggle it with \uD83D\uDD3D if you need!\n\nGot it?")
-            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
-                messageView.text = ""
-                stopAnimation()
-                endFormulaView.isClickable = true
-                centralFormulaTutorial()
-            }
-            .setNegativeButton("Leave tutorial") { dialog: DialogInterface, id: Int ->
-                TutorialScene.leave()
-            }
-            .setCancelable(false)
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, false)
+        tutorialDialog.setMessage("This is final expression for level\nAKA The Answer for current task!\n\n" +
+            "P.S. You can toggle it with \uD83D\uDD3D if you need!\n\nGot it?")
+        AndroidUtil.showDialog(tutorialDialog, false)
     }
 
-    private fun centralFormulaTutorial() {
-        Log.d(TAG, "centralFormulaTutorial")
+    private fun centralExpressionTutorial() {
+        Log.d(TAG, "centralExpressionTutorial")
         TutorialScene.showMessage("⬇️ Main element of our game ⬇️")
         pointerCentralView.visibility = View.VISIBLE
         animateLeftUp(pointerCentralView)
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
-        builder
-            .setTitle("Tutorial: 6️⃣ / 7️⃣")
-            .setMessage("Here is your current game expression.\n" +
-                "Firstly, you need to choose some place in it:\n" +
-                "* click operator to choose operation\n" +
-                "* click operand to choose operand\n" +
-                "Then you can select rule, make substitution and win \uD83E\uDD73\n" +
-                "Got it?")
-            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
-                stopAnimation()
-                TutorialScene.showMessage("Let's check it out!\n1. Zoom expression to max")
-                TutorialScene.wantedZoom = true
-            }
-            .setNegativeButton("Leave tutorial") { dialog: DialogInterface, id: Int ->
-                TutorialScene.leave()
-            }
-            .setCancelable(false)
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, false)
+        tutorialDialog.setMessage("Here is your current game expression.\n" +
+            "To \uD83E\uDD73 you need:\n" +
+            "1. \uD83D\uDC46 on expression\n" +
+            "2. \uD83D\uDD0D necessary rule\n" +
+            "3. make substitution ~>\n" +
+            "4. repeat until \uD83D\uDE0E\uD83E\uDD73\n" +
+            "Got it?")
+        AndroidUtil.showDialog(tutorialDialog, false)
+    }
+
+    private fun startDynamicTutorial() {
+        TutorialScene.showMessage("\uD83E\uDD14 Let's check it out! \uD83E\uDD14\n1. Zoom expression to max \uD83D\uDD0E")
+        TutorialScene.wantedZoom = true
     }
 
     private fun zoomSucceeded() {
-        TutorialScene.showMessage("1. Zoom expression to max ✅\n2. Click on some place")
+        TutorialScene.showMessage("1. Zoom expression to max ✅\n2. Click on some place \uD83D\uDC47")
         TutorialScene.wantedZoom = false
         TutorialScene.wantedClick = true
     }
 
     fun expressionClickSucceeded() {
         TutorialScene.wantedClick = false
-        TutorialScene.showMessage("2. Click on some place ✅\n3. Now choose your rule from a scrollable list below")
+        TutorialScene.showMessage("2. Click on some place ✅\n3. Now \uD83D\uDD0D rule from a list below")
         TutorialScene.wantedRule = true
     }
 
     fun ruleClickSucceeded() {
         TutorialScene.wantedRule = true
-        TutorialScene.showMessage("3. Choose rule ✅\n4. Win!")
+        TutorialScene.showMessage("3. Choose rule ✅\n4. Win! \uD83D\uDE0E\uD83E\uDD73")
     }
 
     fun levelPassed() {
@@ -370,10 +383,14 @@ class TutorialActivity: AppCompatActivity() {
         animateLeftUp(pointerCentralView)
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Tutorial: 7️⃣ / 7️⃣")
+            .setTitle("Tutorial: ${currentStep + 1}️⃣ / ${steps.size}️⃣")
             .setMessage("Seems you got it all!\n")
             .setPositiveButton("Yep, now I'm pro too \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
                 TutorialScene.leave()
+            }
+            .setNegativeButton("Back") { dialog: DialogInterface, id: Int ->
+                TutorialScene.loadLevel()
+                prevStep()
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -385,11 +402,11 @@ class TutorialActivity: AppCompatActivity() {
             needClear = false
             scale *= detector.scaleFactor
             scale = max(
-                Constants.ruleDefaultSize / Constants.centralFormulaDefaultSize,
-                min(scale, Constants.centralFormulaMaxSize / Constants.centralFormulaDefaultSize))
-            globalMathView.textSize = Constants.centralFormulaDefaultSize * scale
+                Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
+                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize))
+            globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
             if (TutorialScene.wantedZoom && globalMathView.textSize / resources.displayMetrics.scaledDensity ==
-                    Constants.centralFormulaMaxSize) {
+                    Constants.centralExpressionMaxSize) {
                 zoomSucceeded()
             }
             return true

@@ -15,7 +15,7 @@ class MathResolverSetNodeNot(
     override fun setNodesFromExpression()  {
         needBrackets = origin.children[0].nodeType == NodeType.FUNCTION
         super.setNodesFromExpression()
-        val elem = createNode(origin.children[0], false, style)
+        val elem = createNode(origin.children[0], false, style, taskType)
         elem.setNodesFromExpression()
         children.add(elem)
         length += elem.length

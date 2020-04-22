@@ -19,6 +19,7 @@ open class MathResolverNodeBase(
     lateinit var rightBottom: Point
     var baseLineOffset: Int = 0
     lateinit var style: VariableStyle
+    lateinit var taskType: TaskType
     private var customized = false
     private lateinit var outputValue: String
 
@@ -26,15 +27,16 @@ open class MathResolverNodeBase(
         var checkSymbol = "A"
         var fontPaint: Paint = {
             val fp = Paint(Paint.ANTI_ALIAS_FLAG)
-            fp.textSize = Constants.centralFormulaDefaultSize
+            fp.textSize = Constants.centralExpressionDefaultSize
             fp.typeface = Typeface.MONOSPACE
             fp.style = Paint.Style.STROKE
             fp
         }()
 
-        fun createNode(expression: ExpressionNode, needBrackets: Boolean, style: VariableStyle): MathResolverNodeBase {
+        fun createNode(expression: ExpressionNode, needBrackets: Boolean,
+                       style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
             val node = if (expression.nodeType == NodeType.VARIABLE) {
-                val (value, customized) = CustomSymbolsHandler.getPrettyValue(expression, style)
+                val (value, customized) = CustomSymbolsHandler.getPrettyValue(expression, style, taskType)
                 val variable = MathResolverNodeBase(expression, false, null, value.length, 1)
                 variable.customized = customized
                 variable.outputValue =  if (customized) {
@@ -60,11 +62,12 @@ open class MathResolverNodeBase(
                 }
             }
             node.style = style
+            node.taskType = taskType
             return node
         }
 
-        fun getTree(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT): MathResolverNodeBase {
-            val root = createNode(expression.children[0], false, style)
+        fun getTree(expression: ExpressionNode, style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
+            val root = createNode(expression.children[0], false, style, taskType)
             root.setNodesFromExpression()
             root.setCoordinates(Point(0, 0))
             return root

@@ -22,7 +22,7 @@ class MathResolverSetNodeOr(
         var maxH = 0
         length += origin.children.size * symbol.length - 1
         for (node in origin.children) {
-            val elem = createNode(node, getNeedBrackets(node), style)
+            val elem = createNode(node, getNeedBrackets(node), style, taskType)
             elem.setNodesFromExpression()
             children.add(elem)
             length += elem.length

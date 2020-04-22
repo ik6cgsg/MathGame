@@ -20,14 +20,16 @@ import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.level.Type
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 import spbpu.hsamcp.mathgame.mathResolver.MathResolverPair
+import spbpu.hsamcp.mathgame.mathResolver.TaskType
 
 class GlobalMathView: TextView {
     private val TAG = "GlobalMathView"
-    var formula: ExpressionNode? = null
+    var expression: ExpressionNode? = null
         private set
     var currentAtom: ExpressionNode? = null
         private set
     private var mathPair: MathResolverPair? = null
+    private var type: Type = Type.OTHER
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
@@ -44,52 +46,54 @@ class GlobalMathView: TextView {
         Log.d(TAG, "setDefaults")
         setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
-        textSize = Constants.centralFormulaDefaultSize
+        textSize = Constants.centralExpressionDefaultSize
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
     }
 
-    fun setFormula(formulaStr: String, type: Type) {
-        Log.d(TAG, "setFormula from str")
-        if (formulaStr.isNotEmpty()) {
-            formula = when (type) {
-                Type.SET -> stringToExpression(formulaStr, type.str)
-                else -> stringToExpression(formulaStr)
+    fun setExpression(expressionStr: String, type: Type) {
+        Log.d(TAG, "setExpression from str")
+        this.type = type
+        if (expressionStr.isNotEmpty()) {
+            expression = when (type) {
+                Type.SET -> stringToExpression(expressionStr, type.str)
+                else -> stringToExpression(expressionStr)
             }
-            textSize = Constants.centralFormulaDefaultSize
+            textSize = Constants.centralExpressionDefaultSize
             currentAtom = null
-            setTextFromFormula()
+            setTextFromExpression()
         }
     }
 
-    fun setFormula(formulaNode: ExpressionNode, resetSize: Boolean = true) {
-        Log.d(TAG, "setFormula from node")
-        formula = formulaNode
+    fun setExpression(expressionNode: ExpressionNode, type: Type, resetSize: Boolean = true) {
+        Log.d(TAG, "setExpression from node")
+        this.type = type
+        expression = expressionNode
         if (resetSize) {
-            textSize = Constants.centralFormulaDefaultSize
+            textSize = Constants.centralExpressionDefaultSize
         }
         currentAtom = null
-        setTextFromFormula()
+        setTextFromExpression()
     }
 
     /** Scene interaction **/
     fun performSubstitution(subst: ExpressionSubstitution): ExpressionNode? {
         Log.d(TAG, "performSubstitution")
         var res: ExpressionNode? = null
-        if (formula == null || currentAtom == null) {
+        if (expression == null || currentAtom == null) {
             Toast.makeText(context, "Error: no atom!", Toast.LENGTH_SHORT).show()
         } else {
-            val substitutionPlaces = findSubstitutionPlacesInExpression(formula!!, subst)
+            val substitutionPlaces = findSubstitutionPlacesInExpression(expression!!, subst)
             if (substitutionPlaces.isNotEmpty()) {
                 val substPlace = substitutionPlaces.find {
                     it.originalValue.nodeId == currentAtom!!.nodeId
                 }
                 if (substPlace != null) {
-                    applySubstitution(formula!!, subst, listOf(substPlace))
-                    setTextFromFormula()
-                    res = formula!!.clone()
+                    applySubstitution(expression!!, subst, listOf(substPlace))
+                    setTextFromExpression()
+                    res = expression!!.clone()
                     currentAtom = null
                 }
             }
@@ -108,7 +112,7 @@ class GlobalMathView: TextView {
         text = newText
     }
 
-    fun clearFormula() {
+    fun clearExpression() {
         currentAtom = null
         val newText = SpannableString(text)
         val colorSpans = newText.getSpans<ForegroundColorSpan>(0, text.length)
@@ -129,7 +133,7 @@ class GlobalMathView: TextView {
         if (event.pointerCount == 2) {
             return false
         }
-        if (formula != null && AndroidUtil.touchUpInsideView(this, event)) {
+        if (expression != null && AndroidUtil.touchUpInsideView(this, event)) {
             selectCurrentAtom(event)
         }
         return true
@@ -149,15 +153,18 @@ class GlobalMathView: TextView {
                 if (currentAtom == null || currentAtom!!.nodeId != atom.nodeId) {
                     currentAtom = atom
                     text = mathPair!!.matrix
-                    MathScene.onFormulaClicked()
+                    MathScene.onExpressionClicked()
                 }
             }
         }
     }
 
-    private fun setTextFromFormula() {
-        Log.d(TAG, "setTextFromFormula")
-        mathPair = MathResolver.resolveToPlain(formula!!)
+    private fun setTextFromExpression() {
+        Log.d(TAG, "setTextFromExpression")
+        mathPair = when(type) {
+            Type.SET -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET)
+            else -> MathResolver.resolveToPlain(expression!!)
+        }
         text = mathPair!!.matrix
     }
 }

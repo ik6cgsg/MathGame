@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">MathGame</string>
-    <string name="tap_on_some_place_in_formula">⬆ Tap on some place in formula ⬆</string>
-    <string name="end_formula_closed">End formula  🔼</string>
-    <string name="end_formula_opened">End formula  🔽</string>
+    <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆</string>
+    <string name="end_expression_closed">End expression  🔼</string>
+    <string name="end_expression_opened">End expression  🔽</string>
     <string name="previous">↶</string>
     <string name="restart">↺</string>
     <string name="back">←</string>
