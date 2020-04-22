@@ -3,7 +3,7 @@
   "name": "Level 2 CNF",
   "difficulty": 1.2,
   "type": "set",
-  "stepsNum": 6,
+  "stepsNum": 4,
   "time": 120,
   "originalExpression": "A\\(A\\B)",
   "finalExpression": "CNF",
