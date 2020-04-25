@@ -59,7 +59,7 @@ class Request {
             // Install the all-trusting trust manager
             val sc: SSLContext = SSLContext.getInstance("SSL")
             sc.init(null, arrayOf<TrustManager> (TrustAllCertsManager()), SecureRandom())
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory())
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
 
             HttpsURLConnection.setDefaultHostnameVerifier(MathHelperSpaceHostnameVerifier())
 
@@ -75,7 +75,7 @@ class Request {
                                     Log.d("Request", "removed")
                                 }
                             } catch (e: Exception) {
-                                Log.e("Request", e.message)
+                                Log.e("Request", e.message ?: "Error while request queue handling")
                             }
                         }
                     }
@@ -114,7 +114,7 @@ class Request {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("Request", e.message)
+                Log.e("Request", e.message ?: "Error while async request")
             }
             return response
         }

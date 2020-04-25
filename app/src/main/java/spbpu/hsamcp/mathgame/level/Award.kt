@@ -1,6 +1,7 @@
 package spbpu.hsamcp.mathgame.level
 
 import android.graphics.Color
+import android.os.Build
 import spbpu.hsamcp.mathgame.common.Constants
 
 enum class AwardType(val str: String) {
@@ -23,6 +24,20 @@ data class Award(val value: AwardType, val coeff: Double) {
     companion object {
         fun getPaused(): Award {
             return Award(AwardType.PAUSED, -1.0)
+        }
+    }
+
+    override fun toString(): String {
+        return if (Build.VERSION.SDK_INT < 24) {
+            when (value) {
+                AwardType.GOLD -> "😁"
+                AwardType.SILVER -> "\uD83D\uDE0A"
+                AwardType.BRONZE -> "\uD83D\uDE10"
+                AwardType.PAUSED -> "||"
+                else -> value.str
+            }
+        } else {
+            value.str
         }
     }
 }

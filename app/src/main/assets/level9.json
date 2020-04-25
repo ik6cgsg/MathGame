@@ -222,10 +222,10 @@
     {"left":"!B&A","right":"A\\B"},
     {"left":"A\\B","right":"A&!B"},
 
-    {"left":"A\\B","right":"!(B->A)"},
-    {"left":"!(B->A)","right":"A\\B"},
-    {"left":"B->A","right":"!(A\\B)"},
-    {"left":"!(A\\B)","right":"B->A"},
+    {"left":"A\\B","right":"!(A->B)"},
+    {"left":"!(A->B)","right":"A\\B"},
+    {"left":"A->B","right":"!(A\\B)"},
+    {"left":"!(A\\B)","right":"A->B"},
 
     {"left":"A|!A","right":"1"},
     {"left":"!A|A","right":"1"},

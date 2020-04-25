@@ -237,17 +237,16 @@ class TutorialActivity: AppCompatActivity() {
         if (currentStep == steps.size) {
             return
         }
-        tutorialDialog.setTitle("Tutorial: ${currentStep + 1}️⃣ / ${steps.size}️⃣")
+        tutorialDialog.setTitle("Tutorial: ${currentStep + 1}⃣ / ${steps.size}⃣")
         steps[currentStep]()
     }
 
     private fun prevStep() {
-        // TODO: animation bug
         currentStep--
         if (currentStep == -1) {
             startDialog()
         } else {
-            tutorialDialog.setTitle("Tutorial: ${currentStep + 1}️⃣ / ${steps.size}️⃣")
+            tutorialDialog.setTitle("Tutorial: ${currentStep + 1}⃣ / ${steps.size}⃣")
             steps[currentStep]()
         }
     }
@@ -284,7 +283,7 @@ class TutorialActivity: AppCompatActivity() {
         builder
             .setTitle("\uD83D\uDE4B\u200D♀ Hi! \uD83D\uDE4B\u200D♂")
             .setMessage("Welcome to our tutorial!\nWanna start?")
-            .setPositiveButton("Yes! \uD83E\uDD29") { dialog: DialogInterface, id: Int ->
+            .setPositiveButton("Yes! \uD83D\uDE0D") { dialog: DialogInterface, id: Int ->
                 nextStep()
             }
             .setNegativeButton("Nope, I'm pro \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
@@ -346,17 +345,17 @@ class TutorialActivity: AppCompatActivity() {
         pointerCentralView.visibility = View.VISIBLE
         animateLeftUp(pointerCentralView)
         tutorialDialog.setMessage("Here is your current game expression.\n" +
-            "To \uD83E\uDD73 you need:\n" +
-            "1. \uD83D\uDC46 on expression\n" +
-            "2. \uD83D\uDD0D necessary rule\n" +
+            "To win \uD83C\uDF89 you need:\n" +
+            "1. Touch \uD83D\uDC46 on expression\n" +
+            "2. Find \uD83D\uDD0D necessary rule\n" +
             "3. make substitution ~>\n" +
-            "4. repeat until \uD83D\uDE0E\uD83E\uDD73\n" +
+            "4. repeat until \uD83D\uDE0E\uD83C\uDF89\n" +
             "Got it?")
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     private fun startDynamicTutorial() {
-        TutorialScene.showMessage("\uD83E\uDD14 Let's check it out! \uD83E\uDD14\n1. Zoom expression to max \uD83D\uDD0E")
+        TutorialScene.showMessage("\uD83D\uDE09 Let's check it out! \uD83D\uDE09\n1. Zoom expression to max \uD83D\uDD0E")
         TutorialScene.wantedZoom = true
     }
 
@@ -374,16 +373,16 @@ class TutorialActivity: AppCompatActivity() {
 
     fun ruleClickSucceeded() {
         TutorialScene.wantedRule = true
-        TutorialScene.showMessage("3. Choose rule ✅\n4. Win! \uD83D\uDE0E\uD83E\uDD73")
+        TutorialScene.showMessage("3. Choose rule ✅\n4. Win! \uD83D\uDE0E\uD83C\uDF89")
     }
 
     fun levelPassed() {
         Log.d(TAG, "levelPassed")
-        TutorialScene.showMessage("\uD83E\uDD73 Congratulations! \uD83E\uDD73")
+        TutorialScene.showMessage("\uD83C\uDF89 Congratulations! \uD83C\uDF89")
         animateLeftUp(pointerCentralView)
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Tutorial: ${currentStep + 1}️⃣ / ${steps.size}️⃣")
+            .setTitle("Tutorial: ${currentStep + 1}⃣ / ${steps.size}⃣")
             .setMessage("Seems you got it all!\n")
             .setPositiveButton("Yep, now I'm pro too \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
                 TutorialScene.leave()

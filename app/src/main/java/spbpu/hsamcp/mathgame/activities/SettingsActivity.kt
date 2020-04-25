@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -67,6 +68,10 @@ class SettingsActivity: AppCompatActivity() {
                 }
             }
             true
+        }
+        if (Build.VERSION.SDK_INT < 24) {
+            val settings = findViewById<TextView>(R.id.settings)
+            settings.text = "\uD83D\uDD27 Settings \uD83D\uDD27"
         }
         val versionView = findViewById<TextView>(R.id.version)
         versionView.text = versionView.text.toString() + BuildConfig.VERSION_NAME
