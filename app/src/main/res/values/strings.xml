@@ -16,4 +16,5 @@
     <string name="send_statistics">Send statistics 📈</string>
     <string name="report_bug">Report bug 🐛</string>
     <string name="version_view">MathGame v</string>
+    <string name="pointer">☝</string>
 </resources>

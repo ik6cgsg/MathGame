@@ -171,10 +171,14 @@ class PlayActivity: AppCompatActivity() {
     fun onWin(stepsCount: Float, currentTime: Long, award: Award) {
         Log.d(TAG, "onWin")
         val msgTitle = "You finished level with:"
-        val steps = "\n\tSteps: $stepsCount"
+        val steps = "\n\tSteps: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {
+            "${stepsCount.toInt()}"
+        } else {
+            "%.1f".format(stepsCount)
+        }
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\tTime: ${currentTime / 60}:$sec"
-        val spannable = SpannableString(msgTitle + steps + time + "\n\nAWARD: ${award.value.str}")
+        val spannable = SpannableString("$msgTitle$steps$time\n\nAWARD: $award")
         spannable.setSpan(BulletSpan(5, Constants.primaryColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(BulletSpan(5, Constants.primaryColor),
@@ -199,24 +203,18 @@ class PlayActivity: AppCompatActivity() {
                 MathScene.menu(false)
                 finish()
             }
-            .setNegativeButton("Previous") { dialog: DialogInterface, id: Int -> }
+            .setNegativeButton("Restart") { dialog: DialogInterface, id: Int ->
+                scale = 1f
+                MathScene.restart()
+            }
             .setCancelable(false)
         val dialog = builder.create()
         dialog.setOnShowListener {
             val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            val negButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
             okButton.setOnClickListener {
                 scale = 1f
                 if (!MathScene.nextLevel()) {
                     Toast.makeText(this, "Sorry, that's last level!", Toast.LENGTH_SHORT).show()
-                } else {
-                    dialog.dismiss()
-                }
-            }
-            negButton.setOnClickListener {
-                scale = 1f
-                if (!MathScene.prevLevel()) {
-                    Toast.makeText(this, "Sorry, no negative levels!", Toast.LENGTH_SHORT).show()
                 } else {
                     dialog.dismiss()
                 }

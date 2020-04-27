@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -15,6 +16,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
+import androidx.core.view.setMargins
 import spbpu.hsamcp.mathgame.level.Level
 import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.R
@@ -47,6 +51,7 @@ class LevelsActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_levels)
         MathScene.levelsActivity = WeakReference(this)
+        MathScene.tutorialProcessing = false
         val levelNames = assets.list("")!!
             .filter { """level.*.json""".toRegex(RegexOption.DOT_MATCHES_ALL).matches(it) }
         levels = ArrayList()
@@ -59,6 +64,10 @@ class LevelsActivity: AppCompatActivity() {
         levels.sortBy { it.difficulty }
         levelViews = ArrayList()
         levelsList = findViewById(R.id.levels_list)
+        if (Build.VERSION.SDK_INT < 24) {
+            val settings = findViewById<TextView>(R.id.settings)
+            settings.text = "\uD83D\uDD27"
+        }
         generateList()
         resetDialog = createResetAlert()
         signInDialog = createSignAlert()
@@ -159,8 +168,8 @@ class LevelsActivity: AppCompatActivity() {
         levelView.setPadding(
             Constants.defaultPadding, Constants.defaultPadding * 2,
             Constants.defaultPadding, Constants.defaultPadding * 2)
-        val layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT)
         layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
         levelView.layoutParams = layoutParams
         levelView.setTextColor(Constants.textColor)
