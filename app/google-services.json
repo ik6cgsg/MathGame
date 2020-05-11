@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "688165065706",
+    "firebase_url": "https://mathhelper-community.firebaseio.com",
+    "project_id": "mathhelper-community",
+    "storage_bucket": "mathhelper-community.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688165065706:android:8310a8127dcacf793f9893",
+        "android_client_info": {
+          "package_name": "spbpu.hsamcp.mathgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688165065706-o5gdq58fljbkgvg9e3lo1badaq3i9dsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsroDX86kNW04aXpAuv2VwKSYldGfn91w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688165065706-o5gdq58fljbkgvg9e3lo1badaq3i9dsr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
