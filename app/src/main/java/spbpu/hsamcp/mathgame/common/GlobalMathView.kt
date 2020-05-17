@@ -58,10 +58,7 @@ class GlobalMathView: TextView {
         Log.d(TAG, "setExpression from str")
         this.type = type
         if (expressionStr.isNotEmpty()) {
-            expression = when (type) {
-                Type.SET -> stringToExpression(expressionStr, type.str)
-                else -> stringToExpression(expressionStr)
-            }
+            expression = structureStringToExpression(expressionStr)
             textSize = Constants.centralExpressionDefaultSize
             currentAtom = null
             setTextFromExpression()

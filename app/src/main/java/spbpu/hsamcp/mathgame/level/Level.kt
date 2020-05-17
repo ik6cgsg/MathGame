@@ -122,15 +122,9 @@ class Level {
             longExpressionCroppingPolicy)
         val startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
         /** EXPRESSIONS */
-        startExpression = when (type) {
-            Type.SET -> stringToExpression(startExpressionStr, type.str)
-            else -> stringToExpression(startExpressionStr)
-        }
+        startExpression = structureStringToExpression(startExpressionStr)
         endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
-        endExpression = when (type) {
-            Type.SET -> stringToExpression(endExpressionStr, type.str)
-            else -> stringToExpression(endExpressionStr)
-        }
+        endExpression = structureStringToExpression(endExpressionStr)
         endExpressionStr = expressionToString(endExpression)
         endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         endPattern = when (type) {

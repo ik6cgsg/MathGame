@@ -5,6 +5,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import androidx.core.text.getSpans
 import com.twf.api.stringToExpression
+import com.twf.api.structureStringToExpression
 import com.twf.expressiontree.ExpressionNode
 import java.lang.Integer.max
 import java.lang.Math.ceil
@@ -41,8 +42,10 @@ class MathResolver {
         }
 
         fun resolveToPlain(expression: String, style: VariableStyle = VariableStyle.DEFAULT,
-                           taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
-            val realExpression = stringToExpression(expression)
+                           taskType: TaskType = TaskType.DEFAULT, structureString:Boolean = false): MathResolverPair {
+            val realExpression = if (!structureString) {
+                stringToExpression(expression)
+            } else structureStringToExpression(expression)
             if (realExpression.identifier.contentEquals("()")) {
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }

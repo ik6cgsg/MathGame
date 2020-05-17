@@ -1,7 +1,7 @@
 package spbpu.hsamcp.mathgame.game
 
 import android.util.Log
-import com.twf.api.expressionSubstitutionFromStrings
+import com.twf.api.expressionSubstitutionFromStructureStrings
 import com.twf.api.findSubstitutionPlacesInExpression
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
@@ -84,10 +84,7 @@ private constructor(
         fun parseRule(ruleInfo: JSONObject, type: Type): ExpressionSubstitution {
             val from = ruleInfo.getString(PackageField.RULE_LEFT.str)
             val to = ruleInfo.getString(PackageField.RULE_RIGHT.str)
-            return when (type) {
-                SET -> expressionSubstitutionFromStrings(from, to, type.str)
-                else -> expressionSubstitutionFromStrings(from, to)
-            }
+            return expressionSubstitutionFromStructureStrings(from, to)
         }
     }
 

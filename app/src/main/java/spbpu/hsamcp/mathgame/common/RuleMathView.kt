@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.TextView
-import com.twf.api.expressionSubstitutionFromStrings
+import com.twf.api.expressionSubstitutionFromStructureStrings
 import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.LevelScene
 import spbpu.hsamcp.mathgame.PlayScene
@@ -35,7 +35,7 @@ class RuleMathView: TextView {
         val params = context.obtainStyledAttributes(attrs, R.styleable.RuleMathView)
         val substFrom = params.getString(R.styleable.RuleMathView_substFrom)
         val substTo = params.getString(R.styleable.RuleMathView_substTo)
-        subst = expressionSubstitutionFromStrings(substFrom!!, substTo!!)
+        subst = expressionSubstitutionFromStructureStrings(substFrom!!, substTo!!)
         setDefaults()
     }
 

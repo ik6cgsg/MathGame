@@ -308,6 +308,14 @@ class MathResolverTest {
     }
 
     @Test
+    fun setStructureStringTest1() {
+        val origin = "(and(and(A;B);C))"
+        val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
+        val expected = "(A∧B)∧C\n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun setTest2() {
         val origin = "A&(B&C)"
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()
