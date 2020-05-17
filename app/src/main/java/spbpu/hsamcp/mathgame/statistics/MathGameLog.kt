@@ -44,6 +44,7 @@ data class MathGameLog (
     // Хар-ки уровня
     // * заполняются на каждый action (кроме sign)
     var taskId: Int = -1,
+    var levelCode: String = "",
     var taskType: String = "", // "trigonometry", "setTheory", ...
     var totalTimeMS: Long = -1,
     var difficulty: Float = 0f,
@@ -74,7 +75,7 @@ data class MathGameLog (
     fun addInfoFrom(activity: PlayActivity, level: Level, action: Action) {
         this.action = action.str
         // Level consts
-        this.taskId = level.taskId
+        this.levelCode = level.levelCode
         this.taskType = level.type.str
         this.totalTimeMS = level.time * 1000
         this.difficulty = level.difficulty

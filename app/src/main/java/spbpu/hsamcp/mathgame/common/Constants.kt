@@ -7,10 +7,12 @@ class Constants {
         const val centralExpressionDefaultSize = 28f
         const val centralExpressionMaxSize = 48f
         const val ruleDefaultSize = 23f
-        const val levelDefaultSize = 21f
+        const val buttonDefaultSize = 21f
         const val mathLineSpacing = 0.5f
         const val levelLineSpacing = 1.2f
         const val defaultPadding = 10
+        const val drawableLeft = 0
+        const val drawableRight = 2
         val primaryColor = Color.parseColor("#008577")
         val textColor = Color.parseColor("#C5C5C5")
         val lightGrey = Color.parseColor("#8B8484")

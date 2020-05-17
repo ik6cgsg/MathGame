@@ -16,7 +16,8 @@ import androidx.core.text.getSpans
 import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
-import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.LevelScene
+import spbpu.hsamcp.mathgame.PlayScene
 import spbpu.hsamcp.mathgame.level.Type
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 import spbpu.hsamcp.mathgame.mathResolver.MathResolverPair
@@ -153,7 +154,7 @@ class GlobalMathView: TextView {
                 if (currentAtom == null || currentAtom!!.nodeId != atom.nodeId) {
                     currentAtom = atom
                     text = mathPair!!.matrix
-                    MathScene.onExpressionClicked()
+                    PlayScene.shared.onExpressionClicked()
                 }
             }
         }

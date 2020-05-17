@@ -10,7 +10,8 @@ import android.view.MotionEvent
 import android.widget.TextView
 import com.twf.api.expressionSubstitutionFromStrings
 import com.twf.expressiontree.ExpressionSubstitution
-import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.LevelScene
+import spbpu.hsamcp.mathgame.PlayScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.level.Type
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
@@ -83,8 +84,7 @@ class RuleMathView: TextView {
             event.action == MotionEvent.ACTION_UP -> {
                 Log.d(TAG, "ACTION_UP")
                 if (needClick && AndroidUtil.touchUpInsideView(this, event)) {
-                    MathScene.currentRuleView = this
-                    MathScene.onRuleClicked()
+                    PlayScene.shared.currentRuleView = this
                     needClick = false
                 } else {
                     setBackgroundColor(Color.TRANSPARENT)

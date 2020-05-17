@@ -12,15 +12,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_play.view.*
-import org.w3c.dom.Text
+import com.twf.logs.log
 import spbpu.hsamcp.mathgame.BuildConfig
-import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.GlobalScene
+import spbpu.hsamcp.mathgame.LevelScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
-import spbpu.hsamcp.mathgame.statistics.MathGameLog
 import spbpu.hsamcp.mathgame.statistics.Statistics
 
 class SettingsActivity: AppCompatActivity() {
@@ -29,6 +28,9 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var reportProblem: TextView
     private lateinit var ratingBar: RatingBar
     private lateinit var reportDialog: AlertDialog
+    private lateinit var resetDialog: AlertDialog
+    private lateinit var greetings: TextView
+    private lateinit var reset: TextView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,23 +53,13 @@ class SettingsActivity: AppCompatActivity() {
         }
         reportDialog = createReportDialog()
         reportProblem = findViewById(R.id.report)
-        reportProblem.setOnTouchListener { v, event ->
-            super.onTouchEvent(event)
-            when {
-                event.action == MotionEvent.ACTION_DOWN -> {
-                    v.setBackgroundColor(Constants.lightGrey)
-                }
-                event.action == MotionEvent.ACTION_UP -> {
-                    v.setBackgroundColor(Color.TRANSPARENT)
-                    if (AndroidUtil.touchUpInsideView(v, event)) {
-                        AndroidUtil.showDialog(reportDialog)
-                    }
-                }
-                event.action == MotionEvent.ACTION_CANCEL -> {
-                    v.setBackgroundColor(Color.TRANSPARENT)
-                }
-            }
-            true
+        AndroidUtil.setOnTouchUpInsideWithCancel(reportProblem) {
+            AndroidUtil.showDialog(reportDialog)
+        }
+        resetDialog = createResetAlert()
+        reset = findViewById(R.id.reset)
+        AndroidUtil.setOnTouchUpInsideWithCancel(reset) {
+            AndroidUtil.showDialog(resetDialog)
         }
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
@@ -75,6 +67,9 @@ class SettingsActivity: AppCompatActivity() {
         }
         val versionView = findViewById<TextView>(R.id.version)
         versionView.text = versionView.text.toString() + BuildConfig.VERSION_NAME
+        greetings = findViewById(R.id.greetings)
+        val login = prefs.getString(AuthInfo.LOGIN.str, "test")
+        greetings.text = "\uD83D\uDC4B Hi, $login! \uD83D\uDC4B"
     }
 
     override fun onResume() {
@@ -141,6 +136,21 @@ class SettingsActivity: AppCompatActivity() {
                 Statistics.logProblem(this, comment)
             }
             .setNegativeButton("Cancel") { dialog: DialogInterface, id: Int -> }
+            .setCancelable(true)
+        return builder.create()
+    }
+
+    private fun createResetAlert(): AlertDialog {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        builder
+            .setTitle("ARE YOU SURE?")
+            .setMessage("This action will reset all your achievements")
+            .setPositiveButton("Yes \uD83D\uDE22") { dialog: DialogInterface, id: Int ->
+                GlobalScene.shared.resetAll()
+                finish()
+            }
+            .setNegativeButton("Cancel ☺") { dialog: DialogInterface, id: Int ->
+            }
             .setCancelable(true)
         return builder.create()
     }

@@ -1,6 +1,7 @@
 package spbpu.hsamcp.mathgame.statistics
 
 import android.util.Log
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -54,8 +55,13 @@ class Request {
     companion object {
         private var reqQueue = LinkedList<RequestData>()
         private var isConnected = false
+        private var isWorking = false
+        private lateinit var job: Deferred<Unit>
 
         fun startWorkCycle() {
+            if (isWorking) {
+                return
+            }
             // Install the all-trusting trust manager
             val sc: SSLContext = SSLContext.getInstance("SSL")
             sc.init(null, arrayOf<TrustManager> (TrustAllCertsManager()), SecureRandom())
@@ -64,7 +70,7 @@ class Request {
             HttpsURLConnection.setDefaultHostnameVerifier(MathHelperSpaceHostnameVerifier())
 
             GlobalScope.launch {
-                async {
+                job = async {
                     while (true) {
                         while (reqQueue.isNotEmpty() && isConnected) {
                             try {
@@ -80,6 +86,14 @@ class Request {
                         }
                     }
                 }
+            }
+            isWorking = true
+        }
+
+        fun stopWorkCycle() {
+            if (isWorking) {
+                job.cancel()
+                reqQueue.clear()
             }
         }
 

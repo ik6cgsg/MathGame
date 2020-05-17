@@ -12,6 +12,9 @@ import com.twf.api.*
 import com.twf.expressiontree.ExpressionStructureConditionNode
 import com.twf.factstransformations.Rule
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.game.Game
+import spbpu.hsamcp.mathgame.game.PackageField
+import spbpu.hsamcp.mathgame.game.RulePackage
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
 
 data class RuleStr(val left: String, val right: String)
@@ -25,7 +28,7 @@ enum class Type(val str: String) {
 
 enum class LevelField(val str: String) {
     IGNORE("ignore"),
-    TASK_ID("taskId"),
+    LEVEL_CODE("levelCode"),
     NAME("name"),
     DIFFICULTY("difficulty"),
     TYPE("type"),
@@ -40,24 +43,21 @@ enum class LevelField(val str: String) {
     ORIGINAL_EXPRESSION("originalExpression"),
     FINAL_EXPRESSION("finalExpression"),
     FINAL_PATTERN("finalPattern"),
-    ALL_SUBSTITUTIONS("allSubstitutions"),
-    RULE_LEFT("left"),
-    RULE_RIGHT("right"),
-    RESULT("resultTaskId"),
+    RULES("rules")
 }
 
-class Level(var fileName: String) {
+class Level {
+    private var packages = ArrayList<String>()
     private var rules = ArrayList<ExpressionSubstitution>()
-    private var rulesStr = ArrayList<RuleStr>()
     lateinit var startExpression: ExpressionNode
-    private lateinit var startExpressionStr: String
     lateinit var endExpression: ExpressionNode
     lateinit var endExpressionStr: String
     lateinit var endPattern: ExpressionStructureConditionNode
     lateinit var endPatternStr: String
     lateinit var type: Type
-    var taskId = 0
-    var name = "test"
+    lateinit var levelCode: String
+    lateinit var game: Game
+    lateinit var name: String
     var awardCoeffs = "0.88 0.65 0.45"
     var awardMultCoeff = 1f
     var showWrongRules = false
@@ -70,85 +70,26 @@ class Level(var fileName: String) {
     var time: Long = 180
     var timeMultCoeff = 1f
     var endless = true
-    private var exprSet = false
-    var coeffsSet = false
-    val fullyLoaded: Boolean
-        get() = this.exprSet && this.coeffsSet
 
     companion object {
         private val TAG = "Level"
 
-        fun create(fileName: String, context: Context): Level? {
-            Log.d(TAG, "create")
-            var res: Level? = Level(fileName)
-            if (!res!!.preLoad(context)) {
+        fun parse(game: Game, levelJson: JSONObject, context: Context): Level? {
+            Log.d(TAG, "parse")
+            var res: Level? = Level()
+            res!!.game = game
+            if (res.load(levelJson)) {
+                res.setGlobalCoeffs(context)
+                res.loadResult(context)
+            } else {
                 res = null
             }
             return res
         }
     }
 
-    fun preLoad(context: Context): Boolean {
-        Log.d(TAG, "load")
-        return when {
-            context.assets != null -> {
-                val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
-                val levelJson = JSONObject(json)
-                if (parse(levelJson)) {
-                    setGlobalCoeffs(context)
-                    loadResult(context)
-                    true
-                } else {
-                    false
-                }
-            }
-            else -> false
-        }
-    }
-
-    fun fullyLoad(context: Context) {
-        setGlobalCoeffs(context)
-        if (!exprSet) {
-            startExpression = when (type) {
-                Type.SET -> stringToExpression(startExpressionStr, type.str)
-                else -> stringToExpression(startExpressionStr)
-            }
-            endExpression = when (type) {
-                Type.SET -> stringToExpression(endExpressionStr, type.str)
-                else -> stringToExpression(endExpressionStr)
-            }
-            endExpressionStr = expressionToString(endExpression)
-            endPattern = when (type) {
-                Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
-                else -> stringToExpressionStructurePattern(endPatternStr)
-            }
-            for (ruleStr in rulesStr) {
-                val ruleSubst = when (type) {
-                    Type.SET -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right, type.str)
-                    else -> expressionSubstitutionFromStrings(ruleStr.left, ruleStr.right)
-                }
-                rules.add(ruleSubst)
-            }
-            //rules.shuffle()
-            rules.sortByDescending { it.left.identifier.length }
-            exprSet = true
-        }
-    }
-
-    private fun setGlobalCoeffs(context: Context) {
-        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
-        if (prefs.getBoolean(AuthInfo.AUTHORIZED.str, false) && !coeffsSet) {
-            val undoInd = prefs.getInt(AuthInfo.UNDO_COEFF.str, 0)
-            undoPolicy = UndoPolicy.values()[undoInd]
-            timeMultCoeff = prefs.getFloat(AuthInfo.TIME_COEFF.str, timeMultCoeff)
-            time = (time * timeMultCoeff).toLong()
-            awardMultCoeff = prefs.getFloat(AuthInfo.AWARD_COEFF.str, awardMultCoeff)
-            coeffsSet = true
-        }
-    }
-
-    private fun parse(levelJson: JSONObject): Boolean {
-        if (!levelJson.has(LevelField.TASK_ID.str) || !levelJson.has(LevelField.NAME.str) ||
+    fun load(levelJson: JSONObject): Boolean {
+        if (!levelJson.has(LevelField.LEVEL_CODE.str) || !levelJson.has(LevelField.NAME.str) ||
             !levelJson.has(LevelField.DIFFICULTY.str) || !levelJson.has(LevelField.TYPE.str) ||
             !levelJson.has(LevelField.ORIGINAL_EXPRESSION.str) || !levelJson.has(LevelField.FINAL_EXPRESSION.str)) {
             return false
@@ -156,7 +97,7 @@ class Level(var fileName: String) {
         if (levelJson.optBoolean(LevelField.IGNORE.str, false)) {
             return false
         }
-        taskId = levelJson.getInt(LevelField.TASK_ID.str)
+        levelCode = levelJson.getString(LevelField.LEVEL_CODE.str)
         name = levelJson.getString(LevelField.NAME.str)
         difficulty = levelJson.getDouble(LevelField.DIFFICULTY.str).toFloat()
         val typeStr = levelJson.getString(LevelField.TYPE.str)
@@ -179,17 +120,54 @@ class Level(var fileName: String) {
         }
         longExpressionCroppingPolicy = levelJson.optString(LevelField.LONG_EXPRESSION_CROPPING_POLICY.str,
             longExpressionCroppingPolicy)
-        startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
+        val startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
+        /** EXPRESSIONS */
+        startExpression = when (type) {
+            Type.SET -> stringToExpression(startExpressionStr, type.str)
+            else -> stringToExpression(startExpressionStr)
+        }
         endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
+        endExpression = when (type) {
+            Type.SET -> stringToExpression(endExpressionStr, type.str)
+            else -> stringToExpression(endExpressionStr)
+        }
+        endExpressionStr = expressionToString(endExpression)
         endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
-        val rulesJson = levelJson.getJSONArray(LevelField.ALL_SUBSTITUTIONS.str)
+        endPattern = when (type) {
+            Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
+            else -> stringToExpressionStructurePattern(endPatternStr)
+        }
+        val rulesJson = levelJson.getJSONArray(LevelField.RULES.str)
         for (i in 0 until rulesJson.length()) {
             val rule = rulesJson.getJSONObject(i)
-            val from = rule.getString(LevelField.RULE_LEFT.str)
-            val to = rule.getString(LevelField.RULE_RIGHT.str)
-            rulesStr.add(RuleStr(from, to))
+            when {
+                /** PACKAGE */
+                rule.has(PackageField.RULE_PACK.str) -> {
+                    /* rules = (rules + game.rulePacks[rule.getString(PackageField.RULE_PACK.str)]!!.allRules)
+                        as ArrayList<ExpressionSubstitution>*/
+                    packages.add(rule.getString(PackageField.RULE_PACK.str))
+                }
+                /** SUBSTITUTION */
+                rule.has(PackageField.RULE_LEFT.str) && rule.has(PackageField.RULE_RIGHT.str) -> {
+                    rules.add(RulePackage.parseRule(rule, type))
+                }
+                else -> return false
+            }
         }
+        // rules.shuffle()
+        // rules.sortByDescending { it.left.identifier.length }
         return true
+    }
+
+    private fun setGlobalCoeffs(context: Context) {
+        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        if (prefs.getBoolean(AuthInfo.AUTHORIZED.str, false)) {
+            val undoInd = prefs.getInt(AuthInfo.UNDO_COEFF.str, 0)
+            undoPolicy = UndoPolicy.values()[undoInd]
+            timeMultCoeff = prefs.getFloat(AuthInfo.TIME_COEFF.str, timeMultCoeff)
+            time = (time * timeMultCoeff).toLong()
+            awardMultCoeff = prefs.getFloat(AuthInfo.AWARD_COEFF.str, awardMultCoeff)
+        }
     }
 
     fun checkEnd(expression: ExpressionNode): Boolean {
@@ -230,7 +208,7 @@ class Level(var fileName: String) {
     fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
         Log.d(TAG, "getRulesFor")
         // TODO: smek with showWrongRules flag
-        val res = rules
+        var res: ArrayList<ExpressionSubstitution> = rules
             .filter {
                 val list = findSubstitutionPlacesInExpression(expression, it)
                 if (list.isEmpty()) {
@@ -241,29 +219,34 @@ class Level(var fileName: String) {
                     }
                     substPlace != null
                 }
+            } as ArrayList<ExpressionSubstitution>
+        for (pckgName in packages) {
+            val rulesFromPack = game.rulePacks[pckgName]!!.getRulesFor(node, expression)
+            if (rulesFromPack != null) {
+                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
             }
+        }
         if (res.isEmpty()) {
             return null
         }
+        res.sortByDescending { it.left.identifier.length }
         return res
     }
 
     fun save(context: Context) {
-        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(game.gameCode, MODE_PRIVATE)
         val prefEdit = prefs.edit()
-        val resultId = "${LevelField.RESULT.str}${taskId}"
         if (lastResult == null) {
-            prefEdit.remove(resultId)
+            prefEdit.remove(levelCode)
         } else {
-            prefEdit.putString(resultId, lastResult!!.saveString())
+            prefEdit.putString(levelCode, lastResult!!.saveString())
         }
         prefEdit.commit()
     }
 
     private fun loadResult(context: Context) {
-        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
-        val resultId = "${LevelField.RESULT.str}${taskId}"
-        val resultStr = prefs.getString(resultId, "")
+        val prefs = context.getSharedPreferences(game.gameCode, MODE_PRIVATE)
+        val resultStr = prefs.getString(levelCode, "")
         if (!resultStr.isNullOrEmpty()) {
             val resultVals = resultStr.split(" ", limit = 4)
             lastResult = Result(resultVals[0].toFloat(), resultVals[1].toLong(),

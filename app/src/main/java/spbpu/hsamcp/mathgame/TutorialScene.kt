@@ -1,20 +1,17 @@
 package spbpu.hsamcp.mathgame
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.util.Log
 import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.activities.LevelsActivity
-import spbpu.hsamcp.mathgame.activities.PlayActivity
 import spbpu.hsamcp.mathgame.activities.TutorialActivity
 import spbpu.hsamcp.mathgame.common.RuleMathView
 import spbpu.hsamcp.mathgame.level.Level
 import spbpu.hsamcp.mathgame.level.Type
 import spbpu.hsamcp.mathgame.mathResolver.MathResolver
 import spbpu.hsamcp.mathgame.mathResolver.TaskType
-import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.lang.ref.WeakReference
 
 class TutorialScene {
@@ -28,17 +25,18 @@ class TutorialScene {
         var wantedRule = false
 
         fun start(context: LevelsActivity, level: Level) {
-            MathScene.tutorialProcessing = true
+            GlobalScene.shared.tutorialProcessing = true
             tutorialLevel = level
             levelsActivity = WeakReference(context)
             context.startActivity(Intent(context, TutorialActivity::class.java))
         }
 
+        /*
         fun preLoad() {
             if (!tutorialLevel.fullyLoaded) {
                 tutorialLevel.fullyLoad(tutorialActivity.get()!!)
             }
-        }
+        }*/
 
         fun loadLevel() {
             Log.d(TAG, "loadLevel")
@@ -128,7 +126,7 @@ class TutorialScene {
         }
 
         fun leave() {
-            MathScene.tutorialProcessing = false
+            GlobalScene.shared.tutorialProcessing = false
             tutorialActivity.get()!!.finish()
         }
     }

@@ -141,7 +141,7 @@ class TutorialActivity: AppCompatActivity() {
         startDialog()
         GlobalScope.launch {
             val job = async {
-                TutorialScene.preLoad()
+                //TutorialScene.preLoad()
                 runOnUiThread {
                     TutorialScene.loadLevel()
                     progress.visibility = View.GONE

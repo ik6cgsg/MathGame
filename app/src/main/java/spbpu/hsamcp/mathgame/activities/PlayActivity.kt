@@ -15,7 +15,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import spbpu.hsamcp.mathgame.level.Award
 import spbpu.hsamcp.mathgame.common.GlobalMathView
-import spbpu.hsamcp.mathgame.MathScene
+import spbpu.hsamcp.mathgame.LevelScene
+import spbpu.hsamcp.mathgame.PlayScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
@@ -54,7 +55,7 @@ class PlayActivity: AppCompatActivity() {
             event.action == MotionEvent.ACTION_UP -> {
                 if (needClear) {
                     globalMathView.clearExpression()
-                    MathScene.clearRules()
+                    PlayScene.shared.clearRules()
                 }
             }
         }
@@ -84,12 +85,12 @@ class PlayActivity: AppCompatActivity() {
         setContentView(R.layout.activity_play)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
-        MathScene.init(this)
         progress = findViewById(R.id.progress)
         looseDialog = createLooseDialog()
         winDialog = createWinDialog()
         backDialog = createBackDialog()
         continueDialog = createContinueDialog()
+        PlayScene.shared.playActivity = this
         startCreatingLevelUI()
     }
 
@@ -99,8 +100,14 @@ class PlayActivity: AppCompatActivity() {
         }
     }
 
+    override fun finish() {
+        PlayScene.shared.cancelTimers()
+        PlayScene.shared.playActivity = null
+        super.finish()
+    }
+
     fun startCreatingLevelUI() {
-        if (MathScene.wasLevelPaused()) {
+        if (LevelScene.shared.wasLevelPaused()) {
             AndroidUtil.showDialog(continueDialog)
         } else {
             createLevelUI(false)
@@ -113,35 +120,27 @@ class PlayActivity: AppCompatActivity() {
         globalMathView.text = ""
         endExpressionView.text = ""
         progress.visibility = View.VISIBLE
-        GlobalScope.launch {
-            val job = async {
-                MathScene.preLoad()
-                runOnUiThread {
-                    MathScene.loadLevel(continueGame)
-                    progress.visibility = View.GONE
-                    loading = false
-                }
-            }
-            job.await()
-        }
+        PlayScene.shared.loadLevel(continueGame)
+        progress.visibility = View.GONE
+        loading = false
     }
 
     private fun previous(v: View?) {
         if (!loading) {
-            MathScene.previousStep()
+            PlayScene.shared.previousStep()
         }
     }
 
     private fun restart(v: View?) {
         if (!loading) {
             scale = 1f
-            MathScene.restart()
+            PlayScene.shared.restart()
         }
     }
 
     private fun back(v: View?) {
         if (!loading) {
-            if (MathScene.currentLevel!!.endless) {
+            if (LevelScene.shared.currentLevel!!.endless) {
                 AndroidUtil.showDialog(backDialog)
             } else {
                 returnToMenu(false)
@@ -150,7 +149,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun returnToMenu(save: Boolean) {
-        MathScene.menu(save)
+        PlayScene.shared.menu(save)
         finish()
     }
 
@@ -200,12 +199,12 @@ class PlayActivity: AppCompatActivity() {
             .setMessage("")
             .setPositiveButton("Next") { dialog: DialogInterface, id: Int -> }
             .setNeutralButton("Menu") { dialog: DialogInterface, id: Int ->
-                MathScene.menu(false)
+                PlayScene.shared.menu(false)
                 finish()
             }
             .setNegativeButton("Restart") { dialog: DialogInterface, id: Int ->
                 scale = 1f
-                MathScene.restart()
+                PlayScene.shared.restart()
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -213,7 +212,7 @@ class PlayActivity: AppCompatActivity() {
             val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
             okButton.setOnClickListener {
                 scale = 1f
-                if (!MathScene.nextLevel()) {
+                if (!LevelScene.shared.nextLevel()) {
                     Toast.makeText(this, "Sorry, that's last level!", Toast.LENGTH_SHORT).show()
                 } else {
                     dialog.dismiss()
