@@ -1,18 +1,20 @@
 package spbpu.hsamcp.mathgame.statistics
 
+import android.R.id
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.twf.api.expressionToString
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.MathScene
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.Award
-import androidx.core.content.ContextCompat.getSystemService
-import android.telephony.TelephonyManager
+
 
 enum class AuthInfo(val str: String) {
     LOGIN("userLogin"),
@@ -34,6 +36,8 @@ class Statistics {
     companion object {
         private var startTime: Long = -1
         private var lastActionTime: Long = -1
+
+        private val mFirebaseAnalytics: FirebaseAnalytics? = null
 
         private var logArray: ArrayList<MathGameLog> = ArrayList()
 
@@ -76,6 +80,21 @@ class Statistics {
                 currSelectedPlace = expressionToString(place)
             )
             val activity = MathScene.playActivity.get()!!
+
+            for (i in 0..1000) {
+                val mFirebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "select_content_$i")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, currExprStr)
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "place")
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
+                val bundle1 = Bundle()
+                bundle1.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "place")
+                bundle1.putString(FirebaseAnalytics.Param.ITEM_ID, "share_$i")
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle1)
+            }
+
             mathLog.addInfoFrom(activity, MathScene.currentLevel!!, Action.PLACE)
             sendLog(mathLog, activity)
         }
