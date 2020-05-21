@@ -3,6 +3,8 @@ package com.twf.expressiontree
 import com.twf.baseoperations.BaseOperationsComputation.Companion.additivelyEqual
 import com.twf.baseoperations.BaseOperationsComputation.Companion.epsilon
 import com.twf.config.FunctionConfiguration
+import com.twf.expressiontree.ExpressionNode
+import com.twf.expressiontree.NodeType
 import com.twf.standartlibextensions.isLetterOrDigitOrUnderscore
 import com.twf.standartlibextensions.isNumberPart
 import java.lang.IllegalArgumentException
@@ -13,11 +15,11 @@ interface ExpressionStructurePart
 
 
 data class FunctionCondition(
-        var name: String = "",
-        var numberOfArgumentsInterval: NumberInterval = NumberInterval(),
-        var internalFunctionCondition: FunctionsCondition = FunctionsCondition(),
-        var internalVariableCondition: VariablesCondition = VariablesCondition(),
-        var parent: ExpressionStructurePart? = null
+    var name: String = "",
+    var numberOfArgumentsInterval: NumberInterval = NumberInterval(),
+    var internalFunctionCondition: FunctionsCondition = FunctionsCondition(),
+    var internalVariableCondition: VariablesCondition = VariablesCondition(),
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     override fun toString(): String {
         return "[" + if (name.isNotEmpty()) {
@@ -25,21 +27,21 @@ data class FunctionCondition(
         } else {
             ""
         } + "," +
-                if (numberOfArgumentsInterval.isNotEmpty()) {
-                    "numberOfArgumentsInterval=${numberOfArgumentsInterval}"
-                } else {
-                    ""
-                } + "," +
-                if (internalFunctionCondition.isNotEmpty()) {
-                    "internalFunctionCondition=${internalFunctionCondition}"
-                } else {
-                    ""
-                } + "," +
-                if (internalVariableCondition.isNotEmpty()) {
-                    "internalVariableCondition=${internalVariableCondition}"
-                } else {
-                    ""
-                } + "]"
+            if (numberOfArgumentsInterval.isNotEmpty()) {
+                "numberOfArgumentsInterval=${numberOfArgumentsInterval}"
+            } else {
+                ""
+            } + "," +
+            if (internalFunctionCondition.isNotEmpty()) {
+                "internalFunctionCondition=${internalFunctionCondition}"
+            } else {
+                ""
+            } + "," +
+            if (internalVariableCondition.isNotEmpty()) {
+                "internalVariableCondition=${internalVariableCondition}"
+            } else {
+                ""
+            } + "]"
     }
 
     fun matchFunction(node: ExpressionNode): Boolean {
@@ -56,14 +58,15 @@ data class FunctionCondition(
         return false
     }
 
-    fun matchFunctionByNameNumberOfArguments(node: ExpressionNode) = (name == node.value && numberOfArgumentsInterval.matchNumber(node.children.size.toDouble()))
+    fun matchFunctionByNameNumberOfArguments(node: ExpressionNode) = (name.isEmpty() && numberOfArgumentsInterval.isEmpty() && internalFunctionCondition.isEmpty() && !internalVariableCondition.isNotEmpty()) ||
+        (name == node.value && numberOfArgumentsInterval.matchNumber(node.children.size.toDouble()))
 }
 
 data class FunctionsCondition(
 //TODO:        var treeNecessaryFunctions: MutableList<FunctionCondition> = mutableListOf(),
-        var treePermittedFunctions: MutableList<FunctionCondition> = mutableListOf(),
-        var treeForbiddenFunctions: MutableList<FunctionCondition> = mutableListOf(),
-        var parent: ExpressionStructurePart? = null
+    var treePermittedFunctions: MutableList<FunctionCondition> = mutableListOf(),
+    var treeForbiddenFunctions: MutableList<FunctionCondition> = mutableListOf(),
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     override fun toString(): String {
         return "[" + if (treePermittedFunctions.isNotEmpty()) {
@@ -71,11 +74,11 @@ data class FunctionsCondition(
         } else {
             ""
         } + "," +
-                if (treeForbiddenFunctions.isNotEmpty()) {
-                    "treeForbiddenFunctions=${treeForbiddenFunctions}"
-                } else {
-                    ""
-                } + "]"
+            if (treeForbiddenFunctions.isNotEmpty()) {
+                "treeForbiddenFunctions=${treeForbiddenFunctions}"
+            } else {
+                ""
+            } + "]"
     }
 
     fun isEmpty() = !isNotEmpty()
@@ -97,7 +100,7 @@ data class FunctionsCondition(
     }
 
     fun matchFunctionByNameNumberOfArguments(node: ExpressionNode): Boolean {
-        if (!isNotEmpty() || treeForbiddenFunctions.any { it.matchFunctionByNameNumberOfArguments(node) }) {
+        if (isEmpty() || treeForbiddenFunctions.any { it.matchFunctionByNameNumberOfArguments(node) }) {
             return false
         } else if (treePermittedFunctions.isEmpty()) {
             return true
@@ -108,10 +111,10 @@ data class FunctionsCondition(
 enum class NumberIntervalType { NATURAL, INTEGER, REAL }
 
 data class NumberInterval(
-        var numbersType: NumberIntervalType = NumberIntervalType.NATURAL,
-        var leftBorder: Double = Double.NEGATIVE_INFINITY,
-        var rightBorder: Double = Double.POSITIVE_INFINITY,
-        var parent: ExpressionStructurePart? = null
+    var numbersType: NumberIntervalType = NumberIntervalType.NATURAL,
+    var leftBorder: Double = Double.NEGATIVE_INFINITY,
+    var rightBorder: Double = Double.POSITIVE_INFINITY,
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     override fun toString(): String {
         return "[$leftBorder;$rightBorder]:${
@@ -138,8 +141,8 @@ data class NumberInterval(
 }
 
 data class NumberCondition(
-        var intervals: MutableList<NumberInterval> = mutableListOf(),
-        var parent: ExpressionStructurePart? = null
+    var intervals: MutableList<NumberInterval> = mutableListOf(),
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     override fun toString(): String {
         return "[" + intervals.toString() + "]"
@@ -152,9 +155,9 @@ data class NumberCondition(
 }
 
 data class VariableCondition(
-        var intervals: MutableList<NumberInterval> = mutableListOf(),
-        var variableName: String = "",
-        var parent: ExpressionStructurePart? = null
+    var intervals: MutableList<NumberInterval> = mutableListOf(),
+    var variableName: String = "",
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     fun hasNumberCondition() = intervals.isNotEmpty()
     fun hasVariableCondition() = variableName.isNotEmpty()
@@ -177,11 +180,11 @@ data class VariableCondition(
         } else {
             ""
         } + "," +
-                if (variableName.isNotEmpty()) {
-                    "variableName=${variableName}"
-                } else {
-                    ""
-                } + "]"
+            if (variableName.isNotEmpty()) {
+                "variableName=${variableName}"
+            } else {
+                ""
+            } + "]"
     }
 
     fun matchVariable(name: String): Boolean {
@@ -192,9 +195,9 @@ data class VariableCondition(
 
 data class VariablesCondition(
 //TODO:        var treeNecessaryVariables: MutableList<VariableCondition> = mutableListOf(),
-        var treePermittedVariables: MutableList<VariableCondition> = mutableListOf(),
-        var treeForbiddenVariables: MutableList<VariableCondition> = mutableListOf(),
-        var parent: ExpressionStructurePart? = null
+    var treePermittedVariables: MutableList<VariableCondition> = mutableListOf(),
+    var treeForbiddenVariables: MutableList<VariableCondition> = mutableListOf(),
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     override fun toString(): String {
         return "[" + if (treePermittedVariables.isNotEmpty()) {
@@ -202,11 +205,11 @@ data class VariablesCondition(
         } else {
             ""
         } + "," +
-                if (treeForbiddenVariables.isNotEmpty()) {
-                    "treeForbiddenVariables=${treeForbiddenVariables.toString()}"
-                } else {
-                    ""
-                } + "]"
+            if (treeForbiddenVariables.isNotEmpty()) {
+                "treeForbiddenVariables=${treeForbiddenVariables.toString()}"
+            } else {
+                ""
+            } + "]"
     }
 
     fun isNotEmpty() = treePermittedVariables.isNotEmpty() || treeForbiddenVariables.isNotEmpty()
@@ -226,9 +229,9 @@ data class VariablesCondition(
 }
 
 data class ChildrenCondition(
-        var childNodes: MutableList<ExpressionStructureConditionNode> = mutableListOf(),
-        var count: NumberCondition = NumberCondition(),
-        var parent: ExpressionStructurePart? = null
+    var childNodes: MutableList<ExpressionStructureConditionNode> = mutableListOf(),
+    var count: NumberCondition = NumberCondition(),
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     override fun toString(): String {
         return "[" + if (count.isNotEmpty()) {
@@ -236,11 +239,11 @@ data class ChildrenCondition(
         } else {
             ""
         } + "," +
-                if (childNodes.isNotEmpty()) {
-                    "childNodes=${childNodes}"
-                } else {
-                    ""
-                } + "]"
+            if (childNodes.isNotEmpty()) {
+                "childNodes=${childNodes}"
+            } else {
+                ""
+            } + "]"
     }
 
     fun isEmpty() = !isNotEmpty()
@@ -248,12 +251,12 @@ data class ChildrenCondition(
 }
 
 data class ExpressionStructureConditionNode(
-        var nodeFunctions: FunctionsCondition = FunctionsCondition(),
-        var treeFunctions: FunctionsCondition = FunctionsCondition(),
-        var treeVariables: VariablesCondition = VariablesCondition(),
-        var children: MutableList<ChildrenCondition> = mutableListOf(),
-        var functionsJoinedWithVariables: MutableSet<String> = mutableSetOf(),
-        var parent: ExpressionStructurePart? = null
+    var nodeFunctions: FunctionsCondition = FunctionsCondition(),
+    var treeFunctions: FunctionsCondition = FunctionsCondition(),
+    var treeVariables: VariablesCondition = VariablesCondition(),
+    var children: MutableList<ChildrenCondition> = mutableListOf(),
+    var functionsJoinedWithVariables: MutableSet<String> = mutableSetOf(),
+    var parent: ExpressionStructurePart? = null
 ) : ExpressionStructurePart {
     override fun toString(): String {
         return "{ " + if (nodeFunctions.isNotEmpty()) {
@@ -261,26 +264,26 @@ data class ExpressionStructureConditionNode(
         } else {
             ""
         } + "," +
-                if (treeFunctions.isNotEmpty()) {
-                    "treeFunctions=${treeFunctions}"
-                } else {
-                    ""
-                } + "," +
-                if (treeVariables.isNotEmpty()) {
-                    "treeVariables=${treeVariables}"
-                } else {
-                    ""
-                } + "," +
-                if (children.isNotEmpty()) {
-                    "children=${children}"
-                } else {
-                    ""
-                } +
-                if (functionsJoinedWithVariables.isNotEmpty()) {
-                    ",functionsJoinedWithVariables=${functionsJoinedWithVariables}"
-                } else {
-                    ""
-                } + " }"
+            if (treeFunctions.isNotEmpty()) {
+                "treeFunctions=${treeFunctions}"
+            } else {
+                ""
+            } + "," +
+            if (treeVariables.isNotEmpty()) {
+                "treeVariables=${treeVariables}"
+            } else {
+                ""
+            } + "," +
+            if (children.isNotEmpty()) {
+                "children=${children}"
+            } else {
+                ""
+            } +
+            if (functionsJoinedWithVariables.isNotEmpty()) {
+                ",functionsJoinedWithVariables=${functionsJoinedWithVariables}"
+            } else {
+                ""
+            } + " }"
     }
 
     fun forwardTreeFunctionVariablesConditions(topFunctionsCondition: FunctionsCondition = FunctionsCondition(), topVariablesCondition: VariablesCondition = VariablesCondition(), topFunctionsJoinedWithVariables: Set<String> = setOf()) {
@@ -308,6 +311,20 @@ fun checkExpressionStructure(rootNode: ExpressionNode, structureNode: Expression
     }
     if (!structureNode.nodeFunctions.matchFunctionByNameNumberOfArguments(rootNode)) {
         return structureNode.children.any { it.childNodes.any { checkExpressionStructure(rootNode, it) } }
+    }
+    if (structureNode.treeVariables.isNotEmpty()) {
+        if (rootNode.children.any {
+                val variableName = it.value
+                structureNode.treeVariables.treeForbiddenVariables.any { it.matchVariable(variableName) }
+            }) {
+            return false
+        }
+        if (!rootNode.children.all {
+                val variableName = it.value
+                structureNode.treeVariables.treePermittedVariables.any { it.matchVariable(variableName) } || structureNode.treeVariables.treePermittedVariables.isEmpty()
+            }) {
+            return false
+        }
     }
     val childrenMatches = Array<Int>(size = structureNode.children.size, init = { 0 })
     for (child in rootNode.children) {
@@ -605,7 +622,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
                 val numberValue = StringBuilder()
                 currentPosition = parseValue(pattern, currentPosition, numberValue, { it -> it.isNumberPart() })
                 result.leftBorder = numberValue.toString().toDoubleOrNull()
-                        ?: return throwNumberExpectException(currentPosition)
+                    ?: return throwNumberExpectException(currentPosition)
                 result.rightBorder = result.leftBorder
             } else throwNumberExpectException(currentPosition)
         }
@@ -630,7 +647,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
                     val numberValue = StringBuilder()
                     currentPosition = parseValue(pattern, currentPosition, numberValue, { it -> it.isNumberPart() })
                     result.rightBorder = numberValue.toString().toDoubleOrNull()
-                            ?: return throwNumberExpectException(currentPosition)
+                        ?: return throwNumberExpectException(currentPosition)
                 } else throwNumberExpectException(currentPosition)
             }
             if (currentPosition < pattern.length && pattern[currentPosition].isLetter()) {
