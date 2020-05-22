@@ -23,6 +23,12 @@
         <activity android:name=".activities.LevelsActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activities.AccountActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activities.AuthActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".activities.PlayActivity"
             android:screenOrientation="portrait">
         </activity>

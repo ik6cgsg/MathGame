@@ -1,9 +1,11 @@
 package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -31,6 +33,7 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var resetDialog: AlertDialog
     private lateinit var greetings: TextView
     private lateinit var reset: TextView
+    private lateinit var editAccount: TextView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +44,7 @@ class SettingsActivity: AppCompatActivity() {
         AndroidUtil.setOnTouchUpInside(backView, ::back)
         statisticSwitch = findViewById(R.id.statistics)
         val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
+        //statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
         ratingBar = findViewById(R.id.rating)
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             val ratingDialog = createRatingDialog(rating)
@@ -50,6 +53,10 @@ class SettingsActivity: AppCompatActivity() {
         ratingBar.setOnClickListener { v: View ->
             val ratingDialog = createRatingDialog(ratingBar.rating)
             AndroidUtil.showDialog(ratingDialog)
+        }
+        editAccount = findViewById(R.id.edit_account)
+        AndroidUtil.setOnTouchUpInsideWithCancel(editAccount) {
+            startActivityForResult(Intent(this, AccountActivity::class.java), 0)
         }
         reportDialog = createReportDialog()
         reportProblem = findViewById(R.id.report)
@@ -75,7 +82,15 @@ class SettingsActivity: AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
+        //statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val login = data!!.getStringExtra(AuthInfo.LOGIN.str)
+            greetings.text = "\uD83D\uDC4B Hi, $login! \uD83D\uDC4B"
+        }
     }
 
     fun back(v: View?) {
@@ -85,14 +100,14 @@ class SettingsActivity: AppCompatActivity() {
     fun switchStatistics(v: View?) {
         val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
-        prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticSwitch.isChecked)
+        //prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticSwitch.isChecked)
         prefEdit.commit()
     }
 
     fun reportProblem(v: View?) {
         val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
-        prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticSwitch.isChecked)
+        //prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticSwitch.isChecked)
         prefEdit.commit()
     }
 
@@ -144,7 +159,7 @@ class SettingsActivity: AppCompatActivity() {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
             .setTitle("ARE YOU SURE?")
-            .setMessage("This action will reset all your achievements")
+            .setMessage("This action will reset all your achievements and authorization")
             .setPositiveButton("Yes \uD83D\uDE22") { dialog: DialogInterface, id: Int ->
                 GlobalScene.shared.resetAll()
                 finish()

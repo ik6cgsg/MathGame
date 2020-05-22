@@ -19,7 +19,6 @@ import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
-import spbpu.hsamcp.mathgame.game.Game
 import spbpu.hsamcp.mathgame.statistics.AuthInfo
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.util.*
@@ -41,6 +40,11 @@ class GamesActivity: AppCompatActivity() {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
+        val prefs = getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        if (!prefs.getBoolean(AuthInfo.AUTHORIZED.str, false)) {
+            //AndroidUtil.showDialog(signInDialog)
+            startActivity(Intent(this, AuthActivity::class.java))
+        }
         GlobalScene.shared.gamesActivity = this
         gamesViews = ArrayList()
         gamesList = findViewById(R.id.games_list)
@@ -65,15 +69,6 @@ class GamesActivity: AppCompatActivity() {
         serverLabel.visibility = View.GONE
         serverList.visibility = View.GONE
         serverScroll.visibility = View.GONE
-        val prefs = getSharedPreferences(Constants.storage, MODE_PRIVATE)
-        if (!prefs.contains(Constants.deviceId)) {
-            val prefEdit = prefs.edit()
-            prefEdit.putString(Constants.deviceId, UUID.randomUUID().toString())
-            prefEdit.commit()
-        }
-        if (!prefs.getBoolean(AuthInfo.AUTHORIZED.str, false)) {
-            AndroidUtil.showDialog(signInDialog)
-        }
     }
 
     fun settings(v: View?) {
@@ -155,7 +150,7 @@ class GamesActivity: AppCompatActivity() {
     }
 
     private fun filterList(search: CharSequence? = null) {
-        if (search != null) {
+        if (search != null && search.isNotBlank()) {
             GlobalScene.shared.games.forEachIndexed { i, game ->
                 if (!game.name.contains(search, ignoreCase = true)) {
                     gamesViews[i].visibility = View.GONE
@@ -208,7 +203,7 @@ class GamesActivity: AppCompatActivity() {
         val secondNameView = view.findViewById<EditText>(R.id.secondName)
         val groupView = view.findViewById<EditText>(R.id.group)
         val institutionView = view.findViewById<EditText>(R.id.institution)
-        val ageView = view.findViewById<EditText>(R.id.age)
+        val ageView = view.findViewById<EditText>(R.id.additional)
         val statisticsView = view.findViewById<Switch>(R.id.statistics)
         dialog.setOnShowListener {
             val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
@@ -240,7 +235,7 @@ class GamesActivity: AppCompatActivity() {
                 prefEdit.putString(AuthInfo.SECOND_NAME.str, secondNameView.text.toString())
                 prefEdit.putString(AuthInfo.GROUP.str, groupView.text.toString())
                 prefEdit.putString(AuthInfo.INSTITUTION.str, institutionView.text.toString())
-                prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticsView.isChecked)
+                //prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticsView.isChecked)
                 prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
                 GlobalScene.shared.generateGamesMultCoeffs(prefEdit)
                 prefEdit.commit()

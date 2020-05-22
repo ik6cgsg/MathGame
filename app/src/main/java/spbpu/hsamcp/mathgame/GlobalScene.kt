@@ -3,9 +3,11 @@ package spbpu.hsamcp.mathgame
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import spbpu.hsamcp.mathgame.activities.AuthActivity
 import spbpu.hsamcp.mathgame.activities.GamesActivity
 import spbpu.hsamcp.mathgame.activities.LevelsActivity
 import spbpu.hsamcp.mathgame.common.Constants
@@ -16,6 +18,12 @@ import spbpu.hsamcp.mathgame.statistics.Request
 import java.util.*
 import kotlin.collections.ArrayList
 
+enum class AuthStatus(val str: String) {
+    GUEST("guest"),
+    GOOGLE("google"),
+    GITHUB("github")
+}
+
 class GlobalScene {
     companion object {
         private const val TAG = "GlobalScene"
@@ -23,6 +31,8 @@ class GlobalScene {
         val shared: GlobalScene = GlobalScene()
     }
 
+    var authStatus = AuthStatus.GUEST
+    var googleSignInClient: GoogleSignInClient? = null
     var tutorialProcessing = false
     var games: ArrayList<Game> = ArrayList()
     var gamesActivity: GamesActivity? = null
@@ -52,14 +62,7 @@ class GlobalScene {
         }
 
     fun resetAll() {
-        val prefs = gamesActivity!!.getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        for (key in prefs.all.keys) {
-            if (key.startsWith(AuthInfo.PREFIX.str)) {
-                prefEdit.remove(key)
-            }
-        }
-        prefEdit.commit()
+        logout()
         games.map {
             val gamePrefs = gamesActivity!!.getSharedPreferences(it.gameCode, Context.MODE_PRIVATE)
             val gamePrefEdit = gamePrefs.edit()
@@ -71,6 +74,22 @@ class GlobalScene {
         }
         Request.stopWorkCycle()
         gamesActivity!!.recreate()
+    }
+
+    fun logout() {
+        val prefs = gamesActivity!!.getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        for (key in prefs.all.keys) {
+            if (key.startsWith(AuthInfo.PREFIX.str)) {
+                prefEdit.remove(key)
+            }
+        }
+        if (authStatus == AuthStatus.GOOGLE) {
+            googleSignInClient!!.signOut()
+        }
+        authStatus = AuthStatus.GUEST
+        prefEdit.putString(AuthInfo.AUTH_STATUS.str, AuthStatus.GUEST.str)
+        prefEdit.commit()
     }
 
     fun generateGamesMultCoeffs(prefEdit: SharedPreferences.Editor) {

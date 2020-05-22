@@ -21,8 +21,10 @@ enum class AuthInfo(val str: String) {
     GROUP("userGroup"),
     INSTITUTION("userInstitution"),
     AGE("userAge"),
-    STATISTICS("userStatistics"),
+    ADDITIONAL("userAdditional"),
+    //STATISTICS("userStatistics"),
     AUTHORIZED("userAuthorized"),
+    AUTH_STATUS("userAuthStatus"),
     TIME_COEFF("userTimeCoeff"),
     AWARD_COEFF("userAwardCoeff"),
     UNDO_COEFF("userUndoCoeff"),
@@ -218,9 +220,9 @@ class Statistics {
             Log.d("Statistics", "MathGameLog: $log}")
             setDefault(log, context)
             val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
-            if (prefs.getBoolean(AuthInfo.STATISTICS.str, false) || forced) {
-                sendOneLog(log, context)
-            }
+            //if (prefs.getBoolean(AuthInfo.STATISTICS.str, false) || forced) {
+            sendOneLog(log, context)
+            //}
         }
 
         private fun sendOneLog(log: MathGameLog, context: Context) {

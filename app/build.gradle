@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file(project.property("signing"))
+            storePassword project.property("signing.password")
+            keyAlias project.property("signing.alias")
+            keyPassword project.property("signing.password")
+        }
+    }
 }
 
 dependencies {
@@ -31,4 +39,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0"
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 }
