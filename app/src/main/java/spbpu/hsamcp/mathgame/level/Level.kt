@@ -11,11 +11,11 @@ import android.content.Context.MODE_PRIVATE
 import com.twf.api.*
 import com.twf.expressiontree.ExpressionStructureConditionNode
 import com.twf.factstransformations.Rule
+import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.game.Game
 import spbpu.hsamcp.mathgame.game.PackageField
 import spbpu.hsamcp.mathgame.game.RulePackage
-import spbpu.hsamcp.mathgame.statistics.AuthInfo
 
 data class RuleStr(val left: String, val right: String)
 

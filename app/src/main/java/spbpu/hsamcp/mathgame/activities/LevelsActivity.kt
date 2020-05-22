@@ -71,7 +71,9 @@ class LevelsActivity: AppCompatActivity() {
     }
 
     fun settings(v: View?) {
-        startActivity(Intent(this, SettingsActivity::class.java))
+        if (!loading) {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 
     fun updateResult() {

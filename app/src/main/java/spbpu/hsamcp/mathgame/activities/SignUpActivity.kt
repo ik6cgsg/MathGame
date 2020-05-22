@@ -4,18 +4,22 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
+import spbpu.hsamcp.mathgame.AuthStatus
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.game.Game
 
-class AccountActivity: AppCompatActivity() {
-    private val TAG = "AccountActivity"
+class SignUpActivity: AppCompatActivity() {
+    private val TAG = "SignUpActivity"
     private lateinit var loginView: TextView
     private lateinit var addInfoSwitch: Switch
     private lateinit var addInfoList: ScrollView
@@ -23,21 +27,25 @@ class AccountActivity: AppCompatActivity() {
     private lateinit var surnameView: TextView
     private lateinit var secondNameView: TextView
     private lateinit var additionalView: TextView
-    private lateinit var logButton: Button
+    private lateinit var signButton: Button
+    private lateinit var passwordView: TextView
+    private lateinit var repeatView: TextView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account)
+        setContentView(R.layout.activity_sign_up)
         loginView = findViewById(R.id.login)
+        passwordView = findViewById(R.id.password)
+        repeatView = findViewById(R.id.repeat)
         addInfoSwitch = findViewById(R.id.show_add)
         addInfoList = findViewById(R.id.additional_info_list)
         nameView = findViewById(R.id.name)
         surnameView = findViewById(R.id.surname)
         secondNameView = findViewById(R.id.second_name)
         additionalView = findViewById(R.id.additional)
-        logButton = findViewById(R.id.log_button)
+        signButton = findViewById(R.id.sign_up)
     }
 
     override fun onResume() {
@@ -48,15 +56,19 @@ class AccountActivity: AppCompatActivity() {
         surnameView.text = prefs.getString(AuthInfo.SURNAME.str, "")
         secondNameView.text = prefs.getString(AuthInfo.SECOND_NAME.str, "")
         additionalView.text = prefs.getString(AuthInfo.ADDITIONAL.str, "")
+        signButton.isEnabled = false
+        loginView.doAfterTextChanged { checkInput() }
+        passwordView.doAfterTextChanged { checkInput() }
+        repeatView.doAfterTextChanged { checkInput() }
     }
 
-    override fun onBackPressed() {
-        back(null)
-    }
-
-    fun back(v: View?) {
-        startActivity(Intent(this, SettingsActivity::class.java))
-        finish()
+    private fun checkInput() {
+        if (!loginView.text.isNullOrBlank() && !passwordView.text.isNullOrBlank() && !repeatView.text.isNullOrBlank() &&
+            passwordView.text.toString() == repeatView.text.toString()) {
+            signButton.isEnabled = true
+        } else {
+            signButton.isEnabled = false
+        }
     }
 
     fun toggleAdditionalInfo(v: View?) {
@@ -67,22 +79,27 @@ class AccountActivity: AppCompatActivity() {
         }
     }
 
-    fun save(v: View?) {
+    fun sign(v: View?) {
         val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
+        prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
+        prefEdit.putString(AuthInfo.AUTH_STATUS.str, AuthStatus.MATH_HELPER.str)
         prefEdit.putString(AuthInfo.LOGIN.str, loginView.text.toString())
+        // TODO: password ??
+        prefEdit.putString(AuthInfo.PASSWORD.str, passwordView.text.toString())
         prefEdit.putString(AuthInfo.NAME.str, nameView.text.toString())
         prefEdit.putString(AuthInfo.SURNAME.str, surnameView.text.toString())
         prefEdit.putString(AuthInfo.SECOND_NAME.str, secondNameView.text.toString())
         prefEdit.putString(AuthInfo.ADDITIONAL.str, additionalView.text.toString())
+        GlobalScene.shared.authStatus = AuthStatus.MATH_HELPER
+        GlobalScene.shared.generateGamesMultCoeffs(prefEdit)
         prefEdit.commit()
-        // TODO: server request: EDIT
-        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+        // TODO: server request: SIGN UP
+        finish()
     }
 
-    fun logClicked(v: View?) {
-        GlobalScene.shared.logout()
-        //startActivity(Intent(this, AuthActivity::class.java))
+    fun cancel(v: View?) {
+        startActivity(Intent(this, AuthActivity::class.java))
         finish()
     }
 }

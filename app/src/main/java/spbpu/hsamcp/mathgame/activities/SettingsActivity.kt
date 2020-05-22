@@ -6,22 +6,16 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.twf.logs.log
-import spbpu.hsamcp.mathgame.BuildConfig
-import spbpu.hsamcp.mathgame.GlobalScene
-import spbpu.hsamcp.mathgame.LevelScene
-import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.*
 import spbpu.hsamcp.mathgame.common.AndroidUtil
+import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
-import spbpu.hsamcp.mathgame.statistics.AuthInfo
 import spbpu.hsamcp.mathgame.statistics.Statistics
 
 class SettingsActivity: AppCompatActivity() {
@@ -34,6 +28,7 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var greetings: TextView
     private lateinit var reset: TextView
     private lateinit var editAccount: TextView
+    private lateinit var changePassword: TextView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +51,8 @@ class SettingsActivity: AppCompatActivity() {
         }
         editAccount = findViewById(R.id.edit_account)
         AndroidUtil.setOnTouchUpInsideWithCancel(editAccount) {
-            startActivityForResult(Intent(this, AccountActivity::class.java), 0)
+            finish()
+            startActivity(Intent(this, AccountActivity::class.java))
         }
         reportDialog = createReportDialog()
         reportProblem = findViewById(R.id.report)
@@ -68,6 +64,10 @@ class SettingsActivity: AppCompatActivity() {
         AndroidUtil.setOnTouchUpInsideWithCancel(reset) {
             AndroidUtil.showDialog(resetDialog)
         }
+        changePassword = findViewById(R.id.change_password)
+        AndroidUtil.setOnTouchUpInsideWithCancel(changePassword) {
+            startActivity(Intent(this, PasswordActivity::class.java))
+        }
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27 Settings \uD83D\uDD27"
@@ -75,22 +75,18 @@ class SettingsActivity: AppCompatActivity() {
         val versionView = findViewById<TextView>(R.id.version)
         versionView.text = versionView.text.toString() + BuildConfig.VERSION_NAME
         greetings = findViewById(R.id.greetings)
-        val login = prefs.getString(AuthInfo.LOGIN.str, "test")
-        greetings.text = "\uD83D\uDC4B Hi, $login! \uD83D\uDC4B"
     }
 
     override fun onResume() {
         super.onResume()
         val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        //statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            val login = data!!.getStringExtra(AuthInfo.LOGIN.str)
-            greetings.text = "\uD83D\uDC4B Hi, $login! \uD83D\uDC4B"
+        val login = prefs.getString(AuthInfo.LOGIN.str, "test")
+        greetings.text = "\uD83D\uDC4B Hi, $login! \uD83D\uDC4B"
+        when (GlobalScene.shared.authStatus) {
+            AuthStatus.MATH_HELPER, AuthStatus.GUEST -> changePassword.visibility = View.VISIBLE
+            else -> changePassword.visibility = View.GONE
         }
+        //statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
     }
 
     fun back(v: View?) {
@@ -159,7 +155,7 @@ class SettingsActivity: AppCompatActivity() {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
             .setTitle("ARE YOU SURE?")
-            .setMessage("This action will reset all your achievements and authorization")
+            .setMessage("This action will reset all your achievements")
             .setPositiveButton("Yes \uD83D\uDE22") { dialog: DialogInterface, id: Int ->
                 GlobalScene.shared.resetAll()
                 finish()

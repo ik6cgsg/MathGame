@@ -15,11 +15,13 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
+import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
-import spbpu.hsamcp.mathgame.statistics.AuthInfo
 import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,7 +42,17 @@ class GamesActivity: AppCompatActivity() {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestIdToken(Constants.serverId)
+            .build()
+        GlobalScene.shared.googleSignInClient = GoogleSignIn.getClient(this, gso)
         val prefs = getSharedPreferences(Constants.storage, MODE_PRIVATE)
+        if (!prefs.contains(Constants.deviceId)) {
+            val prefEdit = prefs.edit()
+            prefEdit.putString(Constants.deviceId, UUID.randomUUID().toString())
+            prefEdit.commit()
+        }
         if (!prefs.getBoolean(AuthInfo.AUTHORIZED.str, false)) {
             //AndroidUtil.showDialog(signInDialog)
             startActivity(Intent(this, AuthActivity::class.java))

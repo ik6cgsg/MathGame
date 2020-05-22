@@ -74,10 +74,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:divider="@drawable/divider"
+        android:dividerPadding="35dp"
         android:orientation="vertical"
         android:showDividers="middle"
         app:layout_constraintBottom_toTopOf="@+id/rating"
@@ -93,7 +94,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="Edit account ✏"
+            android:text="✏ Edit account"
             android:textColor="@color/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
@@ -113,6 +114,17 @@
             android:typeface="monospace"
             android:visibility="gone"
             tools:checked="true" />
+
+        <TextView
+            android:id="@+id/change_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="🔑 Change password"
+            android:textColor="@color/textColor"
+            android:textSize="21sp"
+            android:typeface="monospace" />
 
         <TextView
             android:id="@+id/report"
@@ -155,8 +167,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:isScrollContainer="false"
+        android:scrollHorizontally="false"
+        android:singleLine="true"
         android:textColor="@color/textColor"
         android:textSize="18sp"
         android:typeface="monospace"

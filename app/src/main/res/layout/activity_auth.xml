@@ -4,7 +4,8 @@
     xmlns:auto="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:focusable="true">
 
     <View
         android:id="@+id/divider"
@@ -12,9 +13,9 @@
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="48dp"
         android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toTopOf="@+id/guest"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -23,7 +24,7 @@
         android:id="@+id/logo"
         android:layout_width="128dp"
         android:layout_height="123dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/rect_shape_clicked"
         android:contentDescription="Logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,14 +37,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/button_rect"
         android:onClick="onGoogleClicked"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo">
+        app:layout_constraintTop_toBottomOf="@+id/divider4">
 
         <ImageView
             android:id="@+id/googleLogo"
@@ -61,7 +62,7 @@
             android:layout_weight="1"
             android:text="@string/continue_with_google"
             android:textColor="@color/textColor"
-            android:textSize="20sp"
+            android:textSize="21sp"
             android:typeface="monospace" />
     </LinearLayout>
 
@@ -70,14 +71,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/button_rect"
         android:onClick="onGitHubClicked"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/googleSign">
+        app:layout_constraintTop_toBottomOf="@+id/googleSign"
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -95,7 +99,7 @@
             android:layout_weight="1"
             android:text="@string/continue_with_github"
             android:textColor="@color/textColor"
-            android:textSize="20sp"
+            android:textSize="21sp"
             android:typeface="monospace" />
     </LinearLayout>
 
@@ -115,6 +119,149 @@
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <Button
+        android:id="@+id/sign_in"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/button_rect"
+        android:onClick="signIn"
+        android:text="Sign in"
+        android:textColor="@color/colorPrimary"
+        android:textSize="21sp"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/sign_up"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_rect"
+        android:onClick="signUp"
+        android:text="sign up"
+        android:textColor="@color/textColor"
+        android:textSize="21sp"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="@+id/sign_in"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="@+id/sign_in"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="@+id/sign_up"
+        app:layout_constraintStart_toStartOf="@+id/sign_up"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:background="@color/background"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:shadowColor="@android:color/transparent"
+        android:text="OR"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:translationZ="0.1dp"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="@+id/divider3"
+        app:layout_constraintStart_toStartOf="@+id/divider3"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:background="@color/background"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:shadowColor="@android:color/transparent"
+        android:text="OR"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:translationZ="0.1dp"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="@+id/divider4"
+        app:layout_constraintStart_toStartOf="@+id/divider4"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rect_shape_non_required"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/googleSign"
+        app:layout_constraintStart_toStartOf="@+id/googleSign"
+        app:layout_constraintTop_toBottomOf="@+id/logo">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/ic_launcher_background">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="Login"
+                android:singleLine="true"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/lightGray"
+                android:textSize="21sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/ic_launcher_background"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/lightGray">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/ic_launcher_background"
+                android:textSize="21sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

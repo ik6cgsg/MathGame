@@ -38,6 +38,12 @@
         <activity android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activities.SignUpActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activities.PasswordActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

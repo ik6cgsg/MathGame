@@ -20,5 +20,6 @@ class Constants {
         const val deviceId = "DEVICE_UUID"
         const val timeDeviation = 0.2f
         const val awardDeviation = 0.1f
+        const val serverId = "977771799310-42c14i973bbuo8nnquld6houe6mfa2t1.apps.googleusercontent.com"
     }
 }

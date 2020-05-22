@@ -14,7 +14,7 @@
     <string name="gear">⚙</string>
     <string name="settings">⚙ SETTINGS ⚙</string>
     <string name="send_statistics">Send statistics 📈</string>
-    <string name="report_bug">Report bug 🐛</string>
+    <string name="report_bug">🐛 Report bug</string>
     <string name="version_view">MathGame v</string>
     <string name="pointer">☝</string>
     <string name="continue_as_guest">Continue as guest</string>

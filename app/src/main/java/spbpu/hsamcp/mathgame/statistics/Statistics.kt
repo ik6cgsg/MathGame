@@ -10,26 +10,9 @@ import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.LevelScene
 import spbpu.hsamcp.mathgame.PlayScene
+import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.level.Award
-
-enum class AuthInfo(val str: String) {
-    LOGIN("userLogin"),
-    NAME("userName"),
-    SURNAME("userSurname"),
-    SECOND_NAME("userSecondName"),
-    GROUP("userGroup"),
-    INSTITUTION("userInstitution"),
-    AGE("userAge"),
-    ADDITIONAL("userAdditional"),
-    //STATISTICS("userStatistics"),
-    AUTHORIZED("userAuthorized"),
-    AUTH_STATUS("userAuthStatus"),
-    TIME_COEFF("userTimeCoeff"),
-    AWARD_COEFF("userAwardCoeff"),
-    UNDO_COEFF("userUndoCoeff"),
-    PREFIX("user")
-}
 
 class Statistics {
     companion object {
