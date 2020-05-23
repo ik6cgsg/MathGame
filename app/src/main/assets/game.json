@@ -7,12 +7,12 @@
     {
       "levelCode": "Level_1_Prove",
       "name": "Level 1 Prove",
-      "difficulty": 1.1,
+      "difficulty": 1.0,
       "type": "set",
-      "stepsNum": 4,
+      "stepsNum": 2,
       "time": 90,
-      "originalExpression": "(and(A;or(A;B)))",
-      "finalExpression": "(A)",
+      "originalExpression": "(and(or(A;not(B));or(A;not(C))))",
+      "finalExpression": "(and(A;not(and(B;C))))",
       "rules":[
         {"rulePack": "SetBase"}
       ]
@@ -20,7 +20,7 @@
     {
       "levelCode": "Level_2_CNF",
       "name": "Level 2 CNF",
-      "difficulty": 1.2,
+      "difficulty": 2.0,
       "type": "set",
       "stepsNum": 6,
       "time": 120,
@@ -33,9 +33,96 @@
       ]
     },
     {
+      "levelCode": "Level_3_Prove",
+      "name": "Level 3 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 90,
+      "originalExpression": "(or(A;and(A;B)))",
+      "finalExpression": "(A)",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "Level_4_Prove",
+      "name": "Level 4 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(or(set-(not(A);B);C))",
+      "finalExpression": "(implic(or(A;B);C))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "Level_5_DNF",
+      "name": "Level 5 DNF",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(implic(implic(A;not(B));C))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "Level_6_3-CNF",
+      "name": "Level 6 3-CNF",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 6,
+      "time": 90,
+      "originalExpression": "(not(and(A;set-(B;C))))",
+      "finalExpression": "3-CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "Level_7_2-CNF",
+      "name": "Level 7 2-CNF",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(not(or(and(not(A);not(B));and(not(C);not(D)))))",
+      "finalExpression": "2-CNF",
+      "finalPattern": "and : (or : 2) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "Level_8_Prove",
+      "name": "Level 8 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(implic(and(A;B);or(not(C);B)))",
+      "finalExpression": "(implic(A;implic(B;implic(C;B))))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
       "levelCode": "Level_9_Resolution",
       "name": "Level 9 Resolution",
-      "difficulty": 2.9,
+      "difficulty": 3.0,
       "type": "set",
       "stepsNum": 6,
       "time": 250,
@@ -47,17 +134,409 @@
       ]
     },
     {
-      "levelCode": "Level_17_DNF",
-      "name": "Level 17 DNF",
-      "difficulty": 3.7,
+      "levelCode": "Level_10_Prove",
+      "name": "Level 10 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(not(or(A;B;C)))",
+      "finalExpression": "3-DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_11_Prove",
+      "name": "Level 11 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(set-(not(and(A;B));B))",
+      "finalExpression": "(not(B))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_12_Prove",
+      "name": "Level 12 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(or(set-(set-(A;B);C);or(not(B);C)))",
+      "finalExpression": "(implic(implic(A;or(B;C));implic(B;C)))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_13_DNF",
+      "name": "Level 13 DNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(implic(and(implic(C;B);not(or(A;B;C)));C))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_14_DNF",
+      "name": "Level 14 DNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(and(not(or(and(A;B;or(and(B;C);not(A)));A));and(B;A)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_15_Prove",
+      "name": "Level 15 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 8,
+      "time": 90,
+      "originalExpression": "(implic(or(A;B);and(A;B)))",
+      "finalExpression": "(and(not(set-(A;B));not(set-(B;A))))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_16_Prove",
+      "name": "Level 16 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 8,
+      "time": 90,
+      "originalExpression": "(set-(or(A;B);and(implic(A;B);implic(B;A))))",
+      "finalExpression": "(or(set-(A;B);set-(B;A)))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_17_Prove",
+      "name": "Level 17 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 10,
+      "time": 90,
+      "originalExpression": "(implic(implic(set-(A;C);D);set-(D;B)))",
+      "finalExpression": "(or(set-(D;B);set-(A;or(C;D))))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_18_DNF",
+      "name": "Level 18 DNF",
+      "difficulty": 5.0,
       "type": "set",
       "stepsNum": 12,
+      "time": 90,
+      "originalExpression": "(implic(implic(implic(implic(A;B);C);implic(implic(B;C);A));implic(implic(C;A);B)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_19_Resolution",
+      "name": "Level 19 Resolution",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 8,
+      "time": 250,
+      "originalExpression": "(and(not(A);implic(not(A);B);implic(B;C);not(C)))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "SetResolution"}
+      ]
+    },
+    {
+      "levelCode": "Level_20_Resolution",
+      "name": "Level 20 Resolution",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 10,
+      "time": 250,
+      "originalExpression": "(and(or(A;C);implic(D;C);implic(A;D);not(C)))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "SetResolution"}
+      ]
+    },
+    {
+      "levelCode": "Level_21_Resolution",
+      "name": "Level 21 Resolution",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 12,
+      "time": 250,
+      "originalExpression": "(and(or(A;B;C);implic(A;or(C;D));implic(C;or(B;D));not(B);not(D)))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "SetResolution"}
+      ]
+    },
+    {
+      "levelCode": "Level_22_Resolution",
+      "name": "Level 22 Resolution",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 12,
+      "time": 250,
+      "originalExpression": "(and(or(A;B);implic(not(C);not(A));implic(not(D);not(B));not(or(C;D));not(or(not(C);not(D)))))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "SetResolution"}
+      ]
+    },
+    {
+      "levelCode": "Level_23_DNF",
+      "name": "Level 23 DNF",
+      "difficulty": 6.0,
+      "type": "set",
+      "stepsNum": 36,
       "time": 200,
       "originalExpression": "(and(or(A;B;not(C));or(A;not(B);C);or(not(A);B;C)))",
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
         {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_24_CNF",
+      "name": "Level 24 CNF",
+      "difficulty": 6.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_25_CNF",
+      "name": "Level 25 CNF",
+      "difficulty": 6.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_26_DNF",
+      "name": "Level 26 DNF",
+      "difficulty": 6.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_27_CNF",
+      "name": "Level 27 CNF",
+      "difficulty": 6.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(or(and(A;not(B);C;not(D));and(not(A);B;not(C);D)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_28_DNF",
+      "name": "Level 28 DNF",
+      "difficulty": 6.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(and(or(A;not(B);C;not(D));or(not(A);B;not(C);D)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_29_3-DNF",
+      "name": "Level 29 3-DNF",
+      "difficulty": 7.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(and(or(A;B;not(C));or(A;not(B);C);or(not(A);B;C)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_30_3-CNF",
+      "name": "Level 30 3-CNF",
+      "difficulty": 7.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_31_3-CNF",
+      "name": "Level 31 3-CNF",
+      "difficulty": 7.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_32_3-DNF",
+      "name": "Level 32 3-DNF",
+      "difficulty": 7.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_33_3-CNF",
+      "name": "Level 33 3-CNF",
+      "difficulty": 7.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(or(and(A;not(B);C;not(D));and(not(A);B;not(C);D)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "Level_34_3-DNF",
+      "name": "Level 34 3-DNF",
+      "difficulty": 7.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 200,
+      "originalExpression": "(and(or(A;not(B);C;not(D));or(not(A);B;not(C);D)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
         {"rulePack": "SetMultiArgumentAnd"},
         {"rulePack": "SetMultiArgumentOr"}
       ]
