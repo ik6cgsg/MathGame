@@ -13,13 +13,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import spbpu.hsamcp.mathgame.AuthStatus
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AuthInfo
+import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.common.Storage
+import spbpu.hsamcp.mathgame.statistics.Request
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -41,50 +45,38 @@ class AuthActivity: AppCompatActivity() {
         passwordView.doAfterTextChanged { checkInput() }
         signInButton = findViewById(R.id.sign_in)
         signInButton.isEnabled = false
+        val standartSignInButton = findViewById<SignInButton>(R.id.sign_in_button)
+        standartSignInButton.setSize(SignInButton.SIZE_WIDE)
+        standartSignInButton.setColorScheme(SignInButton.COLOR_LIGHT)
+        standartSignInButton.setOnClickListener {
+            onGoogleClicked(it)
+        }
     }
 
     override fun onBackPressed() {
     }
 
     private fun checkInput() {
-        if (!loginView.text.isNullOrBlank() && !passwordView.text.isNullOrBlank()) {
-            signInButton.isEnabled = true
-        } else {
-            signInButton.isEnabled = false
-        }
+        signInButton.isEnabled = !loginView.text.isNullOrBlank() && !passwordView.text.isNullOrBlank()
     }
 
     fun continueAsGuest(v: View?) {
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        //if (prefs.getString(AuthInfo.AUTH_STATUS.str, "") != AuthStatus.GUEST.str) {
-        val prefEdit = prefs.edit()
-        val uuid = UUID.randomUUID()
-        prefEdit.putString(AuthInfo.UUID.str, uuid.toString())
-        prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
-        prefEdit.putString(AuthInfo.AUTH_STATUS.str, AuthStatus.GUEST.str)
-        prefEdit.putString(AuthInfo.LOGIN.str, "guest" + uuid.hashCode().absoluteValue)
-        prefEdit.putString(AuthInfo.NAME.str, "")
-        prefEdit.putString(AuthInfo.SURNAME.str, "")
-        prefEdit.putString(AuthInfo.SECOND_NAME.str, "")
-        prefEdit.putString(AuthInfo.ADDITIONAL.str, "")
-        // TODO: server request SIGN_UP
-        // TODO: prefEdit.putString(AuthInfo.SERVER_ID.str, "")
-        prefEdit.commit()
-        GlobalScene.shared.generateGamesMultCoeffs(prefEdit)
-        GlobalScene.shared.authStatus = AuthStatus.GUEST
-        //}
+        val token = Request.signUp(null)
+        Storage.shared.initUserInfo(this, AuthInfoObjectBase(
+            authStatus = AuthStatus.GUEST,
+            serverToken = token
+        ))
         finish()
     }
 
     fun signIn(v: View?) {
         val login = loginView.text.toString()
         val password = passwordView.text.toString()
-        // TODO: server request SIGN_IN
-        // TODO: prefEdit.putString(AuthInfo.SERVER_ID.str, "")
-
+        val res = Request.signIn(null)
     }
 
     fun signUp(v: View?) {
+        Storage.shared.initUserInfo(this, AuthInfoObjectBase(authStatus = AuthStatus.MATH_HELPER))
         startActivity(Intent(this, SignUpActivity::class.java))
         finish()
     }
@@ -110,21 +102,16 @@ class AuthActivity: AppCompatActivity() {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
-            val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-            val prefEdit = prefs.edit()
-            prefEdit.putString(AuthInfo.LOGIN.str, account!!.email.orEmpty().replace("@gmail.com", ""))
-            prefEdit.putString(AuthInfo.NAME.str, account.givenName.orEmpty())
-            prefEdit.putString(AuthInfo.SURNAME.str, account.familyName.orEmpty())
-            prefEdit.putString(AuthInfo.SECOND_NAME.str, "")
-            prefEdit.putString(AuthInfo.ADDITIONAL.str, "")
-            prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
-            prefEdit.putString(AuthInfo.AUTH_STATUS.str, AuthStatus.GOOGLE.str)
-            // TODO: server request SIGN_IN with ** account.tokenId **
-            // TODO: prefEdit.putString(AuthInfo.SERVER_ID.str, "")
-            GlobalScene.shared.authStatus = AuthStatus.GOOGLE
-            GlobalScene.shared.generateGamesMultCoeffs(prefEdit)
-            prefEdit.commit()
-            //Statistics.logSign(this)
+            // TODO: server request SIGN_IN with ** accountId **
+            val accountId = account!!.idToken
+            val token = Request.signIn(null)
+            Storage.shared.initUserInfo(this, AuthInfoObjectBase(
+                login = account.email.orEmpty().replace("@gmail.com", ""),
+                name = account.givenName.orEmpty(),
+                surname = account.familyName.orEmpty(),
+                authStatus = AuthStatus.GOOGLE,
+                serverToken = token
+            ))
             finish()
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.

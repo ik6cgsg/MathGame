@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/fade</item>
+        <item name="android:windowExitTransition">@transition/fade</item>
+        <item name="android:windowReturnTransition">@transition/fade</item>
     </style>
 
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Dialog.Alert">

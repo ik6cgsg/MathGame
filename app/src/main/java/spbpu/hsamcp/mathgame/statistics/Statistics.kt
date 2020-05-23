@@ -12,6 +12,7 @@ import spbpu.hsamcp.mathgame.LevelScene
 import spbpu.hsamcp.mathgame.PlayScene
 import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.level.Award
 
 class Statistics {
@@ -182,10 +183,8 @@ class Statistics {
         }
 
         fun logSign(context: Context) {
-            val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
-            val id = prefs.getString(Constants.deviceId, "")!!
             val mathLog = MathGameLog(action = Action.SIGN.str, hardwareProperties = getHwInfo(),
-                hardwareDeviceId = id)
+                hardwareDeviceId = Storage.shared.deviceId(context))
             sendLog(mathLog, context)
         }
 
@@ -202,10 +201,7 @@ class Statistics {
         private fun sendLog(log: MathGameLog, context: Context, forced: Boolean = false) {
             Log.d("Statistics", "MathGameLog: $log}")
             setDefault(log, context)
-            val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
-            //if (prefs.getBoolean(AuthInfo.STATISTICS.str, false) || forced) {
             sendOneLog(log, context)
-            //}
         }
 
         private fun sendOneLog(log: MathGameLog, context: Context) {
@@ -225,19 +221,16 @@ class Statistics {
         }
 
         private fun setDefault(log: MathGameLog, context: Context) {
-            val prefs = context.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
+            val fullInfo = Storage.shared.getFullUserInfo(context)
             val time = System.currentTimeMillis()
             log.deviceTs = time
-            log.hardwareDeviceId = prefs.getString(Constants.deviceId, log.hardwareDeviceId)!!
-            log.totalTimeMultCoef = prefs.getFloat(AuthInfo.TIME_COEFF.str, log.totalTimeMultCoef)
-            log.totalAwardMultCoef = prefs.getFloat(AuthInfo.AWARD_COEFF.str, log.totalAwardMultCoef)
-            log.login = prefs.getString(AuthInfo.LOGIN.str, log.login)!!
-            log.name = prefs.getString(AuthInfo.NAME.str, log.name)!!
-            log.surname = prefs.getString(AuthInfo.SURNAME.str, log.surname)!!
-            log.secondName = prefs.getString(AuthInfo.SECOND_NAME.str, log.secondName )!!
-            log.group = prefs.getString(AuthInfo.GROUP.str, log.group)!!
-            log.institution = prefs.getString(AuthInfo.INSTITUTION.str, log.institution )!!
-            log.age = prefs.getInt(AuthInfo.AGE.str, log.age)
+            log.hardwareDeviceId = Storage.shared.deviceId(context)
+            log.totalTimeMultCoef = fullInfo.coeffs.timeCoeff ?: log.totalTimeMultCoef
+            log.totalAwardMultCoef = fullInfo.coeffs.awardCoeff ?: log.totalAwardMultCoef
+            log.login = fullInfo.base.login ?: ""
+            log.name = fullInfo.base.name ?: ""
+            log.surname = fullInfo.base.surname ?: ""
+            log.secondName = fullInfo.base.secondName ?: ""
             log.timeFromLastActionMS = time - lastActionTime
             lastActionTime = time
             if (startTime > 0) { // Level was created and set

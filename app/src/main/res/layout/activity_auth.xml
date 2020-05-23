@@ -42,6 +42,7 @@
         android:background="@drawable/button_rect"
         android:onClick="onGoogleClicked"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider4">
@@ -77,6 +78,7 @@
         android:background="@drawable/button_rect"
         android:onClick="onGitHubClicked"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -263,5 +265,16 @@
                 android:textSize="21sp" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:onClick="onGoogleClicked"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/googleSign"
+        app:layout_constraintStart_toStartOf="@+id/googleSign"
+        app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AuthInfo
+import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.common.Storage
+import spbpu.hsamcp.mathgame.statistics.Request
 
 class AccountActivity: AppCompatActivity() {
     private val TAG = "AccountActivity"
@@ -42,12 +45,12 @@ class AccountActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        loginView.text = prefs.getString(AuthInfo.LOGIN.str, "")
-        nameView.text = prefs.getString(AuthInfo.NAME.str, "")
-        surnameView.text = prefs.getString(AuthInfo.SURNAME.str, "")
-        secondNameView.text = prefs.getString(AuthInfo.SECOND_NAME.str, "")
-        additionalView.text = prefs.getString(AuthInfo.ADDITIONAL.str, "")
+        val info = Storage.shared.getUserInfoBase(this)
+        loginView.text = info.login ?: ""
+        nameView.text = info.name ?: ""
+        surnameView.text = info.surname ?: ""
+        secondNameView.text = info.secondName ?: ""
+        additionalView.text = info.additional ?: ""
     }
 
     override fun onBackPressed() {
@@ -68,21 +71,20 @@ class AccountActivity: AppCompatActivity() {
     }
 
     fun save(v: View?) {
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        prefEdit.putString(AuthInfo.LOGIN.str, loginView.text.toString())
-        prefEdit.putString(AuthInfo.NAME.str, nameView.text.toString())
-        prefEdit.putString(AuthInfo.SURNAME.str, surnameView.text.toString())
-        prefEdit.putString(AuthInfo.SECOND_NAME.str, secondNameView.text.toString())
-        prefEdit.putString(AuthInfo.ADDITIONAL.str, additionalView.text.toString())
-        prefEdit.commit()
-        // TODO: server request: EDIT
+        Storage.shared.setUserInfo(this, AuthInfoObjectBase(
+            login = loginView.text.toString(),
+            name = nameView.text.toString(),
+            surname = surnameView.text.toString(),
+            secondName = secondNameView.text.toString(),
+            additional = additionalView.text.toString()
+        ))
+        // TODO: normal edit request
+        Request.edit(null)
         Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
     }
 
     fun logClicked(v: View?) {
         GlobalScene.shared.logout()
-        //startActivity(Intent(this, AuthActivity::class.java))
         finish()
     }
 }

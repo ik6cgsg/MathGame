@@ -15,8 +15,11 @@ import spbpu.hsamcp.mathgame.AuthStatus
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AuthInfo
+import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.game.Game
+import spbpu.hsamcp.mathgame.statistics.Request
 
 class SignUpActivity: AppCompatActivity() {
     private val TAG = "SignUpActivity"
@@ -50,12 +53,7 @@ class SignUpActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        loginView.text = prefs.getString(AuthInfo.LOGIN.str, "")
-        nameView.text = prefs.getString(AuthInfo.NAME.str, "")
-        surnameView.text = prefs.getString(AuthInfo.SURNAME.str, "")
-        secondNameView.text = prefs.getString(AuthInfo.SECOND_NAME.str, "")
-        additionalView.text = prefs.getString(AuthInfo.ADDITIONAL.str, "")
+        loginView.text = Storage.shared.login(this)
         signButton.isEnabled = false
         loginView.doAfterTextChanged { checkInput() }
         passwordView.doAfterTextChanged { checkInput() }
@@ -63,12 +61,8 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     private fun checkInput() {
-        if (!loginView.text.isNullOrBlank() && !passwordView.text.isNullOrBlank() && !repeatView.text.isNullOrBlank() &&
-            passwordView.text.toString() == repeatView.text.toString()) {
-            signButton.isEnabled = true
-        } else {
-            signButton.isEnabled = false
-        }
+        signButton.isEnabled = !loginView.text.isNullOrBlank() && !passwordView.text.isNullOrBlank() && !repeatView.text.isNullOrBlank() &&
+            passwordView.text.toString() == repeatView.text.toString()
     }
 
     fun toggleAdditionalInfo(v: View?) {
@@ -80,21 +74,16 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     fun sign(v: View?) {
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, true)
-        prefEdit.putString(AuthInfo.AUTH_STATUS.str, AuthStatus.MATH_HELPER.str)
-        prefEdit.putString(AuthInfo.LOGIN.str, loginView.text.toString())
-        // TODO: password ??
-        prefEdit.putString(AuthInfo.PASSWORD.str, passwordView.text.toString())
-        prefEdit.putString(AuthInfo.NAME.str, nameView.text.toString())
-        prefEdit.putString(AuthInfo.SURNAME.str, surnameView.text.toString())
-        prefEdit.putString(AuthInfo.SECOND_NAME.str, secondNameView.text.toString())
-        prefEdit.putString(AuthInfo.ADDITIONAL.str, additionalView.text.toString())
-        GlobalScene.shared.authStatus = AuthStatus.MATH_HELPER
-        GlobalScene.shared.generateGamesMultCoeffs(prefEdit)
-        prefEdit.commit()
-        // TODO: server request: SIGN UP
+        val token = Request.signUp(null)
+        Storage.shared.setUserInfo(this, AuthInfoObjectBase(
+            login = loginView.text.toString(),
+            password = passwordView.text.toString(),
+            name = nameView.text.toString(),
+            surname = surnameView.text.toString(),
+            secondName = secondNameView.text.toString(),
+            additional = additionalView.text.toString(),
+            serverToken = token
+        ))
         finish()
     }
 

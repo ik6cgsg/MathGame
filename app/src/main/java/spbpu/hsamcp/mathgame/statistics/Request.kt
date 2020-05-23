@@ -5,6 +5,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.net.URL
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -20,7 +21,9 @@ data class RequestData(
     var method: RequestMethod = RequestMethod.POST,
     var url: String = "https://mathhelper.space:8443/math_game_log",
     var body: String = "",
-    var headers: HashMap<String, String> = hashMapOf()
+    var headers: HashMap<String, String> = hashMapOf(
+        "Content-type" to "application/json"
+    )
 )
 
 data class ResponseData(
@@ -93,7 +96,7 @@ class Request {
         fun stopWorkCycle() {
             if (isWorking) {
                 job.cancel()
-                reqQueue.clear()
+                isWorking = false
             }
         }
 
@@ -142,6 +145,7 @@ class Request {
         fun sendWithoutInternet(requestData: RequestData) {
             isConnected = false
             reqQueue.addFirst(requestData)
+            // TODO: log to file?
         }
 
         fun doSyncRequest(requestData: RequestData): ResponseData {
@@ -156,6 +160,30 @@ class Request {
                 continue
             }
             return response
+        }
+
+        fun signUp(someParams: String? = null): String {
+            val req = RequestData()
+            // TODO: fill request
+            val res = doSyncRequest(req)
+            val json = JSONObject(res.body)
+            // TODO: valid key from API
+            return json.optString("server_token", "test_token")
+        }
+
+        fun signIn(someParams: String? = null): String {
+            val req = RequestData()
+            // TODO: fill request
+            val res = doSyncRequest(req)
+            val json = JSONObject(res.body)
+            // TODO: valid key from API
+            return json.optString("server_token", "test_token")
+        }
+
+        fun edit(someParams: String? = null) {
+            val req = RequestData()
+            // TODO: fill request
+            val res = doSyncRequest(req)
         }
     }
 }

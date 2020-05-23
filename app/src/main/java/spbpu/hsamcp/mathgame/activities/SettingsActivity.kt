@@ -16,11 +16,11 @@ import spbpu.hsamcp.mathgame.*
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.statistics.Statistics
 
 class SettingsActivity: AppCompatActivity() {
     private val TAG = "SettingsActivity"
-    private lateinit var statisticSwitch: Switch
     private lateinit var reportProblem: TextView
     private lateinit var ratingBar: RatingBar
     private lateinit var reportDialog: AlertDialog
@@ -37,9 +37,6 @@ class SettingsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         val backView = findViewById<TextView>(R.id.back)
         AndroidUtil.setOnTouchUpInside(backView, ::back)
-        statisticSwitch = findViewById(R.id.statistics)
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        //statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
         ratingBar = findViewById(R.id.rating)
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             val ratingDialog = createRatingDialog(rating)
@@ -79,9 +76,7 @@ class SettingsActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        val login = prefs.getString(AuthInfo.LOGIN.str, "test")
-        greetings.text = "\uD83D\uDC4B Hi, $login! \uD83D\uDC4B"
+        greetings.text = "\uD83D\uDC4B Hi, ${Storage.shared.login(this)}! \uD83D\uDC4B"
         when (GlobalScene.shared.authStatus) {
             AuthStatus.MATH_HELPER, AuthStatus.GUEST -> changePassword.visibility = View.VISIBLE
             else -> changePassword.visibility = View.GONE
@@ -91,20 +86,6 @@ class SettingsActivity: AppCompatActivity() {
 
     fun back(v: View?) {
         finish()
-    }
-
-    fun switchStatistics(v: View?) {
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        //prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticSwitch.isChecked)
-        prefEdit.commit()
-    }
-
-    fun reportProblem(v: View?) {
-        val prefs = getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        //prefEdit.putBoolean(AuthInfo.STATISTICS.str, statisticSwitch.isChecked)
-        prefEdit.commit()
     }
 
     private fun createRatingDialog(rating: Float): AlertDialog {

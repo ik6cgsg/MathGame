@@ -1,19 +1,17 @@
 package spbpu.hsamcp.mathgame
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import spbpu.hsamcp.mathgame.activities.AuthActivity
 import spbpu.hsamcp.mathgame.activities.GamesActivity
 import spbpu.hsamcp.mathgame.activities.LevelsActivity
 import spbpu.hsamcp.mathgame.common.AuthInfo
+import spbpu.hsamcp.mathgame.common.AuthInfoCoeffs
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.game.Game
 import spbpu.hsamcp.mathgame.level.UndoPolicy
 import spbpu.hsamcp.mathgame.statistics.Request
@@ -57,8 +55,7 @@ class GlobalScene {
                         games.add(loadedGame)
                     }
                 }
-                val prefs = value.getSharedPreferences(Constants.storage, AppCompatActivity.MODE_PRIVATE)
-                authStatus = AuthStatus.value(prefs.getString(AuthInfo.AUTH_STATUS.str, AuthStatus.GUEST.str)!!)!!
+                authStatus = Storage.shared.authStatus(value)
             }
         }
     var currentGame: Game? = null
@@ -66,6 +63,7 @@ class GlobalScene {
             field = value
             if (value != null) {
                 gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
+                    // ActivityOptions.makeSceneTransitionAnimation(gamesActivity).toBundle())
                 // TODO: send log about game started
             }
         }
@@ -74,39 +72,25 @@ class GlobalScene {
         if (LevelScene.shared.levelsActivity != null) {
             LevelScene.shared.back()
         }
-        games.map {
-            val gamePrefs = gamesActivity!!.getSharedPreferences(it.gameCode, Context.MODE_PRIVATE)
-            val gamePrefEdit = gamePrefs.edit()
-            gamePrefEdit.clear()
-            gamePrefEdit.commit()
-        }
+        games.map { Storage.shared.resetGame(gamesActivity!!, it.gameCode) }
     }
 
     fun logout() {
         resetAll()
-        val prefs = gamesActivity!!.getSharedPreferences(Constants.storage, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        for (key in prefs.all.keys) {
-            if (key.startsWith(AuthInfo.PREFIX.str)) {
-                prefEdit.remove(key)
-            }
-        }
+        Storage.shared.clearUserInfo(gamesActivity!!)
         if (authStatus == AuthStatus.GOOGLE) {
             googleSignInClient!!.signOut()
         }
-        prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, false)
-        prefEdit.commit()
         Request.stopWorkCycle()
         gamesActivity!!.recreate()
     }
 
-    fun generateGamesMultCoeffs(prefEdit: SharedPreferences.Editor) {
-        val undoCoeff = Random().nextInt(UndoPolicy.values().size)
-        prefEdit.putInt(AuthInfo.UNDO_COEFF.str, undoCoeff)
-        val timeCoeff = getByNormDist(1f, Constants.timeDeviation)
-        prefEdit.putFloat(AuthInfo.TIME_COEFF.str, timeCoeff)
-        val awardCoeff = getByNormDist(1f, Constants.awardDeviation)
-        prefEdit.putFloat(AuthInfo.AWARD_COEFF.str, awardCoeff)
+    fun generateGamesMultCoeffs() {
+        Storage.shared.setUserCoeffs(gamesActivity!!, AuthInfoCoeffs(
+            undoCoeff = Random().nextInt(UndoPolicy.values().size),
+            timeCoeff = getByNormDist(1f, Constants.timeDeviation),
+            awardCoeff = getByNormDist(1f, Constants.awardDeviation)
+        ))
     }
 
     private fun getByNormDist(mean: Float, sigma: Float): Float {

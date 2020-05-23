@@ -13,6 +13,7 @@ import com.twf.expressiontree.ExpressionStructureConditionNode
 import com.twf.factstransformations.Rule
 import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
+import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.game.Game
 import spbpu.hsamcp.mathgame.game.PackageField
 import spbpu.hsamcp.mathgame.game.RulePackage
@@ -137,8 +138,6 @@ class Level {
             when {
                 /** PACKAGE */
                 rule.has(PackageField.RULE_PACK.str) -> {
-                    /* rules = (rules + game.rulePacks[rule.getString(PackageField.RULE_PACK.str)]!!.allRules)
-                        as ArrayList<ExpressionSubstitution>*/
                     packages.add(rule.getString(PackageField.RULE_PACK.str))
                 }
                 /** SUBSTITUTION */
@@ -148,19 +147,16 @@ class Level {
                 else -> return false
             }
         }
-        // rules.shuffle()
-        // rules.sortByDescending { it.left.identifier.length }
         return true
     }
 
     private fun setGlobalCoeffs(context: Context) {
-        val prefs = context.getSharedPreferences(Constants.storage, MODE_PRIVATE)
-        if (prefs.getBoolean(AuthInfo.AUTHORIZED.str, false)) {
-            val undoInd = prefs.getInt(AuthInfo.UNDO_COEFF.str, 0)
-            undoPolicy = UndoPolicy.values()[undoInd]
-            timeMultCoeff = prefs.getFloat(AuthInfo.TIME_COEFF.str, timeMultCoeff)
+        if (Storage.shared.isUserAuthorized(context)) {
+            val coeffs = Storage.shared.getUserCoeffs(context)
+            undoPolicy = UndoPolicy.values()[coeffs.undoCoeff ?: 0]
+            timeMultCoeff = coeffs.timeCoeff ?: timeMultCoeff
             time = (time * timeMultCoeff).toLong()
-            awardMultCoeff = prefs.getFloat(AuthInfo.AWARD_COEFF.str, awardMultCoeff)
+            awardMultCoeff = coeffs.awardCoeff ?: awardMultCoeff
         }
     }
 

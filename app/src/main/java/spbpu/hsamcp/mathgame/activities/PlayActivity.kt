@@ -140,7 +140,7 @@ class PlayActivity: AppCompatActivity() {
 
     private fun back(v: View?) {
         if (!loading) {
-            if (LevelScene.shared.currentLevel!!.endless) {
+            if (LevelScene.shared.currentLevel!!.endless && PlayScene.shared.stepsCount > 0) {
                 AndroidUtil.showDialog(backDialog)
             } else {
                 returnToMenu(false)
