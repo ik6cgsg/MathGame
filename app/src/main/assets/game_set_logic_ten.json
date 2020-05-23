@@ -1,0 +1,418 @@
+{
+  "gamespace": "",
+  "gameCode": "set_logic_ten",
+  "name": "Set Logic Ten",
+  "version": 123,
+  "levels":[
+    {
+      "levelCode": "set_logic_ten__Hello_World_Level_Prove",
+      "name": "Hello World Level Prove",
+      "difficulty": 1.0,
+      "type": "set",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(and(or(A;not(B));or(A;not(C))))",
+      "finalExpression": "(and(A;not(and(B;C))))",
+      "rules":[
+        {"rulePack": "SetBase"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_1_Prove",
+      "name": "Level 1 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 90,
+      "originalExpression": "(or(A;and(A;B)))",
+      "finalExpression": "(A)",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_2_Prove",
+      "name": "Level 2 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 60,
+      "originalExpression": "(or(set-(not(A);B);C))",
+      "finalExpression": "(implic(or(A;B);C))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_3_Prove",
+      "name": "Level 3 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 60,
+      "originalExpression": "(and(not(A);not(B);not(C)))",
+      "finalExpression": "(not(or(A;B;C)))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_4_Prove",
+      "name": "Level 4 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 60,
+      "originalExpression": "(set-(set-(A;B);set-(B;C)))",
+      "finalExpression": "(and(A;not(B)))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_5_Prove",
+      "name": "Level 5 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(implic(and(A;B);or(not(C);B)))",
+      "finalExpression": "(implic(A;implic(B;implic(C;B))))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_6_Prove",
+      "name": "Level 6 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 6,
+      "time": 90,
+      "originalExpression": "(set-(not(and(A;B));B))",
+      "finalExpression": "(not(B))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_7_Prove",
+      "name": "Level 7 Prove",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 8,
+      "time": 150,
+      "originalExpression": "(or(set-(set-(A;B);C);or(not(B);C)))",
+      "finalExpression": "(implic(implic(A;or(B;C));implic(B;C)))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_8_Prove",
+      "name": "Level 8 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 13,
+      "time": 200,
+      "originalExpression": "(implic(or(A;B);and(A;B)))",
+      "finalExpression": "(and(not(set-(A;B));not(set-(B;A))))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_9_Prove",
+      "name": "Level 9 Prove",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 22,
+      "time": 300,
+      "originalExpression": "(set-(or(A;B);and(implic(A;B);implic(B;A))))",
+      "finalExpression": "(or(set-(A;B);set-(B;A)))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_10_Prove",
+      "name": "Level 10 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 10,
+      "time": 200,
+      "originalExpression": "(implic(implic(set-(A;C);D);set-(D;B)))",
+      "finalExpression": "(or(set-(D;B);set-(A;or(C;D))))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "SetBase",
+      "rules":[
+        {"rulePack": "SetTrivialLetters"},
+
+        {"rulePack": "SetThreeСommutativity"},
+        {"rulePack": "SetThreeAssociativity"},
+
+        {"rulePack": "SetDeMorgan"},
+
+        {"rulePack": "SetImplication"},
+        {"rulePack": "SetDifference"},
+
+        {"rulePack": "SetEmptyAndUniverse"}
+      ]
+    },
+    {
+      "name": "SetThreeСommutativity",
+      "type": "set",
+      "rules":[
+        {"left": "(or(A;or(B;C)))","right": "(or(A;B;C))"},
+        {"left": "(or(A;B;C))","right": "(or(A;or(B;C)))"},
+        {"left": "(or(A;or(B;C)))","right": "(or(or(A;B);C))"},
+        {"left": "(or(or(A;B);C))","right": "(or(A;or(B;C)))"},
+        {"left": "(or(or(A;B);C))","right": "(or(A;B;C))"},
+        {"left": "(or(A;B;C))","right": "(or(or(A;B);C))"},
+
+        {"left": "(and(A;and(B;C)))","right": "(and(A;B;C))"},
+        {"left": "(and(A;B;C))","right": "(and(A;and(B;C)))"},
+        {"left": "(and(A;and(B;C)))","right": "(and(and(A;B);C))"},
+        {"left": "(and(and(A;B);C))","right": "(and(A;and(B;C)))"},
+        {"left": "(and(and(A;B);C))","right": "(and(A;B;C))"},
+        {"left": "(and(A;B;C))","right": "(and(and(A;B);C))"}
+      ]
+    },
+    {
+      "name": "SetThreeAssociativity",
+      "type": "set",
+      "rules":[
+        {"left": "(or(A;and(B;C)))","right": "(and(or(A;B);or(A;C)))"},
+        {"left": "(or(and(B;C);A))","right": "(and(or(B;A);or(C;A)))"},
+        {"left": "(and(or(A;B);or(A;C)))","right": "(or(A;and(B;C)))"},
+        {"left": "(and(or(B;C);or(A;C)))","right": "(or(and(B;A);C))"},
+        {"left": "(and(A;or(B;C)))","right": "(or(and(A;B);and(A;C)))"},
+        {"left": "(and(or(B;C);A))","right": "(or(and(B;A);and(C;A)))"},
+        {"left": "(or(and(A;B);and(A;C)))","right": "(and(A;or(B;C)))"},
+        {"left": "(or(and(B;C);and(A;C)))","right": "(and(or(B;A);C))"}
+      ]
+    },
+    {
+      "name": "SetTwoСommutativity",
+      "type": "set",
+      "rules":[
+        {"left": "(and(A;B))","right": "(and(B;A))"},
+        {"left": "(or(A;B))","right": "(or(B;A))"}
+      ]
+    },
+    {
+      "name": "SetTrivialLetters",
+      "type": "set",
+      "rules":[
+        {"rulePack": "SetTwoСommutativity"},
+        {"left": "(not(not(A)))","right": "(A)"},
+        {"left": "(A)","right": "(not(not(A)))"},
+        {"left": "(or(A;A))","right": "(A)"},
+        {"left": "(A)","right": "(or(A;A))"},
+        {"left": "(and(A;A))","right": "(A)"},
+        {"left": "(A)","right": "(and(A;A))"}
+      ]
+    },
+    {
+      "name": "SetDeMorgan",
+      "type": "set",
+      "rules":[
+        {"left": "(not(and(A;B)))","right": "(or(not(A);not(B)))"},
+        {"left": "(or(not(A);not(B)))","right": "(not(and(A;B)))"},
+        {"left": "(not(or(A;B)))","right": "(and(not(A);not(B)))"},
+        {"left": "(and(not(A);not(B)))","right": "(not(or(A;B)))"}
+      ]
+    },
+    {
+      "name": "SetImplication",
+      "type": "set",
+      "rules":[
+        {"left": "(or(not(A);B))","right": "(implic(A;B))"},
+        {"left": "(or(B;not(A)))","right": "(implic(A;B))"},
+        {"left": "(implic(A;B))","right": "(or(not(A);B))"}
+      ]
+    },
+    {
+      "name": "SetDifference",
+      "type": "set",
+      "rules":[
+        {"left": "(and(A;not(B)))","right": "(set-(A;B))"},
+        {"left": "(and(not(B);A))","right": "(set-(A;B))"},
+        {"left": "(set-(A;B))","right": "(and(A;not(B)))"}
+      ]
+    },
+    {
+      "name": "SetDifferenceImplication",
+      "type": "set",
+      "rules":[
+        {"left": "(set-(A;B))","right": "(not(implic(A;B)))"},
+        {"left": "(not(implic(A;B)))","right": "(set-(A;B))"},
+        {"left": "(implic(A;B))","right": "(not(set-(A;B)))"},
+        {"left": "(not(set-(A;B)))","right": "(implic(A;B))"}
+      ]
+    },
+    {
+      "name": "SetAbsorptionLawReduction",
+      "type": "set",
+      "rules":[
+        {"left": "(and(A;or(A;B)))","right": "(A)"},
+        {"left": "(or(A;and(A;B)))","right": "(A)"},
+        {"left": "(and(A;or(B;A)))","right": "(A)"},
+        {"left": "(or(A;and(B;A)))","right": "(A)"},
+        {"left": "(and(or(A;B);A))","right": "(A)"},
+        {"left": "(or(and(A;B);A))","right": "(A)"},
+        {"left": "(and(or(B;A);A))","right": "(A)"},
+        {"left": "(or(and(B;A);A))","right": "(A)"}
+      ]
+    },
+    {
+      "name": "SetAbsorptionLawExtension",
+      "type": "set",
+      "rules":[
+        {"left": "(A)","right": "(and(A;or(A;B)))"},
+        {"left": "(A)","right": "(or(A;and(A;B)))"}
+      ]
+    },
+    {
+      "name": "SetEmptyAndUniverse",
+      "type": "set",
+      "rules":[
+        {"left": "(or(A;not(A)))","right": "(1)"},
+        {"left": "(or(not(A);A))","right": "(1)"},
+        {"left": "(and(A;not(A)))","right": "(0)"},
+        {"left": "(and(not(A);A))","right": "(0)"},
+        {"left": "(or(A;1))","right": "(1)"},
+        {"left": "(or(1;A))","right": "(1)"},
+        {"left": "(and(A;1))","right": "(A)"},
+        {"left": "(and(1;A))","right": "(A)"},
+        {"left": "(or(A;0))","right": "(A)"},
+        {"left": "(or(0;A))","right": "(A)"},
+        {"left": "(and(A;0))","right": "(0)"},
+        {"left": "(and(0;A))","right": "(0)"},
+
+        {"left": "(set-(A;0))","right": "(A)"},
+        {"left": "(set-(A;1))","right": "(0)"},
+        {"left": "(set-(0;A))","right": "(0)"},
+        {"left": "(set-(1;A))","right": "(not(A))"},
+
+        {"left": "(implic(0;A))","right": "(1)"},
+        {"left": "(implic(A;1))","right": "(1)"},
+        {"left": "(implic(A;0))","right": "(not(A))"},
+        {"left": "(implic(1;A))","right": "(A)"},
+
+        {"left": "(not(0))","right": "(1)"},
+        {"left": "(not(1))","right": "(0)"},
+
+        {"rulePack": "SetEmptyAndUniverseExtension"}
+      ]
+    },
+    {
+      "name": "SetEmptyAndUniverseExtension",
+      "type": "set",
+      "rules":[
+        {"left": "(A)","right": "(or(A;0))"},
+        {"left": "(A)","right": "(and(A;1))"},
+        {"left": "(A)","right": "(set-(A;0))"},
+        {"left": "(A)","right": "(implic(1;A))"}
+      ]
+    },
+    {
+      "name": "SetMultiArgumentAnd",
+      "type": "set",
+      "rules":[
+        {"left": "(and(and(A;B);and(C;D)))","right": "(and(A;B;C;D))"},
+        {"left": "(and(A;and(B;C;D)))","right": "(and(A;B;C;D))"},
+        {"left": "(and(and(A;B;C);D))","right": "(and(A;B;C;D))"},
+
+        {"left": "(and(A;B;and(C;D)))","right": "(and(A;B;C;D))"},
+        {"left": "(and(A;B;C;D))","right": "(and(A;B;and(C;D)))"},
+        {"left": "(and(A;and(B;C);D))","right": "(and(A;B;C;D))"},
+        {"left": "(and(A;B;C;D))","right": "(and(A;and(B;C);D))"},
+        {"left": "(and(and(A;B);C;D))","right": "(and(A;B;C;D))"},
+        {"left": "(and(A;B;C;D))","right": "(and(and(A;B);C;D))"},
+
+        {"left": "(and(A;B;C;and(D;E)))","right": "(and(A;B;C;D;E))"},
+        {"left": "(and(A;B;C;D;E))","right": "(and(A;B;C;and(D;E)))"},
+        {"left": "(and(A;B;and(C;D);E))","right": "(and(A;B;C;D;E))"},
+        {"left": "(and(A;B;C;D;E))","right": "(and(A;B;and(C;D);E))"},
+        {"left": "(and(A;and(B;C);D;E))","right": "(and(A;B;C;D;E))"},
+        {"left": "(and(A;B;C;D;E))","right": "(and(A;and(B;C);D;E))"},
+        {"left": "(and(and(A;B);C;D;E))","right": "(and(A;B;C;D;E))"},
+        {"left": "(and(A;B;C;D;E))","right": "(and(and(A;B);C;D;E))"},
+
+        {"left": "(and(A;B;C;D;and(E;F)))","right": "(and(A;B;C;D;E;F))"},
+        {"left": "(and(A;B;C;D;E;F))","right": "(and(A;B;C;D;and(E;F)))"},
+        {"left": "(and(A;B;C;and(D;E);F))","right": "(and(A;B;C;D;E;F))"},
+        {"left": "(and(A;B;C;D;E;F))","right": "(and(A;B;C;and(D;E);F))"},
+        {"left": "(and(A;B;and(C;D);E;F))","right": "(and(A;B;C;D;E;F))"},
+        {"left": "(and(A;B;C;D;E;F))","right": "(and(A;B;and(C;D);E;F))"},
+        {"left": "(and(A;and(B;C);D;E;F))","right": "(and(A;B;C;D;E;F))"},
+        {"left": "(and(A;B;C;D;E;F))","right": "(and(A;and(B;C);D;E;F))"},
+        {"left": "(and(and(A;B);C;D;E;F))","right": "(and(A;B;C;D;E;F))"},
+        {"left": "(and(A;B;C;D;E;F))","right": "(and(and(A;B);C;D;E;F))"}
+      ]
+    },
+    {
+      "name": "SetMultiArgumentOr",
+      "type": "set",
+      "rules":[
+        {"left": "(or(or(A;B);or(C;D)))","right": "(or(A;B;C;D))"},
+        {"left": "(or(A;or(B;C;D)))","right": "(or(A;B;C;D))"},
+        {"left": "(or(or(A;B;C);D))","right": "(or(A;B;C;D))"},
+
+        {"left": "(or(A;B;or(C;D)))","right": "(or(A;B;C;D))"},
+        {"left": "(or(A;B;C;D))","right": "(or(A;B;or(C;D)))"},
+        {"left": "(or(A;or(B;C);D))","right": "(or(A;B;C;D))"},
+        {"left": "(or(A;B;C;D))","right": "(or(A;or(B;C);D))"},
+        {"left": "(or(or(A;B);C;D))","right": "(or(A;B;C;D))"},
+        {"left": "(or(A;B;C;D))","right": "(or(or(A;B);C;D))"},
+
+        {"left": "(or(A;B;C;or(D;E)))","right": "(or(A;B;C;D;E))"},
+        {"left": "(or(A;B;C;D;E))","right": "(or(A;B;C;or(D;E)))"},
+        {"left": "(or(A;B;or(C;D);E))","right": "(or(A;B;C;D;E))"},
+        {"left": "(or(A;B;C;D;E))","right": "(or(A;B;or(C;D);E))"},
+        {"left": "(or(A;or(B;C);D;E))","right": "(or(A;B;C;D;E))"},
+        {"left": "(or(A;B;C;D;E))","right": "(or(A;or(B;C);D;E))"},
+        {"left": "(or(or(A;B);C;D;E))","right": "(or(A;B;C;D;E))"},
+        {"left": "(or(A;B;C;D;E))","right": "(or(or(A;B);C;D;E))"},
+
+        {"left": "(or(A;B;C;D;or(E;F)))","right": "(or(A;B;C;D;E;F))"},
+        {"left": "(or(A;B;C;D;E;F))","right": "(or(A;B;C;D;or(E;F)))"},
+        {"left": "(or(A;B;C;or(D;E);F))","right": "(or(A;B;C;D;E;F))"},
+        {"left": "(or(A;B;C;D;E;F))","right": "(or(A;B;C;or(D;E);F))"},
+        {"left": "(or(A;B;or(C;D);E;F))","right": "(or(A;B;C;D;E;F))"},
+        {"left": "(or(A;B;C;D;E;F))","right": "(or(A;B;or(C;D);E;F))"},
+        {"left": "(or(A;or(B;C);D;E;F))","right": "(or(A;B;C;D;E;F))"},
+        {"left": "(or(A;B;C;D;E;F))","right": "(or(A;or(B;C);D;E;F))"},
+        {"left": "(or(or(A;B);C;D;E;F))","right": "(or(A;B;C;D;E;F))"},
+        {"left": "(or(A;B;C;D;E;F))","right": "(or(or(A;B);C;D;E;F))"}
+      ]
+    }
+  ]
+}
