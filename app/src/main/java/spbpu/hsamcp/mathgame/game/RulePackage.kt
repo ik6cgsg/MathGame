@@ -25,16 +25,7 @@ private constructor(
 ) {
     var rules: ArrayList<ExpressionSubstitution> = ArrayList()
     var children = ArrayList<RulePackage>()
-    /*
-    val allRules: ArrayList<ExpressionSubstitution>
-        get() {
-            var all = rules
-            for (pack in children) {
-                all = (all + pack.allRules) as ArrayList<ExpressionSubstitution>
-            }
-            return all
-        }
-    */
+
     companion object {
         fun parse(name: String, rulePacksJsons: HashMap<String, JSONObject>, rulePacks: HashMap<String, RulePackage>): RulePackage? {
             val packJson = rulePacksJsons[name]!!

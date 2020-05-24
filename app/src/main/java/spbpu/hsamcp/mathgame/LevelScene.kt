@@ -27,7 +27,7 @@ import java.util.*
 
 class LevelScene {
     companion object {
-        private const val TAG = "MathScene"
+        private const val TAG = "LevelScene"
         val shared: LevelScene = LevelScene()
     }
 
@@ -81,11 +81,6 @@ class LevelScene {
             return false
         }
         currentLevelIndex++
-        /*
-        if (level.taskId == 0) {
-            TutorialScene.start(levelsActivity!!, level)
-            PlayScene.shared.playActivity!!.finish()
-        }*/
         return true
     }
 

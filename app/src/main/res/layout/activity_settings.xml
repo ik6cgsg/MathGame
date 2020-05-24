@@ -122,6 +122,17 @@
             android:typeface="monospace" />
 
         <TextView
+            android:id="@+id/tutorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/start_tutorial"
+            android:textColor="@color/textColor"
+            android:textSize="21sp"
+            android:typeface="monospace" />
+
+        <TextView
             android:id="@+id/reset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

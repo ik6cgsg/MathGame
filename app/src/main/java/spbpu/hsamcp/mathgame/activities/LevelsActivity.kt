@@ -105,11 +105,7 @@ class LevelsActivity: AppCompatActivity() {
                     event.action == MotionEvent.ACTION_UP && levelTouched == v -> {
                         v.background = getBackgroundByDif(level.difficulty)
                         if (AndroidUtil.touchUpInsideView(v, event)) {
-                            if (level.levelCode == "Tutorial") {
-                                TutorialScene.start(this, level)
-                            } else {
-                                LevelScene.shared.currentLevelIndex = i
-                            }
+                            LevelScene.shared.currentLevelIndex = i
                         }
                         levelTouched = null
                     }
@@ -133,20 +129,4 @@ class LevelsActivity: AppCompatActivity() {
             else -> getDrawable(R.drawable.level_insane)
         }
     }
-
-    /*
-    private fun restartLevelsActivity() {
-        levels.forEachIndexed{ i, lvl ->
-            lvl.lastResult = null
-            levelViews[i].text = lvl.name
-        }
-        AndroidUtil.showDialog(signInDialog)
-    }
-
-    private fun resetLevelsCoeffs() {
-        for (level in levels) {
-            level.coeffsSet = false
-        }
-    }
-     */
 }

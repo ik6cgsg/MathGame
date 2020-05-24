@@ -50,14 +50,14 @@ class PlayScene {
 
     private fun onRuleClicked() {
         Log.d(TAG, "onRuleClicked")
+        if (GlobalScene.shared.tutorialProcessing) {
+            TutorialScene.shared.onRuleClicked(currentRuleView!!)
+            return
+        }
         if (playActivity == null) {
             return
         }
         val activity = playActivity!!
-        if (GlobalScene.shared.tutorialProcessing) {
-            TutorialScene.onRuleClicked(currentRuleView!!)
-            return
-        }
         val prev = activity.globalMathView.expression!!.clone()
         val place = activity.globalMathView.currentAtom!!.clone()
         val oldSteps = stepsCount
@@ -88,7 +88,7 @@ class PlayScene {
     fun onExpressionClicked() {
         Log.d(TAG, "onExpressionClicked")
         if (GlobalScene.shared.tutorialProcessing) {
-            TutorialScene.onExpressionClicked()
+            TutorialScene.shared.onExpressionClicked()
             return
         }
         val activity = playActivity!!

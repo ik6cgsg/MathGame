@@ -32,7 +32,13 @@
         <activity android:name=".activities.PlayActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.TutorialActivity"
+        <activity android:name=".tutorial.TutorialPlayActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".tutorial.TutorialGamesActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".tutorial.TutorialLevelsActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".activities.SettingsActivity"

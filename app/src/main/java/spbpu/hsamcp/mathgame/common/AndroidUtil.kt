@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -87,14 +88,15 @@ class AndroidUtil {
         }
         
         fun createButtonView(context: Context): TextView {
-            val view = TextView(context)
+            val view = Button(context)
             view.typeface = Typeface.MONOSPACE
             view.textSize = Constants.buttonDefaultSize
             view.textAlignment = View.TEXT_ALIGNMENT_CENTER
             view.setLineSpacing(0f, Constants.levelLineSpacing)
-            view.setPadding(
+            /*view.setPadding(
                 Constants.defaultPadding, Constants.defaultPadding * 2,
-                Constants.defaultPadding, Constants.defaultPadding * 2)
+                Constants.defaultPadding, Constants.defaultPadding * 2)*/
+            view.isAllCaps = false
             val layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT)

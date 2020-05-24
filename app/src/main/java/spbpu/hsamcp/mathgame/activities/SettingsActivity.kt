@@ -65,6 +65,10 @@ class SettingsActivity: AppCompatActivity() {
         AndroidUtil.setOnTouchUpInsideWithCancel(changePassword) {
             startActivity(Intent(this, PasswordActivity::class.java))
         }
+        val tutorial = findViewById<TextView>(R.id.tutorial)
+        AndroidUtil.setOnTouchUpInsideWithCancel(tutorial) {
+            TutorialScene.shared.start(this)
+        }
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27 SETTINGS \uD83D\uDD27"

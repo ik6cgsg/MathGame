@@ -1,7 +1,9 @@
 package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
@@ -12,15 +14,11 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import spbpu.hsamcp.mathgame.GlobalScene
-import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.*
 import spbpu.hsamcp.mathgame.common.AndroidUtil
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.common.Storage
@@ -37,6 +35,7 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var serverLabel: TextView
     private lateinit var serverList: LinearLayout
     private lateinit var serverScroll: ScrollView
+    private var askForTutorial = false
 
     fun setLanguage() {
         val locale = Locale("en")
@@ -59,6 +58,7 @@ class GamesActivity: AppCompatActivity() {
         Storage.shared.checkDeviceId(this)
         if (!Storage.shared.isUserAuthorized(this)) {
             startActivity(Intent(this, AuthActivity::class.java))
+            askForTutorial = true
         }
         GlobalScene.shared.gamesActivity = this
         gamesViews = ArrayList()
@@ -84,6 +84,10 @@ class GamesActivity: AppCompatActivity() {
         serverList.visibility = View.GONE
         serverScroll.visibility = View.GONE
         clearSearch()
+        if (askForTutorial) {
+            askForTutorialDialog()
+            askForTutorial = false
+        }
     }
 
     fun settings(v: View?) {
@@ -194,5 +198,19 @@ class GamesActivity: AppCompatActivity() {
             searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
             gamesViews.map { it.visibility = View.VISIBLE }
         }
+    }
+
+    private fun askForTutorialDialog() {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        builder
+            .setTitle("Welcome!")
+            .setMessage("Wanna see tutorial?")
+            .setPositiveButton("Yep \uD83D\uDE0D") { dialog: DialogInterface, id: Int ->
+                TutorialScene.shared.start(this)
+            }
+            .setNegativeButton("Nope, I'm pro \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
+            }
+        val dialog = builder.create()
+        AndroidUtil.showDialog(dialog)
     }
 }
