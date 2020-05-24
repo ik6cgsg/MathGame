@@ -12,8 +12,7 @@ enum class AuthInfo(val str: String) {
     LOGIN("login"),
     PASSWORD("password"),
     NAME("name"),
-    SURNAME("surname"),
-    SECOND_NAME("secondName"),
+    FULL_NAME("fullName"),
     ADDITIONAL("additional"),
     AUTHORIZED("authorized"),
     AUTH_STATUS("authStatus"),
@@ -36,12 +35,11 @@ data class AuthInfoObjectBase(
     var login: String? = null,
     var password: String? = null,
     val name: String? = null,
-    val surname: String? = null,
-    val secondName: String? = null,
+    val fullName: String? = null,
     val additional: String? = null,
     val authorized: Boolean? = null,
     val authStatus: AuthStatus? = null,
-    val serverToken: String? = null
+    val serverToken: String = ""
 )
 
 data class AuthInfoCoeffs(
@@ -150,11 +148,8 @@ class Storage {
         if (info.name != null) {
             prefEdit.putString(AuthInfo.NAME.str, info.name)
         }
-        if (info.surname != null) {
-            prefEdit.putString(AuthInfo.SURNAME.str, info.surname)
-        }
-        if (info.secondName != null) {
-            prefEdit.putString(AuthInfo.SECOND_NAME.str, info.secondName)
+        if (info.fullName != null) {
+            prefEdit.putString(AuthInfo.FULL_NAME.str, info.fullName)
         }
         if (info.additional != null) {
             prefEdit.putString(AuthInfo.ADDITIONAL.str, info.additional)
@@ -171,8 +166,7 @@ class Storage {
             login = prefs.getString(AuthInfo.LOGIN.str, null),
             password = prefs.getString(AuthInfo.PASSWORD.str, null),
             name = prefs.getString(AuthInfo.NAME.str, null),
-            surname = prefs.getString(AuthInfo.SURNAME.str, null),
-            secondName = prefs.getString(AuthInfo.SECOND_NAME.str, null),
+            fullName = prefs.getString(AuthInfo.FULL_NAME.str, null),
             additional = prefs.getString(AuthInfo.ADDITIONAL.str, null),
             authorized = prefs.getBoolean(AuthInfo.AUTHORIZED.str, false),
             authStatus = AuthStatus.value(prefs.getString(AuthInfo.AUTH_STATUS.str, "")!!),

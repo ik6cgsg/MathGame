@@ -28,8 +28,10 @@ class Statistics {
             return System.currentTimeMillis() - startTime
         }
 
-        fun logRule(currSteps: Float, nextSteps: Float, currExpr: ExpressionNode, nextExpr: ExpressionNode,
-                    currRule: ExpressionSubstitution?, place: ExpressionNode) {
+        fun logRule(
+            currSteps: Float, nextSteps: Float, currExpr: ExpressionNode, nextExpr: ExpressionNode,
+            currRule: ExpressionSubstitution?, place: ExpressionNode
+        ) {
             val activity = PlayScene.shared.playActivity!!
             val rule = if (currRule == null) {
                 ""
@@ -75,8 +77,10 @@ class Statistics {
             sendLog(activityLog, activity)
         }
 
-        fun logUndo(currSteps: Float, nextSteps: Float, currExpr: ExpressionNode,
-                    nextExpr: ExpressionNode, currPlace: ExpressionNode?) {
+        fun logUndo(
+            currSteps: Float, nextSteps: Float, currExpr: ExpressionNode,
+            nextExpr: ExpressionNode, currPlace: ExpressionNode?
+        ) {
             val curr = expressionToString(currExpr)
             val next = expressionToString(nextExpr)
             val place = if (currPlace == null) {
@@ -204,14 +208,10 @@ class Statistics {
         }
 
         private fun sendOneLog(log: ActivityLog, context: Context) {
-            val req = RequestData("/api/activity_log/create", Storage.shared.serverToken(context))
+            val req = RequestData(Pages.ACTIVITY_LOG.value, Storage.shared.serverToken(context))
             req.body = log.toString()
             req.headers["Content-type"] = "application/json"
-            if (isConnectedToNetwork(context)) {
-                Request.send(req)
-            } else {
-                Request.sendWithoutInternet(req)
-            }
+            Request.sendRequest(req)
         }
 
         private fun isConnectedToNetwork(context: Context): Boolean {

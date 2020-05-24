@@ -1,7 +1,6 @@
 package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,14 +19,10 @@ import org.json.JSONObject
 import spbpu.hsamcp.mathgame.AuthStatus
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
-import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
-import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.statistics.Request
 import spbpu.hsamcp.mathgame.statistics.RequestData
-import java.util.*
-import kotlin.math.absoluteValue
 
 class AuthActivity: AppCompatActivity() {
     private val TAG = "AuthActivity"
@@ -71,7 +66,7 @@ class AuthActivity: AppCompatActivity() {
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
         val req = RequestData("/api/auth/signup", body = requestRoot.toString())
-        val token = Request.signUp(req)
+        val token = Request.signRequest(req)
         Storage.shared.setServerToken(this, token)
         finish()
     }
@@ -79,7 +74,13 @@ class AuthActivity: AppCompatActivity() {
     fun signIn(v: View?) {
         val login = loginView.text.toString()
         val password = passwordView.text.toString()
-        val res = Request.signIn(null)
+        val requestRoot = JSONObject()
+        requestRoot.put("login", login)
+        requestRoot.put("password", password)
+        val req = RequestData("/api/auth/signin", body = requestRoot.toString())
+        val token = Request.signRequest(req)
+        Storage.shared.setServerToken(this, token)
+        finish()
     }
 
     fun signUp(v: View?) {
@@ -111,11 +112,14 @@ class AuthActivity: AppCompatActivity() {
             // Signed in successfully, show authenticated UI.
             // TODO: server request SIGN_IN with ** accountId **
             val accountId = account!!.idToken
-            val token = Request.signIn(null)
+            val requestRoot = JSONObject()
+            requestRoot.put("accountId", accountId)
+            val req = RequestData("/api/auth/signin", body = requestRoot.toString())
+            val token = Request.signRequest(req)
             Storage.shared.initUserInfo(this, AuthInfoObjectBase(
                 login = account.email.orEmpty().replace("@gmail.com", ""),
                 name = account.givenName.orEmpty(),
-                surname = account.familyName.orEmpty(),
+                fullName = account.familyName.orEmpty(),
                 authStatus = AuthStatus.GOOGLE,
                 serverToken = token
             ))

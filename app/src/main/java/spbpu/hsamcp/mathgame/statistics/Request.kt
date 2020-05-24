@@ -12,6 +12,13 @@ import java.security.cert.X509Certificate
 import java.util.*
 import javax.net.ssl.*
 
+enum class Pages(val value: String) {
+    SIGNIN("/api/auth/signin"),
+    SIGNUP("/api/auth/signup"),
+    EDIT("/api/auth/edit"),
+    ACTIVITY_LOG("/api/activity_log/create")
+}
+
 enum class RequestMethod(val value: String) {
     POST("POST"),
     GET("GET")
@@ -24,7 +31,7 @@ data class RequestData(
     var url: String = "https://mathhelper.space:8443" + page,
     var body: String = "",
     var headers: HashMap<String, String> = hashMapOf(
-        "Content-type" to "application/json",
+        "Content-type" to "application/json; charset=UTF-8",
         "Authorization" to ("Bearer " + securityToken)
         //"Bearer" to securityToken
     )
@@ -143,16 +150,10 @@ class Request {
             return response
         }
 
-        fun send(requestData: RequestData) {
+        fun sendRequest(requestData: RequestData) {
             Log.d("Request", "Request body: ${requestData.body}")
             reqQueue.addFirst(requestData)
             isConnected = true
-        }
-
-        fun sendWithoutInternet(requestData: RequestData) {
-            isConnected = false
-            reqQueue.addFirst(requestData)
-            // TODO: log to file?
         }
 
         fun doSyncRequest(requestData: RequestData): ResponseData {
@@ -169,30 +170,18 @@ class Request {
             return response
         }
 
-        fun signUp(req: RequestData): String {
-            // TODO: fill request
+        fun signRequest(req: RequestData): String {
             Log.d("signUpRequest", req.toString())
             val res = doSyncRequest(req)
             Log.d("signUpRequestReturnCode", res.returnValue.toString())
             Log.d("signUpRequestResultBody", res.body)
             val json = JSONObject(res.body)
             Log.d("signUpServerToken", json.optString("token", "test_token"))
-            // TODO: valid key from API
             return json.optString("token", "test_token")
         }
 
-        fun signIn(someParams: String? = null): String {
-            val req = RequestData("/api/auth/signip")
-            // TODO: fill request
-            val res = doSyncRequest(req)
-            val json = JSONObject(res.body)
-            // TODO: valid key from API
-            return json.optString("token", "test_token")
-        }
-
-        fun edit(someParams: String? = null) {
-            val req = RequestData("/api/auth/edit")
-            // TODO: fill request
+        fun editRequest(req: RequestData) {
+            Log.d("editRequest", req.toString())
             val res = doSyncRequest(req)
         }
     }

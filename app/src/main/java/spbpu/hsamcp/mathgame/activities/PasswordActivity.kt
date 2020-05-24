@@ -1,21 +1,21 @@
 package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
+import org.json.JSONObject
 import spbpu.hsamcp.mathgame.AuthStatus
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
-import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
-import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.common.Storage
+import spbpu.hsamcp.mathgame.statistics.Pages
 import spbpu.hsamcp.mathgame.statistics.Request
+import spbpu.hsamcp.mathgame.statistics.RequestData
 
 class PasswordActivity: AppCompatActivity() {
     private val TAG = "PasswordActivity"
@@ -67,8 +67,12 @@ class PasswordActivity: AppCompatActivity() {
                 password = newPassView.text.toString(),
                 authStatus = AuthStatus.MATH_HELPER
             ))
-            // TODO: server request: EDIT
-            Request.edit(null)
+            val userData = Storage.shared.getUserInfoBase(this)
+            val requestRoot = JSONObject()
+            requestRoot.put("password", userData.password)
+            val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
+            Request.editRequest(req)
+            Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
             finish()
         } else {
             Toast.makeText(this, "Different passwords", Toast.LENGTH_SHORT).show()

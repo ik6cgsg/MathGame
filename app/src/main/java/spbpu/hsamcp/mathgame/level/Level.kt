@@ -77,7 +77,7 @@ class Level {
         private val TAG = "Level"
 
         fun parse(game: Game, levelJson: JSONObject, context: Context): Level? {
-            Log.d(TAG, "parse")
+//TODO            Log.d(TAG, "parse")
             var res: Level? = Level()
             res!!.game = game
             if (res.load(levelJson)) {
