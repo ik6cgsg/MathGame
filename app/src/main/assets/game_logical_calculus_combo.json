@@ -2,7 +2,7 @@
   "gamespace": "",
   "gameCode": "logical_calculus_combo",
   "name": "Logical Calculus Combo",
-  "version": 123,
+  "version": 10,
   "levels":[
     {
       "levelCode": "logical_calculus_combo__Level_1_Prove",

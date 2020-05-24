@@ -34,7 +34,7 @@ data class AuthInfoObjectFull(
 
 data class AuthInfoObjectBase(
     var login: String? = null,
-    val password: String? = null,
+    var password: String? = null,
     val name: String? = null,
     val surname: String? = null,
     val secondName: String? = null,
@@ -119,6 +119,9 @@ class Storage {
             else -> info.login
         }
         info.login = initLogin
+        if (info.password.isNullOrBlank()){
+            info.password = initLogin
+        }
         prefEdit.commit()
         setUserInfo(context, info)
         GlobalScene.shared.generateGamesMultCoeffs()

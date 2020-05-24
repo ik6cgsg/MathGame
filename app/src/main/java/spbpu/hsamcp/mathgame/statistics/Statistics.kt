@@ -205,7 +205,7 @@ class Statistics {
         }
 
         private fun sendOneLog(log: MathGameLog, context: Context) {
-            val req = RequestData()
+            val req = RequestData("")
             req.body = log.toString()
             req.headers["Content-type"] = "application/json"
             if (isConnectedToNetwork(context)) {

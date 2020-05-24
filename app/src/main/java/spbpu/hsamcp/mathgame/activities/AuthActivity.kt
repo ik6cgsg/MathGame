@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import org.json.JSONObject
 import spbpu.hsamcp.mathgame.AuthStatus
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
@@ -24,6 +25,7 @@ import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.statistics.Request
+import spbpu.hsamcp.mathgame.statistics.RequestData
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -61,11 +63,16 @@ class AuthActivity: AppCompatActivity() {
     }
 
     fun continueAsGuest(v: View?) {
-        val token = Request.signUp(null)
         Storage.shared.initUserInfo(this, AuthInfoObjectBase(
-            authStatus = AuthStatus.GUEST,
-            serverToken = token
+            authStatus = AuthStatus.GUEST
         ))
+        val userData = Storage.shared.getUserInfoBase(this)
+        val requestRoot = JSONObject()
+        requestRoot.put("login", userData.login)
+        requestRoot.put("password", userData.password)
+        val req = RequestData("/api/auth/signup", body = requestRoot.toString())
+        val token = Request.signUp(req)
+        Storage.shared.setServerToken(this, token)
         finish()
     }
 

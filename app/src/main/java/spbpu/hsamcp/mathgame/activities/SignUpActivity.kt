@@ -20,6 +20,7 @@ import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.common.Storage
 import spbpu.hsamcp.mathgame.game.Game
 import spbpu.hsamcp.mathgame.statistics.Request
+import spbpu.hsamcp.mathgame.statistics.RequestData
 
 class SignUpActivity: AppCompatActivity() {
     private val TAG = "SignUpActivity"
@@ -74,7 +75,8 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     fun sign(v: View?) {
-        val token = Request.signUp(null)
+        val req = RequestData("/api/auth/signup")
+        val token = Request.signUp(req)
         Storage.shared.setUserInfo(this, AuthInfoObjectBase(
             login = loginView.text.toString(),
             password = passwordView.text.toString(),

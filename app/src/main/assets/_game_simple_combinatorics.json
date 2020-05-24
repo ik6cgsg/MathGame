@@ -1,7 +1,7 @@
 {
   "gamespace": "",
-  "gameCode": "set_logic_ten",
-  "name": "Set Logic Ten",
+  "gameCode": "simple_combinatorics",
+  "name": "Simple Combinatorics",
   "version": 10,
   "levels":[
     {
@@ -187,9 +187,32 @@
     },
     {
       "name": "SetThreeСommutativity",
-      "type": "set",
+      "type": "algebra",
       "rules":[
-        {"left": "(or(A;or(B;C)))","right": "(or(A;B;C))"},
+        {"left": "(U(m;n))","right": "(^(m,n))"},
+        {"left": "(^(m,n))","right": "(U(m;n))"},
+
+        {"left": "(factorial(+(n;1)))","right": "(*(factorial(n);+(n;1)))"},
+        {"left": "(*(factorial(n);+(n;1)))","right": "(factorial(+(n;1)))"},
+        {"left": "(/(factorial(+(n;1));+(n;1)))","right": "(factorial(n))"},
+        {"left": "(factorial(n))","right": "(/(factorial(+(n;1));+(n;1)))"},
+        {"left": "(/(factorial(+(n;1));factorial(n)))","right": "(+(n;1))"},
+        {"left": "(+(n;1))","right": "(/(factorial(+(n;1));factorial(n)))"},
+
+        {"left": "(P(n))","right": "(factorial(n))"},
+        {"left": "(factorial(n))","right": "(P(n))"},
+        {"left": "(A(n;n))","right": "(P(n))"},
+        {"left": "(P(n))","right": "(A(n;n))"},
+
+        {"left": "(*(C(m;n);P(n)))","right": "(A(m;n))"},
+        {"left": "(A(m;n))","right": "(*(C(m;n);P(n)))"},
+        {"left": "(/(A(m;n);P(n)))","right": "(C(m;n))"},
+        {"left": "(C(m;n))","right": "(/(A(m;n);P(n)))"},
+        {"left": "(/(A(m;n);C(m;n)))","right": "(P(n))"},
+        {"left": "(P(n))","right": "(/(A(m;n);C(m;n)))"},
+
+        {"left": "(A(n;n))","right": "(P(n))"},
+        {"left": "(P(n))","right": "(A(n;n))"},
         {"left": "(or(A;B;C))","right": "(or(A;or(B;C)))"},
         {"left": "(or(A;or(B;C)))","right": "(or(or(A;B);C))"},
         {"left": "(or(or(A;B);C))","right": "(or(A;or(B;C)))"},

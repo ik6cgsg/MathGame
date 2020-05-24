@@ -18,8 +18,9 @@ enum class RequestMethod(val value: String) {
 }
 
 data class RequestData(
+    val page: String,
     var method: RequestMethod = RequestMethod.POST,
-    var url: String = "https://mathhelper.space:8443/math_game_log",
+    var url: String = "https://mathhelper.space:8443" + page,
     var body: String = "",
     var headers: HashMap<String, String> = hashMapOf(
         "Content-type" to "application/json"
@@ -162,26 +163,29 @@ class Request {
             return response
         }
 
-        fun signUp(someParams: String? = null): String {
-            val req = RequestData()
+        fun signUp(req: RequestData): String {
             // TODO: fill request
+            Log.d("signUpRequest", req.toString())
             val res = doSyncRequest(req)
+            Log.d("signUpRequestReturnCode", res.returnValue.toString())
+            Log.d("signUpRequestResultBody", res.body)
             val json = JSONObject(res.body)
+            Log.d("signUpServerToken", json.optString("token", "test_token"))
             // TODO: valid key from API
-            return json.optString("server_token", "test_token")
+            return json.optString("token", "test_token")
         }
 
         fun signIn(someParams: String? = null): String {
-            val req = RequestData()
+            val req = RequestData("/api/auth/signip")
             // TODO: fill request
             val res = doSyncRequest(req)
             val json = JSONObject(res.body)
             // TODO: valid key from API
-            return json.optString("server_token", "test_token")
+            return json.optString("token", "test_token")
         }
 
         fun edit(someParams: String? = null) {
-            val req = RequestData()
+            val req = RequestData("/api/auth/edit")
             // TODO: fill request
             val res = doSyncRequest(req)
         }
