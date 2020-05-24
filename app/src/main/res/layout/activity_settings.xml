@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="✏ Edit account"
+            android:text="@string/edit_account"
             android:textColor="@color/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="🔑 Change password"
+            android:text="@string/change_password"
             android:textColor="@color/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
@@ -128,7 +128,7 @@
             android:gravity="center_horizontal"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="reset"
+            android:text="@string/reset"
             android:textColor="@android:color/holo_red_light"
             android:textSize="20sp" />
     </LinearLayout>

@@ -21,12 +21,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="4dp"
-        android:autoText="false"
         android:background="@drawable/rect_shape_non_required"
         android:elegantTextHeight="false"
         android:fontFamily="monospace"
-        android:hint="Wanna say something?"
+        android:hint="@string/wanna_say_something"
         android:inputType="textMultiLine"
-        android:lines="5" />
+        android:lines="5"
+        android:importantForAutofill="no" />
 
 </LinearLayout>

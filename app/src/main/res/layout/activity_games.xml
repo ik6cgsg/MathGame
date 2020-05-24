@@ -4,7 +4,9 @@
     xmlns:auto="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/games"
@@ -14,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif"
-        android:text="GAMES"
+        android:text="@string/games"
         android:textColor="@color/textColor"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -119,7 +121,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="serif-monospace"
-        android:text="☁ games from cloud ☁"
+        android:text="@string/games_from_cloud"
         android:textColor="@color/textColor"
         android:textSize="16sp"
         android:typeface="monospace"
@@ -139,7 +141,8 @@
         android:drawableRight="@android:drawable/ic_menu_close_clear_cancel"
         android:drawablePadding="7dp"
         android:fontFamily="monospace"
-        android:hint="Search for a game!"
+        android:hint="@string/search_for_a_game"
+        android:importantForAutofill="no"
         android:inputType="textShortMessage|text"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"

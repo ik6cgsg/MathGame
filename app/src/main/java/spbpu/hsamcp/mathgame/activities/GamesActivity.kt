@@ -1,10 +1,9 @@
 package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -13,17 +12,18 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AndroidUtil
-import spbpu.hsamcp.mathgame.common.AuthInfo
 import spbpu.hsamcp.mathgame.common.Constants
 import spbpu.hsamcp.mathgame.common.Storage
-import spbpu.hsamcp.mathgame.statistics.Statistics
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,8 +38,17 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var serverList: LinearLayout
     private lateinit var serverScroll: ScrollView
 
+    fun setLanguage() {
+        val locale = Locale("en")
+        Locale.setDefault(locale)
+        val config = Configuration(resources.configuration)
+        config.locale = locale
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
+        setLanguage()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -55,7 +64,7 @@ class GamesActivity: AppCompatActivity() {
         gamesViews = ArrayList()
         gamesList = findViewById(R.id.games_list)
         searchView = findViewById(R.id.search)
-        searchView.compoundDrawables[Constants.drawableRight].setVisible(false, false)
+        searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
         serverDivider = findViewById(R.id.server_divider)
         serverLabel = findViewById(R.id.server_games_label)
         serverList = findViewById(R.id.server_games_list)
@@ -74,10 +83,18 @@ class GamesActivity: AppCompatActivity() {
         serverLabel.visibility = View.GONE
         serverList.visibility = View.GONE
         serverScroll.visibility = View.GONE
+        clearSearch()
     }
 
     fun settings(v: View?) {
         startActivity(Intent(this, SettingsActivity::class.java))
+    }
+
+    private fun clearSearch() {
+        searchView.text.clear()
+        searchView.clearFocus()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -85,13 +102,10 @@ class GamesActivity: AppCompatActivity() {
         searchView.setOnTouchListener { v, event ->
             var res = false
             if (event.action == MotionEvent.ACTION_UP) {
-                val drawableRight = searchView.compoundDrawables[Constants.drawableRight]
-                if (drawableRight != null) {
-                    if (event.x >= (searchView.width - searchView.paddingRight - drawableRight.intrinsicWidth)) {
-                        searchView.text.clear()
-                        searchView.clearFocus()
-                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                        imm?.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
+                val drawableEnd = searchView.compoundDrawables[Constants.drawableEnd]
+                if (drawableEnd != null) {
+                    if (event.x >= (searchView.width - searchView.paddingRight - drawableEnd.intrinsicWidth)) {
+                        clearSearch()
                         filterList()
                         res = true
                     }
@@ -103,7 +117,7 @@ class GamesActivity: AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int,
                                            count: Int, after: Int) {
-                searchView.compoundDrawables[Constants.drawableRight].setVisible(true, false)
+                searchView.compoundDrawables[Constants.drawableEnd].setVisible(true, true)
             }
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
@@ -177,7 +191,7 @@ class GamesActivity: AppCompatActivity() {
             serverList.removeAllViews()
             serverList.visibility = View.GONE
             serverScroll.visibility = View.GONE
-            searchView.compoundDrawables[Constants.drawableRight].setVisible(false, false)
+            searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
             gamesViews.map { it.visibility = View.VISIBLE }
         }
     }

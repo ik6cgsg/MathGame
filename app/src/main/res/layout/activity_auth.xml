@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:auto="http://schemas.android.com/tools"
+    android:id="@+id/auth_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:focusable="true">
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <View
         android:id="@+id/divider"
@@ -26,7 +28,7 @@
         android:layout_height="123dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/rect_shape_clicked"
-        android:contentDescription="Logo"
+        android:contentDescription="@string/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -53,6 +55,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
+            android:contentDescription="@string/googlelogo"
             app:srcCompat="@drawable/googleg_standard_color_18" />
 
         <TextView
@@ -91,11 +94,12 @@
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
+            android:contentDescription="@string/githublogo"
             app:srcCompat="@drawable/git_hub" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
@@ -131,7 +135,7 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/button_rect"
         android:onClick="signIn"
-        android:text="Sign in"
+        android:text="@string/sign_in"
         android:textColor="@color/colorPrimary"
         android:textSize="21sp"
         android:typeface="monospace"
@@ -146,7 +150,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/button_rect"
         android:onClick="signUp"
-        android:text="sign up"
+        android:text="@string/sign_up"
         android:textColor="@color/textColor"
         android:textSize="21sp"
         android:typeface="monospace"
@@ -189,7 +193,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:shadowColor="@android:color/transparent"
-        android:text="OR"
+        android:text="@string/or"
         android:textColor="@color/textColor"
         android:textSize="18sp"
         android:translationZ="0.1dp"
@@ -207,7 +211,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:shadowColor="@android:color/transparent"
-        android:text="OR"
+        android:text="@string/or"
         android:textColor="@color/textColor"
         android:textSize="18sp"
         android:translationZ="0.1dp"
@@ -220,12 +224,12 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rect_shape_non_required"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@+id/googleSign"
         app:layout_constraintStart_toStartOf="@+id/googleSign"
-        app:layout_constraintTop_toBottomOf="@+id/logo">
+        app:layout_constraintTop_toBottomOf="@+id/progress">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/loginTextInput"
@@ -238,7 +242,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:hint="Login"
+                android:hint="@string/login"
+                android:nextFocusDown="@id/passwordText"
                 android:singleLine="true"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/lightGray"
@@ -257,8 +262,10 @@
                 android:id="@+id/passwordText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
+                android:nextFocusUp="@id/loginText"
+                android:nextFocusDown="@id/auth_layout"
                 android:singleLine="true"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/ic_launcher_background"
@@ -276,5 +283,17 @@
         app:layout_constraintEnd_toEndOf="@+id/googleSign"
         app:layout_constraintStart_toStartOf="@+id/googleSign"
         app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

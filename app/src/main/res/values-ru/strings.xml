@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="account">ПРОФИЛЬ</string>
+    <string name="additional">Дополнительно</string>
+    <string name="additional_auth_info">Показать дополнительную информацию</string>
+    <string name="big_password">СМЕНА ПАРОЛЯ</string>
+    <string name="big_sign_up">РЕГИСТРАЦИЯ</string>
+    <string name="cancel">Отмена</string>
+    <string name="change_password">🔑 Смена пароля</string>
+    <string name="continue_as_guest">Продолжить как гость</string>
+    <string name="continue_with_github">Продолжить с GitHub</string>
+    <string name="continue_with_google">Продолжить с Google</string>
+    <string name="edit_account">✏ Редактировать профиль</string>
+    <string name="end_expression_closed">Конечное выражение 🔼</string>
+    <string name="end_expression_opened">Конечное выражение 🔽</string>
+    <string name="games">ИГРЫ</string>
+    <string name="games_from_cloud">☁ игры в глобальном поиске ☁</string>
+    <string name="levels">УРОВНИ</string>
+    <string name="login">Логин</string>
+    <string name="name">Имя</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="no_rules">🙅 Не нашлось подходящих правил 🙅</string>
+    <string name="ok">ок</string>
+    <string name="old_password">Старый пароль</string>
+    <string name="or">ИЛИ</string>
+    <string name="password">Пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="report_bug">🐛 Сообщить об ошибке</string>
+    <string name="reset">сброс</string>
+    <string name="save">Сохранить</string>
+    <string name="search_for_a_game">Найдите свою игру!</string>
+    <string name="second_name">Отчество</string>
+    <string name="send_statistics">Отправлять статистику 📈</string>
+    <string name="settings">⚙ НАСТРОЙКИ ⚙</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_out">Выйти</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="surname">Фамилия</string>
+    <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆</string>
+    <string name="tell_about_your_problem">Расскажите о вашей проблеме</string>
+    <string name="time_out">😢Время вышло!😢</string>
+    <string name="wanna_say_something">Хотите что нибудь нам сообщить?</string>
+    <string name="wrong_subs">❌ Это нельзя сделать ❌</string>
+</resources>

@@ -7,13 +7,13 @@
     android:background="@color/background">
 
     <TextView
-        android:id="@+id/levels"
+        android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="SIGN UP"
+        android:text="@string/big_sign_up"
         android:textColor="@color/textColor"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -32,7 +32,7 @@
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/levels" />
+        app:layout_constraintTop_toBottomOf="@+id/header" />
 
     <View
         android:id="@+id/divider2"
@@ -63,7 +63,7 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Login"
+            android:hint="@string/login"
             android:inputType="text"
             android:textColor="@color/textColor"
             android:textSize="21sp" />
@@ -87,7 +87,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="text|textPassword"
             android:textColor="@color/textColor"
             android:textSize="21sp" />
@@ -111,7 +111,7 @@
             android:id="@+id/repeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Repeat password"
+            android:hint="@string/repeat_password"
             android:inputType="text|textPassword"
             android:textColor="@color/textColor"
             android:textSize="21sp" />
@@ -151,7 +151,7 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Name"
+                    android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:textColor="@color/textColor"
                     android:textSize="21sp" />
@@ -169,7 +169,7 @@
                     android:id="@+id/surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Surname"
+                    android:hint="@string/surname"
                     android:inputType="textPersonName"
                     android:textColor="@color/textColor"
                     android:textSize="21sp" />
@@ -187,7 +187,7 @@
                     android:id="@+id/second_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Second name"
+                    android:hint="@string/second_name"
                     android:inputType="textPersonName"
                     android:textColor="@color/textColor"
                     android:textSize="21sp" />
@@ -205,7 +205,7 @@
                     android:id="@+id/additional"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Additional"
+                    android:hint="@string/additional"
                     android:inputType="textLongMessage|textMultiLine|textNoSuggestions"
                     android:singleLine="false"
                     android:textColor="@color/textColor"
@@ -223,7 +223,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:onClick="toggleAdditionalInfo"
-        android:text="Additional auth info"
+        android:text="@string/additional_auth_info"
         android:textColor="@color/textColor"
         android:textSize="21sp"
         android:typeface="monospace"
@@ -241,7 +241,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_rect"
         android:onClick="sign"
-        android:text="sign up"
+        android:text="@string/sign_up"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="21sp"
         android:typeface="monospace"
@@ -259,7 +259,7 @@
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         android:onClick="cancel"
-        android:text="Cancel "
+        android:text="@string/cancel"
         android:textAllCaps="false"
         android:textColor="@color/red_click"
         android:textSize="18sp"

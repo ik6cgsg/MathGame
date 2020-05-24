@@ -16,8 +16,9 @@
         android:background="@drawable/rect_shape_non_required"
         android:elegantTextHeight="false"
         android:fontFamily="monospace"
-        android:hint="Tell about your problem"
+        android:hint="@string/tell_about_your_problem"
         android:inputType="textMultiLine"
-        android:lines="5" />
+        android:lines="5"
+        android:importantForAutofill="no" />
 
 </LinearLayout>

@@ -67,7 +67,7 @@ class SettingsActivity: AppCompatActivity() {
         }
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
-            settings.text = "\uD83D\uDD27 Settings \uD83D\uDD27"
+            settings.text = "\uD83D\uDD27 SETTINGS \uD83D\uDD27"
         }
         val versionView = findViewById<TextView>(R.id.version)
         versionView.text = versionView.text.toString() + BuildConfig.VERSION_NAME

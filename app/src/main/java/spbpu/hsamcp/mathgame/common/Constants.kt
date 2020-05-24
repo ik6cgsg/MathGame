@@ -11,8 +11,7 @@ class Constants {
         const val mathLineSpacing = 0.5f
         const val levelLineSpacing = 1.2f
         const val defaultPadding = 10
-        const val drawableLeft = 0
-        const val drawableRight = 2
+        const val drawableEnd = 2
         val primaryColor = Color.parseColor("#008577")
         val textColor = Color.parseColor("#C5C5C5")
         val lightGrey = Color.parseColor("#8B8484")

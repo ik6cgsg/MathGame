@@ -71,12 +71,6 @@ class PlayActivity: AppCompatActivity() {
         rulesScrollView = findViewById(R.id.rules_scroll_view)
         noRules = findViewById(R.id.no_rules)
         timerView = findViewById(R.id.timer_view)
-        val res = findViewById<TextView>(R.id.restart)
-        AndroidUtil.setOnTouchUpInside(res, ::restart)
-        val prev = findViewById<TextView>(R.id.previous)
-        AndroidUtil.setOnTouchUpInside(prev, ::previous)
-        val back = findViewById<TextView>(R.id.back)
-        AndroidUtil.setOnTouchUpInside(back, ::back)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,20 +119,24 @@ class PlayActivity: AppCompatActivity() {
         loading = false
     }
 
-    private fun previous(v: View?) {
+    fun previous(v: View?) {
         if (!loading) {
             PlayScene.shared.previousStep()
         }
     }
 
-    private fun restart(v: View?) {
+    fun restart(v: View?) {
         if (!loading) {
             scale = 1f
             PlayScene.shared.restart()
         }
     }
 
-    private fun back(v: View?) {
+    fun info(v: View?) {
+        PlayScene.shared.info()
+    }
+
+    fun back(v: View?) {
         if (!loading) {
             if (LevelScene.shared.currentLevel!!.endless && PlayScene.shared.stepsCount > 0) {
                 AndroidUtil.showDialog(backDialog)

@@ -3,21 +3,51 @@
     <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆</string>
     <string name="end_expression_closed">End expression  🔼</string>
     <string name="end_expression_opened">End expression  🔽</string>
-    <string name="previous">↶</string>
-    <string name="restart">↺</string>
-    <string name="back">←</string>
+    <string name="previous" translatable="false">↶</string>
+    <string name="restart" translatable="false">↺</string>
+    <string name="back" translatable="false">←</string>
     <string name="wrong_subs">❌ Can\'t do this ❌</string>
     <string name="time_out">😢Time out!😢</string>
     <string name="no_rules">🙅 No rules for this 🙅</string>
     <string name="levels">LEVELS</string>
-    <string name="reset">❌</string>
-    <string name="gear">⚙</string>
+    <string name="reset">reset</string>
+    <string name="gear" translatable="false">⚙</string>
     <string name="settings">⚙ SETTINGS ⚙</string>
     <string name="send_statistics">Send statistics 📈</string>
     <string name="report_bug">🐛 Report bug</string>
-    <string name="version_view">MathGame v</string>
-    <string name="pointer">☝</string>
+    <string name="version_view" translatable="false">MathGame v</string>
+    <string name="pointer" translatable="false">☝</string>
     <string name="continue_as_guest">Continue as guest</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="continue_with_github">Continue with GitHub</string>
+    <string name="logo" translatable="false">Logo</string>
+    <string name="googlelogo" translatable="false">googleLogo</string>
+    <string name="githublogo" translatable="false">githubLogo</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">sign up</string>
+    <string name="or">OR</string>
+    <string name="account">ACCOUNT</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="second_name">Second name</string>
+    <string name="additional">Additional</string>
+    <string name="additional_auth_info">Additional auth info</string>
+    <string name="save">Save</string>
+    <string name="sign_out">Sign out</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="big_password">PASSWORD</string>
+    <string name="old_password">Old password</string>
+    <string name="ok">ok</string>
+    <string name="games">GAMES</string>
+    <string name="games_from_cloud">☁ games from global search ☁</string>
+    <string name="search_for_a_game">Search for a game!</string>
+    <string name="edit_account">✏ Edit account</string>
+    <string name="change_password">🔑 Change password</string>
+    <string name="big_sign_up">SIGN UP</string>
+    <string name="cancel">Cancel</string>
+    <string name="wanna_say_something">Wanna say something?</string>
+    <string name="tell_about_your_problem">Tell about your problem</string>
 </resources>

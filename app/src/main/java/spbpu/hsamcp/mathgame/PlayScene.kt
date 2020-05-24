@@ -205,6 +205,12 @@ class PlayScene {
         Statistics.logMenu(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
     }
 
+    fun info() {
+        val currentLevel = LevelScene.shared.currentLevel!!
+        showMessage("\uD83C\uDF40 ${currentLevel.name} \uD83C\uDF40\n" +
+            "\uD83D\uDC63 Steps: ${"%.1f".format(stepsCount)} \uD83D\uDC63")
+    }
+
     fun clearRules() {
         val activity = playActivity!!
         activity.rulesScrollView.visibility = View.INVISIBLE
