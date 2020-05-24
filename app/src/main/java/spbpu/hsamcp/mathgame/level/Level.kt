@@ -50,6 +50,7 @@ enum class LevelField(val str: String) {
 class Level {
     private var packages = ArrayList<String>()
     private var rules = ArrayList<ExpressionSubstitution>()
+    lateinit var startExpressionStr: String
     lateinit var startExpression: ExpressionNode
     lateinit var endExpression: ExpressionNode
     lateinit var endExpressionStr: String
@@ -121,8 +122,8 @@ class Level {
         }
         longExpressionCroppingPolicy = levelJson.optString(LevelField.LONG_EXPRESSION_CROPPING_POLICY.str,
             longExpressionCroppingPolicy)
-        val startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
         /** EXPRESSIONS */
+        startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
         startExpression = structureStringToExpression(startExpressionStr)
         endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
         endExpression = structureStringToExpression(endExpressionStr)

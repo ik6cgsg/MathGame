@@ -6,7 +6,7 @@ import org.json.JSONObject
 import spbpu.hsamcp.mathgame.level.*
 
 enum class GameField(val str: String) {
-    GAMESPACE("gamespace"),
+    GAMESPACE("gameSpace"),
     GAME_CODE("gameCode"),
     NAME("name"),
     VERSION("version"),
@@ -19,7 +19,7 @@ class Game(var fileName: String) {
     lateinit var levelsJsons: ArrayList<JSONObject>
     lateinit var rulePacks: HashMap<String, RulePackage>
     lateinit var rulePacksJsons: HashMap<String, JSONObject>
-    lateinit var gamespace: String
+    lateinit var gameSpace: String
     lateinit var gameCode: String
     lateinit var name: String
     var version: Long = 0
@@ -63,7 +63,7 @@ class Game(var fileName: String) {
             !gameJson.has(GameField.LEVELS.str)) {
             return false
         }
-        gamespace = gameJson.getString(GameField.GAMESPACE.str)
+        gameSpace = gameJson.getString(GameField.GAMESPACE.str)
         gameCode = gameJson.getString(GameField.GAME_CODE.str)
         name = gameJson.getString(GameField.NAME.str)
         version = gameJson.getLong(GameField.VERSION.str)

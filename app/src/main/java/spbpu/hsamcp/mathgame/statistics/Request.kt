@@ -19,11 +19,14 @@ enum class RequestMethod(val value: String) {
 
 data class RequestData(
     val page: String,
+    val securityToken: String = "",
     var method: RequestMethod = RequestMethod.POST,
     var url: String = "https://mathhelper.space:8443" + page,
     var body: String = "",
     var headers: HashMap<String, String> = hashMapOf(
-        "Content-type" to "application/json"
+        "Content-type" to "application/json",
+        "Authorization" to ("Bearer " + securityToken)
+        //"Bearer" to securityToken
     )
 )
 
@@ -78,9 +81,12 @@ class Request {
                     while (true) {
                         while (reqQueue.isNotEmpty() && isConnected) {
                             try {
+                                Log.d("asyncRequest", reqQueue.last.toString())
                                 val response = asyncRequest(reqQueue.last)
                                 Log.d("Request", "sended")
                                 if (response.returnValue != 500 || response.returnValue != 404) {
+                                    Log.d("asyncRequestReturnCode", response.returnValue.toString())
+                                    Log.d("asyncRequestResultBody", response.body)
                                     reqQueue.removeLast()
                                     Log.d("Request", "removed")
                                 }
