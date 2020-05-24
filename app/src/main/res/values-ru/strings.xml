@@ -30,13 +30,12 @@
     <string name="reset">сброс</string>
     <string name="save">Сохранить</string>
     <string name="search_for_a_game">Найдите свою игру!</string>
-    <string name="second_name">Отчество</string>
+    <string name="full_name">Полное имя</string>
     <string name="send_statistics">Отправлять статистику 📈</string>
     <string name="settings">⚙ НАСТРОЙКИ ⚙</string>
     <string name="sign_in">Войти</string>
     <string name="sign_out">Выйти</string>
     <string name="sign_up">Регистрация</string>
-    <string name="surname">Фамилия</string>
     <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆</string>
     <string name="tell_about_your_problem">Расскажите о вашей проблеме</string>
     <string name="time_out">😢Время вышло!😢</string>

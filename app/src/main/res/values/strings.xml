@@ -30,8 +30,7 @@
     <string name="or">OR</string>
     <string name="account">ACCOUNT</string>
     <string name="name">Name</string>
-    <string name="surname">Surname</string>
-    <string name="second_name">Second name</string>
+    <string name="full_name">Full name</string>
     <string name="additional">Additional</string>
     <string name="additional_auth_info">Additional auth info</string>
     <string name="save">Save</string>
