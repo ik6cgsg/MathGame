@@ -40,7 +40,9 @@ fun structureStringToExpression(
         )
 ): ExpressionNode {
     val expressionNodeConstructor = ExpressionNodeConstructor(functionConfiguration)
-    return expressionNodeConstructor.construct(structureString)
+    val result = expressionNodeConstructor.construct(structureString)
+    result.computeNodeIdsAsNumbersInDirectTraversal()
+    return result
 }
 
 fun expressionToStructureString(
