@@ -11,22 +11,30 @@ enum class OperationType(val names: Array<String>) {
     SET_OR(arrayOf("|", "or")),
     SET_MINUS(arrayOf("\\", "set-")),
     SET_NOT(arrayOf("!", "not")),
-    SET_IMPLIC(arrayOf("->", "implic"))
+    SET_IMPLIC(arrayOf("->", "implic")),
+
+    RIGHT_UNARY(arrayOf("")),
 }
 
-class Operation(val name: String) {
+class Operation(var name: String) {
     val priority: Int
     val type: OperationType
 
     init {
-        priority = getPriority(name)
-        val types = OperationType.values().filter {
-            name in it.names
-        }
-        type = if (types.isEmpty()) {
-            OperationType.FUNCTION
+        if (name == "factorial") {
+            name = "!"
+            type = OperationType.RIGHT_UNARY
+            priority = 5
         } else {
-            types[0]
+            priority = getPriority(name)
+            val types = OperationType.values().filter {
+                name in it.names
+            }
+            type = if (types.isEmpty()) {
+                OperationType.FUNCTION
+            } else {
+                types[0]
+            }
         }
     }
 

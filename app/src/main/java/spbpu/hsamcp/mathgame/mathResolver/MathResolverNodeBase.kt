@@ -59,6 +59,8 @@ open class MathResolverNodeBase(
                     OperationType.SET_MINUS -> MathResolverSetNodeMinus(expression, needBrackets, operation)
                     OperationType.SET_NOT -> MathResolverSetNodeNot(expression, needBrackets, operation)
                     OperationType.SET_IMPLIC -> MathResolverSetNodeImplic(expression, needBrackets, operation)
+
+                    OperationType.RIGHT_UNARY -> MathResolverNodeRightUnary(expression, needBrackets, operation)
                 }
             }
             node.style = style

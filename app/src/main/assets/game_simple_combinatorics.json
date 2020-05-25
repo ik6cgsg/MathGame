@@ -1,0 +1,140 @@
+{
+  "gameSpace": "",
+  "gameCode": "simple_combinatorics",
+  "name": "Simple Combinatorics",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "simple_combinatorics__Hello_World_Level_Prove",
+      "name": "Hello World Level Prove",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(A(n;n))",
+      "finalExpression": "(factorial(n))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "simple_combinatorics__Level_1_Prove",
+      "name": "Level 1 Prove",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 90,
+      "originalExpression": "(A(n;n))",
+      "finalExpression": "(factorial(n))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "CombinatoricBase",
+      "rules":[
+        {"rulePack": "BaseUAPCV"},
+
+        {"rulePack": "BaseArithmetic"},
+        {"rulePack": "FactorialRecurrent"},
+
+        {"rulePack": "BaseStirling"},
+        {"rulePack": "BaseCatalan"}
+      ]
+    },
+    {
+      "name": "BaseUAPCV",
+      "type": "algebra",
+      "rules":[
+        {"left": "(U(m;n))","right": "(^(m,n))"},
+        {"left": "(^(m,n))","right": "(U(m;n))"},
+
+        {"left": "(P(n))","right": "(factorial(n))"},
+        {"left": "(factorial(n))","right": "(P(n))"},
+        {"left": "(A(n;n))","right": "(P(n))"},
+        {"left": "(P(n))","right": "(A(n;n))"},
+
+        {"left": "(*(C(m;n);P(n)))","right": "(A(m;n))"},
+        {"left": "(A(m;n))","right": "(*(C(m;n);P(n)))"},
+        {"left": "(/(A(m;n);P(n)))","right": "(C(m;n))"},
+        {"left": "(C(m;n))","right": "(/(A(m;n);P(n)))"},
+        {"left": "(/(A(m;n);C(m;n)))","right": "(P(n))"},
+        {"left": "(P(n))","right": "(/(A(m;n);C(m;n)))"},
+
+        {"left": "(V(+(m;1);n))","right": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))"},
+        {"left": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))","right": "(V(+(m;1);n))"},
+        {"left": "(C(+(m;n);n))","right": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))"},
+        {"left": "(C(+(m;n);n))","right": "(V(+(m;1);n))"},
+        {"left": "(V(+(m;1);n))","right": "(C(+(m;n);n))"},
+
+        {"left": "(A(+(m;n);n))","right": "(/(factorial(+(m;n));factorial(m)))"},
+        {"left": "(/(factorial(+(m;n));factorial(m)))","right": "(A(+(m;n);n))"},
+        {"left": "(factorial(+(m;n)))","right": "(*(A(+(m;n);n);factorial(m)))"},
+        {"left": "(*(A(+(m;n);n);factorial(m)))","right": "(factorial(+(m;n)))"},
+        {"left": "(*(factorial(m);A(+(m;n);n)))","right": "(factorial(+(m;n)))"},
+        {"left": "(factorial(m))","right": "(/(factorial(+(m;n));A(+(m;n);n)))"},
+        {"left": "(/(factorial(+(m;n));A(+(m;n);n)))","right": "(factorial(m))"}
+      ]
+    },
+    {
+      "name": "BaseArithmetic",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a;b))","right":"(+(b;a))"},
+        {"left":"(*(a;b))","right":"(*(b;a))"},
+
+        {"left":"(+(a;a))","right":"(*(2;a))"},
+        {"left":"(*(2;a))","right":"(+(a;a))"}
+      ]
+    },
+    {
+      "name": "FactorialRecurrent",
+      "type": "algebra",
+      "rules":[
+        {"left": "(factorial(+(n;1)))","right": "(*(factorial(n);+(n;1)))"},
+        {"left": "(*(factorial(n);+(n;1)))","right": "(factorial(+(n;1)))"},
+        {"left": "(*(+(n;1);factorial(n)))","right": "(factorial(+(n;1)))"},
+        {"left": "(/(factorial(+(n;1));+(n;1)))","right": "(factorial(n))"},
+        {"left": "(factorial(n))","right": "(/(factorial(+(n;1));+(n;1)))"},
+        {"left": "(/(factorial(+(n;1));factorial(n)))","right": "(+(n;1))"},
+        {"left": "(+(n;1))","right": "(/(factorial(+(n;1));factorial(n)))"}
+      ]
+    },
+    {
+      "name": "BaseStirling",
+      "type": "algebra",
+      "rules":[
+        {"left": "(S1(m;n))","right": "(*(factorial(n);S2(m;n)))"},
+        {"left": "(*(factorial(n);S2(m;n)))","right": "(S1(m;n))"},
+        {"left": "(*(S2(m;n);factorial(n)))","right": "(S1(m;n))"},
+        {"left": "(factorial(n))","right": "(/(S1(m;n);S2(m;n)))"},
+        {"left": "(/(S1(m;n);S2(m;n)))","right": "(factorial(n))"},
+        {"left": "(S2(m;n))","right": "(/(S1(m;n);factorial(n)))"},
+        {"left": "(/(S1(m;n);factorial(n)))","right": "(S2(m;n))"},
+
+        {"left": "(S2(+(m;1);+(n;1)))","right": "(+(S2(m;n);*(n;S2(m;+(n;1)))))"},
+        {"left": "(+(S2(m;n);*(n;S2(m;+(n;1)))))","right": "(S2(+(m;1);+(n;1)))"},
+        {"left": "(S2(m;m))","right": "(1)"},
+        {"left": "(1)","right": "(S2(m;n))"}
+      ]
+    },
+    {
+      "name": "BaseCatalan",
+      "type": "algebra",
+      "rules":[
+        {"left": "(C(*(2;n);n))","right": "(*(C(n);+(n;1)))"},
+        {"left": "(*(C(n);+(n;1)))","right": "(C(*(2;n);n))"},
+        {"left": "(*(+(n;1);C(n)))","right": "(C(*(2;n);n))"},
+        {"left": "(C(n))","right": "(/(C(*(2;n);n);+(n;1)))"},
+        {"left": "(/(C(*(2;n);n);+(n;1)))","right": "(C(n))"},
+        {"left": "(+(n;1))","right": "(/(C(*(2;n);n);C(n)))"},
+        {"left": "(/(C(*(2;n);n);C(n)))","right": "(+(n;1))"},
+
+        {"left": "(C(0))","right": "(1)"},
+        {"left": "(1)","right": "(C(0))"}
+      ]
+    }
+  ]
+}
