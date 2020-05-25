@@ -16,6 +16,7 @@ enum class Pages(val value: String) {
     SIGNIN("/api/auth/signin"),
     SIGNUP("/api/auth/signup"),
     EDIT("/api/auth/edit"),
+    GOOGLE_SIGN_IN("/api/auth/google_sing_in"),
     ACTIVITY_LOG("/api/activity_log/create")
 }
 
@@ -30,7 +31,7 @@ data class RequestData(
     var method: RequestMethod = RequestMethod.POST,
     var url: String = "https://mathhelper.space:8443" + page,
     var body: String = "",
-    var headers: HashMap<String, String> = hashMapOf(
+    var headers: Map<String, String> = mapOf(
         "Content-type" to "application/json; charset=UTF-8",
         "Authorization" to ("Bearer " + securityToken)
         //"Bearer" to securityToken
@@ -175,6 +176,9 @@ class Request {
             val res = doSyncRequest(req)
             Log.d("signUpRequestReturnCode", res.returnValue.toString())
             Log.d("signUpRequestResultBody", res.body)
+            if (res.returnValue != 200) {
+                return "" //TODO: handle error
+            }
             val json = JSONObject(res.body)
             Log.d("signUpServerToken", json.optString("token", "test_token"))
             return json.optString("token", "test_token")

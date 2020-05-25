@@ -21,6 +21,7 @@ import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
 import spbpu.hsamcp.mathgame.common.Storage
+import spbpu.hsamcp.mathgame.statistics.Pages
 import spbpu.hsamcp.mathgame.statistics.Request
 import spbpu.hsamcp.mathgame.statistics.RequestData
 
@@ -65,7 +66,7 @@ class AuthActivity: AppCompatActivity() {
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
-        val req = RequestData("/api/auth/signup", body = requestRoot.toString())
+        val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
         val token = Request.signRequest(req)
         Storage.shared.setServerToken(this, token)
         finish()
@@ -77,7 +78,7 @@ class AuthActivity: AppCompatActivity() {
         val requestRoot = JSONObject()
         requestRoot.put("login", login)
         requestRoot.put("password", password)
-        val req = RequestData("/api/auth/signin", body = requestRoot.toString())
+        val req = RequestData(Pages.SIGNIN.value, body = requestRoot.toString())
         val token = Request.signRequest(req)
         Storage.shared.setServerToken(this, token)
         finish()
@@ -111,15 +112,15 @@ class AuthActivity: AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
             // TODO: server request SIGN_IN with ** accountId **
-            val accountId = account!!.idToken
+            val idTokenString = account!!.idToken
             val requestRoot = JSONObject()
-            requestRoot.put("accountId", accountId)
-            val req = RequestData("/api/auth/signin", body = requestRoot.toString())
+            requestRoot.put("idTokenString", idTokenString)
+            val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
             val token = Request.signRequest(req)
             Storage.shared.initUserInfo(this, AuthInfoObjectBase(
                 login = account.email.orEmpty().replace("@gmail.com", ""),
                 name = account.givenName.orEmpty(),
-                fullName = account.familyName.orEmpty(),
+                fullName = account.familyName.orEmpty() + " " + account.givenName.orEmpty(),
                 authStatus = AuthStatus.GOOGLE,
                 serverToken = token
             ))

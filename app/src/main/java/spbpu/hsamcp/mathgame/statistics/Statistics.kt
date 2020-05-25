@@ -210,7 +210,6 @@ class Statistics {
         private fun sendOneLog(log: ActivityLog, context: Context) {
             val req = RequestData(Pages.ACTIVITY_LOG.value, Storage.shared.serverToken(context))
             req.body = log.toString()
-            req.headers["Content-type"] = "application/json"
             Request.sendRequest(req)
         }
 

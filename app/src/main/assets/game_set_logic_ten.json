@@ -12,7 +12,7 @@
       "stepsNum": 2,
       "time": 50,
       "originalExpression": "(and(or(A;not(B));or(A;not(C))))",
-      "finalExpression": "(and(A;not(and(B;C))))",
+      "finalExpression": "(or(A;not(or(B;C))))",
       "rules":[
         {"rulePack": "SetBase"}
       ]
@@ -27,8 +27,7 @@
       "originalExpression": "(or(A;and(A;B)))",
       "finalExpression": "(A)",
       "rules":[
-        {"rulePack": "SetBase"},
-        {"rulePack": "SetAbsorptionLawReduction"}
+        {"rulePack": "SetBase"}
       ]
     },
     {

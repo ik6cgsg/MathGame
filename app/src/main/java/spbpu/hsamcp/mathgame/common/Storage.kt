@@ -39,7 +39,7 @@ data class AuthInfoObjectBase(
     val additional: String? = null,
     val authorized: Boolean? = null,
     val authStatus: AuthStatus? = null,
-    val serverToken: String = ""
+    val serverToken: String? = null
 )
 
 data class AuthInfoCoeffs(

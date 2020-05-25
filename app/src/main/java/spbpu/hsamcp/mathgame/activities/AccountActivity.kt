@@ -79,7 +79,7 @@ class AccountActivity: AppCompatActivity() {
         requestRoot.put("name", userData.name)
         requestRoot.put("fullName", userData.fullName)
         requestRoot.put("addInfo", userData.additional)
-        val req = RequestData(Pages.EDIT.value, userData.serverToken, body = requestRoot.toString())
+        val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
         Request.editRequest(req)
         Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
     }

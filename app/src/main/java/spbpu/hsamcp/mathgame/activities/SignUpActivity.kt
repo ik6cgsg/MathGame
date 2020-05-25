@@ -12,6 +12,7 @@ import org.json.JSONObject
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
 import spbpu.hsamcp.mathgame.common.Storage
+import spbpu.hsamcp.mathgame.statistics.Pages
 import spbpu.hsamcp.mathgame.statistics.Request
 import spbpu.hsamcp.mathgame.statistics.RequestData
 
@@ -80,7 +81,7 @@ class SignUpActivity: AppCompatActivity() {
         requestRoot.put("name", userData.name)
         requestRoot.put("fullName", userData.fullName)
         requestRoot.put("addInfo", userData.additional)
-        val req = RequestData("/api/auth/signup", body = requestRoot.toString())
+        val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
         val token = Request.signRequest(req)
         Storage.shared.setServerToken(this, token)
         finish()
