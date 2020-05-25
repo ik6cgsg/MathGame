@@ -7,13 +7,12 @@ enum class OperationType(val names: Array<String>) {
     PLUS(arrayOf("+")),
     MULT(arrayOf("*")),
     FUNCTION(arrayOf("")),
+    RIGHT_UNARY(arrayOf("")),
     SET_AND(arrayOf("&", "and")),
     SET_OR(arrayOf("|", "or")),
     SET_MINUS(arrayOf("\\", "set-")),
     SET_NOT(arrayOf("!", "not")),
-    SET_IMPLIC(arrayOf("->", "implic")),
-
-    RIGHT_UNARY(arrayOf("")),
+    SET_IMPLIC(arrayOf("->", "implic"))
 }
 
 class Operation(var name: String) {
@@ -52,14 +51,6 @@ class Operation(var name: String) {
                 in OperationType.SET_MINUS.names -> 1
                 in OperationType.SET_IMPLIC.names -> 0
                 else -> -1
-            }
-        }
-
-        fun isSetOperation(name: String): Boolean {
-            return when (name) {
-                in OperationType.SET_AND.names, in OperationType.SET_OR.names,
-                    in OperationType.SET_MINUS.names, in OperationType.SET_IMPLIC.names -> true
-                else -> false
             }
         }
     }

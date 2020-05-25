@@ -1,11 +1,14 @@
 package spbpu.hsamcp.mathgame.statistics
 
 import android.util.Log
+import android.view.View
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import spbpu.hsamcp.mathgame.GlobalScene
+import spbpu.hsamcp.mathgame.common.RequestTimer
 import java.net.URL
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -67,11 +70,18 @@ class TrustAllCertsManager : X509TrustManager {
 }
 
 class Request {
+    class TimeoutException(message: String): Exception(message)
+    class UndefinedException(message: String): Exception(message)
+    class TokenNotFoundException(message: String): Exception(message)
+
     companion object {
         private var reqQueue = LinkedList<RequestData>()
         private var isConnected = false
         private var isWorking = false
         private lateinit var job: Deferred<Unit>
+        private const val timeoutMaxInSec = 5
+        private var timer = RequestTimer(timeoutMaxInSec.toLong())
+        var timeout = false
 
         fun startWorkCycle() {
             if (isWorking) {
@@ -157,36 +167,51 @@ class Request {
             isConnected = true
         }
 
-        fun doSyncRequest(requestData: RequestData): ResponseData {
+        @Throws(TimeoutException::class)
+        private fun doSyncRequest(requestData: RequestData): ResponseData {
             var response = ResponseData()
+            // GlobalScene.shared.loadingElement?.visibility = View.VISIBLE
+            timer.start()
             val requestTask = GlobalScope.launch {
                 val job = async {
                     asyncRequest(requestData)
                 }
                 response = job.await()
             }
-            while (!requestTask.isCompleted) {
+            while (!timeout && !requestTask.isCompleted) {
                 continue
             }
+            if (timeout) {
+                throw TimeoutException("More than $timeoutMaxInSec passed...")
+            }
+            timer.cancel()
+            // GlobalScene.shared.loadingElement?.visibility = View.INVISIBLE
             return response
         }
 
+        @Throws(UndefinedException::class, TokenNotFoundException::class)
         fun signRequest(req: RequestData): String {
-            Log.d("signUpRequest", req.toString())
+            Log.d("signRequest", req.toString())
             val res = doSyncRequest(req)
-            Log.d("signUpRequestReturnCode", res.returnValue.toString())
-            Log.d("signUpRequestResultBody", res.body)
+            Log.d("signRequestReturnCode", res.returnValue.toString())
+            Log.d("signRequestResultBody", res.body)
             if (res.returnValue != 200) {
-                return "" //TODO: handle error
+                throw UndefinedException("Something went wrong... (returnCode != 200)")
             }
             val json = JSONObject(res.body)
-            Log.d("signUpServerToken", json.optString("token", "test_token"))
-            return json.optString("token", "test_token")
+            if (!json.has("token")) {
+                throw TokenNotFoundException("Can't extract token from response")
+            }
+            Log.d("signServerToken", json.getString("token"))
+            return json.getString("token")
         }
 
         fun editRequest(req: RequestData) {
             Log.d("editRequest", req.toString())
             val res = doSyncRequest(req)
+            if (res.returnValue != 200) {
+                throw UndefinedException("Something went wrong... (returnCode != 200)")
+            }
         }
     }
 }

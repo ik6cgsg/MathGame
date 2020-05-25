@@ -46,6 +46,7 @@ class PasswordActivity: AppCompatActivity() {
             newPassInputLayout.visibility = View.VISIBLE
             repeatPassInputLayout.visibility = View.VISIBLE
         }
+        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
     }
 
     fun back(v: View?) {
@@ -63,17 +64,19 @@ class PasswordActivity: AppCompatActivity() {
                 Toast.makeText(this, "Wrong password!", Toast.LENGTH_SHORT).show()
             }
         } else if (newPassView.text.toString() == repeatPassView.text.toString()) {
-            Storage.shared.setUserInfo(this, AuthInfoObjectBase(
-                password = newPassView.text.toString(),
-                authStatus = AuthStatus.MATH_HELPER
-            ))
-            val userData = Storage.shared.getUserInfoBase(this)
             val requestRoot = JSONObject()
-            requestRoot.put("password", userData.password)
+            requestRoot.put("password", newPassView.text.toString())
             val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
-            Request.editRequest(req)
-            Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
-            finish()
+            GlobalScene.shared.request(this, background = {
+                Request.editRequest(req)
+                Storage.shared.setUserInfo(this, AuthInfoObjectBase(
+                    password = newPassView.text.toString(),
+                    authStatus = AuthStatus.MATH_HELPER
+                ))
+            }, foreground = {
+                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+                finish()
+            })
         } else {
             Toast.makeText(this, "Different passwords", Toast.LENGTH_SHORT).show()
         }

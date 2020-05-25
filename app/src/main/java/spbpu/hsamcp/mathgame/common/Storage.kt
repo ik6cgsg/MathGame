@@ -70,6 +70,13 @@ class Storage {
             .getBoolean(AuthInfo.AUTHORIZED.str, false)
     }
 
+    fun invalidateUser(context: Context) {
+        val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, false)
+        prefEdit.commit()
+    }
+
     fun authStatus(context: Context): AuthStatus {
         return AuthStatus.value(
             context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)

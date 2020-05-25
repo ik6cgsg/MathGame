@@ -38,6 +38,7 @@ class AccountActivity: AppCompatActivity() {
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
         logButton = findViewById(R.id.log_button)
+        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
     }
 
     override fun onResume() {
@@ -67,21 +68,23 @@ class AccountActivity: AppCompatActivity() {
     }
 
     fun save(v: View?) {
-        Storage.shared.setUserInfo(this, AuthInfoObjectBase(
-            login = loginView.text.toString(),
-            name = nameView.text.toString(),
-            fullName = fullNameView.text.toString(),
-            additional = additionalView.text.toString()
-        ))
-        val userData = Storage.shared.getUserInfoBase(this)
         val requestRoot = JSONObject()
-        requestRoot.put("login", userData.login)
-        requestRoot.put("name", userData.name)
-        requestRoot.put("fullName", userData.fullName)
-        requestRoot.put("addInfo", userData.additional)
+        requestRoot.put("login", loginView.text.toString())
+        requestRoot.put("name", nameView.text.toString())
+        requestRoot.put("fullName", fullNameView.text.toString())
+        requestRoot.put("addInfo", additionalView.text.toString())
         val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
-        Request.editRequest(req)
-        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+        GlobalScene.shared.request(this, background = {
+            Request.editRequest(req)
+            Storage.shared.setUserInfo(this, AuthInfoObjectBase(
+                login = loginView.text.toString(),
+                name = nameView.text.toString(),
+                fullName = fullNameView.text.toString(),
+                additional = additionalView.text.toString()
+            ))
+        }, foreground = {
+            Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+        })
     }
 
     fun logClicked(v: View?) {

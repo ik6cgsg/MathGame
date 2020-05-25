@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import org.json.JSONObject
+import spbpu.hsamcp.mathgame.GlobalScene
 import spbpu.hsamcp.mathgame.R
 import spbpu.hsamcp.mathgame.common.AuthInfoObjectBase
 import spbpu.hsamcp.mathgame.common.Storage
@@ -42,6 +43,7 @@ class SignUpActivity: AppCompatActivity() {
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
         signButton = findViewById(R.id.sign_up)
+        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
     }
 
     override fun onResume() {
@@ -51,6 +53,9 @@ class SignUpActivity: AppCompatActivity() {
         loginView.doAfterTextChanged { checkInput() }
         passwordView.doAfterTextChanged { checkInput() }
         repeatView.doAfterTextChanged { checkInput() }
+    }
+
+    override fun onBackPressed() {
     }
 
     private fun checkInput() {
@@ -82,13 +87,17 @@ class SignUpActivity: AppCompatActivity() {
         requestRoot.put("fullName", userData.fullName)
         requestRoot.put("addInfo", userData.additional)
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
-        val token = Request.signRequest(req)
-        Storage.shared.setServerToken(this, token)
-        finish()
+        GlobalScene.shared.request(this, initial = true, background = {
+            val token = Request.signRequest(req)
+            Storage.shared.setServerToken(this, token)
+        }, foreground = {
+            finish()
+        })
     }
 
     fun cancel(v: View?) {
         startActivity(Intent(this, AuthActivity::class.java))
+        Storage.shared.invalidateUser(this)
         finish()
     }
 }

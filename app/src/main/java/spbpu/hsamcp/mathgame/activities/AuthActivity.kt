@@ -1,11 +1,14 @@
 package spbpu.hsamcp.mathgame.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +18,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import spbpu.hsamcp.mathgame.AuthStatus
 import spbpu.hsamcp.mathgame.GlobalScene
@@ -43,6 +49,7 @@ class AuthActivity: AppCompatActivity() {
         passwordView.doAfterTextChanged { checkInput() }
         signInButton = findViewById(R.id.sign_in)
         signInButton.isEnabled = false
+        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
         val standartSignInButton = findViewById<SignInButton>(R.id.sign_in_button)
         standartSignInButton.setSize(SignInButton.SIZE_WIDE)
         standartSignInButton.setColorScheme(SignInButton.COLOR_LIGHT)
@@ -52,6 +59,11 @@ class AuthActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+    }
+
+    override fun finish() {
+        GlobalScene.shared.loadingElement = null
+        super.finish()
     }
 
     private fun checkInput() {
@@ -67,21 +79,34 @@ class AuthActivity: AppCompatActivity() {
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
-        val token = Request.signRequest(req)
-        Storage.shared.setServerToken(this, token)
-        finish()
+        GlobalScene.shared.request(this, initial = true, background = {
+            val token = Request.signRequest(req)
+            Storage.shared.setServerToken(this, token)
+        }, foreground = {
+            finish()
+        })
     }
 
     fun signIn(v: View?) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
         val login = loginView.text.toString()
         val password = passwordView.text.toString()
         val requestRoot = JSONObject()
         requestRoot.put("login", login)
         requestRoot.put("password", password)
         val req = RequestData(Pages.SIGNIN.value, body = requestRoot.toString())
-        val token = Request.signRequest(req)
-        Storage.shared.setServerToken(this, token)
-        finish()
+        GlobalScene.shared.request(this, initial = true, background = {
+            val token = Request.signRequest(req)
+            Storage.shared.initUserInfo(this, AuthInfoObjectBase(
+                login = login,
+                password = password,
+                authStatus = AuthStatus.MATH_HELPER,
+                serverToken = token
+            ))
+        }, foreground = {
+            finish()
+        })
     }
 
     fun signUp(v: View?) {
@@ -111,20 +136,22 @@ class AuthActivity: AppCompatActivity() {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
-            // TODO: server request SIGN_IN with ** accountId **
             val idTokenString = account!!.idToken
             val requestRoot = JSONObject()
             requestRoot.put("idTokenString", idTokenString)
             val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
-            val token = Request.signRequest(req)
-            Storage.shared.initUserInfo(this, AuthInfoObjectBase(
-                login = account.email.orEmpty().replace("@gmail.com", ""),
-                name = account.givenName.orEmpty(),
-                fullName = account.familyName.orEmpty() + " " + account.givenName.orEmpty(),
-                authStatus = AuthStatus.GOOGLE,
-                serverToken = token
-            ))
-            finish()
+            GlobalScene.shared.request(this, initial = true, background = {
+                val token = Request.signRequest(req)
+                Storage.shared.initUserInfo(this, AuthInfoObjectBase(
+                    login = account.email.orEmpty().replace("@gmail.com", ""),
+                    name = account.givenName.orEmpty(),
+                    fullName = account.displayName.orEmpty(),
+                    authStatus = AuthStatus.GOOGLE,
+                    serverToken = token
+                ))
+            }, foreground = {
+                finish()
+            })
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

@@ -9,7 +9,7 @@ class MathResolverNodeFunction(
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
-    private val delim = ", "
+    private val delim = ","
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()

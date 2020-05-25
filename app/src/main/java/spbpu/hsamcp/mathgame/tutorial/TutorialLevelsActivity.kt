@@ -42,6 +42,7 @@ class TutorialLevelsActivity: AppCompatActivity() {
 
     override fun finish() {
         TutorialScene.shared.tutorialLevelsActivity = null
+        TutorialScene.shared.leaveDialog = TutorialScene.shared.tutorialGamesActivity!!.leave
         super.finish()
     }
 

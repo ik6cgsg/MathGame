@@ -175,7 +175,8 @@ class TutorialScene {
         if (currentStep == -1) {
             AndroidUtil.showDialog(leaveDialog!!)
         } else {
-            tutorialDialog!!.setTitle("Tutorial: $currentStepToDisplay / $stepsSize")
+            val step = currentStepToDisplay
+            tutorialDialog!!.setTitle("Tutorial: $step / $stepsSize")
             steps[currentStep]()
         }
     }
@@ -344,7 +345,6 @@ class TutorialScene {
                 }, 100)
             }
             .setNegativeButton("Step back") { dialog: DialogInterface, id: Int ->
-                currentStepToDisplay--
                 stopAnimation()
                 if (shouldFinishPlayActivity && tutorialPlayActivity != null) {
                     tutorialPlayActivity!!.finish()

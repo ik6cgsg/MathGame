@@ -12,6 +12,7 @@ import android.view.View
 import spbpu.hsamcp.mathgame.LevelScene
 import spbpu.hsamcp.mathgame.PlayScene
 import spbpu.hsamcp.mathgame.R
+import spbpu.hsamcp.mathgame.statistics.Request
 import java.util.*
 
 class MessageTimer: CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {
@@ -83,5 +84,25 @@ class MathUpTimer(val interval: Long) {
 
     fun cancel() {
         timer.cancel()
+    }
+}
+
+class RequestTimer(val timeOutSec: Long) {
+    private val TAG = "RequestTimer"
+    private lateinit var timer: Timer
+
+    fun start() {
+        timer = Timer()
+        Request.timeout = false
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                Request.timeout = true
+            }
+        }, timeOutSec * 1000)
+    }
+
+    fun cancel() {
+        timer.cancel()
+        Request.timeout = false
     }
 }

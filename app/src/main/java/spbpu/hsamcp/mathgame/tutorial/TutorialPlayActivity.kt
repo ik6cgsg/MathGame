@@ -84,10 +84,6 @@ class TutorialPlayActivity: AppCompatActivity() {
         pointerRestartView = findViewById(R.id.pointer_restart)
         pointerUndoView = findViewById(R.id.pointer_undo)
         pointerInfoView = findViewById(R.id.pointer_info)
-        val res = findViewById<TextView>(R.id.restart)
-        AndroidUtil.setOnTouchUpInside(res, ::restart)
-        val back = findViewById<TextView>(R.id.back)
-        AndroidUtil.setOnTouchUpInside(back, ::back)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,6 +107,7 @@ class TutorialPlayActivity: AppCompatActivity() {
 
     override fun finish() {
         TutorialScene.shared.tutorialPlayActivity = null
+        TutorialScene.shared.leaveDialog = TutorialScene.shared.tutorialLevelsActivity!!.leave
         super.finish()
     }
 
