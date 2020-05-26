@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.View
 import com.twf.api.expressionToString
+import com.twf.api.expressionToStructureString
 import com.twf.expressiontree.ExpressionSubstitution
 import spbpu.hsamcp.mathgame.activities.PlayActivity
 import spbpu.hsamcp.mathgame.common.MathDownTimer
@@ -193,7 +194,7 @@ class PlayScene {
         val currentLevel = LevelScene.shared.currentLevel!!
         if (save) {
             val newRes = Result(stepsCount, currentTime, Award.getPaused(),
-                expressionToString(activity.globalMathView.expression!!))
+                expressionToStructureString(activity.globalMathView.expression!!))
             currentLevel.lastResult = newRes
             currentLevel.save(activity)
             LevelScene.shared.levelsActivity!!.updateResult()

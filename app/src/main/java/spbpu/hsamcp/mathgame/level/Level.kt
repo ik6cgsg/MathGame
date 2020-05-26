@@ -127,7 +127,7 @@ class Level {
         startExpression = structureStringToExpression(startExpressionStr)
         endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
         endExpression = structureStringToExpression(endExpressionStr)
-        endExpressionStr = expressionToString(endExpression)
+        endExpressionStr = expressionToStructureString(endExpression)
         endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         endPattern = when (type) {
             Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
@@ -164,11 +164,11 @@ class Level {
     fun checkEnd(expression: ExpressionNode): Boolean {
         Log.d(TAG, "checkEnd")
         return if (endPatternStr.isBlank()) {
-            val currStr = expressionToString(expression)
+            val currStr = expressionToStructureString(expression)
             Log.d(TAG, "current: $currStr | end: $endExpressionStr")
             currStr == endExpressionStr
         } else {
-            val currStr = expressionToString(expression)
+            val currStr = expressionToStructureString(expression)
             Log.d(TAG, "current: $currStr | pattern: $endPatternStr")
             compareByPattern(expression, endPattern)
         }
