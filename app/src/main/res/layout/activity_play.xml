@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/end_expression_view"
         app:layout_constraintVertical_bias="0.25">
 
-        <spbpu.hsamcp.mathgame.common.GlobalMathView
+        <mathhelper.games.matify.common.GlobalMathView
             android:id="@+id/global_expression"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

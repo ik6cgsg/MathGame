@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="spbpu.hsamcp.mathgame">
+    package="mathhelper.games.matify">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,41 +13,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.GamesActivity"
+        <activity android:name="mathhelper.games.matify.activities.GamesActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LevelsActivity"
+        <activity android:name="mathhelper.games.matify.activities.LevelsActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.AccountActivity"
+        <activity android:name="mathhelper.games.matify.activities.AccountActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.AuthActivity"
+        <activity android:name="mathhelper.games.matify.activities.AuthActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.PlayActivity"
+        <activity android:name="mathhelper.games.matify.activities.PlayActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".tutorial.TutorialPlayActivity"
+        <activity android:name="mathhelper.games.matify.tutorial.TutorialPlayActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".tutorial.TutorialGamesActivity"
+        <activity android:name="mathhelper.games.matify.tutorial.TutorialGamesActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".tutorial.TutorialLevelsActivity"
+        <activity android:name="mathhelper.games.matify.tutorial.TutorialLevelsActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.SettingsActivity"
+        <activity android:name="mathhelper.games.matify.activities.SettingsActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.SignUpActivity"
+        <activity android:name="mathhelper.games.matify.activities.SignUpActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.PasswordActivity"
+        <activity android:name="mathhelper.games.matify.activities.PasswordActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>
