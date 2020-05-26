@@ -42,8 +42,7 @@
       "originalExpression": "(or(A;and(A;B)))",
       "finalExpression": "(A)",
       "rules":[
-        {"rulePack": "SetBase"},
-        {"rulePack": "SetAbsorptionLawReduction"}
+        {"rulePack": "SetBase"}
       ]
     },
     {
