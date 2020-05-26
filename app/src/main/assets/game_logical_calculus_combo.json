@@ -748,7 +748,35 @@
         {"left": "(and(A;and(B;C);D;E;F))","right": "(and(A;B;C;D;E;F))"},
         {"left": "(and(A;B;C;D;E;F))","right": "(and(A;and(B;C);D;E;F))"},
         {"left": "(and(and(A;B);C;D;E;F))","right": "(and(A;B;C;D;E;F))"},
-        {"left": "(and(A;B;C;D;E;F))","right": "(and(and(A;B);C;D;E;F))"}
+        {"left": "(and(A;B;C;D;E;F))","right": "(and(and(A;B);C;D;E;F))"},
+
+        {"left": "(and(A;B;C;D;E;and(F;G)))","right": "(and(A;B;C;D;E;F;G))"},
+        {"left": "(and(A;B;C;D;E;F;G))","right": "(and(A;B;C;D;E;and(F;G)))"},
+        {"left": "(and(A;B;C;D;and(E;F);G))","right": "(and(A;B;C;D;E;F;G))"},
+        {"left": "(and(A;B;C;D;E;F;G))","right": "(and(A;B;C;D;and(E;F);G))"},
+        {"left": "(and(A;B;C;and(D;E);F;G))","right": "(and(A;B;C;D;E;F;G))"},
+        {"left": "(and(A;B;C;D;E;F;G))","right": "(and(A;B;C;and(D;E);F;G))"},
+        {"left": "(and(A;B;and(C;D);E;F;G))","right": "(and(A;B;C;D;E;F;G))"},
+        {"left": "(and(A;B;C;D;E;F;G))","right": "(and(A;B;and(C;D);E;F;G))"},
+        {"left": "(and(A;and(B;C);D;E;F;G))","right": "(and(A;B;C;D;E;F;G))"},
+        {"left": "(and(A;B;C;D;E;F;G))","right": "(and(A;and(B;C);D;E;F;G))"},
+        {"left": "(and(and(A;B);C;D;E;F;G))","right": "(and(A;B;C;D;E;F;G))"},
+        {"left": "(and(A;B;C;D;E;F;G))","right": "(and(and(A;B);C;D;E;F;G))"},
+
+        {"left": "(and(A;B;C;D;E;F;and(G;H)))","right": "(and(A;B;C;D;E;F;G;H))"},
+        {"left": "(and(A;B;C;D;E;F;G;H))","right": "(and(A;B;C;D;E;F;and(G;H)))"},
+        {"left": "(and(A;B;C;D;E;and(F;G);H))","right": "(and(A;B;C;D;E;F;G;H))"},
+        {"left": "(and(A;B;C;D;E;F;G;H))","right": "(and(A;B;C;D;E;and(F;G);H))"},
+        {"left": "(and(A;B;C;D;and(E;F);G;H))","right": "(and(A;B;C;D;E;F;G;H))"},
+        {"left": "(and(A;B;C;D;E;F;G;H))","right": "(and(A;B;C;D;and(E;F);G;H))"},
+        {"left": "(and(A;B;C;and(D;E);F;G;H))","right": "(and(A;B;C;D;E;F;G;H))"},
+        {"left": "(and(A;B;C;D;E;F;G;H))","right": "(and(A;B;C;and(D;E);F;G;H))"},
+        {"left": "(and(A;B;and(C;D);E;F;G;H))","right": "(and(A;B;C;D;E;F;G;H))"},
+        {"left": "(and(A;B;C;D;E;F;G;H))","right": "(and(A;B;and(C;D);E;F;G;H))"},
+        {"left": "(and(A;and(B;C);D;E;F;G;H))","right": "(and(A;B;C;D;E;F;G;H))"},
+        {"left": "(and(A;B;C;D;E;F;G;H))","right": "(and(A;and(B;C);D;E;F;G;H))"},
+        {"left": "(and(and(A;B);C;D;E;F;G;H))","right": "(and(A;B;C;D;E;F;G;H))"},
+        {"left": "(and(A;B;C;D;E;F;G;H))","right": "(and(and(A;B);C;D;E;F;G;H))"}
       ]
     },
     {
@@ -784,7 +812,35 @@
         {"left": "(or(A;or(B;C);D;E;F))","right": "(or(A;B;C;D;E;F))"},
         {"left": "(or(A;B;C;D;E;F))","right": "(or(A;or(B;C);D;E;F))"},
         {"left": "(or(or(A;B);C;D;E;F))","right": "(or(A;B;C;D;E;F))"},
-        {"left": "(or(A;B;C;D;E;F))","right": "(or(or(A;B);C;D;E;F))"}
+        {"left": "(or(A;B;C;D;E;F))","right": "(or(or(A;B);C;D;E;F))"},
+
+        {"left": "(or(A;B;C;D;E;or(F;G)))","right": "(or(A;B;C;D;E;F;G))"},
+        {"left": "(or(A;B;C;D;E;F;G))","right": "(or(A;B;C;D;E;or(F;G)))"},
+        {"left": "(or(A;B;C;D;or(E;F);G))","right": "(or(A;B;C;D;E;F;G))"},
+        {"left": "(or(A;B;C;D;E;F;G))","right": "(or(A;B;C;D;or(E;F);G))"},
+        {"left": "(or(A;B;C;or(D;E);F;G))","right": "(or(A;B;C;D;E;F;G))"},
+        {"left": "(or(A;B;C;D;E;F;G))","right": "(or(A;B;C;or(D;E);F;G))"},
+        {"left": "(or(A;B;or(C;D);E;F;G))","right": "(or(A;B;C;D;E;F;G))"},
+        {"left": "(or(A;B;C;D;E;F;G))","right": "(or(A;B;or(C;D);E;F;G))"},
+        {"left": "(or(A;or(B;C);D;E;F;G))","right": "(or(A;B;C;D;E;F;G))"},
+        {"left": "(or(A;B;C;D;E;F;G))","right": "(or(A;or(B;C);D;E;F;G))"},
+        {"left": "(or(or(A;B);C;D;E;F;G))","right": "(or(A;B;C;D;E;F;G))"},
+        {"left": "(or(A;B;C;D;E;F;G))","right": "(or(or(A;B);C;D;E;F;G))"},
+
+        {"left": "(or(A;B;C;D;E;F;or(G;H)))","right": "(or(A;B;C;D;E;F;G;H))"},
+        {"left": "(or(A;B;C;D;E;F;G;H))","right": "(or(A;B;C;D;E;F;or(G;H)))"},
+        {"left": "(or(A;B;C;D;E;or(F;G);H))","right": "(or(A;B;C;D;E;F;G;H))"},
+        {"left": "(or(A;B;C;D;E;F;G;H))","right": "(or(A;B;C;D;E;or(F;G);H))"},
+        {"left": "(or(A;B;C;D;or(E;F);G;H))","right": "(or(A;B;C;D;E;F;G;H))"},
+        {"left": "(or(A;B;C;D;E;F;G;H))","right": "(or(A;B;C;D;or(E;F);G;H))"},
+        {"left": "(or(A;B;C;or(D;E);F;G;H))","right": "(or(A;B;C;D;E;F;G;H))"},
+        {"left": "(or(A;B;C;D;E;F;G;H))","right": "(or(A;B;C;or(D;E);F;G;H))"},
+        {"left": "(or(A;B;or(C;D);E;F;G;H))","right": "(or(A;B;C;D;E;F;G;H))"},
+        {"left": "(or(A;B;C;D;E;F;G;H))","right": "(or(A;B;or(C;D);E;F;G;H))"},
+        {"left": "(or(A;or(B;C);D;E;F;G;H))","right": "(or(A;B;C;D;E;F;G;H))"},
+        {"left": "(or(A;B;C;D;E;F;G;H))","right": "(or(A;or(B;C);D;E;F;G;H))"},
+        {"left": "(or(or(A;B);C;D;E;F;G;H))","right": "(or(A;B;C;D;E;F;G;H))"},
+        {"left": "(or(A;B;C;D;E;F;G;H))","right": "(or(or(A;B);C;D;E;F;G;H))"}
       ]
     },
     {
