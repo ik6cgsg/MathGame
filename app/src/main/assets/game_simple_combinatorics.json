@@ -18,7 +18,7 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_1_Prove",
+      "levelCode": "simple_combinatorics__Level_01_Prove",
       "name": "Level 1 Prove",
       "difficulty": 2.0,
       "type": "algebra",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_2_Prove",
+      "levelCode": "simple_combinatorics__Level_02_Prove",
       "name": "Level 2 Prove Stirling-II",
       "difficulty": 2.0,
       "type": "algebra",
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_3_Prove",
+      "levelCode": "simple_combinatorics__Level_03_Prove",
       "name": "Level 3 Prove Catalan",
       "difficulty": 2.0,
       "type": "algebra",
@@ -57,11 +57,11 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_4_Prove",
+      "levelCode": "simple_combinatorics__Level_04_Prove",
       "name": "Level 4 Prove",
       "difficulty": 3.0,
       "type": "algebra",
-      "stepsNum": 5,
+      "stepsNum": 15,
       "time": 90,
       "originalExpression": "(*(+(m;n;1);C(+(m;n);n)))",
       "finalExpression": "(*(+(n;1);C(+(m;n;1);+(n;1))))",
@@ -70,21 +70,8 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_5_Prove",
+      "levelCode": "simple_combinatorics__Level_05_Prove",
       "name": "Level 5 Prove",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 5,
-      "time": 90,
-      "originalExpression": "(+(A(+(m;n);+(n;1));*(+(n;1);A(+(m;n);n))))",
-      "finalExpression": "(A(+(m;n;1);+(n;1)))",
-      "rules":[
-        {"rulePack": "CombinatoricBase"}
-      ]
-    },
-    {
-      "levelCode": "simple_combinatorics__Level_6_Prove",
-      "name": "Level 6 Prove",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 9,
@@ -98,14 +85,14 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_7_Prove",
-      "name": "Level 7 Prove",
-      "difficulty": 3.0,
+      "levelCode": "simple_combinatorics__Level_06_Prove",
+      "name": "Level 6 Prove",
+      "difficulty": 4.0,
       "type": "algebra",
-      "stepsNum": 5,
-      "time": 90,
-      "originalExpression": "(+(C(*(2;+(n;1));n);C(+(*(2;n);1);+(n;1))))",
-      "finalExpression": "(C(+(*(2;n);1);+(n;1)))",
+      "stepsNum": 30,
+      "time": 200,
+      "originalExpression": "(+(C(+(*(2;n);1);n);C(+(*(2;n);1);+(n;1))))",
+      "finalExpression": "(C(*(2;+(n;1));+(n;1)))",
       "rules": [
         {
           "rulePack": "CombinatoricBase"
@@ -113,13 +100,13 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_8_Prove",
-      "name": "Level 8 Prove",
-      "difficulty": 3.0,
+      "levelCode": "simple_combinatorics__Level_07_Prove",
+      "name": "Level 7 Prove",
+      "difficulty": 4.0,
       "type": "algebra",
-      "stepsNum": 5,
-      "time": 90,
-      "originalExpression": "(/(*(A(+(n;m;1);m);m);+(m;n;1)))",
+      "stepsNum": 26,
+      "time": 200,
+      "originalExpression": "(*(/(A(+(n;m;1);m);+(m;n;1));/(+(n;1);P(m))))",
       "finalExpression": "(V(+(n;1);m))",
       "rules": [
         {
@@ -128,12 +115,12 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_9_Prove",
-      "name": "Level 9 Prove",
-      "difficulty": 3.0,
+      "levelCode": "simple_combinatorics__Level_08_Prove",
+      "name": "Level 8 Prove",
+      "difficulty": 5.0,
       "type": "algebra",
-      "stepsNum": 5,
-      "time": 90,
+      "stepsNum": 33,
+      "time": 200,
       "originalExpression": "(*(C(+(n;k;m);+(k;m));C(+(k;m);m)))",
       "finalExpression": "(*(C(+(n;k;m);m);C(+(n;k);k)))",
       "rules": [
@@ -143,14 +130,29 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_10_Prove",
-      "name": "Level 10 Prove",
-      "difficulty": 3.0,
+      "levelCode": "simple_combinatorics__Level_09_Prove",
+      "name": "Level 9 Prove",
+      "difficulty": 5.0,
       "type": "algebra",
-      "stepsNum": 5,
-      "time": 90,
+      "stepsNum": 41,
+      "time": 200,
       "originalExpression": "(/(V(+(m;1);+(n;k;1));A(+(k;m;1);+(k;1))))",
       "finalExpression": "(/(A(+(m;n;k;1);n);P(+(n;k;1))))",
+      "rules": [
+        {
+          "rulePack": "CombinatoricBase"
+        }
+      ]
+    },
+    {
+      "levelCode": "simple_combinatorics__Level_10_Prove",
+      "name": "Level 10 Prove",
+      "difficulty": 5.0,
+      "type": "algebra",
+      "stepsNum": 23,
+      "time": 200,
+      "originalExpression": "(*(/(A(+(n;1;m);m);+(m;n;1));/(C(*(2;n);n);*(C(n);P(m)))))",
+      "finalExpression": "(V(+(m;1);n))",
       "rules": [
         {
           "rulePack": "CombinatoricBase"
@@ -237,6 +239,8 @@
         {"left":"(/(a;1))","right":"(a)"},
         {"left":"(/(a;a))","right":"(1)"},
         {"left":"(a)","right":"(*(a;1))"},
+        {"left":"(a)","right":"(/(1;/(1;a)))"},
+        {"left":"(/(1;/(1;a)))","right":"(a)"},
 
         {"left":"(+(1;1))","right":"(2)"},
         {"left":"(2)","right":"(+(1;1))"},

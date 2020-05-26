@@ -17,6 +17,6 @@ class Constants {
         val lightGrey = Color.parseColor("#8B8484")
         const val timeDeviation = 0.2f
         const val awardDeviation = 0.1f
-        const val serverId = "977771799310-fb2vh2q71v9bc2orou5poon4sfnd8siq.apps.googleusercontent.com"
+        const val serverId = "977771799310-077v1rks22m41umktoqqf1uiuifhnhta.apps.googleusercontent.com"
     }
 }

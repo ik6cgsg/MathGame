@@ -18,7 +18,7 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_1_Prove",
+      "levelCode": "set_logic_ten__Level_01_Prove",
       "name": "Level 1 Prove",
       "difficulty": 2.0,
       "type": "set",
@@ -31,11 +31,11 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_2_Prove",
+      "levelCode": "set_logic_ten__Level_02_Prove",
       "name": "Level 2 Prove",
       "difficulty": 2.0,
       "type": "set",
-      "stepsNum": 4,
+      "stepsNum": 3,
       "time": 60,
       "originalExpression": "(or(set-(not(A);B);C))",
       "finalExpression": "(implic(or(A;B);C))",
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_3_Prove",
+      "levelCode": "set_logic_ten__Level_03_Prove",
       "name": "Level 3 Prove",
       "difficulty": 3.0,
       "type": "set",
@@ -59,26 +59,12 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_4_Prove",
+      "levelCode": "set_logic_ten__Level_04_Prove",
       "name": "Level 4 Prove",
-      "difficulty": 3.0,
+      "difficulty": 3.5,
       "type": "set",
-      "stepsNum": 4,
+      "stepsNum": 6,
       "time": 60,
-      "originalExpression": "(set-(set-(A;B);set-(B;C)))",
-      "finalExpression": "(and(A;not(B)))",
-      "rules":[
-        {"rulePack": "SetBase"},
-        {"rulePack": "SetAbsorptionLawReduction"}
-      ]
-    },
-    {
-      "levelCode": "set_logic_ten__Level_5_Prove",
-      "name": "Level 5 Prove",
-      "difficulty": 4.0,
-      "type": "set",
-      "stepsNum": 7,
-      "time": 90,
       "originalExpression": "(implic(and(A;B);or(not(C);B)))",
       "finalExpression": "(implic(A;implic(B;implic(C;B))))",
       "rules":[
@@ -87,11 +73,11 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_6_Prove",
-      "name": "Level 6 Prove",
-      "difficulty": 4.0,
+      "levelCode": "set_logic_ten__Level_05_Prove",
+      "name": "Level 5 Prove",
+      "difficulty": 3.5,
       "type": "set",
-      "stepsNum": 6,
+      "stepsNum": 5,
       "time": 90,
       "originalExpression": "(set-(not(and(A;B));B))",
       "finalExpression": "(not(B))",
@@ -103,11 +89,27 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_7_Prove",
-      "name": "Level 7 Prove",
-      "difficulty": 5.0,
+      "levelCode": "set_logic_ten__Level_06_Prove",
+      "name": "Level 6 Prove",
+      "difficulty": 4.0,
       "type": "set",
-      "stepsNum": 8,
+      "stepsNum": 12,
+      "time": 90,
+      "originalExpression": "(set-(set-(A;B);set-(B;C)))",
+      "finalExpression": "(and(A;not(B)))",
+      "rules":[
+        {"rulePack": "SetBase"},
+        {"rulePack": "SetAbsorptionLawReduction"},
+        {"rulePack": "SetMultiArgumentAnd"},
+        {"rulePack": "SetMultiArgumentOr"}
+      ]
+    },
+    {
+      "levelCode": "set_logic_ten__Level_07_Prove",
+      "name": "Level 7 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 9,
       "time": 150,
       "originalExpression": "(or(set-(set-(A;B);C);or(not(B);C)))",
       "finalExpression": "(implic(implic(A;or(B;C));implic(B;C)))",
@@ -119,12 +121,12 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_8_Prove",
+      "levelCode": "set_logic_ten__Level_08_Prove",
       "name": "Level 8 Prove",
-      "difficulty": 4.0,
+      "difficulty": 5.0,
       "type": "set",
-      "stepsNum": 13,
-      "time": 200,
+      "stepsNum": 18,
+      "time": 300,
       "originalExpression": "(implic(or(A;B);and(A;B)))",
       "finalExpression": "(and(not(set-(A;B));not(set-(B;A))))",
       "rules":[
@@ -135,11 +137,11 @@
       ]
     },
     {
-      "levelCode": "set_logic_ten__Level_9_Prove",
+      "levelCode": "set_logic_ten__Level_09_Prove",
       "name": "Level 9 Prove",
       "difficulty": 5.0,
       "type": "set",
-      "stepsNum": 22,
+      "stepsNum": 15,
       "time": 300,
       "originalExpression": "(set-(or(A;B);and(implic(A;B);implic(B;A))))",
       "finalExpression": "(or(set-(A;B);set-(B;A)))",

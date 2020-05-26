@@ -5,7 +5,7 @@
   "version": 10,
   "levels":[
     {
-      "levelCode": "logical_calculus_combo__Level_1_Prove",
+      "levelCode": "logical_calculus_combo__Level_01_Prove",
       "name": "Level 1 Prove",
       "difficulty": 1.0,
       "type": "set",
@@ -18,7 +18,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_2_CNF",
+      "levelCode": "logical_calculus_combo__Level_02_CNF",
       "name": "Level 2 CNF",
       "difficulty": 2.0,
       "type": "set",
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_3_Prove",
+      "levelCode": "logical_calculus_combo__Level_03_Prove",
       "name": "Level 3 Prove",
       "difficulty": 2.0,
       "type": "set",
@@ -46,7 +46,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_4_Prove",
+      "levelCode": "logical_calculus_combo__Level_04_Prove",
       "name": "Level 4 Prove",
       "difficulty": 2.0,
       "type": "set",
@@ -60,7 +60,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_5_DNF",
+      "levelCode": "logical_calculus_combo__Level_05_DNF",
       "name": "Level 5 DNF",
       "difficulty": 2.0,
       "type": "set",
@@ -75,7 +75,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_6_3-CNF",
+      "levelCode": "logical_calculus_combo__Level_06_3-CNF",
       "name": "Level 6 3-CNF",
       "difficulty": 2.0,
       "type": "set",
@@ -90,7 +90,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_7_2-CNF",
+      "levelCode": "logical_calculus_combo__Level_07_2-CNF",
       "name": "Level 7 2-CNF",
       "difficulty": 2.0,
       "type": "set",
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_8_Prove",
+      "levelCode": "logical_calculus_combo__Level_08_Prove",
       "name": "Level 8 Prove",
       "difficulty": 3.0,
       "type": "set",
@@ -119,7 +119,7 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_9_Resolution",
+      "levelCode": "logical_calculus_combo__Level_09_Resolution",
       "name": "Level 9 Resolution",
       "difficulty": 3.0,
       "type": "set",
@@ -358,7 +358,7 @@
       "name": "Level 24 CNF",
       "difficulty": 6.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 27,
       "time": 400,
       "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
       "finalExpression": "CNF",
@@ -375,7 +375,7 @@
       "name": "Level 25 CNF",
       "difficulty": 6.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 27,
       "time": 400,
       "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
       "finalExpression": "CNF",
@@ -392,7 +392,7 @@
       "name": "Level 26 DNF",
       "difficulty": 6.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 26,
       "time": 400,
       "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
       "finalExpression": "DNF",
@@ -443,10 +443,10 @@
       "name": "Level 29 3-DNF",
       "difficulty": 7.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 70,
       "time": 400,
       "originalExpression": "(and(or(A;B;not(C));or(A;not(B);C);or(not(A);B;C)))",
-      "finalExpression": "DNF",
+      "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
       "rules":[
         {"rulePack": "SetBase"},
@@ -460,10 +460,10 @@
       "name": "Level 30 3-CNF",
       "difficulty": 7.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 70,
       "time": 400,
       "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
-      "finalExpression": "CNF",
+      "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
       "rules":[
         {"rulePack": "SetBase"},
@@ -477,10 +477,10 @@
       "name": "Level 31 3-CNF",
       "difficulty": 7.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 70,
       "time": 400,
       "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
-      "finalExpression": "CNF",
+      "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
       "rules":[
         {"rulePack": "SetBase"},
@@ -494,10 +494,10 @@
       "name": "Level 32 3-DNF",
       "difficulty": 7.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 70,
       "time": 400,
       "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
-      "finalExpression": "DNF",
+      "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
       "rules":[
         {"rulePack": "SetBase"},
@@ -511,10 +511,10 @@
       "name": "Level 33 3-CNF",
       "difficulty": 7.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 70,
       "time": 400,
       "originalExpression": "(or(and(A;not(B);C;not(D));and(not(A);B;not(C);D)))",
-      "finalExpression": "CNF",
+      "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
       "rules":[
         {"rulePack": "SetBase"},
@@ -528,10 +528,10 @@
       "name": "Level 34 3-DNF",
       "difficulty": 7.0,
       "type": "set",
-      "stepsNum": 36,
+      "stepsNum": 70,
       "time": 400,
       "originalExpression": "(and(or(A;not(B);C;not(D));or(not(A);B;not(C);D)))",
-      "finalExpression": "DNF",
+      "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
       "rules":[
         {"rulePack": "SetBase"},
