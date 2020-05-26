@@ -87,10 +87,10 @@
       "name": "Level 6 Prove",
       "difficulty": 3.0,
       "type": "algebra",
-      "stepsNum": 5,
+      "stepsNum": 9,
       "time": 90,
-      "originalExpression": "(/(*(S1(m;n);A(+(m;n);n));*(V(+(m;1);n);factorial(m);factorial(n))))",
-      "finalExpression": "(S2(m;n))",
+      "originalExpression": "(/(*(S1(n;m);A(+(m;n);n));*(V(+(m;1);n);factorial(m);factorial(n))))",
+      "finalExpression": "(S2(n;m))",
       "rules": [
         {
           "rulePack": "CombinatoricBase"
@@ -104,8 +104,8 @@
       "type": "algebra",
       "stepsNum": 5,
       "time": 90,
-      "originalExpression": "(+(C(+(n;1));*(C;*(2;+(n;1);n))))",
-      "finalExpression": "(*(C;*(2;+(n;1);+(n;1))))",
+      "originalExpression": "(+(C(*(2;+(n;1));n);C(+(*(2;n);1);+(n;1))))",
+      "finalExpression": "(C(+(*(2;n);1);+(n;1)))",
       "rules": [
         {
           "rulePack": "CombinatoricBase"
@@ -119,8 +119,8 @@
       "type": "algebra",
       "stepsNum": 5,
       "time": 90,
-      "originalExpression": "(/(*(A(+(n;m);m);m);+(m;n)))",
-      "finalExpression": "(V(n;m))",
+      "originalExpression": "(/(*(A(+(n;m;1);m);m);+(m;n;1)))",
+      "finalExpression": "(V(+(n;1);m))",
       "rules": [
         {
           "rulePack": "CombinatoricBase"
@@ -297,7 +297,13 @@
         {"left": "(+(*(A;B);*(A;C)))","right": "(*(A;+(B;C)))"},
         {"left": "(+(*(B;C);*(A;C)))","right": "(*(+(B;A);C))"},
 
+        {"left": "(+(/(B;C);/(A;C)))","right": "(/(+(B;A);C))"},
+        {"left": "(/(+(B;A);C))","right": "(+(/(B;C);/(A;C)))"},
+
+        {"left": "(+(/(B;C);/(A;D)))","right": "(/(+(*(B;D);*(C;A));*(C;D)))"},
+
         {"left": "(*(A;/(B;C)))","right": "(/(*(A;B);C))"},
+        {"left": "(*(/(B;C);A))","right": "(/(*(A;B);C))"},
         {"left": "(/(*(A;B);C))","right": "(*(A;/(B;C)))"},
 
         {"left": "(/(/(B;C);A))","right": "(/(B;*(A;C)))"},
@@ -312,7 +318,9 @@
         {"left": "(*(/(D;B);/(A;C)))","right": "(/(*(D;A);*(B;C)))"},
         {"left": "(/(*(D;A);*(B;C)))","right": "(*(/(D;B);/(A;C)))"},
 
-        {"left": "(/(*(D;A);*(D;C)))","right": "(/(A;C))"}
+        {"left": "(/(*(D;A);*(D;C)))","right": "(/(A;C))"},
+        {"left": "(/(*(D;A);D))","right": "(A)"},
+        {"left": "(/(*(A;D);D))","right": "(A)"}
       ]
     },
     {
