@@ -119,8 +119,8 @@ class Storage {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         val initLogin = when (info.authStatus) {
-            AuthStatus.GUEST -> "guest" + uuid.hashCode().absoluteValue
-            AuthStatus.MATH_HELPER -> "user" + uuid.hashCode().absoluteValue
+            AuthStatus.GUEST -> "guest-" + uuid.hashCode().absoluteValue
+            AuthStatus.MATH_HELPER -> "user-" + uuid.hashCode().absoluteValue
             else -> info.login
         }
         info.login = initLogin
