@@ -49,7 +49,7 @@ data class ActivityLog (
 
     var hardwareDeviceId: String = "", //empty if the device is not known
     var hardwareProperties: String = "",
-    var matifyVersion: String = "",
+    var applicationVersion: String = "",
     // user level info
     var totalTimeMultCoef: Float = 1f,
     var totalAwardMultCoef: Float = 1f,
@@ -126,6 +126,8 @@ data class ActivityLog (
 
         root.put("clientActionTime", clientActionTime)
         root.put("additionalData", additionalData.toString())
+
+        root.put("applicationVersion", applicationVersion)
 
         return root.toString()
     }

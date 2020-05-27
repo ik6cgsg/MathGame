@@ -226,7 +226,7 @@ class Statistics {
             log.additionalData.put("hardwareDeviceId", Storage.shared.deviceId(context))
             log.additionalData.put("totalTimeMultCoef", fullInfo.coeffs.timeCoeff ?: log.totalTimeMultCoef)
             log.additionalData.put("totalAwardMultCoef", fullInfo.coeffs.awardCoeff ?: log.totalAwardMultCoef)
-            log.matifyVersion = BuildConfig.VERSION_NAME
+            log.applicationVersion = BuildConfig.VERSION_NAME
             log.timeFromLastActionMS = time - lastActionTime
             lastActionTime = time
             if (startTime > 0) { // Level was created and set
