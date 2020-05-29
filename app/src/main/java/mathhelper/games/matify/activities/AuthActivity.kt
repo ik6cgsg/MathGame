@@ -131,6 +131,7 @@ class AuthActivity: AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
+            Log.d("GoogleToken", account!!.idToken)
             // Signed in successfully, show authenticated UI.
             val idTokenString = account!!.idToken
             val requestRoot = JSONObject()

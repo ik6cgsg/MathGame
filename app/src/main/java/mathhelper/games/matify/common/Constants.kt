@@ -17,6 +17,6 @@ class Constants {
         val lightGrey = Color.parseColor("#8B8484")
         const val timeDeviation = 0.2f
         const val awardDeviation = 0.1f
-        const val serverId = "977771799310-077v1rks22m41umktoqqf1uiuifhnhta.apps.googleusercontent.com"
+        const val serverId = "977771799310-42c14i973bbuo8nnquld6houe6mfa2t1.apps.googleusercontent.com" //https://console.developers.google.com/apis/credentials/oauthclient/977771799310-42c14i973bbuo8nnquld6houe6mfa2t1.apps.googleusercontent.com?hl=ru&project=mathhelper-server
     }
 }
