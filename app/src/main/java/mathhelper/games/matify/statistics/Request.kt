@@ -77,7 +77,7 @@ class Request {
         private var isConnected = false
         private var isWorking = false
         private lateinit var job: Deferred<Unit>
-        private const val timeoutMaxInSec = 7
+        private const val timeoutMaxInSec = 7  //TODO: move to UI interface
         private var timer = RequestTimer(timeoutMaxInSec.toLong())
         var timeout = false
 
