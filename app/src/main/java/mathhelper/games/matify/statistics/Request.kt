@@ -77,7 +77,7 @@ class Request {
         private var isConnected = false
         private var isWorking = false
         private lateinit var job: Deferred<Unit>
-        private const val timeoutMaxInSec = 5
+        private const val timeoutMaxInSec = 7
         private var timer = RequestTimer(timeoutMaxInSec.toLong())
         var timeout = false
 
@@ -159,9 +159,13 @@ class Request {
             return response
         }
 
-        fun sendRequest(requestData: RequestData) {
-            Log.d("Request", "Request body: ${requestData.body}")
-            reqQueue.addFirst(requestData)
+        fun sendStatisticRequest(req: RequestData) {
+            if (req.securityToken.isNullOrBlank()){
+                Log.d("sendStatisticRequest", "No securityToken found")
+                return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
+            }
+            Log.d("Request", "Request body: ${req.body}")
+            reqQueue.addFirst(req)
             isConnected = true
         }
 
@@ -176,7 +180,7 @@ class Request {
                 response = job.await()
             }
             while (!timeout && !requestTask.isCompleted) {
-                continue
+                Thread.sleep(1000)
             }
             if (timeout) {
                 throw TimeoutException("More than $timeoutMaxInSec passed...")
@@ -186,23 +190,31 @@ class Request {
         }
 
         @Throws(UndefinedException::class, TokenNotFoundException::class)
-        fun signRequest(req: RequestData): String {
+        fun signRequest(req: RequestData): JSONObject {
             Log.d("signRequest", req.toString())
             val res = doSyncRequest(req)
             Log.d("signRequestReturnCode", res.returnValue.toString())
             Log.d("signRequestResultBody", res.body)
             if (res.returnValue != 200) {
-                throw UndefinedException("Something went wrong... (returnCode != 200)")
+                if (res.returnValue in 400..401) {
+                    throw TokenNotFoundException("Bad Credentials")
+                } else {
+                    throw UndefinedException("Something went wrong... (returnCode != 200)")
+                }
             }
-            val json = JSONObject(res.body)
-            if (!json.has("token")) {
+            val response = JSONObject(res.body)
+            if (!response.has("token")) {
                 throw TokenNotFoundException("Can't extract token from response")
             }
-            Log.d("signServerToken", json.getString("token"))
-            return json.getString("token")
+            Log.d("signServerToken", response.getString("token"))
+            return response
         }
 
         fun editRequest(req: RequestData) {
+            if (req.securityToken.isNullOrBlank()){
+                Log.d("editRequest", "No securityToken found")
+                throw TokenNotFoundException("Bad Credentials")
+            }
             Log.d("editRequest", req.toString())
             val res = doSyncRequest(req)
             if (res.returnValue != 200) {

@@ -75,11 +75,16 @@ class AuthActivity: AppCompatActivity() {
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
-        GlobalScene.shared.request(this, initial = true, background = {
-            val token = Request.signRequest(req)
-            Storage.shared.setServerToken(this, token)
+        GlobalScene.shared.request(this, background = {
+            val response = Request.signRequest(req)
+            Storage.shared.setServerToken(this, response.getString("token"))
         }, foreground = {
             finish()
+        }, errorground = {
+            this.runOnUiThread {
+                Toast.makeText(this, "You are authorized in self-phone mode", Toast.LENGTH_LONG).show()
+                finish()
+            }
         })
     }
 
@@ -92,16 +97,20 @@ class AuthActivity: AppCompatActivity() {
         requestRoot.put("login", login)
         requestRoot.put("password", password)
         val req = RequestData(Pages.SIGNIN.value, body = requestRoot.toString())
-        GlobalScene.shared.request(this, initial = true, background = {
-            val token = Request.signRequest(req)
+        GlobalScene.shared.request(this, background = {
+            val response = Request.signRequest(req)
             Storage.shared.initUserInfo(this, AuthInfoObjectBase(
                 login = login,
-                password = password,
+                name = response.getString("name"),
+                fullName = response.getString("fullName"),
+                additional = response.getString("additional"),
                 authStatus = AuthStatus.MATH_HELPER,
-                serverToken = token
+                serverToken = response.getString("token")
             ))
         }, foreground = {
             finish()
+        }, errorground = {
+            Storage.shared.invalidateUser(this)
         })
     }
 
@@ -137,17 +146,20 @@ class AuthActivity: AppCompatActivity() {
             val requestRoot = JSONObject()
             requestRoot.put("idTokenString", idTokenString)
             val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
-            GlobalScene.shared.request(this, initial = true, background = {
-                val token = Request.signRequest(req)
+            GlobalScene.shared.request(this, background = {
+                val response = Request.signRequest(req)
                 Storage.shared.initUserInfo(this, AuthInfoObjectBase(
-                    login = account.email.orEmpty().replace("@gmail.com", ""),
-                    name = account.givenName.orEmpty(),
-                    fullName = account.displayName.orEmpty(),
+                    login = response.getString("login"),
+                    name = response.getString("name"),
+                    fullName = response.getString("fullName"),
+                    additional = response.getString("additional"),
                     authStatus = AuthStatus.GOOGLE,
-                    serverToken = token
+                    serverToken = response.getString("token")
                 ))
             }, foreground = {
                 finish()
+            }, errorground = {
+                Storage.shared.invalidateUser(this)
             })
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.

@@ -28,6 +28,8 @@ data class ActivityLog (
     var finalExpression: String = "",
     var finalPattern: String = "",
 
+    var difficulty: Float = 0f,
+
     var currentExpression: String = "",
     var nextExpression: String = "", // * action == rule || action == restart || action == undo
     var appliedRule: String = "",
@@ -58,7 +60,6 @@ data class ActivityLog (
     var taskId: Int = -1,
     var taskType: String = "", // "trigonometry", "setTheory", ...
     var totalTimeMS: Long = -1,
-    var difficulty: Float = 0f,
     var minSteps: Int = -1,
     var awardCoefs: String = "",
     var showWrongRules: Boolean = false,
@@ -73,7 +74,7 @@ data class ActivityLog (
     var currAwardCoef: Float = 0f // * action == win
 
 ) {
-    fun addInfoFrom(activity: PlayActivity, level: Level, action: Action) {
+    fun additionalFrom(activity: PlayActivity, level: Level, action: Action) {
         this.activityTypeCode = action.str
         // Level consts
         this.levelCode = level.levelCode
@@ -109,6 +110,8 @@ data class ActivityLog (
         if (finalPattern.isNotBlank()) {
             root.put("finalPattern", finalPattern)
         }
+        root.put("difficulty", difficulty)
+
         root.put("currentExpression", currentExpression)
         root.put("nextExpression", nextExpression)
 

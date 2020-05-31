@@ -11,11 +11,16 @@ import kotlinx.coroutines.launch
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.common.AuthInfoCoeffs
+import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.UndoPolicy
+import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
+import mathhelper.games.matify.statistics.RequestData
+import org.json.JSONObject
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -64,7 +69,7 @@ class GlobalScene {
             field = value
             if (value != null) {
                 gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
-                    // ActivityOptions.makeSceneTransitionAnimation(gamesActivity).toBundle())
+                // ActivityOptions.makeSceneTransitionAnimation(gamesActivity).toBundle())
                 // TODO: send log about game started
             }
         }
@@ -88,11 +93,13 @@ class GlobalScene {
     }
 
     fun generateGamesMultCoeffs() {
-        Storage.shared.setUserCoeffs(gamesActivity!!, AuthInfoCoeffs(
-            undoCoeff = Random().nextInt(UndoPolicy.values().size),
-            timeCoeff = getByNormDist(1f, Constants.timeDeviation),
-            awardCoeff = getByNormDist(1f, Constants.awardDeviation)
-        ))
+        Storage.shared.setUserCoeffs(
+            gamesActivity!!, AuthInfoCoeffs(
+                undoCoeff = Random().nextInt(UndoPolicy.values().size),
+                timeCoeff = getByNormDist(1f, Constants.timeDeviation),
+                awardCoeff = getByNormDist(1f, Constants.awardDeviation)
+            )
+        )
     }
 
     private fun getByNormDist(mean: Float, sigma: Float): Float {
@@ -105,7 +112,30 @@ class GlobalScene {
         return res
     }
 
-    fun request(context: Activity, background: () -> (Unit), foreground: () -> (Unit), initial: Boolean = false) {
+    fun signUp (context: Activity, userData: AuthInfoObjectBase) {
+        val requestRoot = JSONObject()
+        requestRoot.put("login", userData.login)
+        requestRoot.put("password", userData.password)
+        requestRoot.put("name", userData.name)
+        requestRoot.put("fullName", userData.fullName)
+        requestRoot.put("additional", userData.additional)
+        val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
+        shared.request(context, background = {
+            val response = Request.signRequest(req)
+            Storage.shared.setServerToken(context, response.getString("token"))
+        }, foreground = {
+            context.finish()
+        }, errorground = {
+            Storage.shared.invalidateUser(context)
+        })
+    }
+
+    fun request(
+        context: Activity,
+        background: () -> (Unit),
+        foreground: () -> (Unit),
+        errorground: () -> (Unit)
+    ) {
         loadingElement?.visibility = View.VISIBLE
         GlobalScope.launch {
             try {
@@ -113,22 +143,26 @@ class GlobalScene {
                 context.runOnUiThread {
                     foreground()
                 }
-            } catch (e: Request.TimeoutException) {
-                if (initial) Storage.shared.invalidateUser(context)
-                context.runOnUiThread {
-                    Toast.makeText(context, "Check your internet connection!", Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+                when (e) {
+                    is Request.TimeoutException -> {
+                        context.runOnUiThread {
+                            Toast.makeText(context, "Problems with internet connection", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    is Request.TokenNotFoundException -> {
+                        context.runOnUiThread {
+                            Toast.makeText(context, "Bad Credentials Error", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                    is Request.UndefinedException -> {
+                        context.runOnUiThread {
+                            Toast.makeText(context, "Something went wrong, try later", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
-            } catch (e: Request.TokenNotFoundException) {
-                if (initial) Storage.shared.invalidateUser(context)
-                context.runOnUiThread {
-                    Toast.makeText(context, "Error, while connecting with our server", Toast.LENGTH_LONG)
-                        .show()
-                }
-            } catch (e: Request.UndefinedException) {
-                if (initial) Storage.shared.invalidateUser(context)
-                context.runOnUiThread {
-                    Toast.makeText(context, "Something went wrong, try later", Toast.LENGTH_LONG).show()
-                }
+                errorground()
             } finally {
                 context.runOnUiThread {
                     loadingElement?.visibility = View.INVISIBLE

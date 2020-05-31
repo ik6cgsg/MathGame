@@ -1,5 +1,6 @@
 package mathhelper.games.matify.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
@@ -56,6 +57,7 @@ class Storage {
         val shared = Storage()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun checkDeviceId(context: Context) {
         val prefs = context.getSharedPreferences(base, Context.MODE_PRIVATE)
         if (!prefs.contains(BaseInfo.DEVICE_ID.str)) {
@@ -70,6 +72,7 @@ class Storage {
             .getBoolean(AuthInfo.AUTHORIZED.str, false)
     }
 
+    @SuppressLint("ApplySharedPref")
     fun invalidateUser(context: Context) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -104,6 +107,7 @@ class Storage {
             .getString(AuthInfo.SERVER_TOKEN.str, "")!!
     }
 
+    @SuppressLint("ApplySharedPref")
     fun initWithUuid(context: Context): UUID {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -114,24 +118,27 @@ class Storage {
         return uuid
     }
 
+    @SuppressLint("ApplySharedPref")
     fun initUserInfo(context: Context, info: AuthInfoObjectBase) {
         val uuid = initWithUuid(context)
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
-        val initLogin = when (info.authStatus) {
-            AuthStatus.GUEST -> "guest-" + uuid.hashCode().absoluteValue
-            AuthStatus.MATH_HELPER -> "user-" + uuid.hashCode().absoluteValue
-            else -> info.login
+        if (info.login.isNullOrBlank()) {
+            info.login = when (info.authStatus) {
+                AuthStatus.GUEST -> "guest-" + uuid.hashCode().absoluteValue
+                AuthStatus.MATH_HELPER -> "user-" + uuid.hashCode().absoluteValue
+                else -> info.login
+            }
         }
-        info.login = initLogin
         if (info.password.isNullOrBlank()){
-            info.password = initLogin
+            info.password = info.login
         }
         prefEdit.commit()
         setUserInfo(context, info)
         GlobalScene.shared.generateGamesMultCoeffs()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun setServerToken(context: Context, serverToken: String) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -139,6 +146,7 @@ class Storage {
         prefEdit.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun setUserInfo(context: Context, info: AuthInfoObjectBase) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -190,6 +198,7 @@ class Storage {
         )
     }
 
+    @SuppressLint("ApplySharedPref")
     fun setUserCoeffs(context: Context, coeffs: AuthInfoCoeffs) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -214,6 +223,7 @@ class Storage {
         )
     }
 
+    @SuppressLint("ApplySharedPref")
     fun resetGame(context: Context, gameCode: String) {
         val prefs = context.getSharedPreferences(gameCode, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -221,6 +231,7 @@ class Storage {
         prefEdit.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun clearUserInfo(context: Context) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()

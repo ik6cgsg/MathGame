@@ -20,8 +20,8 @@ import mathhelper.games.matify.statistics.RequestData
 class SignUpActivity: AppCompatActivity() {
     private val TAG = "SignUpActivity"
     private lateinit var loginView: TextView
-    private lateinit var addInfoSwitch: Switch
-    private lateinit var addInfoList: ScrollView
+    private lateinit var additionalSwitch: Switch
+    private lateinit var additionalList: ScrollView
     private lateinit var nameView: TextView
     private lateinit var fullNameView: TextView
     private lateinit var additionalView: TextView
@@ -37,8 +37,8 @@ class SignUpActivity: AppCompatActivity() {
         loginView = findViewById(R.id.login)
         passwordView = findViewById(R.id.password)
         repeatView = findViewById(R.id.repeat)
-        addInfoSwitch = findViewById(R.id.show_add)
-        addInfoList = findViewById(R.id.additional_info_list)
+        additionalSwitch = findViewById(R.id.show_add)
+        additionalList = findViewById(R.id.additional_info_list)
         nameView = findViewById(R.id.name)
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
@@ -64,35 +64,23 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     fun toggleAdditionalInfo(v: View?) {
-        if (addInfoSwitch.isChecked) {
-            addInfoList.visibility = View.VISIBLE
+        if (additionalSwitch.isChecked) {
+            additionalList.visibility = View.VISIBLE
         } else {
-            addInfoList.visibility = View.GONE
+            additionalList.visibility = View.GONE
         }
     }
 
     fun sign(v: View?) {
-        Storage.shared.setUserInfo(this, AuthInfoObjectBase(
+        val userData = AuthInfoObjectBase(
             login = loginView.text.toString(),
             password = passwordView.text.toString(),
             name = nameView.text.toString(),
             fullName = fullNameView.text.toString(),
             additional = additionalView.text.toString()
-        ))
-        val userData = Storage.shared.getUserInfoBase(this)
-        val requestRoot = JSONObject()
-        requestRoot.put("login", userData.login)
-        requestRoot.put("password", userData.password)
-        requestRoot.put("name", userData.name)
-        requestRoot.put("fullName", userData.fullName)
-        requestRoot.put("addInfo", userData.additional)
-        val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
-        GlobalScene.shared.request(this, initial = true, background = {
-            val token = Request.signRequest(req)
-            Storage.shared.setServerToken(this, token)
-        }, foreground = {
-            finish()
-        })
+        )
+        Storage.shared.setUserInfo(this, userData)
+        GlobalScene.shared.signUp(this, userData)
     }
 
     fun cancel(v: View?) {

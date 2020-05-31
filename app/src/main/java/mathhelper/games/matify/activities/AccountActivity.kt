@@ -19,8 +19,8 @@ import mathhelper.games.matify.statistics.RequestData
 class AccountActivity: AppCompatActivity() {
     private val TAG = "AccountActivity"
     private lateinit var loginView: TextView
-    private lateinit var addInfoSwitch: Switch
-    private lateinit var addInfoList: ScrollView
+    private lateinit var additionalSwitch: Switch
+    private lateinit var additionalList: ScrollView
     private lateinit var nameView: TextView
     private lateinit var fullNameView: TextView
     private lateinit var additionalView: TextView
@@ -32,8 +32,8 @@ class AccountActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
         loginView = findViewById(R.id.login)
-        addInfoSwitch = findViewById(R.id.show_add)
-        addInfoList = findViewById(R.id.additional_info_list)
+        additionalSwitch = findViewById(R.id.show_add)
+        additionalList = findViewById(R.id.additional_info_list)
         nameView = findViewById(R.id.name)
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
@@ -60,31 +60,38 @@ class AccountActivity: AppCompatActivity() {
     }
 
     fun toggleAdditionalInfo(v: View?) {
-        if (addInfoSwitch.isChecked) {
-            addInfoList.visibility = View.VISIBLE
+        if (additionalSwitch.isChecked) {
+            additionalList.visibility = View.VISIBLE
         } else {
-            addInfoList.visibility = View.GONE
+            additionalList.visibility = View.GONE
         }
     }
 
     fun save(v: View?) {
-        val requestRoot = JSONObject()
-        requestRoot.put("login", loginView.text.toString())
-        requestRoot.put("name", nameView.text.toString())
-        requestRoot.put("fullName", fullNameView.text.toString())
-        requestRoot.put("addInfo", additionalView.text.toString())
-        val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
-        GlobalScene.shared.request(this, background = {
-            Request.editRequest(req)
-            Storage.shared.setUserInfo(this, AuthInfoObjectBase(
-                login = loginView.text.toString(),
-                name = nameView.text.toString(),
-                fullName = fullNameView.text.toString(),
-                additional = additionalView.text.toString()
-            ))
-        }, foreground = {
-            Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
-        })
+        val passwordData = Storage.shared.getUserInfoBase(this).password
+        val userData = AuthInfoObjectBase(
+            login = loginView.text.toString(),
+            name = nameView.text.toString(),
+            fullName = fullNameView.text.toString(),
+            additional = additionalView.text.toString(),
+            password = if (passwordData.isNullOrBlank()) loginView.text.toString() else passwordData
+        )
+        if (Storage.shared.serverToken(this).isNullOrBlank()){
+            GlobalScene.shared.signUp(this, userData)
+        } else {
+            val requestRoot = JSONObject()
+            requestRoot.put("login", loginView.text.toString())
+            requestRoot.put("name", nameView.text.toString())
+            requestRoot.put("fullName", fullNameView.text.toString())
+            requestRoot.put("additional", additionalView.text.toString())
+            val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
+            GlobalScene.shared.request(this, background = {
+                Request.editRequest(req)
+                Storage.shared.setUserInfo(this, userData)
+            }, foreground = {
+                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+            }, errorground = {})
+        }
     }
 
     fun logClicked(v: View?) {

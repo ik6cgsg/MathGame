@@ -47,7 +47,7 @@ class Statistics {
                 appliedRule = rule,
                 selectedPlace = expressionToString(place)
             )
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.RULE)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RULE)
             sendLog(activityLog, activity)
         }
 
@@ -61,7 +61,7 @@ class Statistics {
                 selectedPlace = expressionToString(place)
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.PLACE)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.PLACE)
             sendLog(activityLog, activity)
         }
 
@@ -74,7 +74,7 @@ class Statistics {
                 nextExpression = exprStr
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.START)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.START)
             sendLog(activityLog, activity)
         }
 
@@ -97,7 +97,7 @@ class Statistics {
                 selectedPlace = place
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.UNDO)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.UNDO)
             sendLog(activityLog, activity)
         }
 
@@ -117,7 +117,7 @@ class Statistics {
                 nextExpression = next,
                 selectedPlace = place
             )
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.RESTART)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RESTART)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -137,7 +137,7 @@ class Statistics {
                 nextExpression = curr,
                 selectedPlace = place
             )
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.MENU)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.MENU)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -152,7 +152,7 @@ class Statistics {
                 nextExpression = exprStr
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.WIN)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.WIN)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -172,7 +172,7 @@ class Statistics {
                 selectedPlace = place
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.addInfoFrom(activity, LevelScene.shared.currentLevel!!, Action.LOOSE)
+            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.LOOSE)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -211,7 +211,7 @@ class Statistics {
         private fun sendOneLog(log: ActivityLog, context: Context) {
             val req = RequestData(Pages.ACTIVITY_LOG.value, Storage.shared.serverToken(context))
             req.body = log.toString()
-            Request.sendRequest(req)
+            Request.sendStatisticRequest(req)
         }
 
         private fun isConnectedToNetwork(context: Context): Boolean {

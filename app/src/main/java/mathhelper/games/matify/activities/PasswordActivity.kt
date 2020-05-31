@@ -64,19 +64,27 @@ class PasswordActivity: AppCompatActivity() {
                 Toast.makeText(this, "Wrong password!", Toast.LENGTH_SHORT).show()
             }
         } else if (newPassView.text.toString() == repeatPassView.text.toString()) {
-            val requestRoot = JSONObject()
-            requestRoot.put("password", newPassView.text.toString())
-            val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
-            GlobalScene.shared.request(this, background = {
-                Request.editRequest(req)
-                Storage.shared.setUserInfo(this, AuthInfoObjectBase(
-                    password = newPassView.text.toString(),
-                    authStatus = AuthStatus.MATH_HELPER
-                ))
-            }, foreground = {
-                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
-                finish()
-            })
+            if (Storage.shared.serverToken(this).isNullOrBlank()){
+                val userData = Storage.shared.getUserInfoBase(this)
+                userData.password = newPassView.text.toString()
+                GlobalScene.shared.signUp(this, userData)
+            } else {
+                val requestRoot = JSONObject()
+                requestRoot.put("password", newPassView.text.toString())
+                val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
+                GlobalScene.shared.request(this, background = {
+                    Request.editRequest(req)
+                    Storage.shared.setUserInfo(
+                        this, AuthInfoObjectBase(
+                            password = newPassView.text.toString(),
+                            authStatus = AuthStatus.MATH_HELPER
+                        )
+                    )
+                }, foreground = {
+                    Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+                    finish()
+                }, errorground = {})
+            }
         } else {
             Toast.makeText(this, "Different passwords", Toast.LENGTH_SHORT).show()
         }
