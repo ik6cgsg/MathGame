@@ -181,10 +181,10 @@ class TutorialPlayActivity: AppCompatActivity() {
 
     fun endExpressionTutorial() {
         Log.d(TAG, "endExpressionTutorial")
-        TutorialScene.shared.showMessage("⬆️ Good old end expression ⬆️")
+        TutorialScene.shared.showMessage("⬆️ Goal: transform expression to it ⬆️")
         pointerEndView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerEndView)
-        tutorialDialog.setMessage("This is final expression for level\nAKA The Answer for current task!\n\n" +
+        tutorialDialog.setMessage("This is final goal for level\nAKA The Answer for current task!\n\n" +
             "P.S. You can toggle it with \uD83D\uDD3D if you need!\n\nGot it?")
         AndroidUtil.showDialog(tutorialDialog, false)
     }

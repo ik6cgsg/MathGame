@@ -605,7 +605,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
                 result.intervals.removeAt(result.intervals.lastIndex)
             }
             currentPosition = parseWhitespaces(pattern, currentPosition)
-            if (pattern[currentPosition] == listSeparator) {
+            if (currentPosition < pattern.length && pattern[currentPosition] == listSeparator) {
                 currentPosition++
             }
             currentPosition = parseWhitespaces(pattern, currentPosition)
