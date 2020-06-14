@@ -120,7 +120,7 @@ data class NumberInterval(
         return "[$leftBorder;$rightBorder]:${
         when (numbersType) {
             NumberIntervalType.NATURAL -> "N"
-            NumberIntervalType.INTEGER -> "I"
+            NumberIntervalType.INTEGER -> "Z"
             NumberIntervalType.REAL -> "R"
         }
         }".replace("Infinity", "Inf")
@@ -321,7 +321,7 @@ fun checkExpressionStructure(rootNode: ExpressionNode, structureNode: Expression
         }
         if (!rootNode.children.all {
                 val variableName = it.value
-                structureNode.treeVariables.treePermittedVariables.any { it.matchVariable(variableName) } || structureNode.treeVariables.treePermittedVariables.isEmpty()
+                it.nodeType == NodeType.FUNCTION || structureNode.treeVariables.treePermittedVariables.any { it.matchVariable(variableName) } || structureNode.treeVariables.treePermittedVariables.isEmpty()
             }) {
             return false
         }
@@ -554,6 +554,12 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
                 currentPosition = parseWhitespaces(pattern, currentPosition)
                 continue
             }
+            val nextPosition = parseWhitespaces(pattern, currentPosition + 1)
+            if (pattern[currentPosition] == freeValueSign && ((nextPosition >= pattern.length) || (pattern[nextPosition] in listOf(listSeparator, childrenListSeparator, openChildBracket, closeChildBracket, tokenSeparator)))) {
+                currentPosition++
+                currentPosition = nextPosition
+                continue
+            }
             val variableCondition = if (currentNotNumber % 2 == 0) {
                 result.treePermittedVariables.add(VariableCondition(parent = result))
                 result.treePermittedVariables.last()
@@ -628,6 +634,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
         }
         if (currentPosition < pattern.length && pattern[currentPosition].isLetter()) {
             when (pattern[currentPosition]) {
+                'N' -> result.numbersType = NumberIntervalType.NATURAL
                 'Z' -> result.numbersType = NumberIntervalType.INTEGER
                 'R' -> result.numbersType = NumberIntervalType.REAL
                 else -> return throwNumberExpectException(currentPosition)

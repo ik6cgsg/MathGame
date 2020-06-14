@@ -6,6 +6,7 @@ enum class OperationType(val names: Array<String>) {
     MINUS(arrayOf("-")),
     PLUS(arrayOf("+")),
     MULT(arrayOf("*")),
+    LOG(arrayOf("log")),
     FUNCTION(arrayOf("")),
     RIGHT_UNARY(arrayOf("")),
     SET_AND(arrayOf("&", "and")),

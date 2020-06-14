@@ -52,6 +52,7 @@ open class MathResolverNodeBase(
                     OperationType.POW -> MathResolverNodePow(expression, needBrackets, operation)
                     OperationType.PLUS -> MathResolverNodePlus(expression, needBrackets, operation)
                     OperationType.MULT -> MathResolverNodeMult(expression, needBrackets, operation)
+                    OperationType.LOG -> MathResolverNodeLog(expression, needBrackets, operation)
                     OperationType.FUNCTION -> MathResolverNodeFunction(expression, needBrackets, operation)
                     OperationType.MINUS -> MathResolverNodeMinus(expression, needBrackets, operation)
                     OperationType.SET_AND -> MathResolverSetNodeAnd(expression, needBrackets, operation)
