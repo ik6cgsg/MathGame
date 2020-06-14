@@ -17,7 +17,7 @@ open class MathResolverNodeBase(
     var children: ArrayList<MathResolverNodeBase> = ArrayList()
     lateinit var leftTop: Point
     lateinit var rightBottom: Point
-    var baseLineOffset: Int = 0
+    var baseLineOffset: Int = -1
     lateinit var style: VariableStyle
     lateinit var taskType: TaskType
     private var customized = false
@@ -77,6 +77,7 @@ open class MathResolverNodeBase(
     }
 
     open fun setNodesFromExpression() {
+        baseLineOffset = 0
         if (needBrackets) {
             length = 2
         }

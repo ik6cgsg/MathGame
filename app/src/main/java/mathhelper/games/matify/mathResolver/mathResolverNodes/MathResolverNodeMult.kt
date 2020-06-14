@@ -27,7 +27,7 @@ class MathResolverNodeMult(
             }
         }
         height = maxH
-        if (baseLineOffset == 0) {
+        if (baseLineOffset < 0) {
             baseLineOffset = height - 1
         }
     }

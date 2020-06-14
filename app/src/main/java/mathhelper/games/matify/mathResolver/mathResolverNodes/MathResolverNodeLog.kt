@@ -12,23 +12,27 @@ class MathResolverNodeLog(
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
-        length += op!!.name.length
+        length += op!!.name.length + 2
         for (node in origin.children) {
             val elem = createNode(node, getNeedBrackets(node), style, taskType)
             elem.setNodesFromExpression()
             children.add(elem)
-            height += elem.height
             length += elem.length
         }
-        baseLineOffset = children[0].height - (children[1].height - children[0].baseLineOffset)
+        baseLineOffset = children[0].baseLineOffset
+        height = if (children[0].height >= children[1].height + baseLineOffset + 1) {
+            children[0].height
+        }
+        else {
+            children[1].height + children[0].baseLineOffset + 1
+        }
     }
 
     override fun setCoordinates(leftTop: Point) {
         super.setCoordinates(leftTop)
-        var currLen = (if (!needBrackets) leftTop.x else leftTop.x + 1) + op!!.name.length
-        var currH = rightBottom.y + 1 - children[1].height
-        children[1].setCoordinates(Point(currLen, currH - children[0].height + children[1].height))
-        children[0].setCoordinates(Point(currLen + children[1].length, currH - children[0].height))
+        val currLen = leftTop.x + op!!.name.length
+        children[1].setCoordinates(Point(currLen, leftTop.y + 1 + baseLineOffset))
+        children[0].setCoordinates(Point(currLen + children[1].length + 1, leftTop.y))
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
@@ -36,12 +40,11 @@ class MathResolverNodeLog(
         var curInd = leftTop.x
         stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, op!!.name)
         curInd += op!!.name.length
-        if (needBrackets) {
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(leftTop.x, "(")
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
-        }
-        children.forEach { it.getPlainNode(stringMatrix, spannableArray) }
+        children[1].getPlainNode(stringMatrix, spannableArray)
+        curInd += children[1].length
+        stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, "(")
+        children[0].getPlainNode(stringMatrix, spannableArray)
+        curInd += children[0].length + 1
+        stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, ")")
     }
 }

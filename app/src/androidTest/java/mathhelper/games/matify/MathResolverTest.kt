@@ -322,4 +322,41 @@ class MathResolverTest {
         val expected = "A∧(B∧C)\n"
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun logTest1() {
+        val origin = "(+(3;log(7;2)))"
+        val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
+        val expected =
+            "3+log (7)\n" +
+            "     2   \n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun logTest2() {
+        val origin = "(+(^(3;2);log(/(7;^(31;e));log(8;3))))"
+        val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
+        val expected =
+            " 2             7  \n" +
+            "3 +log       (———)\n" +
+            "      log (8)   e \n" +
+            "         3    31  \n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun logTest3() {
+        val origin = "(+(sin(/(3;2));log(/(7;^(31;e));/(log(8;^(3;2));1784))))"
+        val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
+        val expected =
+            "    3               7  \n" +
+            "sin(—)+log        (———)\n" +
+            "    2     log  (8)   e \n" +
+            "              2    31  \n" +
+            "             3         \n" +
+            "          ————————     \n" +
+            "            1784       \n"
+        assertEquals(expected, actual)
+    }
 }
