@@ -80,10 +80,10 @@
     },
     {
       "levelCode": "ege_various_B9__Level_04_Compute",
-      "name": "Уровень 4 Упрощение",
+      "name": "Уровень 4 Упрощение логарифма",
       "difficulty": 2.0,
       "type": "algebra",
-      "stepsNum": 5,
+      "stepsNum": 6,
       "time": 90,
       "originalExpression": "(log(27;9))",
       "finalExpression": "Упростить",
@@ -103,33 +103,41 @@
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_02_Prove",
-      "name": "Level 2 Compute",
+      "levelCode": "ege_various_B9__Level_05_Prove",
+      "name": "Уровень 5 Логарифм",
       "difficulty": 2.0,
       "type": "algebra",
-      "stepsNum": 5,
+      "stepsNum": 3,
       "time": 90,
-      "originalExpression": "(+(log(7;2);-(log(10;2))))",
-      "finalExpression": "Number",
+      "originalExpression": "(+(log(60;5);-(log(12;5))))",
+      "finalExpression": "Вычислить",
       "finalPattern": "?:0:?:?N",
       "rules": [
         {"rulePack": "MathBase"},
-        {"left":"(/(7;10))","right":"(0.7)"}
+        {"left":"(/(60;12))","right":"(5)"},
+        {"left":"(5)","right":"(/(60;12))"},
+        {"left":"(60)","right":"(*(12;5))"},
+        {"left":"(*(12;5))","right":"(60)"}
       ]
     },
     {
-      "levelCode": "simple_combinatorics__Level_03_Prove",
-      "name": "Level 2 Compute",
+      "levelCode": "ege_logarithm__Level_10_Compute",
+      "name": "Уровень 10 Упрощение логарифмов",
       "difficulty": 2.0,
       "type": "algebra",
-      "stepsNum": 5,
+      "stepsNum": 20,
       "time": 90,
-      "originalExpression": "(+(log(7;2)))",
-      "finalExpression": "Number",
-      "finalPattern": "?:0:?:?N",
+      "originalExpression": "(*(log(^(a;с);b);log(^(b;d);a)))",
+      "finalExpression": "Упростить при a,b,c,d > 1",
+      "finalPattern": "*:2",
       "rules": [
         {"rulePack": "MathBase"},
-        {"left":"(/(7;10))","right":"(0.7)"}
+        {"left":"(4)","right":"(+(2;2))"},
+        {"left":"(4)","right":"(*(2;2))"},
+        {"left":"(4)","right":"(^(2;2))"},
+        {"left":"(+(2;2))","right":"(4)"},
+        {"left":"(*(2;2))","right":"(4)"},
+        {"left":"(^(2;2))","right":"(4)"}
       ]
     }
   ],
@@ -303,13 +311,13 @@
       "rules":[
         {"left":"(+(-(+(-(a)))))","right":"(a)"},
         {"left":"(-(+(-(a))))","right":"(a)"},
-        {"left":"(a)","right":"(-(+(-(a))))"},
+        {"left":"(-(-(a)))","right":"(a)"},
         {"left":"(b)","right":"(+(-(+(-(b)))))"},
 
         {"left":"(+(a;-(0)))","right":"(a)"},
         {"left":"(+(-(0);a))","right":"(a)"},
-        {"left":"(+(0;-(a)))","right":"(-(a))"},
-        {"left":"(+(-(a);0))","right":"(-(a))"},
+        {"left":"(+(0;-(a)))","right":"(+(-(a)))"},
+        {"left":"(+(-(a);0))","right":"(+(-(a)))"},
         {"left":"(+(a;-(a)))","right":"(0)"},
         {"left":"(+(-(a);a))","right":"(0)"},
         {"left":"(+(a;+(-(a))))","right":"(0)"},
@@ -410,6 +418,13 @@
         {"left": "(/(A;+(-(C))))","right": "(+(-(/(A;C))))"},
         {"left": "(/(A;+(-(C))))","right": "(/(+(-(A));C))"},
         {"left": "(/(+(-(A));C))","right": "(/(A;+(-(C))))"},
+
+        {"left": "(*(-(A);-(B)))","right": "(*(A;B))"},
+        {"left": "(/(-(A);-(B)))","right": "(/(A;B))"},
+        {"left": "(*(A;B))","right": "(*(+(-(A));+(-(B))))"},
+        {"left": "(/(A;B))","right": "(/(+(-(A));+(-(B))))"},
+        {"left": "(*(+(-(A));+(-(B))))","right": "(*(A;B))"},
+        {"left": "(/(+(-(A));+(-(B))))","right": "(/(A;B))"},
 
         {"left": "(+(/(B;C);/(A;D)))","right": "(/(+(*(B;D);*(C;A));*(C;D)))"},
         {"left": "(+(/(B;C);-(/(A;D))))","right": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"},
@@ -563,7 +578,7 @@
         {"left": "(/(1;log(b;a)))","right": "(log(a;b))"},
         {"left": "(log(a;b))","right": "(/(1;log(b;a)))"},
 
-        {"left": "(/(log(c;a);log(b;a)))","right": "(log(b;a))"},
+        {"left": "(/(log(c;a);log(b;a)))","right": "(log(c;b))"},
 
         {"left": "(log(/(b;c);a))","right": "(-(log(/(c;b);a)))"},
         {"left": "(-(log(/(c;b);a)))","right": "(log(/(b;c);a))"},

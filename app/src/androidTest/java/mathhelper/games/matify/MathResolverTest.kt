@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import mathhelper.games.matify.mathResolver.MathResolver
+import org.junit.Ignore
 
 @RunWith(AndroidJUnit4::class)
 class MathResolverTest {
@@ -357,6 +358,17 @@ class MathResolverTest {
             "             3         \n" +
             "          ————————     \n" +
             "            1784       \n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    @Ignore //TODO: fix (now it fails)
+    fun logMulTest() {
+        val origin = "(*(log(^(a;с);b);log(b;^(a;2))))" //on expression "(*(log(^(a;с);b);log(b;a)))" it works ok
+        val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
+        val expected =
+            "3+log (7)\n" +
+                "     2   \n"
         assertEquals(expected, actual)
     }
 }

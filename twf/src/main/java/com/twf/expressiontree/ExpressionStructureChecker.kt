@@ -306,7 +306,7 @@ fun checkExpressionStructure(rootNode: ExpressionNode, structureNode: Expression
     if (rootNode.value in structureNode.functionsJoinedWithVariables && rootNode.children.all { it.nodeType == NodeType.VARIABLE }) {
         return rootNode.children.all { structureNode.treeVariables.matchVariable(it.value) && (structureNode.children.isEmpty() || structureNode.children.any { it.count.matchNumber(0.0) }) }
     }
-    if (rootNode.value == "") {
+    if (rootNode.value == "" || (rootNode.value in listOf("+", "*", "^") && rootNode.children.size == 1)) {
         return checkExpressionStructure(rootNode.children.firstOrNull() ?: return true, structureNode)
     }
     if (!structureNode.nodeFunctions.matchFunctionByNameNumberOfArguments(rootNode)) {
