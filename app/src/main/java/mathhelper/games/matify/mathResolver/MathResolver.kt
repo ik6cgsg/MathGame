@@ -56,17 +56,21 @@ class MathResolver {
             matrixLeft.removeAt(matrixLeft.size - 1)
             matrixRight.removeAt(matrixRight.size - 1)
             val leadingTree: MathResolverNodeBase
-            val secTree: MathResolverNodeBase
             var leftCorr = 0
             var rightCorr = 0
-            if (left.tree!!.height > right.tree!!.height) {
+            if (left.tree!!.baseLineOffset > right.tree!!.baseLineOffset) {
                 leadingTree = left.tree
-                secTree = right.tree
-                rightCorr = correctMatrix(matrixRight, leadingTree, secTree)
+                rightCorr = correctMatrixByBaseLine(matrixRight, left.tree, right.tree)
+                right.tree!!.height += rightCorr
             } else {
                 leadingTree = right.tree
-                secTree = left.tree
-                leftCorr = correctMatrix(matrixLeft, leadingTree, secTree)
+                leftCorr = correctMatrixByBaseLine(matrixLeft, right.tree, left.tree)
+                left.tree!!.height += leftCorr
+            }
+            if (left.tree!!.height > right.tree!!.height) {
+                correctMatrixByHeight(matrixRight, left.tree, right.tree)
+            } else {
+                correctMatrixByHeight(matrixLeft, right.tree, left.tree)
             }
             val ruleStr = SpannableStringBuilder(mergeMatrices(matrixLeft, matrixRight, leadingTree.baseLineOffset))
             val totalLen = matrixLeft[0].length + ruleDelim.length + matrixRight[0].length + 1
@@ -81,17 +85,21 @@ class MathResolver {
             return ruleStr
         }
 
-        private fun correctMatrix(matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
-                                  secTree: MathResolverNodeBase): Int {
-            for (i in 0 until leadingTree.height - secTree.height) {
-                matrix.add(" ".repeat(secTree.length))
-            }
+
+        private fun correctMatrixByBaseLine (matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
+                                               secTree: MathResolverNodeBase): Int {
             val diff = leadingTree.baseLineOffset - secTree.baseLineOffset
-            if (diff > 0) {
-                for (i in 0 until diff) {
-                    matrix.add(0, matrix[matrix.size - 1])
-                    matrix.removeAt(matrix.size - 1)
-                }
+            for (i in 0 until diff) {
+                matrix.add(0, " ".repeat(secTree.length))
+            }
+            return diff
+        }
+
+        private fun correctMatrixByHeight (matrix: ArrayList<String>, leadingTree: MathResolverNodeBase,
+                                             secTree: MathResolverNodeBase): Int {
+            val diff = leadingTree.height - secTree.height
+            for (i in 0 until diff) {
+                matrix.add(" ".repeat(secTree.length))
             }
             return diff
         }

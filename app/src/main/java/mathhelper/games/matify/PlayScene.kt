@@ -222,9 +222,13 @@ class PlayScene {
         val activity = playActivity!!
         activity.rulesLinearLayout.removeAllViews()
         for (r in rules) {
-            val rule = RuleMathView(activity)
-            rule.setSubst(r, LevelScene.shared.currentLevel!!.type)
-            activity.rulesLinearLayout.addView(rule)
+            try {
+                val rule = RuleMathView(activity)
+                rule.setSubst(r, LevelScene.shared.currentLevel!!.type)
+                activity.rulesLinearLayout.addView(rule)
+            } catch (e: Exception) {
+                Log.e(TAG, "Rule draw Error", e)
+            }
         }
     }
 

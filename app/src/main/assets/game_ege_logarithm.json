@@ -1,66 +1,78 @@
 {
   "gameSpace": "",
-  "gameCode": "irrationality_ege",
-  "name": "ЕГЭ Иррациональность",
-  "eng": "Irrationality",
-  "rus": "ЕГЭ Иррациональность",
+  "gameCode": "ege_logarithm",
+  "name": "ЕГЭ Логарифм",
+  "eng": "EGE Logarithm",
+  "rus": "ЕГЭ Логарифм",
   "version": 10,
   "levels":[
     {
-      "levelCode": "irrationality_ege__Hello_World_Level",
+      "levelCode": "ege_logarithm__Hello_World_Level",
       "name": "Начнем с простого",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 3,
       "time": 50,
-      "originalExpression": "(^(+(^(65;2);-(^(56;2)));0.5))",
-      "finalExpression": "Вычислить",
+      "originalExpression": "(*(3;^(b;log(9;b))))",
+      "finalExpression": "Упростить при b > 1",
       "finalPattern": "?:0:?:?N",
-      "rules":[
+      "rules": [
         {"rulePack": "MathBase"},
-        {"left":"(+(65;56))","right":"(121)"},
-        {"left":"(+(56;65))","right":"(121)"},
-        {"left":"(+(65;-(56)))","right":"(9)"},
-        {"left":"(+(-(56);65))","right":"(9)"},
-        {"left":"(^(9;0.5))","right":"(3)"},
-        {"left":"(^(121;0.5))","right":"(11)"},
-        {"left":"(*(3;11))","right":"(33)"},
-        {"left":"(*(11;3))","right":"(33)"}
+        {"left":"(*(3;9))","right":"(27)"},
+        {"left":"(*(9;3))","right":"(27)"},
+        {"left":"(9)","right":"(*(3;3))"},
+        {"left":"(9)","right":"(^(3;2))"},
+        {"left":"(*(3;3))","right":"(9)"},
+        {"left":"(^(3;2))","right":"(9)"}
       ]
     },
     {
-      "levelCode": "irrationality_ege__Level_01_Compute",
+      "levelCode": "ege_logarithm__Level_01_Compute",
       "name": "Уровень 1 Вычисление",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 5,
       "time": 90,
-      "originalExpression": "(/(*(^(11;1.4);^(11;0.45));^(11;0.85)))",
+      "originalExpression": "(log(^(a;-(4));/(1;*(a;a))))",
       "finalExpression": "Вычислить",
       "finalPattern": "?:0:?:?N",
       "rules": [
         {"rulePack": "MathBase"},
-        {"left":"(+(1.4;0.45))","right":"(1.85)"},
-        {"left":"(+(0.45;1.4))","right":"(1.85)"},
-        {"left":"(+(1.85;-(0.85)))","right":"(1)"},
-        {"left":"(+(-(0.85);1.85))","right":"(1)"}
+        {"left":"(4)","right":"(+(2;2))"},
+        {"left":"(4)","right":"(*(2;2))"},
+        {"left":"(4)","right":"(^(2;2))"},
+        {"left":"(+(2;2))","right":"(4)"},
+        {"left":"(*(2;2))","right":"(4)"},
+        {"left":"(^(2;2))","right":"(4)"},
+        {"left":"(/(4;2))","right":"(2)"},
+        {"left":"(2)","right":"(/(4;2))"}
       ]
     },
     {
-      "levelCode": "irrationality_ege__Level_02_Compute",
+      "levelCode": "ege_logarithm__Level_02_Compute",
       "name": "Уровень 2 Вычисление",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 5,
       "time": 90,
-      "originalExpression": "(/(*(^(*(b;2);0.2);^(16;0.2));^(b;0.2)))",
+      "originalExpression": "(^(64;log(9;8)))",
       "finalExpression": "Вычислить",
       "finalPattern": "?:0:?:?N",
       "rules": [
         {"rulePack": "MathBase"},
-        {"left":"(*(2;16))","right":"(32)"},
-        {"left":"(*(16;2))","right":"(32)"},
-        {"left":"(^(32;0.2))","right":"(2)"}
+        {"left":"(64)","right":"(+(32;32))"},
+        {"left":"(64)","right":"(*(8;8))"},
+        {"left":"(64)","right":"(^(8;2))"},
+        {"left":"(8)","right":"(*(2;4))"},
+        {"left":"(8)","right":"(^(2;3))"},
+        {"left":"(+(32;32))","right":"(64)"},
+        {"left":"(*(8;8))","right":"(64)"},
+        {"left":"(^(8;2))","right":"(64)"},
+        {"left":"(32)","right":"(^(2;5))"},
+        {"left":"(^(2;5))","right":"(32)"},
+        {"left":"(*(2;9))","right":"(18)"},
+        {"left":"(*(9;2))","right":"(18)"},
+        {"left":"(^(9;2))","right":"(81)"}
       ]
     },
     {
@@ -70,7 +82,7 @@
       "type": "algebra",
       "stepsNum": 20,
       "time": 90,
-      "originalExpression": "(*(+(^(54;/(1;2));-(^(24;/(1;2))));^(6;/(1;2))))",
+      "originalExpression": "(*(log(b;a);/(1;k)))",
       "finalExpression": "Вычислить",
       "finalPattern": "?:0:?:?N",
       "rules": [
@@ -488,12 +500,33 @@
         {"left": "(+(/(B;C);-(/(A;C))))","right": "(/(+(B;-(A));C))"},
         {"left": "(/(+(B;-(A));C))","right": "(+(/(B;C);-(/(A;C))))"},
 
+        {"left": "(-(*(A;C)))","right": "(*(-(A);C))"},
+        {"left": "(*(-(A);C))","right": "(-(*(A;C)))"},
+        {"left": "(-(*(A;C)))","right": "(*(A;-(C)))"},
+        {"left": "(*(A;-(C)))","right": "(-(*(A;C)))"},
+        {"left": "(*(A;-(C)))","right": "(*(-(A);C))"},
+        {"left": "(*(-(A);C))","right": "(*(A;-(C)))"},
+
         {"left": "(-(/(A;C)))","right": "(/(-(A);C))"},
         {"left": "(/(-(A);C))","right": "(-(/(A;C)))"},
         {"left": "(-(/(A;C)))","right": "(/(A;-(C)))"},
         {"left": "(/(A;-(C)))","right": "(-(/(A;C)))"},
         {"left": "(/(A;-(C)))","right": "(/(-(A);C))"},
         {"left": "(/(-(A);C))","right": "(/(A;-(C)))"},
+
+        {"left": "(+(-(*(A;C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(+(-(*(A;C))))"},
+        {"left": "(+(-(*(A;C))))","right": "(*(A;+(-(C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(+(-(*(A;C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(*(A;+(-(C))))"},
+
+        {"left": "(+(-(/(A;C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(+(-(/(A;C))))"},
+        {"left": "(+(-(/(A;C))))","right": "(/(A;+(-(C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(+(-(/(A;C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(/(A;+(-(C))))"},
 
         {"left": "(+(/(B;C);/(A;D)))","right": "(/(+(*(B;D);*(C;A));*(C;D)))"},
         {"left": "(+(/(B;C);-(/(A;D))))","right": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"},
@@ -526,6 +559,9 @@
       "name": "ArithmeticDegree",
       "type": "algebra",
       "rules":[
+        {"left": "(/(1;A))","right": "(^(A;+(-(1))))"},
+        {"left": "(^(A;+(-(1))))","right": "(/(1;A))"},
+
         {"left": "(^(A;+(B;C)))","right": "(*(^(A;B);^(A;C)))"},
         {"left": "(*(^(A;B);^(A;C)))","right": "(^(A;+(B;C)))"},
         {"left": "(^(A;+(B;C;D)))","right": "(*(^(A;B);^(A;C);^(A;D)))"},
@@ -613,6 +649,50 @@
         {"left": "(*(+(a;b);+(^(a;2);^(b;2);-(*(a;b)))))","right": "(+(^(a;3);^(b;3)))"},
         {"left": "(*(+(^(a;2);-(*(a;b));^(b;2));+(a;b)))","right": "(+(^(a;3);^(b;3)))"},
         {"left": "(*(+(^(a;2);^(b;2);-(*(a;b)));+(a;b)))","right": "(+(^(a;3);^(b;3)))"}
+      ]
+    },
+    {
+      "name": "Logarithm",
+      "type": "algebra",
+      "rules":[
+        {"left": "(^(a;log(b;a)))","right": "(b)"},
+
+        {"left": "(log(1;A))","right": "(0)"},
+        {"left": "(log(A;A))","right": "(1)"},
+
+        {"left": "(log(*(b;c);a))","right": "(+(log(b;a);log(c;a)))"},
+        {"left": "(+(log(b;a);log(c;a)))","right": "(log(*(b;c);a))"},
+        {"left": "(log(*(b;c;d);a))","right": "(+(log(b;a);log(c;a);log(d;a)))"},
+        {"left": "(+(log(b;a);log(c;a);log(d;a)))","right": "(log(*(b;c;d);a))"},
+        {"left": "(log(*(b;c;d;e);a))","right": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))"},
+        {"left": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))","right": "(log(*(b;c;d;e);a))"},
+
+        {"left": "(log(/(b;c);a))","right": "(+(log(b;a);-(log(c;a))))"},
+        {"left": "(+(log(b;a);-(log(c;a))))","right": "(log(/(b;c);a))"},
+
+        {"left": "(log(^(b;c);a))","right": "(*(c;log(b;a)))"},
+        {"left": "(*(c;log(b;a)))","right": "(log(^(b;c);a))"},
+        {"left": "(*(log(b;a);c))","right": "(log(^(b;c);a))"},
+
+        {"left": "(log(b;^(a;k)))","right": "(/(log(b;a);k))"},
+        {"left": "(/(log(b;a);k))","right": "(log(b;^(a;k)))"},
+
+        {"left": "(/(1;log(b;a)))","right": "(log(a;b))"},
+        {"left": "(log(a;b))","right": "(/(1;log(b;a)))"},
+
+        {"left": "(/(log(c;a);log(b;a)))","right": "(log(b;a))"},
+
+        {"left": "(log(/(b;c);a))","right": "(-(log(/(c;b);a)))"},
+        {"left": "(-(log(/(c;b);a)))","right": "(log(/(b;c);a))"},
+        {"left": "(+(-(log(/(c;b);a))))","right": "(log(/(b;c);a))"},
+
+        {"left": "(log(b;a))","right": "(-(log(/(1;b);a)))"},
+        {"left": "(-(log(/(1;b);a)))","right": "(log(b;a))"},
+        {"left": "(+(-(log(/(1;b);a))))","right": "(log(b;a))"},
+
+        {"left": "(log(/(1;b);a))","right": "(-(log(b;a)))"},
+        {"left": "(-(log(b;a)))","right": "(log(/(1;b);a))"},
+        {"left": "(+(-(log(b;a))))","right": "(log(/(1;b);a))"}
       ]
     }
   ]
