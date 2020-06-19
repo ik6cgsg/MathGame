@@ -123,7 +123,6 @@ class Level {
         startExpression = structureStringToExpression(startExpressionStr)
         endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
         endExpression = structureStringToExpression(endExpressionStr)
-        endExpressionStr = expressionToStructureString(endExpression)
         endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         endPattern = when (type) {
             Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)

@@ -25,7 +25,7 @@ class CustomSymbolsHandler {
             "M" to "μ",
             "N" to "ν",
             "O" to "ω",
-            "P" to "π",
+//            "P" to "π", //pi used in trigonometry, TODO: think, how to handle it
             "Q" to "q",
             "R" to "ρ",
             "S" to "ς",

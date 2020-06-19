@@ -121,6 +121,27 @@
       ]
     },
     {
+      "levelCode": "ege_trigonometry__Level_02_Compute",
+      "name": "Уровень 6 Тригонометрия",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(/(2;cos(*(2;a))))",
+      "finalExpression": "Вычислить при cos(a) = 0.8",
+      "finalPattern": "?:0:?:?R",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(cos(a))","right":"(0.8)"},
+        {"left":"(^(0.8;2))","right":"(0.64)"},
+        {"left":"(*(0.64;2))","right":"(1.28)"},
+        {"left":"(*(2;0.64))","right":"(1.28)"},
+        {"left":"(+(1.28;-(1)))","right":"(0.28)"},
+        {"left":"(*(2;0.28))","right":"(0.56)"},
+        {"left":"(*(0.28;2))","right":"(0.56)"}
+      ]
+    },
+    {
       "levelCode": "ege_logarithm__Level_10_Compute",
       "name": "Уровень 10 Упрощение логарифмов",
       "difficulty": 2.0,
@@ -501,7 +522,11 @@
         {"left": "(/(^(B;A);^(C;A)))","right": "(^(/(B;C);A))"},
 
         {"left": "(^(A;*(2;n)))","right": "(^(-(A);*(2;n)))"},
-        {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"}
+        {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"},
+
+        {"left": "(a)","right": "(^(^(a;2);/(1;2)))"},
+        {"left": "(a)","right": "(^(^(a;3);/(1;3)))"},
+        {"left": "(^(^(a;b);/(1;b)))","right": "(a)"}
       ]
     },
     {

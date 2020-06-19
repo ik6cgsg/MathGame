@@ -128,12 +128,14 @@ class ExpressionSubstitution(
                            nameArgsMap: MutableMap<String, String> = mutableMapOf(),
                            basedOnTaskContext: Boolean) {
             if (conditionNode.isNumberValue()) {
-                val expressionValue = expressionNode.value.toDoubleOrNull()
-                val conditionValue = conditionNode.value.toDoubleOrNull()
-                if (expressionValue == null || conditionValue == null ||
+                if (expressionNode.value != conditionNode.value){
+                    val expressionValue = expressionNode.value.toDoubleOrNull()
+                    val conditionValue = conditionNode.value.toDoubleOrNull()
+                    if (expressionValue == null || conditionValue == null ||
                         (expressionValue - conditionValue).abs() > 11.9e-7) { // todo: unify with approach in BaseOperationDefinitions.kt
-                    substitutionInstance.isApplicable = false
-                    return
+                        substitutionInstance.isApplicable = false
+                        return
+                    }
                 }
             } else if (conditionNode.children.size != 0) {
                 if (!basedOnTaskContext && conditionNode.functionStringDefinition != null &&

@@ -65,7 +65,7 @@ data class ExpressionNode(
         value.parent = this
     }
 
-    fun isNumberValue() = value.isNotBlank() && value.first().isNumberPart() //todo: mb should be changed to 'value.toDoubleOrNull() != null', but it takes more time
+    fun isNumberValue() = value.isNotBlank() && (value.first().isNumberPart() || value == "π")
 
     fun getNodeValueString() = value
 
