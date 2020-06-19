@@ -1,4 +1,4 @@
-# MathGame
+# Matify MathGame
 SPbPU diploma repo
 
 ## Requirements

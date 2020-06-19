@@ -129,6 +129,7 @@ fun applySubstitution(
         substitutionPlaces: List<SubstitutionPlace> //containsPointersOnExpressionPlaces
 ): ExpressionNode {
     substitution.applySubstitution(substitutionPlaces)
+    expression.getTopNode().reduceExtraSigns(setOf("+"), setOf("-"))
     expression.getTopNode().computeNodeIdsAsNumbersInDirectTraversal()
     return expression
 }

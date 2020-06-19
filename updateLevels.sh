@@ -7,7 +7,7 @@ fi
 ROOT=$(pwd)
 ASSETS_DIR="${ROOT}/app/src/main/assets"
 CLONE_DIR="${ROOT}/levels"
-GAME_NAME="MathGame_IK_an"
+GAME_NAME="Matify_IK_an"
 # Clone new
 git clone https://bitbucket.org/vkatsman/mathgameslevels.git ${CLONE_DIR}
 if [[ ! -d "${CLONE_DIR}/${GAME_NAME}/${TYPE}" ]]; then

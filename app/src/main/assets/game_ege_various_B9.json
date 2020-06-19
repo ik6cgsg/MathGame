@@ -121,17 +121,18 @@
       ]
     },
     {
-      "levelCode": "ege_trigonometry__Level_02_Compute",
-      "name": "Уровень 6 Тригонометрия",
+      "levelCode": "ege_various_B9__Level_06_Compute",
+      "name": "Уровень 6 Косинус",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 5,
       "time": 90,
-      "originalExpression": "(/(2;cos(*(2;a))))",
+      "originalExpression": "(*(2;cos(*(2;a))))",
       "finalExpression": "Вычислить при cos(a) = 0.8",
       "finalPattern": "?:0:?:?R",
       "rules": [
         {"rulePack": "MathBase"},
+        {"rulePack": "Trigonometry"},
         {"left":"(cos(a))","right":"(0.8)"},
         {"left":"(^(0.8;2))","right":"(0.64)"},
         {"left":"(*(0.64;2))","right":"(1.28)"},
@@ -139,6 +140,65 @@
         {"left":"(+(1.28;-(1)))","right":"(0.28)"},
         {"left":"(*(2;0.28))","right":"(0.56)"},
         {"left":"(*(0.28;2))","right":"(0.56)"}
+      ]
+    },
+    {
+      "levelCode": "ege_various_B9__Level_07_Compute",
+      "name": "Уровень 7 Синус и косинус",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(/(+(*(2;sin(+(a;*(7;π))));cos(+(/(π;2);-(a))));-(sin(+(π;a)))))",
+      "finalExpression": "Упростить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"rulePack": "Trigonometry"},
+        {"left":"(+(-(2);1))","right":"(1)"},
+        {"left":"(+(1;-(2)))","right":"(1)"},
+        {"left":"(3)","right":"(+(2;1))"},
+        {"left":"(+(-(*(2;a));a))","right":"(a)"},
+        {"left":"(+(a;-(*(2;a))))","right":"(a)"},
+        {"left":"(sin(+(a;*(7;π))))","right":"(sin(+(a;-(π))))"},
+        {"left":"(sin(+(a;*(7;π))))","right":"(sin(+(a;π)))"}
+      ]
+    },
+    {
+      "levelCode": "ege_various_B9__Level_08_Compute",
+      "name": "Уровень 8 Тангенс",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(+(24;*(24;tg(/(π;12));tg(/(*(5;π);12)))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"rulePack": "Trigonometry"},
+        {"left":"(/(*(5;π);12))","right":"(+(/(π;2);-(/(π;12))))"},
+        {"left":"(/(π;12))","right":"(+(/(π;2);-(/(*(5;π);12))))"},
+        {"left":"(/(*(5;π);12))","right":"(/(*(10;π);24))"},
+        {"left":"(/(π;12))","right":"(/(*(2;π);24))"},
+        {"left":"(10)","right":"(*(5;2))"},
+        {"left":"(24)","right":"(*(12;2))"},
+        {"left":"(+(24;24))","right":"(48)"}
+      ]
+    },
+    {
+      "levelCode": "ege_various_B9__Level_09_Compute",
+      "name": "Уровень 9 Тригонометрия",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(+(*(+(1;-(^(cos(a);2)));^(tg(a);2));-(^(tg(a);2));1;-(^(cos(a);2))))",
+      "finalExpression": "Упростить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"rulePack": "Trigonometry"}
       ]
     },
     {
@@ -616,6 +676,171 @@
         {"left": "(log(/(1;b);a))","right": "(-(log(b;a)))"},
         {"left": "(-(log(b;a)))","right": "(log(/(1;b);a))"},
         {"left": "(+(-(log(b;a))))","right": "(log(/(1;b);a))"}
+      ]
+    },
+    {
+      "name": "Trigonometry",
+      "type": "algebra",
+      "rules":[
+        {"left": "(0.5)","right": "(/(1;2))"},
+        {"left": "(/(1;2))","right": "(0.5)"},
+
+        {"left": "(+(^(sin(x);2);^(cos(x);2)))","right": "(1)"},
+        {"left": "(+(^(cos(x);2);^(sin(x);2)))","right": "(1)"},
+        {"left": "(+(1;-(^(sin(x);2))))","right": "(^(cos(x);2))"},
+        {"left": "(^(cos(x);2))","right": "(+(1;-(^(sin(x);2))))"},
+        {"left": "(cos(x))","right": "(^(+(1;-(^(sin(x);2));0.5))"},
+        {"left": "(+(1;-(^(cos(x);2))))","right": "(^(sin(x);2))"},
+        {"left": "(^(sin(x);2))","right": "(+(1;-(^(cos(x);2))))"},
+        {"left": "(sin(x))","right": "(^(+(1;-(^(cos(x);2));0.5))"},
+
+        {"left": "(/(1;^(cos(x);2)))","right": "(+(1;^(tg(x);2)))"},
+        {"left": "(+(1;^(tg(x);2)))","right": "(/(1;^(cos(x);2)))"},
+        {"left": "(/(1;^(sin(x);2)))","right": "(+(1;^(ctg(x);2)))"},
+        {"left": "(+(1;^(ctg(x);2)))","right": "(/(1;^(sin(x);2)))"},
+        {"left": "(/(1;+(1;^(tg(x);2))))","right": "(^(cos(x);2))"},
+        {"left": "(^(cos(x);2))","right": "(/(1;+(1;^(tg(x);2))))"},
+        {"left": "(/(1;+(1;^(ctg(x);2))))","right": "(^(sin(x);2))"},
+        {"left": "(^(sin(x);2))","right": "(/(1;+(1;^(ctg(x);2))))"},
+
+        {"left": "(*(tg(x);ctg(x)))","right": "(1)"},
+        {"left": "(*(ctg(x);tg(x)))","right": "(1)"},
+        {"left": "(/(sin(x);cos(x)))","right": "(tg(x))"},
+        {"left": "(tg(x))","right": "(/(sin(x);cos(x)))"},
+        {"left": "(/(cos(x);sin(x)))","right": "(ctg(x))"},
+        {"left": "(ctg(x))","right": "(/(cos(x);sin(x)))"},
+        {"left": "(/(1;ctg(x)))","right": "(tg(x))"},
+        {"left": "(tg(x))","right": "(/(1;ctg(x)))"},
+        {"left": "(/(1;tg(x)))","right": "(ctg(x))"},
+        {"left": "(ctg(x))","right": "(/(1;tg(x)))"},
+
+        {"left": "(sin(+(x;y)))","right": "(+(*(sin(x);cos(y));*(sin(y);cos(x))))"},
+        {"left": "(+(*(sin(x);cos(y));*(sin(y);cos(x))))","right": "(sin(+(x;y)))"},
+        {"left": "(+(*(sin(x);cos(y));*(cos(x);sin(y))))","right": "(sin(+(x;y)))"},
+        {"left": "(+(*(cos(y);sin(x));*(sin(y);cos(x))))","right": "(sin(+(y;x)))"},
+        {"left": "(+(*(cos(y);sin(x));*(cos(x);sin(y))))","right": "(sin(+(y;x)))"},
+
+        {"left": "(sin(+(x;-(y))))","right": "(+(*(sin(x);cos(y));-(*(sin(y);cos(x)))))"},
+        {"left": "(+(*(sin(x);cos(y));-(*(sin(y);cos(x)))))","right": "(sin(+(x;-(y))))"},
+        {"left": "(+(*(sin(x);cos(y));-(*(cos(x);sin(y)))))","right": "(sin(+(x;-(y))))"},
+        {"left": "(+(*(cos(y);sin(x));-(*(sin(y);cos(x)))))","right": "(sin(+(x;-(y))))"},
+        {"left": "(+(*(cos(y);sin(x));-(*(cos(x);sin(y)))))","right": "(sin(+(x;-(y))))"},
+
+        {"left": "(cos(+(x;y)))","right": "(+(*(cos(x);cos(y));-(*(sin(y);sin(x)))))"},
+        {"left": "(+(*(cos(x);cos(y));-(*(sin(y);sin(x)))))","right": "(cos(+(x;y)))"},
+        {"left": "(+(*(cos(x);cos(y));-(*(sin(x);sin(y)))))","right": "(cos(+(x;y)))"},
+
+        {"left": "(cos(+(x;-(y))))","right": "(+(*(cos(x);cos(y));*(sin(y);sin(x))))"},
+        {"left": "(+(*(cos(x);cos(y));*(sin(y);sin(x))))","right": "(cos(+(x;-(y))))"},
+        {"left": "(+(*(cos(x);cos(y));*(sin(x);sin(y))))","right": "(cos(+(x;-(y))))"},
+        {"left": "(+(*(sin(x);sin(y));*(cos(x);cos(y))))","right": "(cos(+(x;-(y))))"},
+        {"left": "(+(*(sin(y);sin(x));*(cos(x);cos(y))))","right": "(cos(+(x;-(y))))"},
+
+        {"left": "(sin(*(2;x)))","right": "(*(2;sin(x);cos(x)))"},
+        {"left": "(sin(*(x;2)))","right": "(*(2;sin(x);cos(x)))"},
+        {"left": "(*(2;sin(x);cos(x)))","right": "(sin(*(2;x)))"},
+        {"left": "(*(2;cos(x);sin(x)))","right": "(sin(*(2;x)))"},
+
+        {"left": "(cos(*(2;x)))","right": "(+(^(cos(x);2);-(^(sin(x);2))))"},
+        {"left": "(cos(*(x;2)))","right": "(+(^(cos(x);2);-(^(sin(x);2))))"},
+        {"left": "(+(^(cos(x);2);-(^(sin(x);2))))","right": "(cos(*(2;x)))"},
+        {"left": "(+(-(^(sin(x);2));^(cos(x);2)))","right": "(cos(*(2;x)))"},
+
+        {"left": "(cos(*(2;x)))","right": "(+(1;-(*(2;^(sin(x);2)))))"},
+        {"left": "(cos(*(x;2)))","right": "(+(1;-(*(2;^(sin(x);2)))))"},
+        {"left": "(+(1;-(*(2;^(sin(x);2)))))","right": "(cos(*(2;x)))"},
+        {"left": "(+(-(*(2;^(sin(x);2)));1))","right": "(cos(*(2;x)))"},
+
+        {"left": "(cos(*(2;x)))","right": "(+(*(2;^(cos(x);2));-(1)))"},
+        {"left": "(cos(*(x;2)))","right": "(+(*(2;^(cos(x);2));-(1)))"},
+        {"left": "(+(*(2;^(cos(x);2));-(1)))","right": "(cos(*(2;x)))"},
+        {"left": "(+(-(1);*(2;^(cos(x);2))))","right": "(cos(*(2;x)))"},
+
+
+        {"left": "(+(sin(x);sin(y)))","right": "(*(2;sin(/(+(x;y);2));cos(/(+(x;-(y));2))))"},
+        {"left": "(+(sin(x);-(sin(y))))","right": "(*(2;sin(/(+(x;-(y));2));cos(/(+(x;y);2))))"},
+        {"left": "(+(cos(x);cos(y)))","right": "(*(2;cos(/(+(x;y);2));cos(/(+(x;-(y));2))))"},
+        {"left": "(+(cos(x);-(cos(y))))","right": "(*(2;sin(/(+(x;-(y));2));sin(/(+(x;y);2))))"},
+
+        {"left": "(*(sin(x);sin(y)))","right": "(/(+(cos(+(x;-(y)));-(cos(+(x;y))));2))"},
+        {"left": "(*(sin(x);cos(y)))","right": "(/(+(sin(+(x;-(y)));sin(+(x;y)));2))"},
+        {"left": "(*(cos(y);sin(x)))","right": "(/(+(sin(+(x;-(y)));sin(+(x;y)));2))"},
+        {"left": "(*(cos(x);cos(y)))","right": "(/(+(cos(+(x;-(y)));cos(+(x;y)));2))"},
+
+
+        {"left": "(sin(+(-(x))))","right": "(+(-(sin(x))))"},
+        {"left": "(+(-(sin(x))))","right": "(sin(+(-(x))))"},
+        {"left": "(-(sin(x)))","right": "(sin(+(-(x))))"},
+        {"left": "(cos(+(-(x))))","right": "(cos(x))"},
+        {"left": "(cos(x))","right": "(cos(+(-(x))))"},
+
+        {"left": "(cos(+(π;x)))","right": "(+(-(cos(-(x)))))"},
+        {"left": "(cos(+(π;-(x))))","right": "(+(-(cos(x))))"},
+        {"left": "(+(-(cos(x))))","right": "(cos(+(π;-(x))))"},
+        {"left": "(-(cos(x)))","right": "(cos(+(π;-(x))))"},
+        {"left": "(sin(+(π;x)))","right": "(sin(-(x)))"},
+        {"left": "(sin(+(π;-(x))))","right": "(sin(x))"},
+        {"left": "(sin(x))","right": "(sin(+(π;-(x))))"},
+
+        {"left": "(sin(+(/(π;2);-(x))))","right": "(cos(x))"},
+        {"left": "(sin(+(/(π;2);x)))","right": "(cos(+(-(x))))"},
+        {"left": "(cos(x))","right": "(sin(+(/(π;2);-(x))))"},
+        {"left": "(cos(+(/(π;2);-(x))))","right": "(sin(x))"},
+        {"left": "(cos(+(/(π;2);x)))","right": "(sin(+(-(x))))"},
+        {"left": "(sin(x))","right": "(cos(+(/(π;2);-(x))))"},
+
+        {"left": "(sin(+(-(x))))","right": "(+(-(sin(x))))"},
+        {"left": "(sin(-(x)))","right": "(+(-(sin(x))))"},
+        {"left": "(+(-(sin(x))))","right": "(sin(+(-(x))))"},
+        {"left": "(-(sin(x)))","right": "(sin(+(-(x))))"},
+        {"left": "(sin(+(y;-(x))))","right": "(+(-(sin(+(x;-(y))))))"},
+        {"left": "(+(-(sin(+(x;-(y))))))","right": "(sin(+(y;-(x))))"},
+        {"left": "(cos(+(-(x))))","right": "(cos(x))"},
+        {"left": "(cos(-(x)))","right": "(cos(x))"},
+        {"left": "(cos(x))","right": "(cos(+(-(x))))"},
+        {"left": "(cos(+(x;-(y))))","right": "(cos(+(y;-(x))))"},
+
+        {"left": "(sin(0))","right": "(0)"},
+        {"left": "(0)","right": "(sin(0))"},
+        {"left": "(sin(π))","right": "(0)"},
+        {"left": "(0)","right": "(sin(π))"},
+        {"left": "(sin(/(π;2)))","right": "(1)"},
+        {"left": "(1)","right": "(sin(/(π;2)))"},
+        {"left": "(cos(0))","right": "(1)"},
+        {"left": "(1)","right": "(cos(0))"},
+        {"left": "(cos(π))","right": "(+(-(1)))"},
+        {"left": "(+(-(1)))","right": "(cos(π))"},
+        {"left": "(-(1))","right": "(cos(π))"},
+        {"left": "(cos(/(π;2)))","right": "(0)"},
+        {"left": "(0)","right": "(cos(/(π;2)))"},
+
+        {"left": "(sin(/(π;6)))","right": "(/(1;2))"},
+        {"left": "(/(1;2))","right": "(sin(/(π;6)))"},
+        {"left": "(sin(/(π;4)))","right": "(/(^(2;/(1;2));2))"},
+        {"left": "(/(^(2;/(1;2));2))","right": "(sin(/(π;4)))"},
+        {"left": "(sin(/(π;3)))","right": "(/(^(3;/(1;2));2))"},
+        {"left": "(/(^(3;/(1;2));2))","right": "(sin(/(π;3)))"},
+
+        {"left": "(cos(/(π;3)))","right": "(/(1;2))"},
+        {"left": "(/(1;2))","right": "(cos(/(π;3)))"},
+        {"left": "(cos(/(π;4)))","right": "(/(^(2;/(1;2));2))"},
+        {"left": "(/(^(2;/(1;2));2))","right": "(cos(/(π;4)))"},
+        {"left": "(cos(/(π;6)))","right": "(/(^(3;/(1;2));2))"},
+        {"left": "(/(^(3;/(1;2));2))","right": "(cos(/(π;6)))"},
+
+        {"left": "(tg(/(π;4)))","right": "(1)"},
+        {"left": "(1)","right": "(tg(/(π;4)))"},
+        {"left": "(ctg(/(π;4)))","right": "(1)"},
+        {"left": "(1)","right": "(сtg(/(π;4)))"},
+        {"left": "(tg(0))","right": "(0)"},
+        {"left": "(0)","right": "(tg(0))"},
+        {"left": "(ctg(/(π;2)))","right": "(0)"},
+        {"left": "(0)","right": "(сtg(/(π;2)))"},
+
+        {"left": "(sin(x))","right": "(+(-(sin(+(x;π)))))"},
+        {"left": "(sin(x))","right": "(+(-(sin(+(x;-(π))))))"},
+        {"left": "(cos(x))","right": "(+(-(cos(+(x;π)))))"},
+        {"left": "(cos(x))","right": "(+(-(cos(+(x;-(π))))))"}
       ]
     }
   ]

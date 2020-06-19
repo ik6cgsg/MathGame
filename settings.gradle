@@ -1,2 +1,2 @@
 include ':app', ':twf'
-rootProject.name='MathGame'
+rootProject.name='Matify'

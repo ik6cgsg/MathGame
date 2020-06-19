@@ -205,7 +205,7 @@ class ExpressionSubstitution(
             } else if (right.isNumberValue()) {
                 return right.copy()
             } else if (right.children.size != 0) {
-                if (right.functionStringDefinition!!.function.isNameForRuleDesignations) {
+                if (right.functionStringDefinition?.function?.isNameForRuleDesignations ?: false) {
                     val actualNameArgsMap = mutableMapOf<String, String>()
                     val conditionChildrenMap = mutableMapOf<String, String>()
                     val functionNameArgsToExpressionMap: MutableMap<String, ExpressionNode> = mutableMapOf()

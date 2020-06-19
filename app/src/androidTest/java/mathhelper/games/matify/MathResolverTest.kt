@@ -301,6 +301,19 @@ class MathResolverTest {
     }
 
     @Test
+    fun fractionDegreeFailTest() {
+        val origin = "(+(^(2;/(1;2));/(1;4)))" //TODO: fix, know it fails here
+        val actual = MathResolver.resolveToPlain(origin).matrix.toString()
+        val expected =
+            "    1   \n" +
+                "————————\n" +
+                "       2\n" +
+                "   2  2 \n" +
+                "1*1 *1  \n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun setTest1() {
         val origin = "(A&B)&C"
         val actual = MathResolver.resolveToPlain(origin).matrix.toString()

@@ -81,20 +81,145 @@
     },
     {
       "levelCode": "ege_trigonometry__Level_04_Compute",
-      "name": "Уровень 4 Упрощение",
+      "name": "Уровень 4 Вычисление",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 5,
       "time": 90,
-      "originalExpression": "(/(+(*(5;cos(+(π;-(a))));sin(+(/(π;2);a)));cos(+(*(3;π);a))))",
+      "originalExpression": "(+(-(*(18;/(sin(+(-(/(*(3;π);4))));^(2;0.5))))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(/(2;4))","right":"(/(1;2))"},
+        {"left":"(4)","right":"(*(2;2))"},
+        {"left":"(*(2;2))","right":"(4)"},
+        {"left":"(+(2;1))","right":"(3)"},
+        {"left":"(+(1;2))","right":"(3)"},
+        {"left":"(3)","right":"(+(2;1))"},
+        {"left":"(18)","right":"(*(9;2))"},
+        {"left":"(/(18;2))","right":"(9)"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_05_Compute",
+      "name": "Уровень 5 Упрощение",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(/(+(*(2;sin(+(a;-(*(7;π)))));cos(+(/(*(3;π);2);a)));-(sin(+(π;a)))))",
       "finalExpression": "Упростить",
       "finalPattern": "?:0:?:?N",
       "rules": [
         {"rulePack": "MathBase"},
-        {"left":"(+(-(5);1))","right":"(+(-(4)))"},
-        {"left":"(+(1;-(5)))","right":"(+(-(4)))"},
-        {"left":"(+(-(*(5;a));a))","right":"(*(a;+(-(4))))"},
-        {"left":"cos(+(*(3;π);a))","right":"cos(+(π;a))"}
+        {"left":"(+(-(2);1))","right":"(1)"},
+        {"left":"(+(1;-(2)))","right":"(1)"},
+        {"left":"(3)","right":"(+(2;1))"},
+        {"left":"(+(-(*(2;a));a))","right":"(a)"},
+        {"left":"(+(a;-(*(2;a))))","right":"(a)"},
+        {"left":"(sin(+(a;-(*(7;π)))))","right":"(sin(+(a;-(π))))"},
+        {"left":"(sin(+(a;-(*(7;π)))))","right":"(sin(+(a;π)))"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_06_Compute",
+      "name": "Уровень 6 Вычисление",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(*(16;tg(/(π;8));tg(/(*(3;π);8))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(/(*(3;π);8))","right":"(+(/(π;2);-(/(π;8))))"},
+        {"left":"(/(π;8))","right":"(+(/(π;2);-(/(*(3;π);8))))"},
+        {"left":"(/(*(3;π);8))","right":"(/(*(6;π);16))"},
+        {"left":"(/(π;8))","right":"(/(*(2;π);16))"},
+        {"left":"(6)","right":"(*(3;2))"},
+        {"left":"(16)","right":"(*(8;2))"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_07_Simplify",
+      "name": "Уровень 7 Упрощение",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 3,
+      "time": 90,
+      "originalExpression": "(+(/(1;+(1;^(tg(*(2;a));2)));/(1;+(1;^(ctg(*(2;a));2)))))",
+      "finalExpression": "Упростить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_08_Compute",
+      "name": "Уровень 8 Вычисление",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(*(25;sin(+(arcsin(/(4;5));arccos(/(3;5))))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(sin(arcsin(a)))","right":"(a)"},
+        {"left":"(cos(arccos(a)))","right":"(a)"},
+        {"left":"(arccos(/(3;5)))","right":"(arcsin(/(4;5)))"},
+        {"left":"(arccos(/(4;5)))","right":"(arcsin(/(3;5)))"},
+        {"left":"(arcsin(/(3;5)))","right":"(arccos(/(4;5)))"},
+        {"left":"(arcsin(/(4;5)))","right":"(arccos(/(3;5)))"},
+        {"left":"(*(4;3))","right":"(12)"},
+        {"left":"(*(3;4))","right":"(12)"},
+        {"left":"(+(12;12))","right":"(24)"},
+        {"left":"(*(12;2))","right":"(24)"},
+        {"left":"(*(2;12))","right":"(24)"},
+        {"left":"(*(5;5))","right":"(25)"},
+        {"left":"(^(5;2))","right":"(25)"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_09_Prove",
+      "name": "Уровень 9 Доказательство",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(/(+(1;sin(*(2;a));-(cos(*(2;a))));+(1;sin(*(2;a));cos(*(2;a)))))",
+      "finalExpression": "(tg(a))",
+      "finalPattern": "",
+      "rules": [
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_10_Prove",
+      "name": "Уровень 10 Доказательство",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(+(/(1;(+(tg(*(3;a));tg(a))));-(/(1;(+(ctg(*(3;a));ctg(a)))))))",
+      "finalExpression": "(ctg(*(4;a)))",
+      "finalPattern": "",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(+(*(3;a);a))","right":"(*(4;a))"},
+        {"left":"(*(4;a))","right":"((+(*(3;a);a))"},
+        {"left":"(+(*(2;a);*(2;a)))","right":"(*(4;a))"},
+        {"left":"(*(4;a))","right":"(+(*(2;a);*(2;a)))"},
+        {"left":"(+(*(3;a);-(*(2;a))))","right":"(a)"},
+        {"left":"(a)","right":"(+(*(3;a);-(*(2;a))))"},
+        {"left":"(+(*(3;a);-(a)))","right":"(*(2;a))"},
+        {"left":"(+(*(4;a);-(a)))","right":"(*(3;a))"},
+        {"left":"(*(3;a))","right":"(+(*(4;a);-(a)))"},
+        {"left":"(+(*(2;a);-(a)))","right":"(a)"},
+        {"left":"(a)","right":"(+(*(2;a);-(a)))"}
       ]
     }
   ],
@@ -591,10 +716,10 @@
         {"left": "(+(1;-(*(2;^(sin(x);2)))))","right": "(cos(*(2;x)))"},
         {"left": "(+(-(*(2;^(sin(x);2)));1))","right": "(cos(*(2;x)))"},
 
-        {"left": "(cos(*(2;x)))","right": "(+(*(2;^(sin(x);2));-(1)))"},
-        {"left": "(cos(*(x;2)))","right": "(+(*(2;^(sin(x);2));-(1)))"},
-        {"left": "(+(*(2;^(sin(x);2));-(1)))","right": "(cos(*(2;x)))"},
-        {"left": "(+(-(1);*(2;^(sin(x);2))))","right": "(cos(*(2;x)))"},
+        {"left": "(cos(*(2;x)))","right": "(+(*(2;^(cos(x);2));-(1)))"},
+        {"left": "(cos(*(x;2)))","right": "(+(*(2;^(cos(x);2));-(1)))"},
+        {"left": "(+(*(2;^(cos(x);2));-(1)))","right": "(cos(*(2;x)))"},
+        {"left": "(+(-(1);*(2;^(cos(x);2))))","right": "(cos(*(2;x)))"},
 
 
         {"left": "(+(sin(x);sin(y)))","right": "(*(2;sin(/(+(x;y);2));cos(/(+(x;-(y));2))))"},
@@ -629,10 +754,16 @@
         {"left": "(cos(+(/(π;2);x)))","right": "(sin(+(-(x))))"},
         {"left": "(sin(x))","right": "(cos(+(/(π;2);-(x))))"},
 
-        {"left": "(sin(-(x)))","right": "(-(sin(x)))"},
-        {"left": "(-(sin(x)))","right": "(sin(-(x)))"},
+        {"left": "(sin(+(-(x))))","right": "(+(-(sin(x))))"},
+        {"left": "(sin(-(x)))","right": "(+(-(sin(x))))"},
+        {"left": "(+(-(sin(x))))","right": "(sin(+(-(x))))"},
+        {"left": "(-(sin(x)))","right": "(sin(+(-(x))))"},
+        {"left": "(sin(+(y;-(x))))","right": "(+(-(sin(+(x;-(y))))))"},
+        {"left": "(+(-(sin(+(x;-(y))))))","right": "(sin(+(y;-(x))))"},
+        {"left": "(cos(+(-(x))))","right": "(cos(x))"},
         {"left": "(cos(-(x)))","right": "(cos(x))"},
-        {"left": "(cos(x))","right": "(cos(-(x)))"},
+        {"left": "(cos(x))","right": "(cos(+(-(x))))"},
+        {"left": "(cos(+(x;-(y))))","right": "(cos(+(y;-(x))))"},
 
         {"left": "(sin(0))","right": "(0)"},
         {"left": "(0)","right": "(sin(0))"},
@@ -669,7 +800,12 @@
         {"left": "(tg(0))","right": "(0)"},
         {"left": "(0)","right": "(tg(0))"},
         {"left": "(ctg(/(π;2)))","right": "(0)"},
-        {"left": "(0)","right": "(сtg(/(π;2)))"}
+        {"left": "(0)","right": "(сtg(/(π;2)))"},
+
+        {"left": "(sin(x))","right": "(+(-(sin(+(x;π)))))"},
+        {"left": "(sin(x))","right": "(+(-(sin(+(x;-(π))))))"},
+        {"left": "(cos(x))","right": "(+(-(cos(+(x;π)))))"},
+        {"left": "(cos(x))","right": "(+(-(cos(+(x;-(π))))))"}
       ]
     },
     {

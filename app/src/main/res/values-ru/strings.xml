@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MathGame</string>
+    <string name="app_name">Matify</string>
     <string name="account">ПРОФИЛЬ</string>
     <string name="additional">Дополнительно</string>
     <string name="additional_auth_info">Показать дополнительную информацию</string>

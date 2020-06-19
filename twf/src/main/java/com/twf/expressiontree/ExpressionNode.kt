@@ -98,6 +98,16 @@ data class ExpressionNode(
         }
     }
 
+    fun reduceExtraSigns(extraUnaryFunctions: Set<String>, exclusionChildFunctions: Set<String> = setOf()) {
+        for (i in children.lastIndex downTo 0) {
+            children[i].reduceExtraSigns(extraUnaryFunctions, exclusionChildFunctions)
+            if (children[i].children.size == 1 && children[i].value in extraUnaryFunctions && children[i].children.first().value !in exclusionChildFunctions) {
+                children[i] = children[i].children.first()
+                children[i].parent = this
+            }
+        }
+    }
+
     fun computeIdentifier(getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }): String {
         if (nodeType == NodeType.VARIABLE) {
             identifier = getNodeValueString(this)
