@@ -2,6 +2,7 @@ package mathhelper.games.matify.mathResolver
 
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.util.Log
 import com.twf.api.stringToExpression
 import com.twf.api.structureStringToExpression
 import com.twf.expressiontree.ExpressionNode
@@ -41,7 +42,7 @@ class MathResolver {
             val realExpression = if (!structureString) {
                 stringToExpression(expression)
             } else structureStringToExpression(expression)
-            if (realExpression.identifier.contentEquals("()")) {
+            if (realExpression.toString() == "()") {
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
             currentViewTree = MathResolverNodeBase.getTree(realExpression, style, taskType)

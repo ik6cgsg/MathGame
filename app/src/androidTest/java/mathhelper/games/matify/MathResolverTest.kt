@@ -302,14 +302,31 @@ class MathResolverTest {
 
     @Test
     fun fractionDegreeFailTest() {
-        val origin = "(+(^(2;/(1;2));/(1;4)))" //TODO: fix, know it fails here
-        val actual = MathResolver.resolveToPlain(origin).matrix.toString()
+        val origin = "(+(^(2;/(1;2));/(1;4)))"
+        val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
-            "    1   \n" +
-                "————————\n" +
-                "       2\n" +
-                "   2  2 \n" +
-                "1*1 *1  \n"
+            "  1   \n" +
+            " (—)  \n" +
+            "  2  1\n" +
+            "2   +—\n" +
+            "     4\n"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun fractionDegreeTest() {
+        val origin = "(*(/(+(1;2);/(^(794;2);cos(*(2;x))));^(4;log(^(27;2);^(13;3)))))"
+        val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
+        val expected =
+            "                   2 \n" +
+            "          log   (27 )\n" +
+            "               3     \n" +
+            "   1+2       13      \n" +
+            "————————*4           \n" +
+            "     2               \n" +
+            "  794                \n" +
+            "————————             \n" +
+            "cos(2*x)             \n"
         assertEquals(expected, actual)
     }
 
@@ -375,13 +392,14 @@ class MathResolverTest {
     }
 
     @Test
-    @Ignore //TODO: fix (now it fails)
     fun logMulTest() {
-        val origin = "(*(log(^(a;с);b);log(b;^(a;2))))" //on expression "(*(log(^(a;с);b);log(b;a)))" it works ok
+        val origin = "(*(log(^(a;с);b);log(b;^(a;2))))"
         val actual = MathResolver.resolveToPlain(origin, structureString = true).matrix.toString()
         val expected =
-            "3+log (7)\n" +
-                "     2   \n"
+            "      с          \n" +
+            "log (a )*log  (b)\n" +
+            "   b         2   \n" +
+            "            a    \n"
         assertEquals(expected, actual)
     }
 }

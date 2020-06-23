@@ -30,6 +30,7 @@ class MathResolverNodeMult(
         if (baseLineOffset < 0) {
             baseLineOffset = height - 1
         }
+        super.fixBaseline()
     }
 
     override fun setCoordinates(leftTop: Point) {

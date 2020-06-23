@@ -83,6 +83,20 @@ open class MathResolverNodeBase(
         }
     }
 
+    fun fixBaseline() {
+        children.forEach { node ->
+            val diffBottom = baseLineOffset + node.height - node.baseLineOffset - height
+            if (diffBottom > 0) {
+                height += diffBottom
+            }
+            val diffTop = node.baseLineOffset - baseLineOffset
+            if (diffTop > 0) {
+                height += diffTop
+                baseLineOffset += diffTop
+            }
+        }
+    }
+
     open fun setCoordinates(leftTop: Point) {
         this.leftTop = leftTop
         rightBottom = Point(leftTop.x + length - 1, leftTop.y + height - 1)
