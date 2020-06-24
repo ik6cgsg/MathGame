@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tmp_logo" />
+        app:srcCompat="@drawable/matify" />
 
     <LinearLayout
         android:id="@+id/googleSign"
