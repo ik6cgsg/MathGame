@@ -33,6 +33,7 @@
         android:textColor="@color/light_click"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="@+id/levels"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -96,7 +97,8 @@
             android:hint="@string/login"
             android:inputType="text"
             android:textColor="@color/textColor"
-            android:textSize="21sp" />
+            android:textSize="21sp"
+            android:typeface="monospace" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,7 +138,8 @@
                     android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:textColor="@color/textColor"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:typeface="monospace" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,7 +157,8 @@
                     android:hint="@string/full_name"
                     android:inputType="textPersonName"
                     android:textColor="@color/textColor"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:typeface="monospace" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,7 +177,8 @@
                     android:inputType="textLongMessage|textMultiLine|textNoSuggestions"
                     android:singleLine="false"
                     android:textColor="@color/textColor"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:typeface="monospace" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

@@ -27,7 +27,8 @@
             android:hint="@string/new_password"
             android:inputType="text|textPassword"
             android:textColor="@color/textColor"
-            android:textSize="21sp" />
+            android:textSize="21sp"
+            android:typeface="monospace" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,7 +53,8 @@
             android:hint="@string/repeat_password"
             android:inputType="text|textPassword"
             android:textColor="@color/textColor"
-            android:textSize="21sp" />
+            android:textSize="21sp"
+            android:typeface="monospace" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,6 +85,7 @@
         android:textColor="@color/light_click"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="@+id/levels"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -134,7 +137,8 @@
             android:hint="@string/old_password"
             android:inputType="text|textPassword"
             android:textColor="@color/textColor"
-            android:textSize="21sp" />
+            android:textSize="21sp"
+            android:typeface="monospace" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

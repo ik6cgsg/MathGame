@@ -44,4 +44,5 @@
     <string name="tutorial_game">Тренировочная Игра</string>
     <string name="tutorial_level">Тренировочный Уровень</string>
     <string name="start_tutorial">❔ Начать тренировку</string>
+    <string name="parsing_error">ошибка</string>
 </resources>

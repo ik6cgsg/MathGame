@@ -53,4 +53,5 @@
     <string name="tutorial_level">Tutorial Level</string>
     <string name="tutorial_game">Tutorial Game</string>
     <string name="start_tutorial">❔ Start tutorial</string>
+    <string name="parsing_error">parsing error</string>
 </resources>

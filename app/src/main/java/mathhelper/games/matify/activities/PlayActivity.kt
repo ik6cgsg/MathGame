@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
@@ -17,6 +18,7 @@ import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.Constants
+import java.lang.Exception
 import kotlin.math.max
 import kotlin.math.min
 
@@ -45,14 +47,19 @@ class PlayActivity: AppCompatActivity() {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
         scaleDetector.onTouchEvent(event)
-        when {
-            event.action == MotionEvent.ACTION_DOWN -> {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
                 needClear = true
             }
-            event.action == MotionEvent.ACTION_UP -> {
+            MotionEvent.ACTION_UP -> {
                 if (needClear) {
-                    globalMathView.clearExpression()
-                    PlayScene.shared.clearRules()
+                    try {
+                        globalMathView.clearExpression()
+                        PlayScene.shared.clearRules()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error while clearing rules on touch: ${e.message}")
+                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -82,7 +89,9 @@ class PlayActivity: AppCompatActivity() {
         backDialog = createBackDialog()
         continueDialog = createContinueDialog()
         PlayScene.shared.playActivity = this
-        startCreatingLevelUI()
+        Handler().postDelayed({
+            startCreatingLevelUI()
+        }, 100)
     }
 
     override fun onBackPressed() {
@@ -111,7 +120,12 @@ class PlayActivity: AppCompatActivity() {
         globalMathView.text = ""
         endExpressionView.text = ""
         progress.visibility = View.VISIBLE
-        PlayScene.shared.loadLevel(continueGame)
+        try {
+            PlayScene.shared.loadLevel(continueGame)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error while level loading")
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+        }
         progress.visibility = View.GONE
         loading = false
     }

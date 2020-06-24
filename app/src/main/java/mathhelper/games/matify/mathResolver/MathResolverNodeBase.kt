@@ -3,10 +3,12 @@ package mathhelper.games.matify.mathResolver
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.style.ScaleXSpan
+import android.util.Log
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.NodeType
 import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.mathResolver.mathResolverNodes.*
+import java.lang.Exception
 
 open class MathResolverNodeBase(
     var origin: ExpressionNode,
@@ -68,11 +70,16 @@ open class MathResolverNodeBase(
             return node
         }
 
-        fun getTree(expression: ExpressionNode, style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
-            val root = createNode(expression.children[0], false, style, taskType)
-            root.setNodesFromExpression()
-            root.setCoordinates(Point(0, 0))
-            return root
+        fun getTree(expression: ExpressionNode, style: VariableStyle, taskType: TaskType): MathResolverNodeBase? {
+            return try {
+                val root = createNode(expression.children[0], false, style, taskType)
+                root.setNodesFromExpression()
+                root.setCoordinates(Point(0, 0))
+                root
+            } catch (e: Exception) {
+                Log.e("MathResolverNodeBase", "Error during building tree: ${e.message}")
+                null
+            }
         }
     }
 

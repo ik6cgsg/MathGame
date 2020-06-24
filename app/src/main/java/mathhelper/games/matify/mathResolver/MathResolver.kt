@@ -33,7 +33,12 @@ class MathResolver {
 
         fun resolveToPlain(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT,
                            taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
+            if (expression.toString() == "()") {
+                Log.e("MathResolver", "TWF parsing failed")
+                return MathResolverPair(null, SpannableStringBuilder("parsing error"))
+            }
             currentViewTree = MathResolverNodeBase.getTree(expression, style, taskType)
+                ?: return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             return MathResolverPair(currentViewTree, getPlainString())
         }
 
@@ -43,9 +48,11 @@ class MathResolver {
                 stringToExpression(expression)
             } else structureStringToExpression(expression)
             if (realExpression.toString() == "()") {
+                Log.e("MathResolver", "TWF parsing failed")
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
             currentViewTree = MathResolverNodeBase.getTree(realExpression, style, taskType)
+                ?: return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             return MathResolverPair(currentViewTree, getPlainString())
         }
 
@@ -62,13 +69,13 @@ class MathResolver {
             if (left.tree!!.baseLineOffset > right.tree!!.baseLineOffset) {
                 leadingTree = left.tree
                 rightCorr = correctMatrixByBaseLine(matrixRight, left.tree, right.tree)
-                right.tree!!.height += rightCorr
+                right.tree.height += rightCorr
             } else {
                 leadingTree = right.tree
                 leftCorr = correctMatrixByBaseLine(matrixLeft, right.tree, left.tree)
-                left.tree!!.height += leftCorr
+                left.tree.height += leftCorr
             }
-            if (left.tree!!.height > right.tree!!.height) {
+            if (left.tree.height > right.tree.height) {
                 correctMatrixByHeight(matrixRight, left.tree, right.tree)
             } else {
                 correctMatrixByHeight(matrixLeft, right.tree, left.tree)
@@ -124,7 +131,7 @@ class MathResolver {
         }
 
         private fun getPlainString(): SpannableStringBuilder {
-            var result = SpannableStringBuilder("")
+            val result = SpannableStringBuilder("")
             // matrix init
             stringMatrix = ArrayList()
             spannableArray = ArrayList()

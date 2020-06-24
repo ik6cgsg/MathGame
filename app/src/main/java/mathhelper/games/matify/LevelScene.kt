@@ -1,6 +1,9 @@
 package mathhelper.games.matify
 
 import android.content.Intent
+import android.os.Handler
+import android.util.Log
+import android.widget.Toast
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -22,11 +25,15 @@ class LevelScene {
             if (value != null) {
                 GlobalScope.launch {
                     val job = async {
-                        val loaded = GlobalScene.shared.currentGame!!.load(value)
+                        val loaded = GlobalScene.shared.currentGame?.load(value) ?: false
                         value.runOnUiThread {
                             if (loaded) {
                                 levels = GlobalScene.shared.currentGame!!.levels
                                 value.onLevelsLoaded()
+                            } else {
+                                value.loading = false
+                                Log.e(TAG, "Error while LevelsActivity initializing")
+                                Toast.makeText(value, "Something went wrong, please retry", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
@@ -42,11 +49,13 @@ class LevelScene {
                 value >= 0 && value < levels.size -> {
                     field = value
                     currentLevel = levels[value]
-                    if (PlayScene.shared.playActivity == null) {
-                        levelsActivity?.startActivity(Intent(levelsActivity, PlayActivity::class.java))
-                    } else {
-                        PlayScene.shared.playActivity!!.startCreatingLevelUI()
-                    }
+                    Handler().postDelayed({
+                        if (PlayScene.shared.playActivity == null) {
+                            levelsActivity?.startActivity(Intent(levelsActivity, PlayActivity::class.java))
+                        } else {
+                            PlayScene.shared.playActivity!!.startCreatingLevelUI()
+                        }
+                    }, 100)
                 }
                 value < 0 -> {
                 }
@@ -56,8 +65,7 @@ class LevelScene {
         }
 
     fun wasLevelPaused(): Boolean {
-        return currentLevel!!.endless && (currentLevel!!.lastResult != null &&
-            currentLevel!!.lastResult!!.award.value == AwardType.PAUSED)
+        return currentLevel?.endless == true && currentLevel?.lastResult?.award?.value == AwardType.PAUSED
     }
 
     fun nextLevel(): Boolean {
@@ -72,6 +80,6 @@ class LevelScene {
         GlobalScene.shared.currentGame?.rulePacks?.clear()
         GlobalScene.shared.currentGame?.levels?.clear()
         GlobalScene.shared.currentGame?.loaded = false
-        levelsActivity!!.finish()
+        levelsActivity?.finish()
     }
 }

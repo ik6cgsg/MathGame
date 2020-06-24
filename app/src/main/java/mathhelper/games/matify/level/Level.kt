@@ -207,7 +207,7 @@ class Level {
                 }
             } as ArrayList<ExpressionSubstitution>
         for (pckgName in packages) {
-            val rulesFromPack = game.rulePacks[pckgName]!!.getRulesFor(node, expression)
+            val rulesFromPack = game.rulePacks[pckgName]?.getRulesFor(node, expression)
             if (rulesFromPack != null) {
                 res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
             }

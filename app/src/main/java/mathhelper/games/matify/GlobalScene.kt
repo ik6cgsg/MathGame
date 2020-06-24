@@ -2,6 +2,7 @@ package mathhelper.games.matify
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Handler
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -68,7 +69,9 @@ class GlobalScene {
         set(value) {
             field = value
             if (value != null) {
-                gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
+                Handler().postDelayed({
+                    gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
+                }, 100)
                 // ActivityOptions.makeSceneTransitionAnimation(gamesActivity).toBundle())
                 // TODO: send log about game started
             }
@@ -152,8 +155,7 @@ class GlobalScene {
                     }
                     is Request.TokenNotFoundException -> {
                         context.runOnUiThread {
-                            Toast.makeText(context, "Bad Credentials Error", Toast.LENGTH_LONG)
-                                .show()
+                            Toast.makeText(context, "Bad Credentials Error", Toast.LENGTH_LONG).show()
                         }
                     }
                     is Request.UndefinedException -> {

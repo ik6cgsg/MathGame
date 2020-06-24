@@ -153,7 +153,7 @@
         android:textColor="@color/light_click"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:typeface="normal"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="@+id/restart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -169,6 +169,7 @@
         android:textColor="@color/light_click"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="@+id/timer_view"
         app:layout_constraintEnd_toStartOf="@+id/previous"
         app:layout_constraintTop_toTopOf="parent" />
@@ -204,6 +205,7 @@
         android:textColor="@color/light_click"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="@+id/timer_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -247,7 +247,8 @@
                 android:singleLine="true"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/lightGray"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:typeface="monospace" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -269,7 +270,8 @@
                 android:singleLine="true"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/ic_launcher_background"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:typeface="monospace" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

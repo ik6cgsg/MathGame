@@ -16,8 +16,9 @@ import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.mathResolver.VariableStyle
+import java.lang.Exception
 
-class RuleMathView: TextView {
+class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "RuleMathView"
     private val moveTreshold = 10
     var subst: ExpressionSubstitution? = null
@@ -65,8 +66,16 @@ class RuleMathView: TextView {
             Type.SET -> MathResolver.resolveToPlain(subst.right, VariableStyle.GREEK, TaskType.SET)
             else -> MathResolver.resolveToPlain(subst.right, VariableStyle.GREEK)
         }
-        val textStr = MathResolver.getRule(from, to)
-        text = textStr
+        if (from.tree == null || to.tree == null) {
+            text = context.getString(R.string.parsing_error)
+            return
+        }
+        try {
+            text = MathResolver.getRule(from, to)
+        } catch (e: Exception) {
+            text = context.getString(R.string.parsing_error)
+            Log.e(TAG, "Error during substitution render")
+        }
     }
 
     /** TextView OVERRIDES **/

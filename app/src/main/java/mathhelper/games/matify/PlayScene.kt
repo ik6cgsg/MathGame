@@ -1,8 +1,10 @@
 package mathhelper.games.matify
 
 import android.graphics.Color
+import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.twf.api.expressionToStructureString
 import com.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.activities.PlayActivity
@@ -35,7 +37,14 @@ class PlayScene {
         set(value) {
             field = value
             if (value != null) {
-                onRuleClicked()
+                Handler().postDelayed({
+                    try {
+                        onRuleClicked()
+                    } catch (e: java.lang.Exception) {
+                        Log.e(TAG, "Error during rule usage: ${e.message}")
+                        Toast.makeText(playActivity, "Something went wrong", Toast.LENGTH_LONG).show()
+                    }
+                }, 100)
             }
         }
     var stepsCount: Float = 0f

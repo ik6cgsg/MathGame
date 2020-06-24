@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity() {
     private val TAG = "LevelsActivity"
-    private var loading = false
+    var loading = false
     private lateinit var levelViews: ArrayList<TextView>
     private lateinit var levelsList: LinearLayout
     private var levelTouched: View? = null
