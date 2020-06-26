@@ -101,9 +101,26 @@ data class ExpressionNode(
     fun reduceExtraSigns(extraUnaryFunctions: Set<String>, exclusionChildFunctions: Set<String> = setOf()) {
         for (i in children.lastIndex downTo 0) {
             children[i].reduceExtraSigns(extraUnaryFunctions, exclusionChildFunctions)
-            if (children[i].children.size == 1 && children[i].value in extraUnaryFunctions && children[i].children.first().value !in exclusionChildFunctions) {
+            if ((children.size == 1 || value !in extraUnaryFunctions) && children[i].children.size == 1 && children[i].value in extraUnaryFunctions && children[i].children.first().value !in exclusionChildFunctions) {
                 children[i] = children[i].children.first()
                 children[i].parent = this
+            }
+        }
+    }
+
+    fun normilizeSubstructions(functionConfiguration: FunctionConfiguration) { //TODO: generalize because it depends on configuration
+        for (i in children.lastIndex downTo 0) {
+            children[i].normilizeSubstructions(functionConfiguration)
+            if (children[i].value == "-" && value != "+") {
+                val plusParent = ExpressionNode(NodeType.FUNCTION,
+                    "+",
+                    children[i].startPosition,
+                    children[i].endPosition,
+                    "",
+                    this,
+                    functionConfiguration.fastFindStringDefinitionByNameAndNumberOfArguments("+", 1))
+                plusParent.addChild(children[i])
+                children[i] = plusParent
             }
         }
     }

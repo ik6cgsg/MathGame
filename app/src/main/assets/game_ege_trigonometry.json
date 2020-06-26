@@ -51,7 +51,7 @@
       "finalPattern": "?:0:?:?R",
       "rules": [
         {"rulePack": "MathBase"},
-        {"left":"(sin(a))","right":"(0.6)"},
+        {"left":"(sin(a))","right":"(0.6)","basedOnTaskContext": true},
         {"left":"(^(0.6;2))","right":"(0.36)"},
         {"left":"(*(0.36;2))","right":"(0.72)"},
         {"left":"(*(2;0.36))","right":"(0.72)"},
@@ -238,7 +238,9 @@
 
         {"rulePack": "Trigonometry"},
         {"rulePack": "TrigonometryZk"},
-        {"rulePack": "TrigonometryCompleteTgCtg"}
+        {"rulePack": "TrigonometryCompleteTgCtg"},
+
+        {"rulePack": "ArithmeticPlusSelections"}
       ]
     },
     {
@@ -289,7 +291,10 @@
         {"left":"(3)","right":"(+(1;2))"},
 
         {"left":"(*(1;1))","right":"(1)"},
-        {"left":"(1)","right":"(*(1;1))"}
+        {"left":"(1)","right":"(*(1;1))"},
+
+        {"left": "(0.5)","right": "(/(1;2))"},
+        {"left": "(/(1;2))","right": "(0.5)"}
       ]
     },
     {
@@ -343,6 +348,47 @@
         {"left": "(+(A;B;C;D;E))","right": "(+(C;A;B;D;E))"},
         {"left": "(+(A;B;C;D;E))","right": "(+(D;A;B;C;E))"},
         {"left": "(+(A;B;C;D;E))","right": "(+(E;A;B;C;D))"}
+      ]
+    },
+    {
+      "name": "ArithmeticPlusSelections",
+      "type": "algebra",
+      "rules": [
+        {"left":"(+(a;b))","right":"(+(a;+(b)))"},
+        {"left":"(+(a;b))","right":"(+(+(a);b))"},
+
+        {"left":"(+(a;b;c))","right":"(+(+(a);b;c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;+(b);c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;b;+(c)))"},
+
+        {"left":"(+(a;b;c;d))","right":"(+(+(a);b;c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;+(b);c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;+(c);d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;c;+(d)))"},
+
+        {"left":"(+(a;b;c;d;e))","right":"(+(+(a);b;c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;+(b);c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;+(c);d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;+(d);e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;d;+(e)))"},
+
+        {"right":"(+(a;b))","left":"(+(a;+(b)))"},
+        {"right":"(+(a;b))","left":"(+(+(a);b))"},
+
+        {"right":"(+(a;b;c))","left":"(+(+(a);b;c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;+(b);c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;b;+(c)))"},
+
+        {"right":"(+(a;b;c;d))","left":"(+(+(a);b;c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;+(b);c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;+(c);d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;c;+(d)))"},
+
+        {"right":"(+(a;b;c;d;e))","left":"(+(+(a);b;c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;+(b);c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;+(c);d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;+(d);e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;d;+(e)))"}
       ]
     },
     {
@@ -647,17 +693,14 @@
       "name": "Trigonometry",
       "type": "algebra",
       "rules":[
-        {"left": "(0.5)","right": "(/(1;2))"},
-        {"left": "(/(1;2))","right": "(0.5)"},
-
         {"left": "(+(^(sin(x);2);^(cos(x);2)))","right": "(1)"},
         {"left": "(+(^(cos(x);2);^(sin(x);2)))","right": "(1)"},
         {"left": "(+(1;-(^(sin(x);2))))","right": "(^(cos(x);2))"},
         {"left": "(^(cos(x);2))","right": "(+(1;-(^(sin(x);2))))"},
-        {"left": "(cos(x))","right": "(^(+(1;-(^(sin(x);2));0.5)))"},
+        {"left": "(cos(x))","right": "(^(+(1;-(^(sin(x);2)));0.5))"},
         {"left": "(+(1;-(^(cos(x);2))))","right": "(^(sin(x);2))"},
         {"left": "(^(sin(x);2))","right": "(+(1;-(^(cos(x);2))))"},
-        {"left": "(sin(x))","right": "(^(+(1;-(^(cos(x);2));0.5)))"},
+        {"left": "(sin(x))","right": "(^(+(1;-(^(cos(x);2)));0.5))"},
 
         {"left": "(/(1;^(cos(x);2)))","right": "(+(1;^(tg(x);2)))"},
         {"left": "(+(1;^(tg(x);2)))","right": "(/(1;^(cos(x);2)))"},

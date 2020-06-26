@@ -130,6 +130,7 @@ fun applySubstitution(
 ): ExpressionNode {
     substitution.applySubstitution(substitutionPlaces)
     expression.getTopNode().reduceExtraSigns(setOf("+"), setOf("-"))
+    expression.getTopNode().normilizeSubstructions(FunctionConfiguration())
     expression.getTopNode().computeNodeIdsAsNumbersInDirectTraversal()
     return expression
 }

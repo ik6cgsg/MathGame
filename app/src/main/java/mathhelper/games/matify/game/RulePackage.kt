@@ -13,6 +13,7 @@ enum class PackageField(val str: String) {
     RULE_PACK("rulePack"),
     RULE_LEFT("left"),
     RULE_RIGHT("right"),
+    BASED_ON_TASK_CONTEXT("basedOnTaskContext"),
     TYPE("type"),
     NAME("name"),
     RULES("rules")
@@ -75,7 +76,8 @@ private constructor(
         fun parseRule(ruleInfo: JSONObject, type: Type): ExpressionSubstitution {
             val from = ruleInfo.getString(PackageField.RULE_LEFT.str)
             val to = ruleInfo.getString(PackageField.RULE_RIGHT.str)
-            return expressionSubstitutionFromStructureStrings(from, to)
+            val basedOnTaskContext = ruleInfo.optBoolean(PackageField.BASED_ON_TASK_CONTEXT.str, false)
+            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext)
         }
     }
 

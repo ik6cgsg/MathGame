@@ -249,7 +249,9 @@
         {"rulePack": "AdditiveToMultiplicative"},
         {"rulePack": "ArithmeticDegree"},
 
-        {"rulePack": "ShortMultiplication"}
+        {"rulePack": "ShortMultiplication"},
+
+        {"rulePack": "ArithmeticPlusSelections"}
       ]
     },
     {
@@ -300,7 +302,10 @@
         {"left":"(3)","right":"(+(1;2))"},
 
         {"left":"(*(1;1))","right":"(1)"},
-        {"left":"(1)","right":"(*(1;1))"}
+        {"left":"(1)","right":"(*(1;1))"},
+
+        {"left": "(0.5)","right": "(/(1;2))"},
+        {"left": "(/(1;2))","right": "(0.5)"}
       ]
     },
     {
@@ -354,6 +359,47 @@
         {"left": "(+(A;B;C;D;E))","right": "(+(C;A;B;D;E))"},
         {"left": "(+(A;B;C;D;E))","right": "(+(D;A;B;C;E))"},
         {"left": "(+(A;B;C;D;E))","right": "(+(E;A;B;C;D))"}
+      ]
+    },
+    {
+      "name": "ArithmeticPlusSelections",
+      "type": "algebra",
+      "rules": [
+        {"left":"(+(a;b))","right":"(+(a;+(b)))"},
+        {"left":"(+(a;b))","right":"(+(+(a);b))"},
+
+        {"left":"(+(a;b;c))","right":"(+(+(a);b;c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;+(b);c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;b;+(c)))"},
+
+        {"left":"(+(a;b;c;d))","right":"(+(+(a);b;c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;+(b);c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;+(c);d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;c;+(d)))"},
+
+        {"left":"(+(a;b;c;d;e))","right":"(+(+(a);b;c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;+(b);c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;+(c);d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;+(d);e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;d;+(e)))"},
+
+        {"right":"(+(a;b))","left":"(+(a;+(b)))"},
+        {"right":"(+(a;b))","left":"(+(+(a);b))"},
+
+        {"right":"(+(a;b;c))","left":"(+(+(a);b;c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;+(b);c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;b;+(c)))"},
+
+        {"right":"(+(a;b;c;d))","left":"(+(+(a);b;c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;+(b);c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;+(c);d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;c;+(d)))"},
+
+        {"right":"(+(a;b;c;d;e))","left":"(+(+(a);b;c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;+(b);c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;+(c);d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;+(d);e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;d;+(e)))"}
       ]
     },
     {
