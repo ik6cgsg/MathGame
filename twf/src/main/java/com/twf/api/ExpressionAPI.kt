@@ -477,7 +477,10 @@ fun optGenerateSimpleComputationRule(
         val computed = expressionPart.computeNode(simpleComputationRuleParams) ?: return result
         var stringValue = computed.toString()
         if (stringValue.contains('.')){
-            stringValue = stringValue.substringBefore(".") + "." + stringValue.substringAfter(".").substringBefore("000")
+            val fractionPart = stringValue.substringAfter(".").substringBefore("000")
+            stringValue = stringValue.substringBefore(".")
+            if (fractionPart.isNotEmpty() && fractionPart !="0")
+            stringValue = stringValue + "." + stringValue.substringAfter(".").substringBefore("000")
         }
         result.add(ExpressionSubstitution(addRootNodeToExpression(expressionPart.clone()), addRootNodeToExpression(ExpressionNode(NodeType.VARIABLE, stringValue))))
     }
@@ -510,7 +513,7 @@ private fun inZ (value: Double) = (value.toInt() - value).toReal().additivelyEqu
 
 private fun roundNumber (number: Double): Double {
     var current = abs(number)
-    while (inZ(current)){
+    while (!current.toReal().additivelyEqualToZero() and inZ(current)){
         current /= 10
     }
     while (!inZ(current)){
@@ -555,7 +558,7 @@ private fun div (args: List<Double>): Double? {
     if (args.size != 2) {
         return null
     }
-    if (roundNumber(args.first()) > 100 || roundNumber(args.last()) > 10) {
+    if (roundNumber(args.first()) > 100 || roundNumber(args.last()) > 10 || args.last() == 0.0) {
         return null
     }
     val result = args.first() / args.last()

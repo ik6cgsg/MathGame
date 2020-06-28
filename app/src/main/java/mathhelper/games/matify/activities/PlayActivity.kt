@@ -58,7 +58,7 @@ class PlayActivity: AppCompatActivity() {
                         PlayScene.shared.clearRules()
                     } catch (e: Exception) {
                         Log.e(TAG, "Error while clearing rules on touch: ${e.message}")
-                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Misclick happened, please retry", Toast.LENGTH_LONG).show()
                     }
                 }
             }

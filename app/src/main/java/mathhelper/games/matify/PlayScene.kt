@@ -43,7 +43,7 @@ class PlayScene {
                         onRuleClicked()
                     } catch (e: java.lang.Exception) {
                         Log.e(TAG, "Error during rule usage: ${e.message}")
-                        Toast.makeText(playActivity, "Something went wrong", Toast.LENGTH_LONG).show()
+                        Toast.makeText(playActivity, "Misclick happened, please retry", Toast.LENGTH_LONG).show()
                     }
                 }, 100)
             }

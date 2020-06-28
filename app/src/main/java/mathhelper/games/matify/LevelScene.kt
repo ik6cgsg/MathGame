@@ -33,7 +33,7 @@ class LevelScene {
                             } else {
                                 value.loading = false
                                 Log.e(TAG, "Error while LevelsActivity initializing")
-                                Toast.makeText(value, "Something went wrong, please retry", Toast.LENGTH_LONG).show()
+                                Toast.makeText(value, "Misclick happened, please retry", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
