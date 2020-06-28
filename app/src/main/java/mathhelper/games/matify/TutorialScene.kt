@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.util.Log
+import com.twf.api.SimpleComputationRuleParams
 import com.twf.expressiontree.ExpressionSubstitution
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -227,7 +228,8 @@ class TutorialScene {
         val activity = tutorialPlayActivity!!
         if (activity.globalMathView.currentAtom != null) {
             val rules = tutorialLevel.getRulesFor(activity.globalMathView.currentAtom!!,
-                activity.globalMathView.expression!!)
+                activity.globalMathView.expression!!, SimpleComputationRuleParams(false)
+            )
             if (rules != null) {
                 activity.noRules.visibility = View.GONE
                 activity.rulesScrollView.visibility = View.VISIBLE

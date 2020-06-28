@@ -191,10 +191,11 @@ class Level {
         }
     }
 
-    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
+    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode, simpleComputationRules: SimpleComputationRuleParams): List<ExpressionSubstitution>? {
         Log.d(TAG, "getRulesFor")
         // TODO: smek with showWrongRules flag
-        var res: ArrayList<ExpressionSubstitution> = rules
+
+        var rulesRes: ArrayList<ExpressionSubstitution> = rules
             .filter {
                 val list = findSubstitutionPlacesInExpression(expression, it)
                 if (list.isEmpty()) {
@@ -206,6 +207,8 @@ class Level {
                     substPlace != null
                 }
             } as ArrayList<ExpressionSubstitution>
+        var res = optGenerateSimpleComputationRule(node, simpleComputationRules)
+        res = (res + rulesRes) as ArrayList<ExpressionSubstitution>
         for (pckgName in packages) {
             val rulesFromPack = game.rulePacks[pckgName]?.getRulesFor(node, expression)
             if (rulesFromPack != null) {
@@ -215,6 +218,7 @@ class Level {
         if (res.isEmpty()) {
             return null
         }
+        res = res.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
         res.sortByDescending { it.left.identifier.length }
         return res
     }

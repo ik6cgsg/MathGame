@@ -5,6 +5,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.twf.api.SimpleComputationRuleParams
 import com.twf.api.expressionToStructureString
 import com.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.activities.PlayActivity
@@ -103,7 +104,8 @@ class PlayScene {
         val activity = playActivity!!
         if (activity.globalMathView.currentAtom != null) {
             val rules = LevelScene.shared.currentLevel!!.getRulesFor(activity.globalMathView.currentAtom!!,
-                activity.globalMathView.expression!!)
+                activity.globalMathView.expression!!, SimpleComputationRuleParams(true)
+            )
             if (rules != null) {
                 activity.noRules.visibility = View.GONE
                 activity.rulesScrollView.visibility = View.VISIBLE

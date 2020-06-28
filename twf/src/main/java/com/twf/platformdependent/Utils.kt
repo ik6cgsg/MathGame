@@ -8,6 +8,7 @@ fun random(from: Double, to: Double) = (random.nextDouble() * (to - from) + from
 fun randomInt(from: Int, to: Int) = random.nextInt(from, to)
 
 fun abs(x: Int) = if (x > 0) x else -x
+fun abs(x: Double) = if (x > 0) x else -x
 
 fun Int.toStringWithMinLength (minLength: Int, suffixChar: Char): String{
     val res = this.toString()

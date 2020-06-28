@@ -145,6 +145,7 @@ class FunctionConfiguration (
             TreeTransformationRule("sqrt(x)", "x^0.5", true),
             TreeTransformationRule("root(x,p)", "x^(1/p)", true),
             TreeTransformationRule("n!", "P(i,1,n,i)", true),
+            TreeTransformationRule("log(b,a)", "ln(a) / ln(b)", true),
             TreeTransformationRule("d(expr)", "d(expr,x)", true)
     )
 
