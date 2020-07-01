@@ -1,292 +1,233 @@
 {
   "gameSpace": "",
   "gameCode": "begin_from_simple",
-  "name": "Начни с простого",
+  "name": "Начни с простого (Микс)",
   "eng": "Begin from simple",
   "rus": "Начни с простого",
   "version": 10,
   "levels":[
     {
-      "levelCode": "abbreviated_multiplication__Hello_World_Level",
-      "name": "Начнем с простого",
+      "levelCode": "begin_from_simple__Level_00_Compute",
+      "name": "Несокращенная дробь",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
       "time": 50,
-      "originalExpression": "(/(+(^(a;2);-(^(b;2)));+(a;-(b))))",
+      "originalExpression": "(/(96;16))",
       "finalExpression": "Сократить дробь",
-      "finalPattern": "+:2",
+      "finalPattern": "?:0:?:?N",
       "rules":[
         {"rulePack": "MathBase"}
       ]
     },
     {
-      "levelCode": "abbreviated_multiplication__Level_01_Compute",
-      "name": "Уровень 1 Упрощение",
+      "levelCode": "begin_from_simple__Level_01_Compute",
+      "name": "Невычисленный корень",
       "difficulty": 2.0,
       "type": "algebra",
-      "stepsNum": 5,
-      "time": 90,
-      "originalExpression": "(/(^(+(^(a;0.5);^(b;0.5));2);+(a;b;*(2;^(*(b;a);0.5)))))",
-      "finalExpression": "Сократить при a,b > 0",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(*(0.5;2))","right":"(1)"},
-        {"left":"(*(2;0.5))","right":"(1)"},
-        {"left":"(+(a;b;c))","right":"(+(a;c;b))"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_02_Compute",
-      "name": "Уровень 2 Вычисление",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 24,
-      "time": 200,
-      "originalExpression": "(/(+(*(8;^(k;4));*(8;^(k;2));2);^(+(*(2;^(k;2));1);2)))",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(^(*(27;^(1;2));/(1;3)))",
       "finalExpression": "Вычислить",
       "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(8)","right":"(^(2;3))"},
-        {"left":"(8)","right":"(*(2;4))"},
-        {"left":"(^(2;3))","right":"(8)"},
-        {"left":"(*(2;4))","right":"(8)"},
-        {"left":"(4)","right":"(+(2;2))"},
-        {"left":"(4)","right":"(*(2;2))"},
-        {"left":"(4)","right":"(^(2;2))"},
-        {"left":"(+(2;2))","right":"(4)"},
-        {"left":"(*(2;2))","right":"(4)"},
-        {"left":"(^(2;2))","right":"(4)"},
-        {"left":"(2)","right":"(*(2;1))"},
-        {"left":"(2)","right":"(/(4;2))"},
-        {"left":"(2)","right":"(+(4;-(2)))"},
-        {"left":"(1)","right":"(^(1;2))"},
-        {"left":"(1)","right":"(^(1;3))"},
-        {"left":"(1)","right":"(^(1;4))"}
+      "rules":[
+        {"rulePack": "MathBase"}
       ]
     },
     {
-      "levelCode": "abbreviated_multiplication__Level_03_Compute",
-      "name": "Уровень 3 Упрощение",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 30,
-      "time": 200,
-      "originalExpression": "(/(+(*(18;^(x;5));-(*(12;^(x;3);y));*(2;x;^(y;2)));^(+(*(3;^(x;2));-(y));2)))",
-      "finalExpression": "Сократить",
-      "finalPattern": "*:2",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(3)","right":"(+(1;2))"},
-        {"left":"(+(1;2))","right":"(3)"},
-        {"left":"(5)","right":"(+(1;4))"},
-        {"left":"(5)","right":"(+(2;3))"},
-        {"left":"(+(1;4))","right":"(5)"},
-        {"left":"(+(2;3))","right":"(5)"},
-        {"left":"(18)","right":"(*(2;9))"},
-        {"left":"(*(2;9))","right":"(18)"},
-        {"left":"(18)","right":"(*(3;6))"},
-        {"left":"(*(3;6))","right":"(18)"},
-        {"left":"(12)","right":"(*(2;6))"},
-        {"left":"(*(2;6))","right":"(12)"},
-        {"left":"(12)","right":"(*(3;4))"},
-        {"left":"(*(3;4))","right":"(12)"},
-        {"left":"(9)","right":"(*(3;3))"},
-        {"left":"(9)","right":"(^(3;2))"},
-        {"left":"(4)","right":"(+(2;2))"},
-        {"left":"(4)","right":"(*(2;2))"},
-        {"left":"(4)","right":"(^(2;2))"},
-        {"left":"(+(2;2))","right":"(4)"},
-        {"left":"(*(2;2))","right":"(4)"},
-        {"left":"(^(2;2))","right":"(4)"},
-        {"left":"(6)","right":"(*(2;3))"},
-        {"left":"(6)","right":"(+(3;3))"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_04_Compute",
-      "name": "Уровень 4 Вычисление",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 15,
-      "time": 120,
-      "originalExpression": "(+(^(26;3);1;*(27;+(-(+(^(26;2);-(27);1))))))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(27)","right":"(*(3;9))"},
-        {"left":"(27)","right":"(^(3;3))"},
-        {"left":"(27)","right":"(+(26;1))"},
-        {"left":"(+(26;1))","right":"(27)"},
-        {"left":"(+(1;26))","right":"(27)"},
-        {"left":"(+(-(27);1))","right":"(-(26))"},
-        {"left":"(+(1;-(27)))","right":"(-(26))"},
-        {"left":"(+(27;-(1)))","right":"(26)"},
-        {"left":"(+(-(1);27))","right":"(26)"},
-        {"left":"(26)","right":"(+(27;-(1)))"},
-        {"left":"(1)","right":"(^(1;2))"},
-        {"left":"(1)","right":"(^(1;3))"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_05_Compute",
-      "name": "Уровень 5 Упрощение",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 11,
-      "time": 90,
-      "originalExpression": "(+(*(+(a;3);+(^(a;2);-(*(a;3));9));*(+(a;-(3));+(^(a;2);*(a;3);9));-(^(a;3))))",
-      "finalExpression": "Упростить",
-      "finalPattern": "^:2",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(9)","right":"(*(3;3))"},
-        {"left":"(9)","right":"(^(3;2))"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_06_Compute",
-      "name": "Уровень 6 Упрощение",
-      "difficulty": 4.0,
-      "type": "algebra",
-      "stepsNum": 28,
-      "time": 200,
-      "originalExpression": "(/(+(^(k;3);*(4;^(k;2));*(20;k);125);+(^(k;2);-(k);25)))",
-      "finalExpression": "Сократить",
-      "finalPattern": "+:2",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(20)","right":"(*(2;10))"},
-        {"left":"(*(2;10))","right":"(20)"},
-        {"left":"(20)","right":"(*(4;5))"},
-        {"left":"(*(4;5))","right":"(20)"},
-        {"left":"(125)","right":"(^(5;3))"},
-        {"left":"(125)","right":"(*(5;25))"},
-        {"left":"(^(5;3))","right":"(125)"},
-        {"left":"(*(5;25))","right":"(125)"},
-        {"left":"(25)","right":"(^(5;2))"},
-        {"left":"(^(5;2))","right":"(25)"},
-        {"left":"(25)","right":"(*(5;5))"},
-        {"left":"(*(5;5))","right":"(25)"},
-        {"left":"(4)","right":"(+(2;2))"},
-        {"left":"(4)","right":"(*(2;2))"},
-        {"left":"(4)","right":"(^(2;2))"},
-        {"left":"(+(2;2))","right":"(4)"},
-        {"left":"(*(2;2))","right":"(4)"},
-        {"left":"(^(2;2))","right":"(4)"},
-        {"left":"(5)","right":"(+(4;1))"},
-        {"left":"(+(4;1))","right":"(5)"},
-        {"left":"(+(1;4))","right":"(5)"},
-        {"left":"(+(-(5);4))","right":"(-(1))"},
-        {"left":"(+(4;-(5)))","right":"(-(1))"},
-        {"left":"(+(-(*(5;k));*(4;k)))","right":"(-(k))"},
-        {"left":"(+(*(4;k);-(*(5;k))))","right":"(-(k))"},
-        {"left":"(+(5;-(4)))","right":"(1)"},
-        {"left":"(+(-(4);5))","right":"(1)"},
-        {"left":"(1)","right":"(+(5;-(4)))"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_07_Compute",
-      "name": "Уровень 7 Упрощение",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 20,
-      "time": 200,
-      "originalExpression": "(/(+(^(a;2);*(4;a;b);*(3;^(b;2)));+(a;*(3;b))))",
-      "finalExpression": "Сократить",
-      "finalPattern": "+:2",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(4)","right":"(+(2;2))"},
-        {"left":"(4)","right":"(*(2;2))"},
-        {"left":"(4)","right":"(^(2;2))"},
-        {"left":"(+(2;2))","right":"(4)"},
-        {"left":"(*(2;2))","right":"(4)"},
-        {"left":"(^(2;2))","right":"(4)"},
-
-        {"left":"(3)","right":"(+(2;1))"},
-        {"left":"(3)","right":"(+(4;-(1)))"},
-        {"left":"(3)","right":"(/(12;4))"},
-        {"left":"(12)","right":"(*(2;6))"},
-        {"left":"(*(2;6))","right":"(12)"},
-        {"left":"(12)","right":"(*(3;4))"},
-        {"left":"(*(3;4))","right":"(12)"},
-
-        {"left":"(+(2;-(1)))","right":"(1)"},
-        {"left":"(+(-(1);2))","right":"(1)"},
-        {"left":"(+(-(k);*(2;k)))","right":"(k)"},
-        {"left":"(+(*(2;k);-(k)))","right":"(k)"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_08_Compute",
-      "name": "Уровень 8 Упрощение",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 30,
-      "time": 200,
-      "originalExpression": "(/(+(^(+(a;b);3);^(+(a;-(b));3);-(*(3;a)));+(*(2;^(a;2));*(6;^(b;2));-(3))))",
-      "finalExpression": "Сократить",
-      "finalPattern": "?:0",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(6)","right":"(+(3;3))"},
-        {"left":"(6)","right":"(*(2;3))"},
-        {"left":"(+(3;3))","right":"(6)"},
-        {"left":"(*(2;3))","right":"(6)"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_09_Compute",
-      "name": "Уровень 9 Упрощение",
-      "difficulty": 6.0,
-      "type": "algebra",
-      "stepsNum": 28,
-      "time": 200,
-      "originalExpression": "(/(+(*(2;^(x;+(*(2;m);2)));-(*(4;^(x;+(m;2))));*(2;^(x;2)));*(x;^(+(^(x;m);-(1));2))))",
-      "finalExpression": "Сократить",
-      "finalPattern": "*:2",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(4)","right":"(+(2;2))"},
-        {"left":"(4)","right":"(*(2;2))"},
-        {"left":"(4)","right":"(^(2;2))"},
-        {"left":"(+(2;2))","right":"(4)"},
-        {"left":"(*(2;2))","right":"(4)"},
-        {"left":"(^(2;2))","right":"(4)"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_10_Compute",
-      "name": "Уровень 10 Теорема Виета",
-      "difficulty": 4.0,
+      "levelCode": "begin_from_simple__Level_02_Compute",
+      "name": "Разность квадратов",
+      "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 4,
-      "time": 200,
-      "originalExpression": "(/(*(+(a;1);+(^(a;2);-(a);-(20)));+(^(a;2);-(*(4;a));-(5))))",
-      "finalExpression": "Сократить",
-      "finalPattern": "+:2",
-      "rules": [
-        {"rulePack": "MathBase"},
-        {"left":"(4)","right":"(+(2;2))"},
-        {"left":"(4)","right":"(*(2;2))"},
-        {"left":"(4)","right":"(^(2;2))"},
-        {"left":"(4)","right":"(+(5;-(1)))"},
-        {"left":"(+(5;-(1)))","right":"(4)"},
-        {"left":"(1)","right":"(+(5;-(4)))"},
-        {"left":"(+(5;-(4)))","right":"(1)"},
-
-        {"left":"(+(^(a;2);-(*(4;a));-(5)))","right":"(*(+(a;1);+(a;-(5))))"},
-        {"left":"(+(^(a;2);-(a);-(20)))","right":"(*(+(a;4);+(a;-(5))))"},
-        {"left":"(+(2;2))","right":"(4)"},
-        {"left":"(*(2;2))","right":"(4)"},
-        {"left":"(^(2;2))","right":"(4)"},
-        {"left":"(20)","right":"(*(4;5))"},
-        {"left":"(20)","right":"(*(2;10))"}
+      "time": 50,
+      "originalExpression": "(+(^(64;2);-(^(36;2))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_03_Compute",
+      "name": "Квадрат разности",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 50,
+      "originalExpression": "(+(^(23;2);-(*(2;23;3));9))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_04_Compute",
+      "name": "Догадайся 1",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 50,
+      "originalExpression": "(+(16;*(2;64);^(16;2)))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_05_Compute",
+      "name": "Догадайся 2",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 50,
+      "originalExpression": "(^(+(^(65;2);-(^(56;2)));0.5))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_06_Compute",
+      "name": "Cумма кубов",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 50,
+      "originalExpression": "(+(^(8;3);^(12;3)))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_07_Compute",
+      "name": "Разность кубов",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 50,
+      "originalExpression": "(+(^(8;3);-(^(6;3))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_08_Compute",
+      "name": "Куб суммы",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 50,
+      "originalExpression": "(+(8;*(3;32);*(3;2;64);^(8;3)))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_09_Compute",
+      "name": "Догадайся 3",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 8,
+      "time": 50,
+      "originalExpression": "(+(*(+(4;53);+(16;-(*(4;53));^(53;2)));*(+(4;-(53));+(^(4;2);*(4;53);^(53;2)))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_10_Compute",
+      "name": "Догадайся 4",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 8,
+      "time": 50,
+      "originalExpression": "(^(+(^(26;3);1;*(27;+(-(+(^(26;2);-(26))))));/(1;3)))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_11_Compute",
+      "name": "Логарифм",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(*(3;^(3;log(9;3))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_12_Compute",
+      "name": "Разность логарифмов",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(+(log(72;3);-(log(8;3))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_13_Compute",
+      "name": "Частное логарифмов",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(/(log(81;27);log(9;27)))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_14_Compute",
+      "name": "Догадайся 5",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 8,
+      "time": 50,
+      "originalExpression": "(/(log(36;3);+(2;log(4;3))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "begin_from_simple__Level_15_Compute",
+      "name": "Догадайся 6",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 8,
+      "time": 50,
+      "originalExpression": "(/(^(16;log(32;4));^(16;log(2;4))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"}
       ]
     }
   ],
@@ -294,6 +235,8 @@
     {
       "name": "MathBase",
       "rules":[
+        {"rulePack": "ComputationRules"},
+
         {"rulePack": "ArithmeticСommutativity"},
         {"rulePack": "ArithmeticMinus"},
         {"rulePack": "BaseDigits"},
@@ -302,6 +245,7 @@
         {"rulePack": "ArithmeticDegree"},
 
         {"rulePack": "ShortMultiplication"},
+        {"rulePack": "Logarithm"},
 
         {"rulePack": "ArithmeticPlusSelections"}
       ]
@@ -358,6 +302,97 @@
 
         {"left": "(0.5)","right": "(/(1;2))"},
         {"left": "(/(1;2))","right": "(0.5)"}
+      ]
+    },
+    {
+      "name": "ComputationRules",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "FactorizationRules"},
+        {"rulePack": "PowRules"}
+      ]
+    },
+    {
+      "name": "FactorizationRules",
+      "type": "algebra",
+      "rules":[
+        {"left":"(96)","right":"(*(2;48))"},
+        {"left":"(96)","right":"(*(3;32))"},
+        {"left":"(96)","right":"(*(4;24))"},
+        {"left":"(96)","right":"(*(6;16))"},
+        {"left":"(96)","right":"(*(8;12))"},
+        {"left":"(81)","right":"(*(3;27))"},
+        {"left":"(81)","right":"(*(9;9))"},
+        {"left":"(72)","right":"(*(2;36))"},
+        {"left":"(72)","right":"(*(3;24))"},
+        {"left":"(72)","right":"(*(4;18))"},
+        {"left":"(72)","right":"(*(6;12))"},
+        {"left":"(72)","right":"(*(8;9))"},
+        {"left":"(64)","right":"(*(2;32))"},
+        {"left":"(64)","right":"(*(4;16))"},
+        {"left":"(64)","right":"(*(8;8))"},
+        {"left":"(54)","right":"(*(2;27))"},
+        {"left":"(54)","right":"(*(3;18))"},
+        {"left":"(54)","right":"(*(6;9))"},
+        {"left":"(48)","right":"(*(2;24))"},
+        {"left":"(48)","right":"(*(3;16))"},
+        {"left":"(48)","right":"(*(4;12))"},
+        {"left":"(48)","right":"(*(6;8))"},
+        {"left":"(36)","right":"(*(2;18))"},
+        {"left":"(36)","right":"(*(3;12))"},
+        {"left":"(36)","right":"(*(4;9))"},
+        {"left":"(36)","right":"(*(6;6))"},
+        {"left":"(32)","right":"(*(2;16))"},
+        {"left":"(32)","right":"(*(4;8))"},
+        {"left":"(27)","right":"(*(3;9))"},
+        {"left":"(25)","right":"(*(5;5))"},
+        {"left":"(24)","right":"(*(2;12))"},
+        {"left":"(24)","right":"(*(3;8))"},
+        {"left":"(24)","right":"(*(4;6))"},
+        {"left":"(18)","right":"(*(2;9))"},
+        {"left":"(18)","right":"(*(3;6))"},
+        {"left":"(16)","right":"(*(2;8))"},
+        {"left":"(16)","right":"(*(4;4))"},
+        {"left":"(12)","right":"(*(2;6))"},
+        {"left":"(12)","right":"(*(3;4))"},
+        {"left":"(9)","right":"(*(3;3))"},
+        {"left":"(8)","right":"(*(2;4))"},
+        {"left":"(6)","right":"(*(2;3))"},
+        {"left":"(4)","right":"(*(2;2))"}
+      ]
+    },
+    {
+      "name": "PowRules",
+      "type": "algebra",
+      "rules":[
+        {"left":"(1024)","right":"(^(2;10))"},
+        {"left":"(625)","right":"(^(5;4))"},
+        {"left":"(512)","right":"(^(2;9))"},
+        {"left":"(256)","right":"(^(2;8))"},
+        {"left":"(256)","right":"(^(4;4))"},
+        {"left":"(243)","right":"(^(3;5))"},
+        {"left":"(169)","right":"(^(13;2))"},
+        {"left":"(144)","right":"(^(12;2))"},
+        {"left":"(128)","right":"(^(2;7))"},
+        {"left":"(125)","right":"(^(5;3))"},
+        {"left":"(121)","right":"(^(11;2))"},
+        {"left":"(100)","right":"(^(10;2))"},
+        {"left":"(81)","right":"(^(9;2))"},
+        {"left":"(64)","right":"(^(8;2))"},
+        {"left":"(64)","right":"(^(4;3))"},
+        {"left":"(64)","right":"(^(2;6))"},
+        {"left":"(49)","right":"(^(7;2))"},
+        {"left":"(36)","right":"(^(6;2))"},
+        {"left":"(32)","right":"(^(2;5))"},
+        {"left":"(27)","right":"(^(3;3))"},
+        {"left":"(25)","right":"(^(5;2))"},
+        {"left":"(16)","right":"(^(4;2))"},
+        {"left":"(16)","right":"(^(2;4))"},
+        {"left":"(9)","right":"(^(3;2))"},
+        {"left":"(8)","right":"(^(2;3))"},
+        {"left":"(4)","right":"(^(2;2))"},
+        {"left":"(1)","right":"(^(1;2))"},
+        {"left":"(1)","right":"(^(1;3))"}
       ]
     },
     {
@@ -736,12 +771,16 @@
         {"left": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))","right": "(^(+(a;b);3))"},
         {"left": "(+(^(a;3);*(3;b;^(a;2));*(3;^(b;2);a);^(b;3)))","right": "(^(+(a;b);3))"},
         {"left": "(+(^(a;3);*(3;*(^(a;2);b));*(3;*(a;^(b;2)));^(b;3)))","right": "(^(+(a;b);3))"},
+        {"left": "(+(^(a;3);*(3;*(^(a;2);b));*(3;a;^(b;2));^(b;3)))","right": "(^(+(a;b);3))"},
+        {"left": "(+(^(a;3);*(3;^(a;2);b);*(3;*(a;^(b;2)));^(b;3)))","right": "(^(+(a;b);3))"},
         {"left": "(+(^(a;3);*(3;*(b;^(a;2)));*(3;*(^(b;2);a));^(b;3)))","right": "(^(+(a;b);3))"},
 
         {"left": "(^(+(a;-(b));3))","right": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))"},
         {"left": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))","right": "(^(+(a;-(b));3))"},
         {"left": "(+(^(a;3);-(*(3;b;^(a;2)));*(3;^(b;2);a);-(^(b;3))))","right": "(^(+(a;-(b));3))"},
         {"left": "(+(^(a;3);-(*(3;*(^(a;2);b)));*(3;*(a;^(b;2)));-(^(b;3))))","right": "(^(+(a;-(b));3))"},
+        {"left": "(+(^(a;3);-(*(3;*(^(a;2);b)));*(3;a;^(b;2));-(^(b;3))))","right": "(^(+(a;-(b));3))"},
+        {"left": "(+(^(a;3);-(*(3;^(a;2);b));*(3;*(a;^(b;2)));-(^(b;3))))","right": "(^(+(a;-(b));3))"},
         {"left": "(+(^(a;3);-(*(3;*(b;^(a;2))));*(3;*(^(b;2);a));-(^(b;3))))","right": "(^(+(a;-(b));3))"},
 
         {"left": "(+(^(a;3);-(^(b;3))))","right": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))"},
@@ -755,6 +794,50 @@
         {"left": "(*(+(a;b);+(^(a;2);^(b;2);-(*(a;b)))))","right": "(+(^(a;3);^(b;3)))"},
         {"left": "(*(+(^(a;2);-(*(a;b));^(b;2));+(a;b)))","right": "(+(^(a;3);^(b;3)))"},
         {"left": "(*(+(^(a;2);^(b;2);-(*(a;b)));+(a;b)))","right": "(+(^(a;3);^(b;3)))"}
+      ]
+    },
+    {
+      "name": "Logarithm",
+      "type": "algebra",
+      "rules":[
+        {"left": "(^(a;log(b;a)))","right": "(b)"},
+
+        {"left": "(log(1;A))","right": "(0)"},
+        {"left": "(log(A;A))","right": "(1)"},
+
+        {"left": "(log(*(b;c);a))","right": "(+(log(b;a);log(c;a)))"},
+        {"left": "(+(log(b;a);log(c;a)))","right": "(log(*(b;c);a))"},
+        {"left": "(log(*(b;c;d);a))","right": "(+(log(b;a);log(c;a);log(d;a)))"},
+        {"left": "(+(log(b;a);log(c;a);log(d;a)))","right": "(log(*(b;c;d);a))"},
+        {"left": "(log(*(b;c;d;e);a))","right": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))"},
+        {"left": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))","right": "(log(*(b;c;d;e);a))"},
+
+        {"left": "(log(/(b;c);a))","right": "(+(log(b;a);-(log(c;a))))"},
+        {"left": "(+(log(b;a);-(log(c;a))))","right": "(log(/(b;c);a))"},
+
+        {"left": "(log(^(b;c);a))","right": "(*(c;log(b;a)))"},
+        {"left": "(*(c;log(b;a)))","right": "(log(^(b;c);a))"},
+        {"left": "(*(log(b;a);c))","right": "(log(^(b;c);a))"},
+
+        {"left": "(log(b;^(a;k)))","right": "(/(log(b;a);k))"},
+        {"left": "(/(log(b;a);k))","right": "(log(b;^(a;k)))"},
+
+        {"left": "(/(1;log(b;a)))","right": "(log(a;b))"},
+        {"left": "(log(a;b))","right": "(/(1;log(b;a)))"},
+
+        {"left": "(/(log(c;a);log(b;a)))","right": "(log(c;b))"},
+
+        {"left": "(log(/(b;c);a))","right": "(-(log(/(c;b);a)))"},
+        {"left": "(-(log(/(c;b);a)))","right": "(log(/(b;c);a))"},
+        {"left": "(+(-(log(/(c;b);a))))","right": "(log(/(b;c);a))"},
+
+        {"left": "(log(b;a))","right": "(-(log(/(1;b);a)))"},
+        {"left": "(-(log(/(1;b);a)))","right": "(log(b;a))"},
+        {"left": "(+(-(log(/(1;b);a))))","right": "(log(b;a))"},
+
+        {"left": "(log(/(1;b);a))","right": "(-(log(b;a)))"},
+        {"left": "(-(log(b;a)))","right": "(log(/(1;b);a))"},
+        {"left": "(+(-(log(b;a))))","right": "(log(/(1;b);a))"}
       ]
     }
   ]

@@ -404,6 +404,13 @@ data class ExpressionNode(
         return false
     }
 
+    fun getDepth(): Int {
+        var result = 1
+        for (child in children)
+            result = maxOf(result, child.getDepth() + 1)
+        return result
+    }
+
     fun getMaxConstant(): Double {
         var result = 0.0
         if (children.isEmpty()) {
