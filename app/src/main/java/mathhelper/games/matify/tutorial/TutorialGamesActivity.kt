@@ -42,7 +42,7 @@ class TutorialGamesActivity: AppCompatActivity() {
 
     fun tellAboutGameLayout() {
         Log.d(TAG, "tellAboutGameLayout")
-        dialog.setMessage("Here you can:\n* Search local and global games\n* Choose one and play!\n\nGot it?")
+        dialog.setMessage(resources.getString(R.string.games_activity_tutorial))
         AndroidUtil.showDialog(dialog, false)
     }
 

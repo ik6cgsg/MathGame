@@ -202,12 +202,12 @@ class GamesActivity: AppCompatActivity() {
     private fun askForTutorialDialog() {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Welcome!")
-            .setMessage("Wanna see tutorial?")
-            .setPositiveButton("Yep \uD83D\uDE0D") { dialog: DialogInterface, id: Int ->
+            .setTitle(R.string.welcome)
+            .setMessage(R.string.wanna_see_tutorial)
+            .setPositiveButton(R.string.yep) { dialog: DialogInterface, id: Int ->
                 TutorialScene.shared.start(this)
             }
-            .setNegativeButton("Nope, I'm pro \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.no_i_am_pro) { dialog: DialogInterface, id: Int ->
             }
         val dialog = builder.create()
         AndroidUtil.showDialog(dialog)

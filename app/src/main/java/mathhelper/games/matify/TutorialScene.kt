@@ -76,6 +76,17 @@ class TutorialScene {
                 nextStep()
             }
         }
+
+    fun getNotNullActivity () = if (tutorialGamesActivity != null) {
+        tutorialGamesActivity
+    } else if (tutorialLevelsActivity != null) {
+        tutorialLevelsActivity
+    } else if (tutorialPlayActivity != null) {
+        tutorialPlayActivity
+    } else null
+
+    fun getResourceString (id: Int) = getNotNullActivity()?.resources?.getString(id) ?: null
+
     lateinit var tutorialLevel: Level
 
     var tutorialDialog: AlertDialog? = null
@@ -166,7 +177,7 @@ class TutorialScene {
         if (currentStep == steps.size) {
             return
         }
-        tutorialDialog!!.setTitle("Tutorial: $currentStepToDisplay / $stepsSize")
+        tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: $currentStepToDisplay / $stepsSize")
         steps[currentStep]()
     }
 
@@ -177,7 +188,7 @@ class TutorialScene {
             AndroidUtil.showDialog(leaveDialog!!)
         } else {
             val step = currentStepToDisplay
-            tutorialDialog!!.setTitle("Tutorial: $step / $stepsSize")
+            tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: $step / $stepsSize")
             steps[currentStep]()
         }
     }
@@ -214,7 +225,7 @@ class TutorialScene {
                 }
                 clearRules()
             } else {
-                showMessage(activity.getString(R.string.wrong_subs))
+                showMessage(activity.resources.getString(R.string.wrong_subs))
             }
 
         }
@@ -236,11 +247,11 @@ class TutorialScene {
                 if (wantedClick) {
                     activity.expressionClickSucceeded()
                 } else {
-                    showMessage("\uD83D\uDC4F A good choice! \uD83D\uDC4F")
+                    showMessage(activity.resources.getString(R.string.a_good_choice))
                 }
                 redrawRules(rules)
             } else {
-                showMessage("No rules for this place \uD83D\uDE05\nTry another one!")
+                showMessage(activity.resources.getString(R.string.no_rules_try_another))
                 clearRules()
                 activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
             }
@@ -339,14 +350,14 @@ class TutorialScene {
         val builder = AlertDialog.Builder(context, R.style.AlertDialogCustom)
         builder
             .setTitle("")
-            .setMessage("Got it?")
-            .setPositiveButton("Yep \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
+            .setMessage(R.string.got_it)
+            .setPositiveButton(R.string.yep) { dialog: DialogInterface, id: Int ->
                 stopAnimation()
                 Handler().postDelayed({
                     nextStep()
                 }, 100)
             }
-            .setNegativeButton("Step back") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.step_back) { dialog: DialogInterface, id: Int ->
                 stopAnimation()
                 if (shouldFinishPlayActivity && tutorialPlayActivity != null) {
                     tutorialPlayActivity!!.finish()
@@ -362,7 +373,7 @@ class TutorialScene {
                     prevStep()
                 }, 100)
             }
-            .setNeutralButton("Leave") { dialog: DialogInterface, id: Int ->
+            .setNeutralButton(R.string.leave) { dialog: DialogInterface, id: Int ->
                 if (leaveDialog != null) {
                     AndroidUtil.showDialog(leaveDialog!!)
                 } else {

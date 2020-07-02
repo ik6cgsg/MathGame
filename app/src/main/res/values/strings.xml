@@ -71,10 +71,46 @@
     <string name="wanna_say_something">Wanna say something?</string>
     <string name="tell_about_your_problem">Tell about your problem</string>
     <string name="i">i</string>
+
+    <string name="tutorial">Tutorial</string>
     <string name="tutorial_level">Tutorial Level</string>
     <string name="tutorial_game">Tutorial Game</string>
     <string name="start_tutorial">❔ Start tutorial</string>
     <string name="wanna_leave">Wanna leave?</string>
+    <string name="wanna_see_tutorial">Wanna see tutorial?</string>
+    <string name="restart_tutorial">Restart tutorial?</string>
     <string name="attention">❗ Attention ❗</string>
+    <string name="leave">Leave</string>
+    <string name="step_back">Step back</string>
+    <string name="got_it">🙃 Got it? 🙃</string>
+    <string name="yep">Yep 😎</string>
+    <string name="a_good_choice">👏 A good choice! 👏</string>
+    <string name="no_rules_try_another">No rules for this place 😅 \n Try another one!</string>
+    <string name="welcome">🍀 Welcome! 🍀</string>
+    <string name="games_activity_tutorial">🍀 Welcome! 🍀\nHere you can:\n* Search local and global games\n* Choose one and play!\n\n🙃 Got it? 🙃</string>
+    <string name="level_activity_tutorial">And here you can choose level to play!\n\n🙃 Got it? 🙃</string>
+    <string name="tutorial_on_level_info">🍀 Welcome! 🍀\nThat\'s a place for short\nimportant (and funny) messages</string>
+    <string name="tutorial_on_level_to_menu">← This can return to menu… ←\nAnd even 💾 your progress!</string>
+    <string name="tutorial_on_level_short_info">i Tap to see short\ninfo about level i</string>
+    <string name="tutorial_on_level_restart">↺ Restart level button ↺</string>
+    <string name="tutorial_on_level_undo">↶ Undo the last transformation ↶</string>
+    <string name="tutorial_on_level_goal">⬆ Goal: transform expression to it ⬆</string>
+    <string name="tutorial_on_level_goal_explanation">This is final goal for level💥\nAKA The Answer criteria for current task!\n\n</string>
+    <string name="tutorial_on_level_goal_toggle">P.S. You can toggle it with 🔽 if you need!\n\n🙃 Got it? 🙃</string>
+    <string name="tutorial_on_level_main_element">⬇ Main element of our game 🥁 ⬇</string>
+    <string name="tutorial_on_level_main_element_current">Here is current expression, to win - transform it to goal.\n</string>
+    <string name="tutorial_on_level_main_element_to_win">To win 🏆 you need:\n</string>
+    <string name="tutorial_on_level_main_element_touch">1. Touch 🖕 on expression\n</string>
+    <string name="tutorial_on_level_main_element_find_rule">2. Find 🔎 necessary rule\n</string>
+    <string name="tutorial_on_level_main_element_make_subst">3. Touch chosen rule ~> make substitution\n</string>
+    <string name="tutorial_on_level_main_element_repeat">4. Repeat until you win 👏🏆\n</string>
+    <string name="tutorial_on_level_zoom">👉 Let\'s check it out! 👈\n1. Zoom expression to max 🔎</string>
+    <string name="tutorial_on_level_zoom_max">1. Zoom expression to max ✅\n2. Tap near plus in the expression 👇</string>
+    <string name="tutorial_on_level_select">2. Tap near plus in the expression ✅\n3. Now 🔍 rule from a list below</string>
+    <string name="tutorial_on_level_win">3. Rule applied ✅\n4. Continue and win! 👏🏆</string>
+    <string name="tutorial_on_level_seems">Seems you got it all!\n</string>
+    <string name="tutorial_on_level_i_am_pro">Yep, now I\'m PRO too 😎</string>
+    <string name="no_i_am_pro">No, I\'m PRO 😎</string>
+
     <string name="parsing_error">parsing error</string>
 </resources>

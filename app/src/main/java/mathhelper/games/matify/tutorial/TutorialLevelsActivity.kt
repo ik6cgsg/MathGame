@@ -63,7 +63,7 @@ class TutorialLevelsActivity: AppCompatActivity() {
 
     fun tellAboutLevelLayout() {
         Log.d(TAG, "tellAboutLevelLayout")
-        dialog.setMessage("Here you can choose level to play!\n\nGot it?")
+        dialog.setMessage(resources.getString(R.string.level_activity_tutorial))
         AndroidUtil.showDialog(dialog, false)
     }
 

@@ -8,8 +8,8 @@ android {
         applicationId "mathhelper.games.matify"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 13
-        versionName "2.0.10"
+        versionCode 15
+        versionName "2.0.12"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

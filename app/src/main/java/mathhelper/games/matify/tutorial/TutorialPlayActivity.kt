@@ -125,9 +125,9 @@ class TutorialPlayActivity: AppCompatActivity() {
         Log.d(TAG, "createRestartDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("❗️ Attention ❗️")
-            .setMessage("Restart tutorial?")
-            .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
+            .setTitle(R.string.attention)
+            .setMessage(R.string.restart_tutorial)
+            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 TutorialScene.shared.restart()
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
@@ -137,7 +137,7 @@ class TutorialPlayActivity: AppCompatActivity() {
 
     fun messageTutorial() {
         Log.d(TAG, "messageTutorial")
-        TutorialScene.shared.showMessage("\uD83C\uDF40 Welcome! \uD83C\uDF40\nThat's a place for short\nimportant (and funny) messages")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_info))
         pointerMsgView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerMsgView)
         AndroidUtil.showDialog(tutorialDialog, false)
@@ -145,99 +145,99 @@ class TutorialPlayActivity: AppCompatActivity() {
 
     fun backTutorial() {
         Log.d(TAG, "backTutorial")
-        TutorialScene.shared.showMessage("← This can return to menu... ←\nAnd even \uD83D\uDCBE your progress!")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_to_menu))
         pointerBackView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerBackView)
-        tutorialDialog.setMessage("Got it?")
+        tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     fun infoTutorial() {
         Log.d(TAG, "infoTutorial")
-        TutorialScene.shared.showMessage("i Tap to see short\ninfo about level i")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_short_info))
         pointerInfoView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerInfoView)
-        tutorialDialog.setMessage("Got it?")
+        tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     fun restartTutorial() {
         Log.d(TAG, "restartTutorial")
-        TutorialScene.shared.showMessage("↺ Restart level button ↺")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_restart))
         pointerRestartView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerRestartView)
-        tutorialDialog.setMessage("Got it?")
+        tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     fun undoTutorial() {
         Log.d(TAG, "restartTutorial")
-        TutorialScene.shared.showMessage("↶ Undo your last operations ↶")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_undo))
         pointerUndoView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerUndoView)
-        tutorialDialog.setMessage("Got it?")
+        tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     fun endExpressionTutorial() {
         Log.d(TAG, "endExpressionTutorial")
-        TutorialScene.shared.showMessage("⬆️ Goal: transform expression to it ⬆️")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_goal))
         pointerEndView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerEndView)
-        tutorialDialog.setMessage("This is final goal for level\nAKA The Answer for current task!\n\n" +
-            "P.S. You can toggle it with \uD83D\uDD3D if you need!\n\nGot it?")
+        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_goal_explanation) +
+            resources.getString(R.string.tutorial_on_level_goal_toggle))
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     fun centralExpressionTutorial() {
         Log.d(TAG, "centralExpressionTutorial")
-        TutorialScene.shared.showMessage("⬇️ Main element of our game ⬇️")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_main_element))
         pointerCentralView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerCentralView)
-        tutorialDialog.setMessage("Here is your current game expression.\n" +
-            "To win \uD83C\uDF89 you need:\n" +
-            "1. Touch \uD83D\uDC46 on expression\n" +
-            "2. Find \uD83D\uDD0D necessary rule\n" +
-            "3. make substitution ~>\n" +
-            "4. repeat until \uD83D\uDE0E\uD83C\uDF89\n" +
-            "Got it?")
+        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_main_element_current) +
+            resources.getString(R.string.tutorial_on_level_main_element_to_win) +
+            resources.getString(R.string.tutorial_on_level_main_element_touch) +
+            resources.getString(R.string.tutorial_on_level_main_element_find_rule) +
+            resources.getString(R.string.tutorial_on_level_main_element_make_subst) +
+            resources.getString(R.string.tutorial_on_level_main_element_repeat) +
+            resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, false)
     }
 
     fun startDynamicTutorial() {
-        TutorialScene.shared.showMessage("\uD83D\uDE09 Let's check it out! \uD83D\uDE09\n1. Zoom expression to max \uD83D\uDD0E")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_zoom))
         TutorialScene.shared.wantedZoom = true
     }
 
     fun zoomSucceeded() {
-        TutorialScene.shared.showMessage("1. Zoom expression to max ✅\n2. Click on some place \uD83D\uDC47")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_zoom_max))
         TutorialScene.shared.wantedZoom = false
         TutorialScene.shared.wantedClick = true
     }
 
     fun expressionClickSucceeded() {
         TutorialScene.shared.wantedClick = false
-        TutorialScene.shared.showMessage("2. Click on some place ✅\n3. Now \uD83D\uDD0D rule from a list below")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_select))
         TutorialScene.shared.wantedRule = true
     }
 
     fun ruleClickSucceeded() {
         TutorialScene.shared.wantedRule = true
-        TutorialScene.shared.showMessage("3. Choose rule ✅\n4. Win! \uD83D\uDE0E\uD83C\uDF89")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_win))
     }
 
     fun levelPassed() {
         Log.d(TAG, "levelPassed")
-        TutorialScene.shared.showMessage("\uD83C\uDF89 Congratulations! \uD83C\uDF89")
+        TutorialScene.shared.showMessage(resources.getString(R.string.congratulations))
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Tutorial: ${TutorialScene.shared.currentStepToDisplay} / ${TutorialScene.shared.stepsSize}")
-            .setMessage("Seems you got it all!\n")
-            .setPositiveButton("Yep, now I'm pro too \uD83D\uDE0E") { dialog: DialogInterface, id: Int ->
+            .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.currentStepToDisplay} / ${TutorialScene.shared.stepsSize}")
+            .setMessage(resources.getString(R.string.tutorial_on_level_seems))
+            .setPositiveButton(resources.getString(R.string.tutorial_on_level_i_am_pro)) { dialog: DialogInterface, id: Int ->
                 TutorialScene.shared.leave()
             }
-            .setNegativeButton("Back") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.step_back) { dialog: DialogInterface, id: Int ->
                 TutorialScene.shared.loadLevel()
                 TutorialScene.shared.prevStep()
             }
