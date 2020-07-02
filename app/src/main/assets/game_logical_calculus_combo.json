@@ -2,6 +2,8 @@
   "gameSpace": "",
   "gameCode": "logical_calculus_combo",
   "name": "Logical Calculus Combo",
+  "en": "Logical Calculus Combo",
+  "ru": "Логические исчисления",
   "version": 10,
   "levels":[
     {

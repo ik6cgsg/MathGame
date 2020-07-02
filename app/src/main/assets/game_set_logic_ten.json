@@ -2,11 +2,14 @@
   "gameSpace": "",
   "gameCode": "set_logic_ten",
   "name": "Set Logic Ten",
+  "en": "Set Logic Ten",
+  "ru": "ЕГЭ Информатика",
   "version": 10,
   "levels":[
     {
       "levelCode": "set_logic_ten__Hello_World_Level_Prove",
       "name": "Hello World Level Prove",
+      "ru": "Уровень Привет Мир",
       "difficulty": 1.0,
       "type": "set",
       "stepsNum": 2,
@@ -20,6 +23,7 @@
     {
       "levelCode": "set_logic_ten__Level_01_Prove",
       "name": "Level 1 Prove",
+      "ru": "Уровень 1 Доказательство",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 4,
@@ -33,6 +37,7 @@
     {
       "levelCode": "set_logic_ten__Level_02_Prove",
       "name": "Level 2 Prove",
+      "ru": "Уровень 2 Доказательство",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 3,
@@ -47,6 +52,7 @@
     {
       "levelCode": "set_logic_ten__Level_03_Prove",
       "name": "Level 3 Prove",
+      "ru": "Уровень 3 Доказательство",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 4,
@@ -61,6 +67,7 @@
     {
       "levelCode": "set_logic_ten__Level_04_Prove",
       "name": "Level 4 Prove",
+      "ru": "Уровень 4 Доказательство",
       "difficulty": 3.5,
       "type": "set",
       "stepsNum": 6,
@@ -75,6 +82,7 @@
     {
       "levelCode": "set_logic_ten__Level_05_Prove",
       "name": "Level 5 Prove",
+      "ru": "Уровень 5 Доказательство",
       "difficulty": 3.5,
       "type": "set",
       "stepsNum": 5,
@@ -91,6 +99,7 @@
     {
       "levelCode": "set_logic_ten__Level_06_Prove",
       "name": "Level 6 Prove",
+      "ru": "Уровень 6 Доказательство",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 12,
@@ -107,6 +116,7 @@
     {
       "levelCode": "set_logic_ten__Level_07_Prove",
       "name": "Level 7 Prove",
+      "ru": "Уровень 7 Доказательство",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 9,
@@ -123,6 +133,7 @@
     {
       "levelCode": "set_logic_ten__Level_08_Prove",
       "name": "Level 8 Prove",
+      "ru": "Уровень 8 Доказательство",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 18,
@@ -139,6 +150,7 @@
     {
       "levelCode": "set_logic_ten__Level_09_Prove",
       "name": "Level 9 Prove",
+      "ru": "Уровень 9 Доказательство",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 15,
@@ -155,6 +167,7 @@
     {
       "levelCode": "set_logic_ten__Level_10_Prove",
       "name": "Level 10 Prove",
+      "ru": "Уровень 10 Доказательство",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 10,

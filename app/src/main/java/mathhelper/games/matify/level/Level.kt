@@ -27,6 +27,8 @@ enum class LevelField(val str: String) {
     IGNORE("ignore"),
     LEVEL_CODE("levelCode"),
     NAME("name"),
+    NAME_RU("ru"),
+    NAME_EN("en"),
     DIFFICULTY("difficulty"),
     TYPE("type"),
     STEPS_NUM("stepsNum"),
@@ -56,7 +58,9 @@ class Level {
     lateinit var levelCode: String
     lateinit var game: Game
     lateinit var name: String
-    var awardCoeffs = "0.88 0.65 0.45"
+    lateinit var nameRu: String
+    lateinit var nameEn: String
+    var awardCoeffs = "0.95 0.9 0.8"
     var awardMultCoeff = 1f
     var showWrongRules = false
     var showSubstResult = false
@@ -68,6 +72,12 @@ class Level {
     var time: Long = 180
     var timeMultCoeff = 1f
     var endless = true
+
+    fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
+        nameRu
+    } else {
+        nameEn
+    }
 
     companion object {
         private val TAG = "Level"
@@ -97,6 +107,8 @@ class Level {
         }
         levelCode = levelJson.getString(LevelField.LEVEL_CODE.str)
         name = levelJson.getString(LevelField.NAME.str)
+        nameRu = levelJson.optString(LevelField.NAME_RU.str, name)
+        nameEn = levelJson.optString(LevelField.NAME_EN.str, name)
         difficulty = levelJson.getDouble(LevelField.DIFFICULTY.str).toFloat()
         val typeStr = levelJson.getString(LevelField.TYPE.str)
         try {
@@ -173,8 +185,11 @@ class Level {
         Log.d(TAG, "getAward")
         val mark = when {
             resultStepsNum < stepsNum -> 1.0
-            resultTime > time -> 0.0
-            else -> (1 - resultTime.toDouble() / time + stepsNum.toDouble() / resultStepsNum) / 2
+//            resultTime > time -> 0.0
+            else -> (
+                1 - resultTime.toDouble() / (10 * time) +
+                3 * stepsNum.toDouble() / resultStepsNum
+                ) / (1 + 3)
         }
         return Award(getAwardByCoeff(mark), mark)
     }

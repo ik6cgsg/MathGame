@@ -9,6 +9,8 @@ enum class GameField(val str: String) {
     GAMESPACE("gameSpace"),
     GAME_CODE("gameCode"),
     NAME("name"),
+    NAME_RU("ru"),
+    NAME_EN("en"),
     VERSION("version"),
     LEVELS("levels"),
     RULE_PACKS("rulePacks")
@@ -22,8 +24,16 @@ class Game(var fileName: String) {
     lateinit var gameSpace: String
     lateinit var gameCode: String
     lateinit var name: String
+    lateinit var nameRu: String
+    lateinit var nameEn: String
     var version: Long = 0
     var loaded = false
+
+    fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
+        nameRu
+    } else {
+        nameEn
+    }
 
     companion object {
         private val TAG = "Game"
@@ -66,6 +76,8 @@ class Game(var fileName: String) {
         gameSpace = gameJson.getString(GameField.GAMESPACE.str)
         gameCode = gameJson.getString(GameField.GAME_CODE.str)
         name = gameJson.getString(GameField.NAME.str)
+        nameRu = gameJson.optString(GameField.NAME_RU.str, name)
+        nameEn = gameJson.optString(GameField.NAME_EN.str, name)
         version = gameJson.getLong(GameField.VERSION.str)
         rulePacks = HashMap()
         rulePacksJsons = HashMap()

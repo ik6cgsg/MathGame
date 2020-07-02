@@ -70,7 +70,7 @@ class LevelsActivity: AppCompatActivity() {
 
     fun updateResult() {
         val i = LevelScene.shared.currentLevelIndex
-        levelViews[i].text = "${LevelScene.shared.levels[i].name}" +
+        levelViews[i].text = "${LevelScene.shared.levels[i].getNameByLanguage(resources.configuration.locale.language)}" +
             if (LevelScene.shared.levels[i].lastResult != null) {
                 "\n${LevelScene.shared.levels[i].lastResult}"
             } else {
@@ -82,9 +82,9 @@ class LevelsActivity: AppCompatActivity() {
     private fun generateList() {
         LevelScene.shared.levels.forEachIndexed { i, level ->
             val levelView = AndroidUtil.createButtonView(this)
-            levelView.text = level.name
+            levelView.text = level.getNameByLanguage(resources.configuration.locale.language)
             if (level.lastResult != null) {
-                levelView.text = "${level.name}\n${level.lastResult!!}"
+                levelView.text = "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
             }
             levelView.background = getBackgroundByDif(level.difficulty)
             levelView.setOnTouchListener { v, event ->

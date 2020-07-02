@@ -2,8 +2,8 @@
   "gameSpace": "",
   "gameCode": "ege_irrationality",
   "name": "ЕГЭ Иррациональность",
-  "eng": "EGE Irrationality",
-  "rus": "ЕГЭ Иррациональность",
+  "en": "EGE Irrationality",
+  "ru": "ЕГЭ Иррациональность",
   "version": 10,
   "levels":[
     {

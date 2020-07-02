@@ -377,12 +377,12 @@ class TutorialScene {
         Log.d(TAG, "createLeaveDialog")
         val builder = AlertDialog.Builder(context, R.style.AlertDialogCustom)
         builder
-            .setTitle("❗️ Attention ❗️")
-            .setMessage("Wanna leave?")
-            .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
+            .setTitle(R.string.attention)
+            .setMessage(R.string.wanna_leave)
+            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 leave()
             }
-            .setNegativeButton("Cancel") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
                 if (currentStep != -1) {
                     currentStep--
                     currentStepToDisplay++

@@ -1,5 +1,6 @@
 package mathhelper.games.matify
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Handler
 import android.util.Log
@@ -119,7 +120,7 @@ class PlayScene {
         Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom!!)
     }
 
-    fun loadLevel(continueGame: Boolean): Boolean {
+    fun loadLevel(continueGame: Boolean, languageCode: String): Boolean {
         Log.d(TAG, "loadLevel")
         val currentLevel = LevelScene.shared.currentLevel!!
         val activity = playActivity!!
@@ -142,7 +143,7 @@ class PlayScene {
             loadFinite()
         }
         history.clear()
-        showMessage("\uD83C\uDF40 ${currentLevel.name} \uD83C\uDF40")
+        showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40")
         Statistics.setStartTime()
         Statistics.logStart()
         return true
@@ -191,11 +192,11 @@ class PlayScene {
             activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
     }
 
-    fun restart() {
+    fun restart(languageCode: String) {
         Log.d(TAG, "restart")
         val activity = playActivity!!
         Statistics.logRestart(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
-        loadLevel(false)
+        loadLevel(false, languageCode)
     }
 
     fun menu(save: Boolean = true) {
@@ -216,9 +217,9 @@ class PlayScene {
         Statistics.logMenu(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
     }
 
-    fun info() {
+    fun info(languageCode: String) {
         val currentLevel = LevelScene.shared.currentLevel!!
-        showMessage("\uD83C\uDF40 ${currentLevel.name} \uD83C\uDF40\n" +
+        showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40\n" +
             "\uD83D\uDC63 Steps: ${"%.1f".format(stepsCount)} \uD83D\uDC63")
     }
 

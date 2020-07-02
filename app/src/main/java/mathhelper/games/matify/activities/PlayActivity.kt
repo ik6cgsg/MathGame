@@ -121,7 +121,7 @@ class PlayActivity: AppCompatActivity() {
         endExpressionView.text = ""
         progress.visibility = View.VISIBLE
         try {
-            PlayScene.shared.loadLevel(continueGame)
+            PlayScene.shared.loadLevel(continueGame, resources.configuration.locale.language)
         } catch (e: Exception) {
             Log.e(TAG, "Error while level loading")
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
@@ -139,12 +139,12 @@ class PlayActivity: AppCompatActivity() {
     fun restart(v: View?) {
         if (!loading) {
             scale = 1f
-            PlayScene.shared.restart()
+            PlayScene.shared.restart(resources.configuration.locale.language)
         }
     }
 
     fun info(v: View?) {
-        PlayScene.shared.info()
+        PlayScene.shared.info(resources.configuration.locale.language)
     }
 
     fun back(v: View?) {
@@ -178,15 +178,15 @@ class PlayActivity: AppCompatActivity() {
 
     fun onWin(stepsCount: Float, currentTime: Long, award: Award) {
         Log.d(TAG, "onWin")
-        val msgTitle = "You finished level with:"
-        val steps = "\n\tSteps: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {
+        val msgTitle = resources.getString(R.string.you_finished_level_with)
+        val steps = "\n\t${resources.getString(R.string.steps)}: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {
             "${stepsCount.toInt()}"
         } else {
             "%.1f".format(stepsCount)
         }
         val sec = "${currentTime % 60}".padStart(2, '0')
-        val time = "\n\tTime: ${currentTime / 60}:$sec"
-        val spannable = SpannableString("$msgTitle$steps$time\n\nAWARD: $award")
+        val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
+        val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $award")
         spannable.setSpan(BulletSpan(5, Constants.primaryColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(BulletSpan(5, Constants.primaryColor),
@@ -204,16 +204,16 @@ class PlayActivity: AppCompatActivity() {
         Log.d(TAG, "createWinDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Congratulations!")
+            .setTitle(R.string.congratulations)
             .setMessage("")
-            .setPositiveButton("Next") { dialog: DialogInterface, id: Int -> }
-            .setNeutralButton("Menu") { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.next) { dialog: DialogInterface, id: Int -> }
+            .setNeutralButton(R.string.menu) { dialog: DialogInterface, id: Int ->
                 PlayScene.shared.menu(false)
                 finish()
             }
-            .setNegativeButton("Restart") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
                 scale = 1f
-                PlayScene.shared.restart()
+                PlayScene.shared.restart(resources.configuration.locale.language)
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -222,7 +222,7 @@ class PlayActivity: AppCompatActivity() {
             okButton.setOnClickListener {
                 scale = 1f
                 if (!LevelScene.shared.nextLevel()) {
-                    Toast.makeText(this, "Sorry, that's last level!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.next_after_last_level_label, Toast.LENGTH_SHORT).show()
                 } else {
                     dialog.dismiss()
                 }
@@ -259,7 +259,7 @@ class PlayActivity: AppCompatActivity() {
             .setNegativeButton("No") { dialog: DialogInterface, id: Int ->
                 returnToMenu(false)
             }
-            .setNeutralButton("Cancel") { dialog: DialogInterface, id: Int -> }
+            .setNeutralButton(R.string.cancel) { dialog: DialogInterface, id: Int -> }
             .setCancelable(false)
         return builder.create()
     }

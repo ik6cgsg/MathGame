@@ -470,7 +470,7 @@ fun optGenerateSimpleComputationRule(
     simpleComputationRuleParams: SimpleComputationRuleParams
 ): MutableList<ExpressionSubstitution> {
     val result = mutableListOf<ExpressionSubstitution>()
-    if (!simpleComputationRuleParams.isIncluded || expressionPartOriginal.calcComplexity() > 3 || expressionPartOriginal.getContainedFunctions().subtract(simpleComputationRuleParams.operationsMap.keys).isNotEmpty()){
+    if (!simpleComputationRuleParams.isIncluded || expressionPartOriginal.calcComplexity() > 4 || expressionPartOriginal.getContainedFunctions().subtract(simpleComputationRuleParams.operationsMap.keys).isNotEmpty()){
         return result
     }
     val expressionPart = expressionPartOriginal.clone()
@@ -515,14 +515,14 @@ private fun addRootNodeToExpression(expression: ExpressionNode) : ExpressionNode
 }
 
 private fun ExpressionNode.calcComplexity (): Int {
-    if (nodeType == NodeType.VARIABLE) {
+    if (nodeType == NodeType.VARIABLE && (value == "1" || value == "0" || (value.toDoubleOrNull() != null && (roundNumber(value.toDouble()) - 1.0).toReal().additivelyEqualToZero()))) {
         return 0
     } else if (children.isEmpty()) {
         return 1
     }
 
     val nodeComplexity = when (value) {
-        "", "+", "-" -> 0
+        "", "-", "+" -> 0
         "*", "/" -> 1
         else -> 2
     } + children.sumBy { it.calcComplexity() }
@@ -566,11 +566,11 @@ private fun plus (args: List<Double>): Double? {
         return args.sum()
     }
 
-    if (args.any { roundNumber(it) > 100 } && args.size > 2) {
+    if (args.any { roundNumber(it) > 200 } && args.size > 2) {
         return null
     }
     val result = args.sum()
-    if (roundNumber(result) > 200) {
+    if (roundNumber(result) > 300) {
         return null
     }
     return result

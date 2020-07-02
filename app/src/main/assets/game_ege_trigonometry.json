@@ -2,8 +2,8 @@
   "gameSpace": "",
   "gameCode": "ege_trigonometry",
   "name": "ЕГЭ Тригонометрия",
-  "eng": "EGE trigonometry",
-  "rus": "ЕГЭ Тригонометрия",
+  "en": "EGE trigonometry",
+  "ru": "ЕГЭ Тригонометрия",
   "version": 10,
   "levels":[
     {

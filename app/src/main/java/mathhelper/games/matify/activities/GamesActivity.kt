@@ -41,7 +41,6 @@ class GamesActivity: AppCompatActivity() {
         val locale = Locale("en")
         Locale.setDefault(locale)
         val config = Configuration(resources.configuration)
-        config.locale = locale
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
@@ -134,12 +133,12 @@ class GamesActivity: AppCompatActivity() {
     private fun generateList(search: CharSequence? = null) {
         GlobalScene.shared.games.forEachIndexed { i, game ->
             if (search != null) {
-                if (!game.name.contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(resources.configuration.locale.language).contains(search, ignoreCase = true)) {
                     return
                 }
             }
             val gameView = AndroidUtil.createButtonView(this)
-            gameView.text = game.name
+            gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
             /*
             if (game.lastResult != null) {
                 gameView.text = "${game.name}\n${game.lastResult!!}"
@@ -175,7 +174,7 @@ class GamesActivity: AppCompatActivity() {
     private fun filterList(search: CharSequence? = null) {
         if (search != null && search.isNotBlank()) {
             GlobalScene.shared.games.forEachIndexed { i, game ->
-                if (!game.name.contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(resources.configuration.locale.language).contains(search, ignoreCase = true)) {
                     gamesViews[i].visibility = View.GONE
                 } else {
                     gamesViews[i].visibility = View.VISIBLE

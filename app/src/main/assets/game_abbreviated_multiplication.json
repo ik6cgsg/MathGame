@@ -2,8 +2,8 @@
   "gameSpace": "",
   "gameCode": "abbreviated_multiplication",
   "name": "ЕГЭ Сокращенное умножение",
-  "eng": "Abbreviated multiplication",
-  "rus": "Сокращенное умножение",
+  "en": "Abbreviated multiplication",
+  "ru": "Сокращенное умножение",
   "version": 10,
   "levels":[
     {
@@ -12,7 +12,7 @@
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
-      "time": 50,
+      "time": 70,
       "originalExpression": "(/(+(^(a;2);-(^(b;2)));+(a;-(b))))",
       "finalExpression": "Сократить дробь",
       "finalPattern": "+:2",
@@ -23,11 +23,11 @@
     {
       "levelCode": "abbreviated_multiplication__Level_01_Compute",
       "name": "Уровень 1 Упрощение",
-      "difficulty": 2.0,
+      "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 5,
       "time": 90,
-      "originalExpression": "(/(^(+(^(a;0.5);^(b;0.5));2);+(a;b;*(2;^(*(b;a);0.5)))))",
+      "originalExpression": "(/(^(+(^(a;0.5);^(b;0.5));2);+(a;b;*(2;^(*(a;b);0.5)))))",
       "finalExpression": "Сократить при a,b > 0",
       "finalPattern": "?:0:?:?N",
       "rules": [

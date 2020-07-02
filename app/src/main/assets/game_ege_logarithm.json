@@ -2,8 +2,8 @@
   "gameSpace": "",
   "gameCode": "ege_logarithm",
   "name": "ЕГЭ Логарифм",
-  "eng": "EGE Logarithm",
-  "rus": "ЕГЭ Логарифм",
+  "en": "EGE Logarithm",
+  "ru": "ЕГЭ Логарифм",
   "version": 10,
   "levels":[
     {

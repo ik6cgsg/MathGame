@@ -2,6 +2,8 @@
   "gameSpace": "",
   "gameCode": "simple_combinatorics",
   "name": "Simple Combinatorics",
+  "en": "Combinatoric formulas",
+  "ru": "Комбинаторные формулы",
   "version": 10,
   "levels":[
     {

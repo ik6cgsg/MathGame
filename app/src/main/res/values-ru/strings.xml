@@ -1,48 +1,80 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Matify</string>
+    <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆</string>
+    <string name="end_expression_closed">Цель  🔼</string>
+    <string name="end_expression_opened">Цель  🔽</string>
+    <string name="previous" translatable="false">↶</string>
+    <string name="restart" translatable="false">↺</string>
+    <string name="back" translatable="false">←</string>
+    <string name="wrong_subs">❌ Это нельзя сделать ❌</string>
+    <string name="time_out">😢Время вышло!😢</string>
+    <string name="no_rules">🙅 Не нашлось подходящих правил 🙅</string>
+    <string name="levels">УРОВНИ</string>
+    <string name="reset">сбросить все</string>
+    <string name="gear" translatable="false">⚙</string>
+    <string name="settings">⚙ НАСТРОЙКИ ⚙</string>
+    <string name="send_statistics">Отправлять статистику 📈</string>
+    <string name="report_bug">🐛 Сообщить об ошибке</string>
+    <string name="version_view" translatable="false">Matify v</string>
+    <string name="pointer" translatable="false">☝</string>
+    <string name="continue_as_guest">Зайти как гость</string>
+    <string name="continue_with_github">Войти через GitHub аккаунт</string>
+    <string name="continue_with_google">Войти через Google аккаут</string>
+    <string name="logo" translatable="false">Logo</string>
+    <string name="googlelogo" translatable="false">googleLogo</string>
+    <string name="githublogo" translatable="false">githubLogo</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">вход</string>
+    <string name="sign_up">регистрация</string>
+    <string name="or">ИЛИ</string>
     <string name="account">ПРОФИЛЬ</string>
+    <string name="name">Имя</string>
+    <string name="full_name">Полное имя</string>
     <string name="additional">Дополнительно</string>
     <string name="additional_auth_info">Показать дополнительную информацию</string>
-    <string name="big_password">СМЕНА ПАРОЛЯ</string>
-    <string name="big_sign_up">РЕГИСТРАЦИЯ</string>
-    <string name="cancel">Отмена</string>
-    <string name="change_password">🔑 Смена пароля</string>
-    <string name="continue_as_guest">Продолжить как гость</string>
-    <string name="continue_with_github">Продолжить с GitHub</string>
-    <string name="continue_with_google">Продолжить с Google</string>
-    <string name="edit_account">✏ Редактировать профиль</string>
-    <string name="end_expression_closed">Конечное выражение 🔼</string>
-    <string name="end_expression_opened">Конечное выражение 🔽</string>
-    <string name="games">ИГРЫ</string>
-    <string name="games_from_cloud">☁ игры в глобальном поиске ☁</string>
-    <string name="levels">УРОВНИ</string>
-    <string name="login">Логин</string>
-    <string name="name">Имя</string>
-    <string name="new_password">Новый пароль</string>
-    <string name="no_rules">🙅 Не нашлось подходящих правил 🙅</string>
-    <string name="ok">ок</string>
-    <string name="old_password">Старый пароль</string>
-    <string name="or">ИЛИ</string>
-    <string name="password">Пароль</string>
-    <string name="repeat_password">Повторите пароль</string>
-    <string name="report_bug">🐛 Сообщить об ошибке</string>
-    <string name="reset">сброс</string>
     <string name="save">Сохранить</string>
-    <string name="search_for_a_game">Найдите свою игру!</string>
-    <string name="full_name">Полное имя</string>
-    <string name="send_statistics">Отправлять статистику 📈</string>
-    <string name="settings">⚙ НАСТРОЙКИ ⚙</string>
-    <string name="sign_in">Войти</string>
     <string name="sign_out">Выйти</string>
-    <string name="sign_up">Регистрация</string>
-    <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆</string>
-    <string name="tell_about_your_problem">Расскажите о вашей проблеме</string>
-    <string name="time_out">😢Время вышло!😢</string>
-    <string name="wanna_say_something">Хотите что нибудь нам сообщить?</string>
-    <string name="wrong_subs">❌ Это нельзя сделать ❌</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="big_password">ПАРОЛЬ</string>
+    <string name="old_password">Старый пароль</string>
+    <string name="ok">ок</string>
+    <string name="games">ИГРЫ</string>
+    <string name="games_from_cloud">☁ игры из глобального поиска ☁</string>
+    <string name="search_for_a_game">Найти игру!</string>
+    <string name="edit_account">✏ Редактировать профиль</string>
+    <string name="change_password">🔑 Сменить пароль</string>
+    <string name="change_language">🌍 Сменить язык</string>
+    <string name="change_language_to">Сменить язык на</string>
+    <string name="big_sign_up">РЕГИСТРАЦИЯ</string>
+    <string name="cancel">❌ Отмена ❌</string>
+    <string name="yes">✅ Да ✅</string>
+    <string name="congratulations">Поздравляем!</string>
+    <string name="next">Вперед</string>
+    <string name="menu">Меню</string>
+    <string name="restart_label">Перепройти</string>
+    <string name="next_after_last_level_label">Это был последний уровень 😀 \n Следующий - в следующей игре!</string>
+    <string name="you_finished_level_with">Уровень пройден за:</string>
+    <string name="steps">Шаги</string>
+    <string name="time">Время</string>
+    <string name="award">НАГРАДА</string>
+    <string name="hi">Приветствую</string>
+    <string name="send">Отправить</string>
+    <string name="thanks_for_rating">Спасибо за оценку!</string>
+    <string name="tell_us_why_its_so_bad">Напишите, почему все так плохо:</string>
+    <string name="tell_us_why_its_so_perfect">Напишите, что вам больше всего понравилось:</string>
+    <string name="tell_us_anything_you_are_worried_about">Расскажите, что вас смущает:</string>
+    <string name="please_tell_us_about_your_problem">Напишите пожалуйста про Вашу проблему!</string>
+    <string name="are_you_sure">Вы уверенны?</string>
+    <string name="this_action_will_reset_all_your_achievements">Это действие сбросит все Ваши достижения</string>
+    <string name="wanna_say_something">Обратная связь</string>
+    <string name="tell_about_your_problem">Описание проблемы</string>
+    <string name="i">i</string>
     <string name="tutorial_game">Тренировочная Игра</string>
     <string name="tutorial_level">Тренировочный Уровень</string>
     <string name="start_tutorial">❔ Начать тренировку</string>
-    <string name="parsing_error">ошибка</string>
+    <string name="wanna_leave">Хотите выйти?</string>
+    <string name="attention">❗ Внимание ❗</string>
+    <string name="parsing_error">Ошибка загрузки выражения</string>
 </resources>

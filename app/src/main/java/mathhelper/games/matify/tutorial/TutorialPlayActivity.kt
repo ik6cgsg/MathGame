@@ -130,7 +130,7 @@ class TutorialPlayActivity: AppCompatActivity() {
             .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
                 TutorialScene.shared.restart()
             }
-            .setNegativeButton("Cancel") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
             }
         return builder.create()
     }
