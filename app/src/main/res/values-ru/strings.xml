@@ -104,10 +104,9 @@
     <string name="tutorial_on_level_main_element_find_rule">2. Выбери 🔎 нужное правило\n</string>
     <string name="tutorial_on_level_main_element_make_subst">3. Ткни в выбранное правило ~> оно применится\n</string>
     <string name="tutorial_on_level_main_element_repeat">4. Повторяй пока не победишь 👏🏆\n</string>
-    <string name="tutorial_on_level_zoom">👉 проверим как это работает! 👈\n1. Увеличь выражение до максимума 🔎</string>
-    <string name="tutorial_on_level_zoom_max">1. Увеличь выражение до максимума ✅\n2. Ткни рядом с плюсом в выражении 👇</string>
-    <string name="tutorial_on_level_select">2. Ткни рядом с плюсом в выражении ✅\n3. Теперь 🔍 правило в списке ниже </string>
-    <string name="tutorial_on_level_win">3. Правило применилось ✅\n4. Продолжай и выигрывай! 👏🏆</string>
+    <string name="tutorial_on_level_tap">👉 проверим как это работает! 👈\n1. Ткни рядом с плюсом в выражении 👇</string>
+    <string name="tutorial_on_level_select">1. Ткни рядом с плюсом в выражении ✅\n2. Теперь 🔍 правило в списке ниже </string>
+    <string name="tutorial_on_level_win">2. Правило применилось ✅\n3. Продолжай и выигрывай! 👏🏆</string>
     <string name="tutorial_on_level_seems">Выглядит, будто ты все уже умеешь!\n</string>
     <string name="tutorial_on_level_i_am_pro">Ага, все ясно ☀😎</string>
     <string name="no_i_am_pro">Не, я профи 😎</string>

@@ -205,12 +205,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun startDynamicTutorial() {
-        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_zoom))
-        TutorialScene.shared.wantedZoom = true
-    }
-
-    fun zoomSucceeded() {
-        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_zoom_max))
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_tap))
         TutorialScene.shared.wantedZoom = false
         TutorialScene.shared.wantedClick = true
     }
@@ -254,10 +249,6 @@ class TutorialPlayActivity: AppCompatActivity() {
                 Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
                 min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize))
             globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
-            if (TutorialScene.shared.wantedZoom && globalMathView.textSize / resources.displayMetrics.scaledDensity ==
-                    Constants.centralExpressionMaxSize) {
-                zoomSucceeded()
-            }
             return true
         }
     }

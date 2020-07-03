@@ -104,10 +104,9 @@
     <string name="tutorial_on_level_main_element_find_rule">2. Find 🔎 necessary rule\n</string>
     <string name="tutorial_on_level_main_element_make_subst">3. Touch chosen rule ~> make substitution\n</string>
     <string name="tutorial_on_level_main_element_repeat">4. Repeat until you win 👏🏆\n</string>
-    <string name="tutorial_on_level_zoom">👉 Let\'s check it out! 👈\n1. Zoom expression to max 🔎</string>
-    <string name="tutorial_on_level_zoom_max">1. Zoom expression to max ✅\n2. Tap near plus in the expression 👇</string>
-    <string name="tutorial_on_level_select">2. Tap near plus in the expression ✅\n3. Now 🔍 rule from a list below</string>
-    <string name="tutorial_on_level_win">3. Rule applied ✅\n4. Continue and win! 👏🏆</string>
+    <string name="tutorial_on_level_tap">👉 Let\'s check it out! 👈\n1. Tap near plus in the expression 👇</string>
+    <string name="tutorial_on_level_select">1. Tap near plus in the expression ✅\n2. Now 🔍 rule from a list below</string>
+    <string name="tutorial_on_level_win">2. Rule applied ✅\n3. Continue and win! 👏🏆</string>
     <string name="tutorial_on_level_seems">Seems you got it all!\n</string>
     <string name="tutorial_on_level_i_am_pro">Yep, now I\'m PRO too 😎</string>
     <string name="no_i_am_pro">No, I\'m PRO 😎</string>
