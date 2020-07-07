@@ -17,6 +17,7 @@ import com.twf.api.*
 import com.twf.expressiontree.ExpressionNode
 import com.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
+import mathhelper.games.matify.R
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
@@ -80,7 +81,7 @@ class GlobalMathView: TextView {
         Log.d(TAG, "performSubstitution")
         var res: ExpressionNode? = null
         if (expression == null || currentAtom == null) {
-            Toast.makeText(context, "Error: no atom!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
         } else {
             val substitutionPlaces = findSubstitutionPlacesInExpression(expression!!, subst)
             if (substitutionPlaces.isNotEmpty()) {

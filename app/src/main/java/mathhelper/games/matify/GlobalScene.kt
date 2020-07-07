@@ -150,17 +150,17 @@ class GlobalScene {
                 when (e) {
                     is Request.TimeoutException -> {
                         context.runOnUiThread {
-                            Toast.makeText(context, "Problems with internet connection", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.problems_with_internet_connection, Toast.LENGTH_LONG).show()
                         }
                     }
                     is Request.TokenNotFoundException -> {
                         context.runOnUiThread {
-                            Toast.makeText(context, "Bad Credentials Error", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.bad_credentials_error, Toast.LENGTH_LONG).show()
                         }
                     }
                     is Request.UndefinedException -> {
                         context.runOnUiThread {
-                            Toast.makeText(context, "Something went wrong, try later", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
                         }
                     }
                 }

@@ -6,7 +6,9 @@ import com.twf.expressiontree.*
 import com.twf.numbers.toReal
 import com.twf.platformdependent.abs
 import com.twf.platformdependent.escapeCharacters
+import com.twf.platformdependent.toShortString
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 //expressions
 fun stringToExpression(
@@ -475,36 +477,43 @@ fun optGenerateSimpleComputationRule(
     }
     val expressionPart = expressionPartOriginal.clone()
     expressionPart.variableReplacement(mapOf("π" to "3.1415926535897932384626433832795"))
-    if (expressionPart.getContainedVariables().isEmpty()
-    ) {
+    if (expressionPart.getContainedVariables().isEmpty()) {
         if (expressionPart.children.isNotEmpty()) {
             val computed = expressionPart.computeNode(simpleComputationRuleParams) ?: return result
             result.add(ExpressionSubstitution(addRootNodeToExpression(expressionPart.clone()), addRootNodeToExpression(ExpressionNode(NodeType.VARIABLE, computed.toShortString()))))
         } else if (expressionPart.value.toDoubleOrNull() != null) { //add plus node
             val currentValue = expressionPart.value.toDoubleOrNull() ?: return result
+
+            //x ~> (x-1) + 1
             val plusTreeNode = ExpressionNode(NodeType.FUNCTION, "+")
             plusTreeNode.addChild(ExpressionNode(NodeType.VARIABLE, (currentValue - 1).toShortString()))
             plusTreeNode.addChild(ExpressionNode(NodeType.VARIABLE, "1"))
             result.add(ExpressionSubstitution(addRootNodeToExpression(expressionPart.clone()), addRootNodeToExpression(plusTreeNode)))
+
+            //x ~> (x+1) - 1
             val minusTreeNode = ExpressionNode(NodeType.FUNCTION, "+")
             minusTreeNode.addChild(ExpressionNode(NodeType.VARIABLE, (currentValue + 1).toShortString()))
             minusTreeNode.addChild(ExpressionNode(NodeType.FUNCTION, "-"))
             minusTreeNode.children.last().addChild(ExpressionNode(NodeType.VARIABLE, "1"))
             result.add(ExpressionSubstitution(addRootNodeToExpression(expressionPart.clone()), addRootNodeToExpression(minusTreeNode)))
+
+            val intCurrentValue = currentValue.toInt()
+            if (1 < intCurrentValue && intCurrentValue < 145 && (intCurrentValue - currentValue).toReal().additivelyEqualToZero()
+            ) {
+                val sqrtValue = sqrt(currentValue).toInt()
+                for (i in 2..sqrtValue) {
+                    val div = intCurrentValue / i
+                    if (intCurrentValue == i * div) {
+                        val mulTreeNode = ExpressionNode(NodeType.FUNCTION, "*")
+                        mulTreeNode.addChild(ExpressionNode(NodeType.VARIABLE, i.toString()))
+                        mulTreeNode.addChild(ExpressionNode(NodeType.VARIABLE, div.toString()))
+                        result.add(ExpressionSubstitution(addRootNodeToExpression(expressionPart.clone()), addRootNodeToExpression(mulTreeNode)))
+                    }
+                }
+            }
         }
     }
     return result
-}
-
-private fun Double.toShortString (): String{
-    var stringValue = this.toString()
-    if (stringValue.contains('.')) {
-        val fractionPart = stringValue.substringAfter(".").substringBefore("000")
-        stringValue = stringValue.substringBefore(".")
-        if (fractionPart.isNotEmpty() && fractionPart != "0")
-            stringValue = stringValue + "." + fractionPart.substringBefore("000")
-    }
-    return stringValue
 }
 
 private fun addRootNodeToExpression(expression: ExpressionNode) : ExpressionNode {

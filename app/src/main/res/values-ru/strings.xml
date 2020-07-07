@@ -23,6 +23,7 @@
     <string name="logo" translatable="false">Logo</string>
     <string name="googlelogo" translatable="false">googleLogo</string>
     <string name="githublogo" translatable="false">githubLogo</string>
+    <string name="saved">Сохранено!</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
     <string name="sign_in">вход</string>
@@ -37,6 +38,8 @@
     <string name="sign_out">Выйти</string>
     <string name="new_password">Новый пароль</string>
     <string name="repeat_password">Повторите пароль</string>
+    <string name="different_password">Пароли не совпадают</string>
+    <string name="wrong_password">Неверный пароль</string>
     <string name="big_password">ПАРОЛЬ</string>
     <string name="old_password">Старый пароль</string>
     <string name="ok">ок</string>
@@ -49,6 +52,7 @@
     <string name="change_language_to">Сменить язык на</string>
     <string name="big_sign_up">РЕГИСТРАЦИЯ</string>
     <string name="cancel">❌ Отмена ❌</string>
+    <string name="no">🚫 Нет 🚫</string>
     <string name="yes">✅ Да ✅</string>
     <string name="congratulations">Поздравляем!</string>
     <string name="next">Вперед</string>
@@ -71,6 +75,9 @@
     <string name="wanna_say_something">Обратная связь</string>
     <string name="tell_about_your_problem">Описание проблемы</string>
     <string name="i">i</string>
+    <string name="save_your_current_state">Сохранить текущее состояние?</string>
+    <string name="welkome_back">С возвращением!</string>
+    <string name="continue_from_where_you_stopped">Продолжить с сохраненного состояния?</string>
 
     <string name="tutorial">Туториал</string>
     <string name="tutorial_game">Игра-туториал</string>
@@ -89,8 +96,8 @@
     <string name="welcome">🍀 Добро пожаловаать! 🍀</string>
     <string name="games_activity_tutorial">🍀 Добро пожаловать! 🍀\nЗдесь можно:\n* Искать игру среди установленных \n* Выбрать одну и играть!\n\n🙃 Понятно? 🙃</string>
     <string name="level_activity_tutorial">А здесь нужно выбрать уровень!\n\n🙃 Понятно? 🙃</string>
-    <string name="tutorial_on_level_info">🍀 Приветствую! 🍀\nЭто место для коротких\nважных (и веселых) сообщений</string>
-    <string name="tutorial_on_level_to_menu">← Это чтобы вернутьтся в меню… ←\nТекущий прогресс будет 💾</string>
+    <string name="tutorial_on_level_info">🍀 Приветствую на уровне! 🍀\nЭто место для коротких\nважных (и веселых) сообщений</string>
+    <string name="tutorial_on_level_to_menu">← Это чтобы вернутьтся в меню… ←\nТекущий прогресс будет сохранен 💾</string>
     <string name="tutorial_on_level_short_info">i Ткни чтобы увидеть\nинфу про уровень i</string>
     <string name="tutorial_on_level_restart">↺ Перезапуск уровня ↺</string>
     <string name="tutorial_on_level_undo">↶ Отменить последнее преобразование (UNDO) ↶</string>
@@ -112,4 +119,11 @@
     <string name="no_i_am_pro">Не, я профи 😎</string>
 
     <string name="parsing_error">Ошибка загрузки выражения</string>
+    <string name="something_went_wrong">Что-то пошло не так, попробуй повторить</string>
+    <string name="misclick_happened_please_retry">Неточный клик, повтори пожалуйста</string>
+    <string name="problems_with_internet_connection">проблемы с интернет-соединением</string>
+    <string name="bad_credentials_error">Некорректные идентификаторы</string>
+    <string name="self_phone_mode">Ваши результаты сохраняются только локально</string>
+    <string name="google_sign_in_error">Ошибка в ходе Google-авторизации…</string>
+    <string name="coming_soon">Скоро реализуем…</string>
 </resources>

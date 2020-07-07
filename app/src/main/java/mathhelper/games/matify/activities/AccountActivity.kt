@@ -89,7 +89,7 @@ class AccountActivity: AppCompatActivity() {
                 Request.editRequest(req)
                 Storage.shared.setUserInfo(this, userData)
             }, foreground = {
-                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
             }, errorground = {})
         }
     }

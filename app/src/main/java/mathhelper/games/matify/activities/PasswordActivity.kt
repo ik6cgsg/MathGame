@@ -61,7 +61,7 @@ class PasswordActivity: AppCompatActivity() {
                 newPassInputLayout.visibility = View.VISIBLE
                 repeatPassInputLayout.visibility = View.VISIBLE
             } else {
-                Toast.makeText(this, "Wrong password!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
             }
         } else if (newPassView.text.toString() == repeatPassView.text.toString()) {
             if (Storage.shared.serverToken(this).isNullOrBlank()){
@@ -81,12 +81,12 @@ class PasswordActivity: AppCompatActivity() {
                         )
                     )
                 }, foreground = {
-                    Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
                     finish()
                 }, errorground = {})
             }
         } else {
-            Toast.makeText(this, "Different passwords", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.different_password, Toast.LENGTH_SHORT).show()
         }
     }
 }

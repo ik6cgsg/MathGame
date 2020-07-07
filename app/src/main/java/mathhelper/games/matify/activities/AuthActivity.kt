@@ -82,7 +82,7 @@ class AuthActivity: AppCompatActivity() {
             finish()
         }, errorground = {
             this.runOnUiThread {
-                Toast.makeText(this, "You are authorized in self-phone mode", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.self_phone_mode, Toast.LENGTH_LONG).show()
                 finish()
             }
         })
@@ -165,11 +165,11 @@ class AuthActivity: AppCompatActivity() {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.statusCode)
-            Toast.makeText(this, "Error while sign with Google...", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.google_sign_in_error, Toast.LENGTH_LONG).show()
         }
     }
 
     fun onGitHubClicked(v: View?) {
-        Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.coming_soon, Toast.LENGTH_SHORT).show()
     }
 }

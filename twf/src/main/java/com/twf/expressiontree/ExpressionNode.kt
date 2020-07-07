@@ -4,6 +4,7 @@ import com.twf.config.ComparisonType
 import com.twf.config.FunctionConfiguration
 import com.twf.config.FunctionStringDefinition
 import com.twf.config.StringDefinitionType
+import com.twf.platformdependent.toShortString
 import com.twf.standartlibextensions.abs
 import com.twf.standartlibextensions.isNumberPart
 import com.twf.standartlibextensions.isSign
@@ -111,6 +112,27 @@ data class ExpressionNode(
     fun normilizeSubstructions(functionConfiguration: FunctionConfiguration) { //TODO: generalize because it depends on configuration
         for (i in children.lastIndex downTo 0) {
             children[i].normilizeSubstructions(functionConfiguration)
+            if (children[i].nodeType == NodeType.VARIABLE && children[i].value.startsWith("-")){
+                val double = children[i].value.toDoubleOrNull()
+                if (double != null && double < 0) {
+                    if (value == "-") {
+                        setVariable((-double).toString())
+                    } else {
+                        val valueNode = ExpressionNode(NodeType.VARIABLE, (-double).toShortString())
+                        val minusNode = ExpressionNode(NodeType.FUNCTION, "-")
+                        minusNode.addChild(valueNode)
+                        if (value != "+") {
+                            children[i] = minusNode
+                            minusNode.parent = this
+                        } else {
+                            val plusNode = ExpressionNode(NodeType.FUNCTION, "+")
+                            plusNode.addChild(minusNode)
+                            children[i] = plusNode
+                            plusNode.parent = this
+                        }
+                    }
+                }
+            }
             if (children[i].value == "-" && value != "+") {
                 val plusParent = ExpressionNode(NodeType.FUNCTION,
                     "+",

@@ -23,6 +23,7 @@
     <string name="logo" translatable="false">Logo</string>
     <string name="googlelogo" translatable="false">googleLogo</string>
     <string name="githublogo" translatable="false">githubLogo</string>
+    <string name="saved">Saved!</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
@@ -37,6 +38,8 @@
     <string name="sign_out">Sign out</string>
     <string name="new_password">New password</string>
     <string name="repeat_password">Repeat password</string>
+    <string name="different_password">Different passwords</string>
+    <string name="wrong_password">Wrong password</string>
     <string name="big_password">PASSWORD</string>
     <string name="old_password">Old password</string>
     <string name="ok">ok</string>
@@ -49,6 +52,7 @@
     <string name="change_language_to">Change language to</string>
     <string name="big_sign_up">SIGN UP</string>
     <string name="cancel">❌ Cancel ❌</string>
+    <string name="no">🚫 No 🚫</string>
     <string name="yes">✅ Yes ✅</string>
     <string name="congratulations">Congratulations!</string>
     <string name="next">Next</string>
@@ -71,6 +75,9 @@
     <string name="wanna_say_something">Wanna say something?</string>
     <string name="tell_about_your_problem">Tell about your problem</string>
     <string name="i">i</string>
+    <string name="save_your_current_state">Save your current state?</string>
+    <string name="welkome_back">Welcome back!</string>
+    <string name="continue_from_where_you_stopped">Continue from where you stopped?</string>
 
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_level">Tutorial Level</string>
@@ -89,13 +96,13 @@
     <string name="welcome">🍀 Welcome! 🍀</string>
     <string name="games_activity_tutorial">🍀 Welcome! 🍀\nHere you can:\n* Search local and global games\n* Choose one and play!\n\n🙃 Got it? 🙃</string>
     <string name="level_activity_tutorial">And here you can choose level to play!\n\n🙃 Got it? 🙃</string>
-    <string name="tutorial_on_level_info">🍀 Welcome! 🍀\nThat\'s a place for short\nimportant (and funny) messages</string>
-    <string name="tutorial_on_level_to_menu">← This can return to menu… ←\nAnd even 💾 your progress!</string>
+    <string name="tutorial_on_level_info">🍀 Welcome to level! 🍀\nThat\'s a place for short\nimportant (and funny) messages</string>
+    <string name="tutorial_on_level_to_menu">← This can return to menu… ←\nAnd even save 💾 your progress!</string>
     <string name="tutorial_on_level_short_info">i Tap to see short\ninfo about level i</string>
     <string name="tutorial_on_level_restart">↺ Restart level button ↺</string>
     <string name="tutorial_on_level_undo">↶ Undo the last transformation ↶</string>
     <string name="tutorial_on_level_goal">⬆ Goal: transform expression to it ⬆</string>
-    <string name="tutorial_on_level_goal_explanation">This is final goal for level💥\nAKA The Answer criteria for current task!\n\n</string>
+    <string name="tutorial_on_level_goal_explanation">This is final goal for level💥\nAKA The result criteria for current task!\n\n</string>
     <string name="tutorial_on_level_goal_toggle">P.S. You can toggle it with 🔽 if you need!\n\n🙃 Got it? 🙃</string>
     <string name="tutorial_on_level_main_element">⬇ Main element of our game 🥁 ⬇</string>
     <string name="tutorial_on_level_main_element_current">Here is current expression, to win - transform it to goal.\n</string>
@@ -112,4 +119,11 @@
     <string name="no_i_am_pro">No, I\'m PRO 😎</string>
 
     <string name="parsing_error">parsing error</string>
+    <string name="something_went_wrong">Something went wrong, please retry</string>
+    <string name="misclick_happened_please_retry">Misclick happened, please retry</string>
+    <string name="problems_with_internet_connection">Problems with internet connection</string>
+    <string name="bad_credentials_error">Bad credentials error</string>
+    <string name="self_phone_mode">You are authorized in self-phone mode</string>
+    <string name="google_sign_in_error">Error while sign with Google…</string>
+    <string name="coming_soon">Coming soon…</string>
 </resources>

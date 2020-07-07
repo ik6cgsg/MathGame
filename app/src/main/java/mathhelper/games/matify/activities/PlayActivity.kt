@@ -58,7 +58,7 @@ class PlayActivity: AppCompatActivity() {
                         PlayScene.shared.clearRules()
                     } catch (e: Exception) {
                         Log.e(TAG, "Error while clearing rules on touch: ${e.message}")
-                        Toast.makeText(this, "Misclick happened, please retry", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -124,7 +124,7 @@ class PlayActivity: AppCompatActivity() {
             PlayScene.shared.loadLevel(continueGame, resources.configuration.locale.language)
         } catch (e: Exception) {
             Log.e(TAG, "Error while level loading")
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
         }
         progress.visibility = View.GONE
         loading = false
@@ -235,12 +235,11 @@ class PlayActivity: AppCompatActivity() {
         Log.d(TAG, "createLooseDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Time out!")
-            .setMessage("May be next time?")
-            .setPositiveButton("Restart") { dialog: DialogInterface, id: Int ->
+            .setTitle(R.string.time_out)
+            .setPositiveButton(R.string.restart) { dialog: DialogInterface, id: Int ->
                 restart(null)
             }
-            .setNegativeButton("Menu") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.menu) { dialog: DialogInterface, id: Int ->
                 back(null)
             }
             .setCancelable(false)
@@ -251,12 +250,12 @@ class PlayActivity: AppCompatActivity() {
         Log.d(TAG, "createBackDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Attention!")
-            .setMessage("Save your current state?")
-            .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
+            .setTitle(R.string.attention)
+            .setMessage(R.string.save_your_current_state)
+            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 returnToMenu(true)
             }
-            .setNegativeButton("No") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.no) { dialog: DialogInterface, id: Int ->
                 returnToMenu(false)
             }
             .setNeutralButton(R.string.cancel) { dialog: DialogInterface, id: Int -> }
@@ -268,12 +267,12 @@ class PlayActivity: AppCompatActivity() {
         Log.d(TAG, "createContinueDialog")
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("Welcome back!")
-            .setMessage("Continue from where you stopped?")
-            .setPositiveButton("Yes") { dialog: DialogInterface, id: Int ->
+            .setTitle(R.string.welkome_back)
+            .setMessage(R.string.continue_from_where_you_stopped)
+            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 createLevelUI(true)
             }
-            .setNegativeButton("No") { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.no) { dialog: DialogInterface, id: Int ->
                 createLevelUI(false)
             }
             .setCancelable(false)

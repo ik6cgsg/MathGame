@@ -1,5 +1,6 @@
 package com.twf.platformdependent
 
+import kotlin.math.ceil
 import kotlin.random.Random
 
 val random = Random
@@ -27,4 +28,24 @@ fun escapeCharacters (string: String, characterEscapingDepth: Int = 1): String{
 fun escapeBackSlash (string: String, characterEscapingDepth: Int = 1): String{
     val replacement = "\\".repeat(characterEscapingDepth)
     return string.replace("\\", replacement)
+}
+
+fun Double.toShortString (): String{
+    var stringValue = this.toString()
+    if (stringValue.contains('.')) {
+        if (stringValue.contains("999")){
+            val fractionPart = stringValue.substringAfter(".").substringBefore("999")
+            stringValue = stringValue.substringBefore(".")
+            if (fractionPart.isNotEmpty() && fractionPart != "9")
+                stringValue = stringValue + "." + fractionPart.substringBefore("999")
+            val newLast = stringValue.last() + 1
+            stringValue = stringValue.removeSuffix(stringValue.last().toString()) + newLast
+        } else {
+            val fractionPart = stringValue.substringAfter(".").substringBefore("000")
+            stringValue = stringValue.substringBefore(".")
+            if (fractionPart.isNotEmpty() && fractionPart != "0")
+                stringValue = stringValue + "." + fractionPart.substringBefore("000")
+        }
+    }
+    return stringValue
 }
