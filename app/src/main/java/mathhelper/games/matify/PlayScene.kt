@@ -6,9 +6,9 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.twf.api.SimpleComputationRuleParams
 import com.twf.api.expressionToStructureString
 import com.twf.expressiontree.ExpressionSubstitution
+import com.twf.expressiontree.SimpleComputationRuleParams
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.MathDownTimer
 import mathhelper.games.matify.common.MathUpTimer

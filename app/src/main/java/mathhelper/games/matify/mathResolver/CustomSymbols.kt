@@ -33,7 +33,7 @@ class CustomSymbolsHandler {
             "U" to "υ",
             "V" to "v",
             "W" to "w",
-            "X" to "ξ",
+//            "X" to "ξ", //x used in context rule tasks, TODO: think, how to handle it
             "Y" to "y",
             "Z" to "ζ"
         )

@@ -90,7 +90,7 @@ class FactSubstitution( //try to make substitution only on top level, not on Exp
                         return
                     }
                     ExpressionSubstitution.checkConditionCompanion((factNode as Expression).data, (conditionNode as Expression).data,
-                            substitutionInstance, nameArgsMap, basedOnTaskContext)
+                            substitutionInstance, nameArgsMap, basedOnTaskContext, false)
                     if (!substitutionInstance.isApplicable) return
                 }
             }

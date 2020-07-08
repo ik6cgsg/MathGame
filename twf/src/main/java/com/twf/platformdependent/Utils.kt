@@ -1,5 +1,6 @@
 package com.twf.platformdependent
 
+import com.twf.standartlibextensions.abs
 import kotlin.math.ceil
 import kotlin.random.Random
 
@@ -38,8 +39,12 @@ fun Double.toShortString (): String{
             stringValue = stringValue.substringBefore(".")
             if (fractionPart.isNotEmpty() && fractionPart != "9")
                 stringValue = stringValue + "." + fractionPart.substringBefore("999")
-            val newLast = stringValue.last() + 1
-            stringValue = stringValue.removeSuffix(stringValue.last().toString()) + newLast
+            if (stringValue.last() != '9') {
+                val newLast = stringValue.last() + 1
+                stringValue = stringValue.removeSuffix(stringValue.last().toString()) + newLast
+            } else {
+                stringValue = (stringValue.toInt() + 1).toString()
+            }
         } else {
             val fractionPart = stringValue.substringAfter(".").substringBefore("000")
             stringValue = stringValue.substringBefore(".")

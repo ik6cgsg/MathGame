@@ -334,8 +334,7 @@
       "type": "algebra",
       "rules":[
         {"left": "(factorial(+(n;1)))","right": "(*(factorial(n);+(n;1)))"},
-        {"left": "(*(factorial(n);+(n;1)))","right": "(factorial(+(n;1)))"},
-        {"left": "(*(+(n;1);factorial(n)))","right": "(factorial(+(n;1)))"},
+        {"left": "(*(factorial(n);+(n;1)))","right": "(factorial(+(n;1)))", "matchJumbledAndNested": true},
         {"left": "(/(factorial(+(n;1));+(n;1)))","right": "(factorial(n))"},
         {"left": "(factorial(n))","right": "(/(factorial(+(n;1));+(n;1)))"},
         {"left": "(/(factorial(+(n;1));factorial(n)))","right": "(+(n;1))"},
@@ -347,8 +346,7 @@
       "type": "algebra",
       "rules":[
         {"left": "(S1(m;n))","right": "(*(factorial(n);S2(m;n)))"},
-        {"left": "(*(factorial(n);S2(m;n)))","right": "(S1(m;n))"},
-        {"left": "(*(S2(m;n);factorial(n)))","right": "(S1(m;n))"},
+        {"left": "(*(factorial(n);S2(m;n)))","right": "(S1(m;n))", "matchJumbledAndNested": true},
         {"left": "(factorial(n))","right": "(/(S1(m;n);S2(m;n)))"},
         {"left": "(/(S1(m;n);S2(m;n)))","right": "(factorial(n))"},
         {"left": "(S2(m;n))","right": "(/(S1(m;n);factorial(n)))"},
@@ -365,8 +363,7 @@
       "type": "algebra",
       "rules":[
         {"left": "(C(*(2;n);n))","right": "(*(C(n);+(n;1)))"},
-        {"left": "(*(C(n);+(n;1)))","right": "(C(*(2;n);n))"},
-        {"left": "(*(+(n;1);C(n)))","right": "(C(*(2;n);n))"},
+        {"left": "(*(C(n);+(n;1)))","right": "(C(*(2;n);n))", "matchJumbledAndNested": true},
         {"left": "(C(n))","right": "(/(C(*(2;n);n);+(n;1)))"},
         {"left": "(/(C(*(2;n);n);+(n;1)))","right": "(C(n))"},
         {"left": "(+(n;1))","right": "(/(C(*(2;n);n);C(n)))"},

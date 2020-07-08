@@ -89,6 +89,7 @@ class GlobalMathView: TextView {
                     it.originalValue.nodeId == currentAtom!!.nodeId
                 }
                 if (substPlace != null) {
+                    expression = substPlace.originalExpression
                     applySubstitution(expression!!, subst, listOf(substPlace))
                     setTextFromExpression()
                     res = expression!!.clone()

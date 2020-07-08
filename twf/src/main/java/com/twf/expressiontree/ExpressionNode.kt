@@ -7,6 +7,7 @@ import com.twf.config.StringDefinitionType
 import com.twf.platformdependent.toShortString
 import com.twf.standartlibextensions.abs
 import com.twf.standartlibextensions.isNumberPart
+import com.twf.standartlibextensions.isNumberValuesEqual
 import com.twf.standartlibextensions.isSign
 import kotlin.math.max
 
@@ -17,25 +18,26 @@ enum class NodeType {
 }
 
 data class NodeValue(
-        var exactNumber: Int
+    var exactNumber: Int
 )
 
 data class ExpressionNode(
-        //data
-        var nodeType: NodeType,
-        var value: String,
-        var startPosition: Int = -1,
-        var endPosition: Int = -1,
-        var subValue: String = "", //value on bottom lines <msub>
-        var parent: ExpressionNode? = null,
-        var functionStringDefinition: FunctionStringDefinition? = null, //maybe ExpressionNode also should have string with original representation, not just link on definition kind
-        var identifier: String = "",
-        var nodeId: Int = -1
+    //data
+    var nodeType: NodeType,
+    var value: String,
+    var startPosition: Int = -1,
+    var endPosition: Int = -1,
+    var subValue: String = "", //value on bottom lines <msub>
+    var parent: ExpressionNode? = null,
+    var functionStringDefinition: FunctionStringDefinition? = null, //maybe ExpressionNode also should have string with original representation, not just link on definition kind
+    var identifier: String = "",
+    var nodeId: Int = -1
 ) {
     var children: ArrayList<ExpressionNode> = ArrayList()
 
     //only facts variables:
-    var rules: ArrayList<ExpressionSubstitution> = ArrayList() //correct for this and children levels transformation rules
+    var rules: ArrayList<ExpressionSubstitution> =
+        ArrayList() //correct for this and children levels transformation rules
     var parserMark: String = ""
     //todo(add fact chain type: '>', '=', '<', 'equality')
 
@@ -72,16 +74,16 @@ data class ExpressionNode(
 
     fun getTopNode(): ExpressionNode {
         var result = this
-        while (result.parent != null){
+        while (result.parent != null) {
             result = result.parent!!
         }
         return result
     }
 
-    fun computeNodeIdsAsNumbersInDirectTraversal (startId: Int = 0): Int {
+    fun computeNodeIdsAsNumbersInDirectTraversal(startId: Int = 0): Int {
         nodeId = startId
         var currentStartId = startId + 1
-        for (child in children){
+        for (child in children) {
             currentStartId = child.computeNodeIdsAsNumbersInDirectTraversal(currentStartId)
         }
         return currentStartId
@@ -112,7 +114,7 @@ data class ExpressionNode(
     fun normilizeSubstructions(functionConfiguration: FunctionConfiguration) { //TODO: generalize because it depends on configuration
         for (i in children.lastIndex downTo 0) {
             children[i].normilizeSubstructions(functionConfiguration)
-            if (children[i].nodeType == NodeType.VARIABLE && children[i].value.startsWith("-")){
+            if (children[i].nodeType == NodeType.VARIABLE && children[i].value.startsWith("-")) {
                 val double = children[i].value.toDoubleOrNull()
                 if (double != null && double < 0) {
                     if (value == "-") {
@@ -134,13 +136,15 @@ data class ExpressionNode(
                 }
             }
             if (children[i].value == "-" && value != "+") {
-                val plusParent = ExpressionNode(NodeType.FUNCTION,
+                val plusParent = ExpressionNode(
+                    NodeType.FUNCTION,
                     "+",
                     children[i].startPosition,
                     children[i].endPosition,
                     "",
                     this,
-                    functionConfiguration.fastFindStringDefinitionByNameAndNumberOfArguments("+", 1))
+                    functionConfiguration.fastFindStringDefinitionByNameAndNumberOfArguments("+", 1)
+                )
                 plusParent.addChild(children[i])
                 children[i] = plusParent
             }
@@ -168,7 +172,9 @@ data class ExpressionNode(
         } else {
             identifier = value + "("
             for (child in children) {
-                identifier += /*if (child.identifier.isEmpty()) */child.computeIdentifierWithPositions(getNodeValueString)/* else child.identifier*/ + ";"
+                identifier += /*if (child.identifier.isEmpty()) */child.computeIdentifierWithPositions(
+                    getNodeValueString
+                )/* else child.identifier*/ + ";"
             }
             if (children.size > 0)
                 identifier = identifier.substring(0, identifier.length - 1)
@@ -177,25 +183,34 @@ data class ExpressionNode(
         return identifier + "{$startPosition;$endPosition}"
     }
 
-    fun toStringsWithPositions(getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }, offset: String = ""): String {
+    fun toStringsWithPositions(
+        getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() },
+        offset: String = ""
+    ): String {
         if (nodeType == NodeType.VARIABLE) {
             identifier = offset + getNodeValueString(this) + "  :  [$startPosition; $endPosition; $nodeId)\n"
         } else {
             identifier = offset + value + "  :  [$startPosition; $endPosition; $nodeId)\n"
             for (child in children) {
-                identifier += /*if (child.identifier.isEmpty()) */child.toStringsWithPositions(getNodeValueString, offset + "  ")/* else child.identifier*/
+                identifier += /*if (child.identifier.isEmpty()) */child.toStringsWithPositions(
+                    getNodeValueString,
+                    offset + "  "
+                )/* else child.identifier*/
             }
         }
         return identifier
     }
 
-    fun toUserView(functionConfiguration: FunctionConfiguration = FunctionConfiguration(), getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }): String {
+    fun toUserView(
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(),
+        getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }
+    ): String {
         var result = toUserViewRec(functionConfiguration, getNodeValueString)
         if (result.first() == '(' && result.last() == ')') {
             var numberOfOpenBrackets = 1
             var currentIndex = 1
-            while (currentIndex < result.length && numberOfOpenBrackets > 0){
-                if (result[currentIndex] == '('){
+            while (currentIndex < result.length && numberOfOpenBrackets > 0) {
+                if (result[currentIndex] == '(') {
                     numberOfOpenBrackets++
                 } else if (result[currentIndex] == ')') {
                     numberOfOpenBrackets--
@@ -209,16 +224,19 @@ data class ExpressionNode(
         return result
     }
 
-    private fun toUserViewRec(functionConfiguration: FunctionConfiguration = FunctionConfiguration(), getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }): String {
+    private fun toUserViewRec(
+        functionConfiguration: FunctionConfiguration = FunctionConfiguration(),
+        getNodeValueString: (ExpressionNode) -> String = { it.getNodeValueString() }
+    ): String {
         var identifier = ""
         if (nodeType == NodeType.VARIABLE) {
             identifier = getNodeValueString(this)
         } else if (value == "" && children.size == 1) {
             identifier = children.first().toUserViewRec(functionConfiguration)
         } else if (functionConfiguration.functionProperties.filter {
-                    it.function == value &&
-                            it.defaultStringDefinitionType != StringDefinitionType.FUNCTION
-                }.isNotEmpty()) {
+                it.function == value &&
+                    it.defaultStringDefinitionType != StringDefinitionType.FUNCTION
+            }.isNotEmpty()) {
             val functionIdentifier = functionConfiguration.functionProperties.find { it.function == value }!!
             when (functionIdentifier.defaultStringDefinitionType) {
                 StringDefinitionType.BINARY_OPERATION -> {
@@ -227,18 +245,24 @@ data class ExpressionNode(
                     }
                     for (child in children) {
                         if (functionConfiguration.functionPropertiesByName.get(child.value + "_-1")?.mainFunction == functionIdentifier.function &&
-                                functionConfiguration.functionPropertiesByName.get(child.value + "_-1")?.function != functionIdentifier.function) {
+                            functionConfiguration.functionPropertiesByName.get(child.value + "_-1")?.function != functionIdentifier.function
+                        ) {
                             if (identifier.length > "(".length) {
-                                identifier = identifier.substring(0, identifier.length - functionIdentifier.userRepresentation.length)
+                                identifier = identifier.substring(
+                                    0,
+                                    identifier.length - functionIdentifier.userRepresentation.length
+                                )
                             }
                             identifier += functionConfiguration.functionPropertiesByName.get(child.value + "_-1")!!.function
-                            identifier += child.children.first().toUserViewRec(functionConfiguration) + functionIdentifier.userRepresentation
+                            identifier += child.children.first()
+                                .toUserViewRec(functionConfiguration) + functionIdentifier.userRepresentation
                         } else {
                             identifier += child.toUserViewRec(functionConfiguration) + functionIdentifier.userRepresentation
                         }
                     }
                     if (children.size > 0) {
-                        identifier = identifier.substring(0, identifier.length - functionIdentifier.userRepresentation.length)
+                        identifier =
+                            identifier.substring(0, identifier.length - functionIdentifier.userRepresentation.length)
                     }
                     if (binaryOperationNeedBrackets()) {
                         identifier += ")"
@@ -246,15 +270,16 @@ data class ExpressionNode(
                 }
                 StringDefinitionType.UNARY_LEFT_OPERATION -> {
                     val childUserRepresentation = children.first().toUserViewRec(functionConfiguration)
-                    identifier = functionIdentifier.userRepresentation + if (childUserRepresentation.first().isSign(false)){
-                        "($childUserRepresentation)"
-                    } else {
-                        childUserRepresentation
-                    }
+                    identifier =
+                        functionIdentifier.userRepresentation + if (childUserRepresentation.first().isSign(false)) {
+                            "($childUserRepresentation)"
+                        } else {
+                            childUserRepresentation
+                        }
                 }
                 StringDefinitionType.UNARY_RIGHT_OPERATION -> {
                     val childUserRepresentation = children.first().toUserViewRec(functionConfiguration)
-                    identifier = if (childUserRepresentation.first().isSign(false)){
+                    identifier = if (childUserRepresentation.first().isSign(false)) {
                         "($childUserRepresentation)"
                     } else {
                         childUserRepresentation
@@ -274,10 +299,11 @@ data class ExpressionNode(
     }
 
     private fun binaryOperationNeedBrackets() =
-            parent?.functionStringDefinition?.function?.defaultStringDefinitionType != StringDefinitionType.FUNCTION
+        parent?.functionStringDefinition?.function?.defaultStringDefinitionType != StringDefinitionType.FUNCTION
 
     fun isNodeValueEquals(expressionNode: ExpressionNode) = getNodeValueString() == expressionNode.getNodeValueString()
-    fun isNodeSubtreeIdentifiersEquals(expressionNode: ExpressionNode) = computeIdentifier() == expressionNode.computeIdentifier()
+    fun isNodeSubtreeIdentifiersEquals(expressionNode: ExpressionNode) =
+        computeIdentifier() == expressionNode.computeIdentifier()
 
     fun sortChildrenAscendingIdentifiers() {
         if (nodeType == NodeType.FUNCTION && (functionStringDefinition?.function?.isCommutativeWithNullWeight == true))
@@ -291,19 +317,19 @@ data class ExpressionNode(
         if (nodeType == NodeType.FUNCTION && (functionStringDefinition?.function?.isCommutativeWithNullWeight == true))
             children.sortBy {
                 (
-                        if (it.isNumberValue())
-                            "1${it.identifier}"
-                        else if (it.nodeType == NodeType.FUNCTION)
-                            "2${it.value}"
-                        else
-                            "3"
-                        )
+                    if (it.isNumberValue())
+                        "1${it.identifier}"
+                    else if (it.nodeType == NodeType.FUNCTION)
+                        "2${it.value}"
+                    else
+                        "3"
+                    )
             } //first: sorted numbers; than functions and variables in the original order //TODO: it leads to the problem of wrong matching if order is changed
         return this
     }
 
     fun cloneWithSortingChildrenForExpressionSubstitutionComparison() = clone()
-            .sortChildrenForExpressionSubstitutionComparison()
+        .sortChildrenForExpressionSubstitutionComparison()
 
     fun getCountOfNodes(): Int = 1 + children.sumBy { it.getCountOfNodes() }
 
@@ -312,8 +338,10 @@ data class ExpressionNode(
             return 1
         } else {
             val maxMinNumberOfPointsForEquality = children.map { it.getMaxMinNumberOfPointsForEquality() }.max() ?: 1
-            return max(maxMinNumberOfPointsForEquality, functionStringDefinition?.function?.minNumberOfPointsForEquality
-                    ?: 1)
+            return max(
+                maxMinNumberOfPointsForEquality, functionStringDefinition?.function?.minNumberOfPointsForEquality
+                    ?: 1
+            )
         }
     }
 
@@ -446,7 +474,11 @@ data class ExpressionNode(
     override fun toString() = computeIdentifier()
     fun toStringWithPositions() = computeIdentifierWithPositions()
 
-    fun normalizeSubTree(currentDeep: Int = 0, nameArgsMap: MutableMap<String, String> = mutableMapOf(), sorted: Boolean): ExpressionNode {
+    fun normalizeSubTree(
+        currentDeep: Int = 0,
+        nameArgsMap: MutableMap<String, String> = mutableMapOf(),
+        sorted: Boolean
+    ): ExpressionNode {
         if (nodeType == NodeType.FUNCTION) {
             val numberOfDefinitionArguments = functionStringDefinition?.function?.numberOfDefinitionArguments ?: 0
             val childrenNameArgs = mutableListOf<String>()
@@ -495,12 +527,54 @@ data class ExpressionNode(
         return result
     }
 
-    fun dropBracketNodesIfOperationsSame (){
+    fun containsNestedSameFunctions(): Boolean {
+        for (child in children) {
+            if ((functionStringDefinition?.function?.isCommutativeWithNullWeight ?: false) && value == child.value) {
+                return true
+            }
+            if (child.containsNestedSameFunctions())
+                return true
+        }
+        return false
+    }
+
+    fun cloneWithExpandingNestedSameFunctions(): ExpressionNode {
+        val result = copy()
+        for (child in children) {
+            val childCopy = child.cloneWithExpandingNestedSameFunctions()
+            if ((functionStringDefinition?.function?.isCommutativeWithNullWeight ?: false) && value == childCopy.value
+            ) {
+                for (childCopyChild in childCopy.children) {
+                    result.addChild(childCopyChild)
+                }
+            } else {
+                result.addChild(childCopy)
+            }
+        }
+        return result
+    }
+
+    fun cloneAndSimplifyByComputeSimplePlaces(): ExpressionNode {
+        if (calcComplexity() < 4 && !containsVariables()) {
+            val computed = computeNodeIfSimple()
+            if (computed != null) {
+                return ExpressionNode(NodeType.VARIABLE, computed.toShortString(), nodeId = nodeId)
+            }
+        }
+        val result = copy()
+        for (child in children) {
+            result.addChild(child.cloneAndSimplifyByComputeSimplePlaces())
+        }
+        return result
+    }
+
+    fun dropBracketNodesIfOperationsSame() {
         val newChildren: ArrayList<ExpressionNode> = ArrayList()
-        for (child in children){
+        for (child in children) {
             child.dropBracketNodesIfOperationsSame()
             if (child.value == value && value != "" &&
-                    functionStringDefinition != null && functionStringDefinition!!.function.numberOfArguments < 0){
+                functionStringDefinition != null && functionStringDefinition!!.function.numberOfArguments < 0
+            ) {
                 for (childChild in child.children) {
                     newChildren.add(childChild)
                     childChild.parent = this
@@ -526,16 +600,21 @@ data class ExpressionNode(
         }
     }
 
-    fun cloneWithNormalization(nameArgsMap: MutableMap<String, String> = mutableMapOf(), sorted: Boolean) = clone().normalizeSubTree(nameArgsMap = nameArgsMap, sorted = sorted)
+    fun cloneWithNormalization(nameArgsMap: MutableMap<String, String> = mutableMapOf(), sorted: Boolean) =
+        clone().normalizeSubTree(nameArgsMap = nameArgsMap, sorted = sorted)
 
     fun cloneWithVariableReplacement(replacements: Map<String, String>) = clone().variableReplacement(replacements)
 
-    fun isNodeSubtreeEquals(expressionNode: ExpressionNode, nameArgsMap: MutableMap<String, String> = mutableMapOf()): Boolean {
+    fun isNodeSubtreeEquals(
+        expressionNode: ExpressionNode,
+        nameArgsMap: MutableMap<String, String> = mutableMapOf()
+    ): Boolean {
         val actualValue = nameArgsMap.get(value) ?: value
         val result = actualValue == expressionNode.value
         if (nodeType == NodeType.FUNCTION) {
             if (children.size != expressionNode.children.size ||
-                    functionStringDefinition?.function?.numberOfDefinitionArguments != expressionNode.functionStringDefinition?.function?.numberOfDefinitionArguments)
+                functionStringDefinition?.function?.numberOfDefinitionArguments != expressionNode.functionStringDefinition?.function?.numberOfDefinitionArguments
+            )
                 return false
             val numberOfDefinitionArguments = functionStringDefinition?.function?.numberOfDefinitionArguments ?: 0
             val childrenNameArgs = mutableListOf<String>()
@@ -558,24 +637,53 @@ data class ExpressionNode(
         return result
     }
 
-    fun replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
-                                              definedFunctionNameNumberOfArgsSet: Set<String>,
-                                              expressionComporator: ExpressionComporator? = null,
-                                              hasBoolFunctions: Boolean = false) {
+    fun isNodeMatchesNumber(numberValue: String): Boolean {
+        val matchingValue = numberValue.toDoubleOrNull() ?: return false
+        val expressionValue = if (nodeType == NodeType.VARIABLE) {
+            value.toDoubleOrNull() ?: return false
+        } else if (calcComplexity() < 4 && !containsVariables()) {
+            computeNodeIfSimple() ?: return false
+        } else return false
+        return (expressionValue - matchingValue).abs() < 11.9e-7  // todo: unify with approach in BaseOperationDefinitions.kt
+    }
+
+    fun replaceNotDefinedFunctionsOnVariables(
+        functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
+        definedFunctionNameNumberOfArgsSet: Set<String>,
+        expressionComporator: ExpressionComporator? = null,
+        hasBoolFunctions: Boolean = false
+    ) {
         for (child in children)
-            child.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgsSet, expressionComporator, hasBoolFunctions)
+            child.replaceNotDefinedFunctionsOnVariables(
+                functionIdentifierToVariableMap,
+                definedFunctionNameNumberOfArgsSet,
+                expressionComporator,
+                hasBoolFunctions
+            )
         if (nodeType == NodeType.FUNCTION && !definedFunctionNameNumberOfArgsSet.contains(value + "_" + children.size)
-                && !definedFunctionNameNumberOfArgsSet.contains(value + "_-1")) {
+            && !definedFunctionNameNumberOfArgsSet.contains(value + "_-1")
+        ) {
             var nodeExists = false
 
             for ((expression, variable) in functionIdentifierToVariableMap) {
                 if (children.size == expression.children.size) {
                     if (expressionComporator != null &&
-                            expressionComporator.compiledConfiguration.comparisonSettings.useTestingToCompareFunctionArgumentsInProbabilityComparison &&
-                            !hasBoolFunctions) {
-                        if (expressionComporator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(value + "_" + children.size) ||
-                                expressionComporator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(value + "_-1")) { //if function is not 'd' or 'i'
-                            if (expressionComporator.probabilityTestComparison(this, expression, ComparisonType.EQUAL)) {
+                        expressionComporator.compiledConfiguration.comparisonSettings.useTestingToCompareFunctionArgumentsInProbabilityComparison &&
+                        !hasBoolFunctions
+                    ) {
+                        if (expressionComporator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(
+                                value + "_" + children.size
+                            ) ||
+                            expressionComporator.baseOperationsDefinitions.definedFunctionNameNumberOfArgsSet.contains(
+                                value + "_-1"
+                            )
+                        ) { //if function is not 'd' or 'i'
+                            if (expressionComporator.probabilityTestComparison(
+                                    this,
+                                    expression,
+                                    ComparisonType.EQUAL
+                                )
+                            ) {
                                 nodeExists = true
                                 setVariable(variable)
                                 break
@@ -583,7 +691,12 @@ data class ExpressionNode(
                         } else {
                             var hasDifferentArgs = false
                             for (i in 0..children.lastIndex) {
-                                if (!expressionComporator.probabilityTestComparison(children[i], expression.children[i], ComparisonType.EQUAL)) {
+                                if (!expressionComporator.probabilityTestComparison(
+                                        children[i],
+                                        expression.children[i],
+                                        ComparisonType.EQUAL
+                                    )
+                                ) {
                                     hasDifferentArgs = true
                                     break
                                 }
@@ -613,12 +726,15 @@ data class ExpressionNode(
     }
 }
 
-class ExpressionNodeConstructor(val functionConfiguration: FunctionConfiguration = FunctionConfiguration(),
-                                val compiledImmediateVariableReplacements: Map<String, String> = mapOf()) {
+class ExpressionNodeConstructor(
+    val functionConfiguration: FunctionConfiguration = FunctionConfiguration(),
+    val compiledImmediateVariableReplacements: Map<String, String> = mapOf()
+) {
     fun construct(identifier: String): ExpressionNode {
         if (identifier.contains('(')) {
             val openBracketIndex = identifier.indexOfFirst { it == '(' }
-            var newNode = ExpressionNode(NodeType.FUNCTION, identifier.substring(0, openBracketIndex), identifier = identifier)
+            var newNode =
+                ExpressionNode(NodeType.FUNCTION, identifier.substring(0, openBracketIndex), identifier = identifier)
             var openBracketCount = 0
             var currentChildIdentifier: StringBuilder = StringBuilder("")
             for (i in (openBracketIndex + 1) until identifier.length) {
@@ -631,7 +747,10 @@ class ExpressionNodeConstructor(val functionConfiguration: FunctionConfiguration
                     else if (identifier[i] == ')') openBracketCount--
                 }
             }
-            newNode.functionStringDefinition = functionConfiguration.fastFindStringDefinitionByNameAndNumberOfArguments(newNode.value, newNode.children.size)
+            newNode.functionStringDefinition = functionConfiguration.fastFindStringDefinitionByNameAndNumberOfArguments(
+                newNode.value,
+                newNode.children.size
+            )
             return newNode
         } else {
             val newValue = compiledImmediateVariableReplacements.get(identifier)
@@ -643,7 +762,10 @@ class ExpressionNodeConstructor(val functionConfiguration: FunctionConfiguration
     }
 }
 
-fun normalizeExpressionsForComparison(left: ExpressionNode, right: ExpressionNode): Pair<ExpressionNode, ExpressionNode> {
+fun normalizeExpressionsForComparison(
+    left: ExpressionNode,
+    right: ExpressionNode
+): Pair<ExpressionNode, ExpressionNode> {
     val ordered = if (left.nodeType == NodeType.FUNCTION && left.value == "") Pair(left, right)
     else if (right.nodeType == NodeType.FUNCTION && right.value == "") Pair(right, left)
     else return Pair(left, right)
