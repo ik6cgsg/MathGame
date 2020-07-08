@@ -227,7 +227,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
         builder
-            .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.currentStepToDisplay} / ${TutorialScene.shared.stepsSize}")
+            .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepsSize} / ${TutorialScene.shared.stepsSize}")
             .setMessage(resources.getString(R.string.tutorial_on_level_seems))
             .setPositiveButton(resources.getString(R.string.tutorial_on_level_i_am_pro)) { dialog: DialogInterface, id: Int ->
                 TutorialScene.shared.leave()

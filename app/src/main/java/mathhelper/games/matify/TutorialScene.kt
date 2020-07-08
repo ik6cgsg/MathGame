@@ -103,7 +103,6 @@ class TutorialScene {
     lateinit var steps: ArrayList<() -> Any>
     var stepsSize = 0
     private var currentStep = -1
-    var currentStepToDisplay = 1
 
     private var shouldFinishLevelsActivity = false
     private var shouldFinishPlayActivity = false
@@ -119,7 +118,6 @@ class TutorialScene {
             // Games Layout
             {
                 tutorialGamesActivity!!.tellAboutGameLayout()
-                currentStepToDisplay++
             },
             {
                 tutorialGamesActivity!!.waitForGameClick()
@@ -128,7 +126,6 @@ class TutorialScene {
             {
                 shouldFinishLevelsActivity = true
                 tutorialLevelsActivity!!.tellAboutLevelLayout()
-                currentStepToDisplay++
             },
             {
                 shouldFinishLevelsActivity = false
@@ -138,38 +135,30 @@ class TutorialScene {
             {
                 shouldFinishPlayActivity = true
                 tutorialPlayActivity!!.messageTutorial()
-                currentStepToDisplay++
             },
             {
                 shouldFinishPlayActivity = false
                 tutorialPlayActivity!!.endExpressionTutorial()
-                currentStepToDisplay++
             },
             {
                 tutorialPlayActivity!!.centralExpressionTutorial()
-                currentStepToDisplay++
             },
             {
                 tutorialPlayActivity!!.backTutorial()
-                currentStepToDisplay++
             },
             {
                 tutorialPlayActivity!!.infoTutorial()
-                currentStepToDisplay++
             },
             {
                 tutorialPlayActivity!!.restartTutorial()
-                currentStepToDisplay++
             },
             {
                 tutorialPlayActivity!!.undoTutorial()
-                currentStepToDisplay++
             },
             { tutorialPlayActivity!!.startDynamicTutorial() }
         )
         stepsSize = steps.size - 2
         currentStep = -1
-        currentStepToDisplay = 1
     }
 
     fun nextStep() {
@@ -177,21 +166,25 @@ class TutorialScene {
         if (currentStep == steps.size) {
             return
         }
-        tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: $currentStepToDisplay / $stepsSize")
+        tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: ${stepToDisplay()} / $stepsSize")
         steps[currentStep]()
     }
 
     fun prevStep() {
         currentStep--
-        currentStepToDisplay--
         if (currentStep == -1) {
             AndroidUtil.showDialog(leaveDialog!!)
         } else {
-            val step = currentStepToDisplay
-            tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: $step / $stepsSize")
+            tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: ${stepToDisplay()} / $stepsSize")
             steps[currentStep]()
         }
     }
+
+    private fun stepToDisplay() = if (currentStep <=1 ) {
+        1
+    } else if (currentStep > 3) {
+        currentStep - 1
+    } else 2
 
     fun loadLevel() {
         Log.d(TAG, "loadLevel")
@@ -302,7 +295,6 @@ class TutorialScene {
             tutorialLevelsActivity!!.finish()
         }
         currentStep = -1
-        currentStepToDisplay = 1
         nextStep()
     }
 
@@ -361,12 +353,10 @@ class TutorialScene {
                 stopAnimation()
                 if (shouldFinishPlayActivity && tutorialPlayActivity != null) {
                     tutorialPlayActivity!!.finish()
-                    currentStepToDisplay--
                     currentStep--
                 }
                 if (shouldFinishLevelsActivity && tutorialLevelsActivity != null) {
                     tutorialLevelsActivity!!.finish()
-                    currentStepToDisplay--
                     currentStep--
                 }
                 Handler().postDelayed({
@@ -396,9 +386,7 @@ class TutorialScene {
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
                 if (currentStep != -1) {
                     currentStep--
-                    currentStepToDisplay++
                 }
-                currentStepToDisplay--
                 nextStep()
             }
         return builder.create()
