@@ -58,13 +58,14 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setSubst(subst: ExpressionSubstitution, type: Type) {
         this.subst = subst
+        val style = if (subst.basedOnTaskContext) VariableStyle.DEFAULT else VariableStyle.GREEK
         val from = when (type) {
-            Type.SET -> MathResolver.resolveToPlain(subst.left, VariableStyle.GREEK, TaskType.SET)
-            else -> MathResolver.resolveToPlain(subst.left, VariableStyle.GREEK)
+            Type.SET -> MathResolver.resolveToPlain(subst.left, style, TaskType.SET)
+            else -> MathResolver.resolveToPlain(subst.left, style)
         }
         val to = when (type) {
-            Type.SET -> MathResolver.resolveToPlain(subst.right, VariableStyle.GREEK, TaskType.SET)
-            else -> MathResolver.resolveToPlain(subst.right, VariableStyle.GREEK)
+            Type.SET -> MathResolver.resolveToPlain(subst.right, style, TaskType.SET)
+            else -> MathResolver.resolveToPlain(subst.right, style)
         }
         if (from.tree == null || to.tree == null) {
             text = context.getString(R.string.parsing_error)

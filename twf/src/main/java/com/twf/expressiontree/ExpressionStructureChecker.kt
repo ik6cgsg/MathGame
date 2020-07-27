@@ -44,6 +44,8 @@ data class FunctionCondition(
             } + "]"
     }
 
+    fun isEmpty() = name.isEmpty() && numberOfArgumentsInterval.isEmpty() && internalFunctionCondition.isEmpty() && !(internalVariableCondition.isNotEmpty())
+
     fun matchFunction(node: ExpressionNode): Boolean {
         if (name == node.value && numberOfArgumentsInterval.matchNumber(node.children.size.toDouble())) {
             if (node.getContainedVariables().all { internalVariableCondition.matchVariable(it) }) {
@@ -94,7 +96,7 @@ data class FunctionsCondition(
     fun matchFunction(node: ExpressionNode): Boolean {
         if (isEmpty() || treeForbiddenFunctions.any { it.matchFunction(node) }) {
             return false
-        } else if (treePermittedFunctions.isEmpty()) {
+        } else if (treePermittedFunctions.isEmpty() || (treePermittedFunctions.size == 1 && treePermittedFunctions.first().isEmpty())) {
             return true
         } else return treePermittedFunctions.any { it.matchFunction(node) }
     }
@@ -313,15 +315,17 @@ fun checkExpressionStructure(rootNode: ExpressionNode, structureNode: Expression
         return structureNode.children.any { it.childNodes.any { checkExpressionStructure(rootNode, it) } }
     }
     if (structureNode.treeVariables.isNotEmpty()) {
-        if (rootNode.children.any {
-                val variableName = it.value
+        val variables = rootNode.getContainedVariables()
+        if (variables.any {
+                val variableName = it
                 structureNode.treeVariables.treeForbiddenVariables.any { it.matchVariable(variableName) }
             }) {
             return false
         }
-        if (!rootNode.children.all {
-                val variableName = it.value
-                it.nodeType == NodeType.FUNCTION || structureNode.treeVariables.treePermittedVariables.any { it.matchVariable(variableName) } || structureNode.treeVariables.treePermittedVariables.isEmpty()
+        if (structureNode.treeVariables.treePermittedVariables.isNotEmpty() &&
+            !variables.all {
+                val variableName = it
+                structureNode.treeVariables.treePermittedVariables.any { it.matchVariable(variableName) }
             }) {
             return false
         }

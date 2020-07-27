@@ -405,7 +405,7 @@ data class ExpressionNode(
     fun getContainedVariables(): Set<String> {
         var result = mutableSetOf<String>()
         if (children.isEmpty()) {
-            if (value.toDoubleOrNull() == null) {
+            if (value != "π" && value.toDoubleOrNull() == null) {
                 result.add(value)
             }
         } else for (child in children)

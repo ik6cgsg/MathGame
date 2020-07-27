@@ -1,0 +1,898 @@
+{
+  "gameSpace": "",
+  "gameCode": "physics_overview",
+  "name": "ЕГЭ Физика обзор",
+  "en": "Physics Overview",
+  "ru": "ЕГЭ Физика обзор",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "physics_overview__Hello_World_Level",
+      "name": "Начинаем равноускоренное движение",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 1,
+      "time": 90,
+      "originalExpression": "(t)",
+      "finalExpression": "Выразить через a,s",
+      "finalPattern": "?:?:?:a,s",
+      "rules":[
+        {"rulePack": "PhysicsSimpleMoving"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_01_Express",
+      "name": "Электрический заряд",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 90,
+      "originalExpression": "(q)",
+      "finalExpression": "Выразить через A,I,R",
+      "finalPattern": "?:?:?:A,I,R",
+      "rules":[
+        {"rulePack": "PhysicsElectrodynamics"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_02_Express",
+      "name": "Электрическая мощность",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 90,
+      "originalExpression": "(P)",
+      "finalExpression": "Выразить через q,t,U",
+      "finalPattern": "?:?:?:q,t,U",
+      "rules":[
+        {"rulePack": "PhysicsElectrodynamics"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_03_Express",
+      "name": "Идеальный газ",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 90,
+      "originalExpression": "(P)",
+      "finalExpression": "Выразить через n,R,T,Nₐ",
+      "finalPattern": "?:?:?:n,R,T,Nₐ",
+      "rules":[
+        {"rulePack": "PhysicsMolecular"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_04_Express",
+      "name": "Магнитный поток",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 90,
+      "originalExpression": "(Ψ)",
+      "finalExpression": "Выразить через Fₐ,l,φ,S,I",
+      "finalPattern": "?:?:?:Fₐ,l,φ,S,I",
+      "rules":[
+        {"rulePack": "PhysicsElectrodynamics"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_05_Express",
+      "name": "Квантовая энергия",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 90,
+      "originalExpression": "(E)",
+      "finalExpression": "Выразить через h,c,λ",
+      "finalPattern": "?:?:?:h,c,λ",
+      "rules":[
+        {"rulePack": "PhysicsNuclear"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_06_Express",
+      "name": "Энергия идеального газа",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 150,
+      "originalExpression": "(U)",
+      "finalExpression": "Выразить через n,k,T,V",
+      "finalPattern": "?:?:?:n,k,T,V",
+      "rules":[
+        {"rulePack": "PhysicsMolecular"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_07_Express",
+      "name": "Движение по кругу",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 3,
+      "time": 150,
+      "originalExpression": "(a)",
+      "finalExpression": "Выразить через T,R,π",
+      "finalPattern": "?:?:?:T,R,π",
+      "rules":[
+        {"rulePack": "PhysicsCircleMoving"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_08_Express",
+      "name": "Теплота проводника",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 150,
+      "originalExpression": "(Q)",
+      "finalExpression": "Выразить через t,q,R",
+      "finalPattern": "?:?:?:t,q,R",
+      "rules":[
+        {"rulePack": "PhysicsElectrodynamics"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_09_Express",
+      "name": "Емкость конденсатора",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 150,
+      "originalExpression": "(C)",
+      "finalExpression": "Выразить через A,I,R",
+      "finalPattern": "?:?:?:A,I,R",
+      "rules":[
+        {"rulePack": "PhysicsElectrodynamics"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_10_Express",
+      "name": "Индуктивность конденсатора",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 3,
+      "time": 120,
+      "originalExpression": "(L)",
+      "finalExpression": "Выразить через C,U,R",
+      "finalPattern": "?:?:?:C,U,R",
+      "rules":[
+        {"rulePack": "PhysicsElectrodynamics"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_11_Express",
+      "name": "Разность потенциалов",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 150,
+      "originalExpression": "(d)",
+      "finalExpression": "Выразить через A,F",
+      "finalPattern": "?:?:?:A,F",
+      "rules":[
+        {"rulePack": "PhysicsElectrodynamics"},
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "physics_overview__Level_12_Express",
+      "name": "Импульс фотона",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 4,
+      "time": 150,
+      "originalExpression": "(p)",
+      "finalExpression": "Выразить через h,λ",
+      "finalPattern": "?:?:?:h,λ",
+      "rules":[
+        {"rulePack": "PhysicsNuclear"},
+        {"rulePack": "MathBase"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "PhysicsSimpleMoving",
+      "type": "algebra",
+      "rules":[
+        {"left": "(s)","right": "(/(v;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(s;t))","right": "(v)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(t)","right": "(/(s;v))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(s;v))","right": "(t)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(s)","right": "(*(v;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(v;t))","right": "(s)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(a)","right": "(/(v;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(v;t))","right": "(a)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(t)","right": "(/(v;a))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(v;a))","right": "(t)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(v)","right": "(*(a;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(a;t))","right": "(v)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(s)","right": "(/(*(a;^(t;2));2))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(a;^(t;2));2))","right": "(s)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(a)","right": "(/(*(2;s);^(t;2)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(2;s);^(t;2)))","right": "(a)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(t)","right": "(^(/(*(2;s);a);0.5))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(^(/(*(2;s);a);0.5))","right": "(t)", "basedOnTaskContext": true, "matchJumbledAndNested": true}
+      ]
+    },
+    {
+      "name": "PhysicsCircleMoving",
+      "type": "algebra",
+      "rules":[
+        {"left": "(ω)","right": "(/(*(2;π);T))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(2;π);T))","right": "(ω)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(T)","right": "(/(*(2;π);ω))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(2;π);ω))","right": "(T)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(ω)","right": "(*(2;π;v))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(2;π;v))","right": "(ω)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(v)","right": "(/(ω;*(2;π)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(ω;*(2;π)))","right": "(v)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(ω)","right": "(/(v;R))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(v;R))","right": "(ω)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(R)","right": "(/(v;ω))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(v;ω))","right": "(R)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(v)","right": "(*(ω;R))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(ω;R))","right": "(v)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(a)","right": "(/(^(v;2);R))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(^(v;2);R))","right": "(a)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(R)","right": "(/(^(v;2);a))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(^(v;2);a))","right": "(R)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(v)","right": "(^(*(a;R);/(1;2)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(^(*(a;R);0.5))","right": "(v)", "basedOnTaskContext": true, "matchJumbledAndNested": true}
+      ]
+    },
+    {
+      "name": "PhysicsNuclear",
+      "type": "algebra",
+      "rules":[
+        {"left": "(m)","right": "(/(E;^(c;2)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(E;^(c;2)))","right": "(m)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(c)","right": "(^(/(E;m);/(1;2)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(^(/(E;m);0.5))","right": "(c)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(E)","right": "(*(m;^(c;2)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(m;^(c;2)))","right": "(E)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(h)","right": "(/(E;ν))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(E;ν))","right": "(h)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(ν)","right": "(/(E;h))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(E;h))","right": "(ν)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(E)","right": "(*(h;ν))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(h;ν))","right": "(E)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(λ)","right": "(/(c;ν))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(c;ν))","right": "(λ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(ν)","right": "(/(c;λ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(c;λ))","right": "(ν)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(c)","right": "(*(λ;ν))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(λ;ν))","right": "(c)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(c)","right": "(/(p;m))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(p;m))","right": "(c)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(m)","right": "(/(p;c))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(p;c))","right": "(m)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(p)","right": "(*(m;c))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(m;c))","right": "(p)", "basedOnTaskContext": true, "matchJumbledAndNested": true}
+      ]
+    },
+    {
+      "name": "PhysicsMolecular",
+      "type": "algebra",
+      "rules":[
+        {"left": "(P)","right": "(/(F;S))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(F;S))","right": "(P)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(S)","right": "(/(F;P))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(F;P))","right": "(S)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(F)","right": "(*(P;S))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(P;S))","right": "(F)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(m)","right": "(/(F;a))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(F;a))","right": "(m)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(a)","right": "(/(F;P))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(F;m))","right": "(a)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(F)","right": "(*(m;a))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(m;a))","right": "(F)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(ν)","right": "(/(m;μ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(m;μ))","right": "(ν)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(μ)","right": "(/(m;ν))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(m;ν))","right": "(μ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(m)","right": "(*(ν;μ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(ν;μ))","right": "(m)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(ν)","right": "(/(N;Nₐ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(N;Nₐ))","right": "(ν)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(Nₐ)","right": "(/(N;ν))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(N;ν))","right": "(Nₐ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(N)","right": "(*(ν;Nₐ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(ν;Nₐ))","right": "(N)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(k)","right": "(/(R;Nₐ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(R;Nₐ))","right": "(k)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(Nₐ)","right": "(/(R;k))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(R;k))","right": "(Nₐ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(R)","right": "(*(k;Nₐ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(k;Nₐ))","right": "(R)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(n)","right": "(/(N;V))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(N;V))","right": "(n)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(V)","right": "(/(N;n))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(N;n))","right": "(V)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(N)","right": "(*(n;V))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(n;V))","right": "(N)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(P)","right": "(*(n;k;T))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(n;k;T))","right": "(P)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(T)","right": "(/(*(n;k);P))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(n;k);P))","right": "(T)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(*(P;V))","right": "(*(ν;R;T))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(ν;R;T))","right": "(*(P;V))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(P)","right": "(/(*(ν;R;T);V))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(ν;R;T);V))","right": "(P)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(V)","right": "(/(*(ν;R;T);P))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(ν;R;T);P))","right": "(V)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(T)","right": "(/(*(P;V);*(ν;R)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(P;V);*(ν;R)))","right": "(T)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(U)","right": "(*(N;/(3;2);k;T))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(N;/(3;2);k;T))","right": "(U)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(U)","right": "(*(/(3;2);ν;R;T))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(/(3;2);ν;R;T))","right": "(U)", "basedOnTaskContext": true, "matchJumbledAndNested": true}
+      ]
+    },
+    {
+      "name": "PhysicsElectrodynamics",
+      "type": "algebra",
+      "rules":[
+        {"left": "(I)","right": "(/(q;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(q;t))","right": "(I)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(t)","right": "(/(q;I))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(q;I))","right": "(t)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(q)","right": "(*(I;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(I;t))","right": "(q)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(q)","right": "(/(A;U))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(A;U))","right": "(q)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(U)","right": "(/(A;q))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(A;q))","right": "(U)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(A)","right": "(*(U;q))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(U;q))","right": "(A)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(S)","right": "(/(*(ρ;l);R))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(ρ;l);R))","right": "(S)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(R)","right": "(/(*(ρ;l);S))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(ρ;l);S))","right": "(R)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(l)","right": "(/(*(S;R);ρ))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(S;R);ρ))","right": "(l)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(ρ)","right": "(/(*(S;R);l))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(S;R);l))","right": "(ρ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(S;R))","right": "(*(ρ;l))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(ρ;l))","right": "(*(S;R))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(I)","right": "(/(U;R))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(U;R))","right": "(I)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(R)","right": "(/(U;I))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(U;I))","right": "(R)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(U)","right": "(*(I;R))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(I;R))","right": "(U)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(P)","right": "(/(A;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(A;t))","right": "(P)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(t)","right": "(/(A;P))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(A;P))","right": "(t)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(A)","right": "(*(P;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(P;t))","right": "(A)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(U)","right": "(/(P;I))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(P;I))","right": "(U)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(I)","right": "(/(P;U))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(P;U))","right": "(I)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(P)","right": "(*(I;U))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(I;U))","right": "(P)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(Q)","right": "(A)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(A)","right": "(Q)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(P)","right": "(/(Q;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Q;t))","right": "(P)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(t)","right": "(/(Q;P))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Q;P))","right": "(t)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(Q)","right": "(*(P;t))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(P;t))","right": "(Q)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(C)","right": "(/(q;U))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(q;U))","right": "(C)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(U)","right": "(/(q;C))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(q;C))","right": "(U)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(q)","right": "(*(U;C))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(U;C))","right": "(q)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(W)","right": "(/(*(C;^(U;2));2))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(C;^(U;2));2))","right": "(W)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(C)","right": "(/(*(2;W);^(U;2)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(2;W);^(U;2)))","right": "(C)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(W)","right": "(/(*(L;^(I;2));2))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(L;^(I;2));2))","right": "(W)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(L)","right": "(/(*(2;W);^(I;2)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(*(2;W);^(I;2)))","right": "(L)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(I)","right": "(/(Ψ;L))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Ψ;L))","right": "(I)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(L)","right": "(/(Ψ;I))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Ψ;I))","right": "(L)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(Ψ)","right": "(*(I;L))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(I;L))","right": "(Ψ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(I)","right": "(/(Fₐ;*(B;l;sin(φ))))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Fₐ;*(B;l;sin(φ))))","right": "(I)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(B)","right": "(/(Fₐ;*(I;l;sin(φ))))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Fₐ;*(I;l;sin(φ))))","right": "(B)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(l)","right": "(/(Fₐ;*(B;I;sin(φ))))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Fₐ;*(B;I;sin(φ))))","right": "(l)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(Fₐ)","right": "(*(I;B;l;sin(φ)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(I;B;l;sin(φ)))","right": "(Fₐ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(B)","right": "(/(Ψ;*(S;cos(φ))))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Ψ;*(S;cos(φ))))","right": "(B)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(S)","right": "(/(Ψ;*(B;cos(φ))))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(Ψ;*(B;cos(φ))))","right": "(S)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(Ψ)","right": "(*(B;S;cos(φ)))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(B;S;cos(φ)))","right": "(Ψ)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(E)","right": "(/(F;q))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(F;q))","right": "(E)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(q)","right": "(/(F;E))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(F;E))","right": "(q)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(F)","right": "(*(E;q))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(E;q))","right": "(F)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+
+        {"left": "(d)","right": "(/(U;E))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(U;E))","right": "(d)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(E)","right": "(/(U;d))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(/(U;d))","right": "(E)", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(U)","right": "(*(E;d))", "basedOnTaskContext": true, "matchJumbledAndNested": true},
+        {"left": "(*(E;d))","right": "(U)", "basedOnTaskContext": true, "matchJumbledAndNested": true}
+      ]
+    },
+    {
+      "name": "MathBase",
+      "rules":[
+        {"rulePack": "ArithmeticСommutativity"},
+        {"rulePack": "ArithmeticMinus"},
+        {"rulePack": "BaseDigits"},
+        {"rulePack": "ArithmeticAssociativity"},
+        {"rulePack": "AdditiveToMultiplicative"},
+        {"rulePack": "ArithmeticDegree"},
+
+        {"rulePack": "ArithmeticPlusSelections"}
+      ]
+    },
+    {
+      "name": "BaseDigits",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a))","right":"(a)"},
+
+        {"left":"(+(a;+(b)))","right":"(+(a;b))"},
+        {"left":"(+(+(a);b))","right":"(+(a;b))"},
+
+        {"left":"(+(a;a))","right":"(*(2;a))"},
+        {"left":"(+(a;+(a)))","right":"(*(2;a))"},
+        {"left":"(+(+(a);a))","right":"(*(2;a))"},
+        {"left":"(*(2;a))","right":"(+(a;a))"},
+
+        {"left":"(+(a;a;a))","right":"(*(3;a))"},
+        {"left":"(+(a;*(2;a)))","right":"(*(3;a))"},
+        {"left":"(+(*(2;a);a))","right":"(*(3;a))"},
+        {"left":"(*(3;a))","right":"(+(a;*(2;a)))"},
+
+        {"left":"(+(a;*(3;a)))","right":"(*(4;a))"},
+        {"left":"(+(*(3;a);a))","right":"(*(4;a))"},
+        {"left":"(+(*(2;a);*(2;a)))","right":"(*(4;a))"},
+        {"left":"(*(4;a))","right":"(+(a;*(3;a)))"},
+
+        {"left":"(+(a;0))","right":"(a)"},
+        {"left":"(+(0;a))","right":"(a)"},
+        {"left":"(a)","right":"(+(a;0))"},
+        {"left":"(*(a;0))","right":"(0)"},
+        {"left":"(*(0;a))","right":"(0)"},
+        {"left":"(/(0;a))","right":"(0)"},
+        {"left":"(*(a;1))","right":"(a)"},
+        {"left":"(*(1;a))","right":"(a)"},
+        {"left":"(/(a;1))","right":"(a)"},
+        {"left":"(/(a;a))","right":"(1)"},
+        {"left":"(a)","right":"(*(a;1))"},
+        {"left":"(a)","right":"(/(1;/(1;a)))"},
+        {"left":"(/(1;/(1;a)))","right":"(a)"},
+
+        {"left":"(+(-(+(-(a)))))","right":"(a)"},
+        {"left":"(-(+(-(a))))","right":"(a)"},
+        {"left":"(a)","right":"(-(+(-(a))))"},
+
+        {"left":"(+(1;1))","right":"(2)"},
+        {"left":"(2)","right":"(+(1;1))"},
+        {"left":"(+(1;2))","right":"(3)"},
+        {"left":"(3)","right":"(+(1;2))"},
+
+        {"left":"(*(1;1))","right":"(1)"},
+        {"left":"(1)","right":"(*(1;1))"},
+
+        {"left": "(0.5)","right": "(/(1;2))"},
+        {"left": "(/(1;2))","right": "(0.5)"}
+      ]
+    },
+    {
+      "name": "ArithmeticСommutativity",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticAdditionalСommutativity"},
+        {"rulePack": "ArithmeticMultiplicativeСommutativity"}
+      ]
+    },
+    {
+      "name": "ArithmeticAdditionalСommutativity",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a;b))","right":"(+(b;a))"},
+
+        {"left": "(+(A;+(B;C)))","right": "(+(A;B;C))"},
+        {"left": "(+(A;B;C))","right": "(+(A;+(B;C)))"},
+        {"left": "(+(A;+(B;C)))","right": "(+(+(A;B);C))"},
+        {"left": "(+(+(A;B);C))","right": "(+(A;+(B;C)))"},
+        {"left": "(+(+(A;B);C))","right": "(+(A;B;C))"},
+        {"left": "(+(A;B;C))","right": "(+(+(A;B);C))"},
+
+        {"left": "(+(A;B;C))","right": "(+(A;C;B))"},
+        {"left": "(+(A;B;C))","right": "(+(B;A;C))"},
+        {"left": "(+(A;B;C))","right": "(+(C;A;B))"},
+
+        {"left": "(+(+(A;B);+(C;D)))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;+(B;C;D)))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(A;+(B;C;D)))"},
+        {"left": "(+(+(A;B;C);D))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(+(A;B;C);D))"},
+
+        {"left": "(+(A;B;+(C;D)))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(A;B;+(C;D)))"},
+        {"left": "(+(A;+(B;C);D))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(A;+(B;C);D))"},
+        {"left": "(+(+(A;B);C;D))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(+(A;B);C;D))"},
+
+        {"left": "(+(A;B;C;D))","right": "(+(B;A;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(C;A;B;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(D;A;B;C))"},
+
+        {"left": "(+(A;+(B;C;D;E)))","right": "(+(A;B;C;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(A;+(B;C;D;E)))"},
+        {"left": "(+(+(A;B;C;D);E))","right": "(+(A;B;C;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(+(A;B;C;D);E))"},
+
+        {"left": "(+(A;B;C;D;E))","right": "(+(B;A;C;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(C;A;B;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(D;A;B;C;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(E;A;B;C;D))"}
+      ]
+    },
+    {
+      "name": "ArithmeticPlusSelections",
+      "type": "algebra",
+      "rules": [
+        {"left":"(+(a;b))","right":"(+(a;+(b)))"},
+        {"left":"(+(a;b))","right":"(+(+(a);b))"},
+
+        {"left":"(+(a;b;c))","right":"(+(+(a);b;c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;+(b);c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;b;+(c)))"},
+
+        {"left":"(+(a;b;c;d))","right":"(+(+(a);b;c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;+(b);c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;+(c);d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;c;+(d)))"},
+
+        {"left":"(+(a;b;c;d;e))","right":"(+(+(a);b;c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;+(b);c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;+(c);d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;+(d);e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;d;+(e)))"},
+
+        {"right":"(+(a;b))","left":"(+(a;+(b)))"},
+        {"right":"(+(a;b))","left":"(+(+(a);b))"},
+
+        {"right":"(+(a;b;c))","left":"(+(+(a);b;c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;+(b);c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;b;+(c)))"},
+
+        {"right":"(+(a;b;c;d))","left":"(+(+(a);b;c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;+(b);c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;+(c);d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;c;+(d)))"},
+
+        {"right":"(+(a;b;c;d;e))","left":"(+(+(a);b;c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;+(b);c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;+(c);d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;+(d);e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;d;+(e)))"}
+      ]
+    },
+    {
+      "name": "ArithmeticMultiplicativeСommutativity",
+      "type": "algebra",
+      "rules":[
+        {"left":"(*(a;b))","right":"(*(b;a))"},
+
+        {"left": "(*(A;*(B;C)))","right": "(*(A;B;C))"},
+        {"left": "(*(A;B;C))","right": "(*(A;*(B;C)))"},
+        {"left": "(*(A;*(B;C)))","right": "(*(*(A;B);C))"},
+        {"left": "(*(*(A;B);C))","right": "(*(A;*(B;C)))"},
+        {"left": "(*(*(A;B);C))","right": "(*(A;B;C))"},
+        {"left": "(*(A;B;C))","right": "(*(*(A;B);C))"},
+
+        {"left": "(*(A;B;C))","right": "(*(A;C;B))"},
+        {"left": "(*(A;B;C))","right": "(*(B;A;C))"},
+        {"left": "(*(A;B;C))","right": "(*(C;A;B))"},
+
+        {"left": "(*(*(A;B);*(C;D)))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;*(B;C;D)))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(A;*(B;C;D)))"},
+        {"left": "(*(*(A;B;C);D))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(*(A;B;C);D))"},
+
+        {"left": "(*(A;B;*(C;D)))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(A;B;*(C;D)))"},
+        {"left": "(*(A;*(B;C);D))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(A;*(B;C);D))"},
+        {"left": "(*(*(A;B);C;D))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(*(A;B);C;D))"},
+
+        {"left": "(*(A;B;C;D))","right": "(*(B;A;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(C;A;B;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(D;A;B;C))"},
+
+        {"left": "(*(A;*(B;C;D;E)))","right": "(*(A;B;C;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(A;*(B;C;D;E)))"},
+        {"left": "(*(*(A;B;C;D);E))","right": "(*(A;B;C;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(*(A;B;C;D);E))"},
+
+        {"left": "(*(A;B;C;D;E))","right": "(*(B;A;C;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(C;A;B;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(D;A;B;C;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(E;A;B;C;D))"}
+      ]
+    },
+    {
+      "name": "ArithmeticMinus",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(-(+(-(a)))))","right":"(a)"},
+        {"left":"(-(+(-(a))))","right":"(a)"},
+        {"left":"(-(-(a)))","right":"(a)"},
+        {"left":"(b)","right":"(+(-(+(-(b)))))"},
+
+        {"left":"(+(a;-(0)))","right":"(a)"},
+        {"left":"(+(-(0);a))","right":"(a)"},
+        {"left":"(+(0;-(a)))","right":"(+(-(a)))"},
+        {"left":"(+(-(a);0))","right":"(+(-(a)))"},
+        {"left":"(+(a;-(a)))","right":"(0)"},
+        {"left":"(+(-(a);a))","right":"(0)"},
+        {"left":"(+(a;+(-(a))))","right":"(0)"},
+        {"left":"(+(+(-(a));a))","right":"(0)"},
+
+        {"left":"(0)","right":"(+(1;-(1)))"},
+
+        {"left": "(-(+(B;C)))","right": "(+(-(B);-(C)))"},
+        {"left": "(+(-(B);-(C)))","right": "(-(+(B;C)))"},
+        {"left": "(-(+(B;C;D)))","right": "(+(-(B);-(C);-(D)))"},
+        {"left": "(+(-(B);-(C);-(D)))","right": "(-(+(B;C;D)))"},
+        {"left": "(-(+(B;C;D;E)))","right": "(+(-(B);-(C);-(D);-(E)))"},
+        {"left": "(+(-(B);-(C);-(D);-(E)))","right": "(-(+(B;C;D;E)))"},
+
+        {"left": "(+(A;-(+(B;-(C)))))","right": "(+(A;-(B);C))"},
+        {"left": "(+(A;-(+(B;C))))","right": "(+(A;-(B);-(C)))"},
+        {"left": "(+(A;-(B);-(C)))","right": "(+(A;-(+(B;C))))"},
+        {"left": "(+(A;-(B);C))","right": "(+(A;-(+(B;-(C)))))"},
+        {"left": "(+(A;-(+(B;-(C);D))))","right": "(+(A;-(B);C;-(D)))"},
+        {"left": "(+(A;-(+(B;-(C);-(D)))))","right": "(+(A;-(B);C;D))"},
+        {"left": "(+(A;-(+(B;C;D))))","right": "(+(A;-(B);-(C);-(D)))"},
+        {"left": "(+(A;-(B);-(C);-(D)))","right": "(+(A;-(+(B;C;D))))"},
+        {"left": "(+(A;-(+(B;-(C)));D))","right": "(+(A;-(B);C;D))"},
+        {"left": "(+(A;-(+(B;C));D))","right": "(+(A;-(B);-(C);D))"},
+        {"left": "(+(A;-(B);-(C);D))","right": "(+(A;-(+(B;C));D))"},
+        {"left": "(+(A;-(+(B;C;D;E))))","right": "(+(A;-(B);-(C);-(D);-(E)))"},
+        {"left": "(+(A;-(B);-(C);-(D);-(E)))","right": "(+(A;-(+(B;C;D;E))))"},
+        {"left": "(+(A;-(+(B;C;D));E))","right": "(+(A;-(B);-(C);-(D);E))"},
+        {"left": "(+(A;-(B);-(C);-(D);E))","right": "(+(A;-(+(B;C;D));E))"},
+
+        {"left": "(+(A;C;-(A)))","right": "(+(C))"},
+        {"left": "(+(A;-(A);C))","right": "(+(C))"},
+        {"left": "(+(A;C;D;-(A)))","right": "(+(C;D))"},
+        {"left": "(+(A;C;-(A);D))","right": "(+(C;D))"},
+        {"left": "(+(A;-(A);C;D))","right": "(+(C;D))"},
+        {"left": "(+(A;C;D;E;-(A)))","right": "(+(C;D;E))"},
+        {"left": "(+(A;C;D;-(A);E))","right": "(+(C;D;E))"},
+        {"left": "(+(A;C;-(A);D;E))","right": "(+(C;D;E))"},
+        {"left": "(+(A;-(A);C;D;E))","right": "(+(C;D;E))"}
+      ]
+    },
+    {
+      "name": "AdditiveToMultiplicative",
+      "type": "algebra",
+      "rules":[
+        {"left": "(+(a;*(a;n)))","right": "(*(a;+(n;1)))"},
+        {"left": "(*(a;+(n;1)))","right": "(+(a;*(a;n)))"},
+        {"left": "(+(*(a;n);a))","right": "(*(a;+(1;n)))"},
+        {"left": "(*(a;+(1;n)))","right": "(+(*(a;n);a))"},
+
+        {"left": "(/(*(a;n);a))","right": "(*(a;+(n;-(1))))"},
+        {"left": "(*(a;+(n;-(1))))","right": "(/(*(a;n);a))"}
+      ]
+    },
+    {
+      "name": "ArithmeticAssociativity",
+      "type": "algebra",
+      "rules":[
+        {"left": "(*(A;+(B;C)))","right": "(+(*(A;B);*(A;C)))"},
+        {"left": "(*(+(B;C);A))","right": "(+(*(B;A);*(C;A)))"},
+        {"left": "(+(*(A;B);*(A;C)))","right": "(*(A;+(B;C)))"},
+        {"left": "(+(*(B;C);*(A;C)))","right": "(*(+(B;A);C))"},
+
+        {"left": "(*(A;+(B;C;D)))","right": "(+(*(A;B);*(A;C);*(A;D)))"},
+        {"left": "(+(*(A;B);*(A;C);*(A;D)))","right": "(*(A;+(B;C;D)))"},
+        {"left": "(*(+(B;C;D);A))","right": "(+(*(B;A);*(C;A);*(D;A)))"},
+        {"left": "(+(*(B;A);*(C;A);*(D;A)))","right": "(*(+(B;C;D);A))"},
+
+        {"left": "(*(A;+(B;C;D;E)))","right": "(+(*(A;B);*(A;C);*(A;D);*(A;E)))"},
+        {"left": "(+(*(A;B);*(A;C);*(A;D);*(A;E)))","right": "(*(A;+(B;C;D;E)))"},
+        {"left": "(*(+(B;C;D;E);A))","right": "(+(*(B;A);*(C;A);*(D;A);*(E;A)))"},
+        {"left": "(+(*(B;A);*(C;A);*(D;A);*(E;A)))","right": "(*(+(B;C;D;E);A))"},
+
+        {"left": "(*(A;+(B;-(C))))","right": "(+(*(A;B);-(*(A;C))))"},
+        {"left": "(*(+(B;-(A));C))","right": "(+(*(B;C);-(*(A;C))))"},
+        {"left": "(+(*(A;B);-(*(A;C))))","right": "(*(A;+(B;-(C))))"},
+        {"left": "(+(*(B;C);-(*(A;C))))","right": "(*(+(B;-(A));C))"},
+
+        {"left": "(+(/(B;C);/(A;C)))","right": "(/(+(B;A);C))"},
+        {"left": "(/(+(B;A);C))","right": "(+(/(B;C);/(A;C)))"},
+        {"left": "(*(A;B))","right": "(*(+(-(A));+(-(B))))"},
+        {"left": "(/(A;B))","right": "(/(+(-(A));+(-(B))))"},
+        {"left": "(*(+(-(A));+(-(B))))","right": "(*(A;B))"},
+        {"left": "(/(+(-(A));+(-(B))))","right": "(/(A;B))"},
+
+        {"left": "(-(*(A;C)))","right": "(*(-(A);C))"},
+        {"left": "(*(-(A);C))","right": "(-(*(A;C)))"},
+        {"left": "(-(*(A;C)))","right": "(*(A;-(C)))"},
+        {"left": "(*(A;-(C)))","right": "(-(*(A;C)))"},
+        {"left": "(*(A;-(C)))","right": "(*(-(A);C))"},
+        {"left": "(*(-(A);C))","right": "(*(A;-(C)))"},
+
+        {"left": "(-(/(A;C)))","right": "(/(-(A);C))"},
+        {"left": "(/(-(A);C))","right": "(-(/(A;C)))"},
+        {"left": "(-(/(A;C)))","right": "(/(A;-(C)))"},
+        {"left": "(/(A;-(C)))","right": "(-(/(A;C)))"},
+        {"left": "(/(A;-(C)))","right": "(/(-(A);C))"},
+        {"left": "(/(-(A);C))","right": "(/(A;-(C)))"},
+
+        {"left": "(+(-(*(A;C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(+(-(*(A;C))))"},
+        {"left": "(+(-(*(A;C))))","right": "(*(A;+(-(C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(+(-(*(A;C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(*(A;+(-(C))))"},
+
+        {"left": "(+(-(/(A;C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(+(-(/(A;C))))"},
+        {"left": "(+(-(/(A;C))))","right": "(/(A;+(-(C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(+(-(/(A;C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(/(A;+(-(C))))"},
+
+        {"left": "(*(-(A);-(B)))","right": "(*(A;B))"},
+        {"left": "(/(-(A);-(B)))","right": "(/(A;B))"},
+        {"left": "(*(A;B))","right": "(*(-(A);-(B)))"},
+        {"left": "(/(A;B))","right": "(/(-(A);-(B)))"},
+
+        {"left": "(+(/(B;C);/(A;D)))","right": "(/(+(*(B;D);*(C;A));*(C;D)))"},
+        {"left": "(+(/(B;C);-(/(A;D))))","right": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"},
+
+        {"left": "(*(A;/(B;A)))","right": "(B)"},
+        {"left": "(*(/(B;A);A))","right": "(B)"},
+
+        {"left": "(*(A;/(B;C)))","right": "(/(*(A;B);C))"},
+        {"left": "(*(/(B;C);A))","right": "(/(*(A;B);C))"},
+        {"left": "(*(/(B;C);A))","right": "(*(/(B;A);C))"},
+        {"left": "(/(A;B))","right": "(/(1;/(B;A)))"},
+        {"left": "(/(*(A;B);C))","right": "(*(A;/(B;C)))"},
+
+        {"left": "(/(/(B;C);A))","right": "(/(B;*(A;C)))"},
+        {"left": "(/(B;*(A;C)))","right": "(/(/(B;C);A))"},
+
+        {"left": "(/(A;/(B;C)))","right": "(/(*(A;C);B))"},
+        {"left": "(/(*(A;C);B))","right": "(/(A;/(B;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(A;B);/(1;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(1;B);/(A;C)))"},
+        {"left": "(*(/(A;B);/(1;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(1;B);/(A;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(D;B);/(A;C)))","right": "(/(*(D;A);*(B;C)))"},
+        {"left": "(/(*(D;A);*(B;C)))","right": "(*(/(D;B);/(A;C)))"},
+
+        {"left": "(/(*(D;A);*(D;C)))","right": "(/(A;C))"},
+        {"left": "(/(*(D;A);D))","right": "(A)"},
+        {"left": "(/(*(A;D);D))","right": "(A)"}
+      ]
+    },
+    {
+      "name": "ArithmeticDegree",
+      "type": "algebra",
+      "rules":[
+        {"left": "(/(1;A))","right": "(^(A;+(-(1))))"},
+        {"left": "(^(A;+(-(1))))","right": "(/(1;A))"},
+
+        {"left": "(^(A;+(B;C)))","right": "(*(^(A;B);^(A;C)))"},
+        {"left": "(*(^(A;B);^(A;C)))","right": "(^(A;+(B;C)))"},
+        {"left": "(^(A;+(B;C;D)))","right": "(*(^(A;B);^(A;C);^(A;D)))"},
+        {"left": "(*(^(A;B);^(A;C);^(A;D)))","right": "(^(A;+(B;C;D)))"},
+
+        {"left": "(^(A;+(B;-(C))))","right": "(/(^(A;B);^(A;C)))"},
+        {"left": "(/(^(A;B);^(A;C)))","right": "(^(A;+(B;-(C))))"},
+
+        {"left": "(/(B;^(A;C)))","right": "(*(B;^(A;+(-(C)))))"},
+        {"left": "(*(B;^(A;+(-(C)))))","right": "(/(B;^(A;C)))"},
+        {"left": "(/(1;^(A;C)))","right": "(^(A;+(-(C))))"},
+        {"left": "(^(A;+(-(C))))","right": "(/(1;^(A;C)))"},
+        {"left": "(/(A;B))","right": "(^(/(B;A);+(-(1))))"},
+        {"left": "(^(/(B;A);+(-(1))))","right": "(/(A;B))"},
+
+        {"left": "(^(A;0))","right": "(1)"},
+
+        {"left": "(^(1;A))","right": "(1)"},
+        {"left": "(^(A;1))","right": "(A)"},
+        {"left": "(^(0;A))","right": "(0)"},
+
+        {"left": "(*(A;A))","right": "(^(A;2))"},
+        {"left": "(^(A;2))","right": "(*(A;A))"},
+
+        {"left": "(*(a;^(a;n)))","right": "(^(a;+(n;1)))"},
+        {"left": "(^(a;+(n;1)))","right": "(*(a;^(a;n)))"},
+        {"left": "(*(^(a;n);a))","right": "(^(a;+(1;n)))"},
+        {"left": "(^(a;+(1;n)))","right": "(*(^(a;n);a))"},
+
+        {"left": "(/(^(a;n);a))","right": "(^(a;+(n;-(1))))"},
+        {"left": "(^(a;+(n;-(1))))","right": "(/(^(a;n);a))"},
+
+        {"left": "(^(A;*(B;C)))","right": "(^(^(A;B);C))"},
+        {"left": "(^(^(A;B);C))","right": "(^(A;*(B;C)))"},
+
+        {"left": "(^(*(B;C);A))","right": "(*(^(B;A);^(C;A)))"},
+        {"left": "(*(^(B;A);^(C;A)))","right": "(^(*(B;C);A))"},
+        {"left": "(^(/(B;C);A))","right": "(/(^(B;A);^(C;A)))"},
+        {"left": "(/(^(B;A);^(C;A)))","right": "(^(/(B;C);A))"},
+
+        {"left": "(^(A;*(2;n)))","right": "(^(-(A);*(2;n)))"},
+        {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"},
+        {"left": "(^(-(A);2))","right": "(^(A;2))"},
+
+        {"left": "(a)","right": "(^(^(a;2);/(1;2)))"},
+        {"left": "(a)","right": "(^(^(a;3);/(1;3)))"},
+        {"left": "(^(^(a;b);/(1;b)))","right": "(a)"}
+      ]
+    }
+  ]
+}

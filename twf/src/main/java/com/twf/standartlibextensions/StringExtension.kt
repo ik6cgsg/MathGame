@@ -3,8 +3,8 @@ package com.twf.standartlibextensions
 import com.twf.platformdependent.abs
 
 
-fun Char.isLowerCaseLetter() = this in 'a'..'z'
-fun Char.isUpperCaseLetter() = this in 'A'..'Z'
+fun Char.isLowerCaseLetter() = this in 'a'..'z' || this in 'α'..'ω' || this == 'ₐ'
+fun Char.isUpperCaseLetter() = this in 'A'..'Z' || this in 'Α'..'Ω'
 fun Char.isLetter() = this.isLowerCaseLetter() || this.isUpperCaseLetter()
 fun Char.isLetterOrUnderscore() = this.isLetter() || this == '_'
 fun Char.isDigit() = this in '0'..'9'
