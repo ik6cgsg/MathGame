@@ -1,7 +1,9 @@
 package mathhelper.games.matify.common
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.*
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Editable
@@ -38,15 +40,32 @@ class AndroidUtil {
             return false
         }
 
-        fun setOnTouchUpInside(view: View, func: (v: View?) -> Unit) {
+        @SuppressLint("ClickableViewAccessibility")
+        fun setOnTouchUpInside(context: Context, view: View, func: (v: View?) -> Unit) {
+            val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
             view.setOnTouchListener { v, event ->
                 val tv = v as TextView
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        tv.setTextColor(Constants.primaryColor)
+                        //tv.setTextColor(Constants.primaryColor)
+                        if (sharedPrefs.contains("Theme")) {
+                            if ("black" == sharedPrefs.getString("Theme", ""))
+                                tv.setTextColor(Constants.primaryColorDarkTheme)
+                            else
+                                tv.setTextColor(Constants.primaryColorLightTheme)
+                        }
+                        else
+                            tv.setTextColor(Constants.primaryColorDarkTheme)
                     }
                     MotionEvent.ACTION_UP -> {
-                        tv.setTextColor(Constants.textColor)
+                        if (sharedPrefs.contains("Theme")) {
+                            if ("black" == sharedPrefs.getString("Theme", ""))
+                                tv.setTextColor(Constants.textColorDarkTheme)
+                            else
+                                tv.setTextColor(Constants.textColorLightTheme)
+                        }
+                        else
+                            tv.setTextColor(Constants.textColorDarkTheme)
                         if (touchUpInsideView(v, event)) {
                             func(v)
                         }
@@ -56,11 +75,20 @@ class AndroidUtil {
             }
         }
 
-        fun setOnTouchUpInsideWithCancel(view: View, func: (v: View?) -> Unit) {
+        @SuppressLint("ClickableViewAccessibility")
+        fun setOnTouchUpInsideWithCancel(context: Context, view: View, func: (v: View?) -> Unit) {
+            val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
             view.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        v.setBackgroundColor(Constants.lightGrey)
+                        if (sharedPrefs.contains("Theme")) {
+                            if ("black" == sharedPrefs.getString("Theme", ""))
+                                v.setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
+                            else
+                                v.setBackgroundColor(Constants.onTouchBackgroundColorLightTheme)
+                        }
+                        else
+                            v.setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
                     }
                     MotionEvent.ACTION_UP -> {
                         v.setBackgroundColor(Color.TRANSPARENT)
@@ -102,7 +130,16 @@ class AndroidUtil {
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
             view.layoutParams = layoutParams
-            view.setTextColor(Constants.textColor)
+
+            val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+            if (sharedPrefs.contains("Theme")) {
+                if ("black" == sharedPrefs.getString("Theme", ""))
+                    view.setTextColor(Constants.textColorDarkTheme)
+                else
+                    view.setTextColor(Constants.textColorLightTheme)
+            }
+            else
+                view.setTextColor(Constants.textColorDarkTheme)
             return view
         }
     }

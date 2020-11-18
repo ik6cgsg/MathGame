@@ -45,7 +45,16 @@ class GlobalMathView: TextView {
 
     private fun setDefaults() {
         Log.d(TAG, "setDefaults")
-        setTextColor(Color.LTGRAY)
+        //setTextColor(Color.LTGRAY)
+        val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                setTextColor(Constants.textColorDarkTheme)
+            else
+                setTextColor(Constants.textColorLightTheme)
+        }
+        else
+            setTextColor(Constants.textColorDarkTheme)
         typeface = Typeface.MONOSPACE
         textSize = Constants.centralExpressionDefaultSize
         setLineSpacing(0f, Constants.mathLineSpacing)
@@ -147,7 +156,17 @@ class GlobalMathView: TextView {
         val y = event.y - textSize / 4
         if (layout != null) {
             val offset = getOffsetForPosition(x, y)
-            val atom = mathPair!!.getColoredAtom(offset, Color.CYAN)
+            val atomColor: Int
+            val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+            if (sharedPrefs.contains("Theme")) {
+                if ("black" == sharedPrefs.getString("Theme", ""))
+                    atomColor = Constants.textHighlightColorDarkTheme
+                else
+                    atomColor = Constants.textHighlightColorLightTheme
+            }
+            else
+                atomColor = Constants.textHighlightColorDarkTheme
+            val atom = mathPair!!.getColoredAtom(offset, atomColor)
             if (atom != null) {
                 if (currentAtom == null || currentAtom!!.nodeId != atom.nodeId) {
                     currentAtom = atom

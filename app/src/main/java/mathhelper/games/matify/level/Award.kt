@@ -18,7 +18,7 @@ data class Award(val value: AwardType, val coeff: Double) {
         AwardType.GOLD -> Color.rgb(255, 215, 0)
         AwardType.SILVER -> Color.rgb(145, 142, 140)
         AwardType.BRONZE -> Color.rgb(174, 104, 66)
-        else -> Constants.textColor
+        else -> Constants.textColorDarkTheme //TODO
     }
 
     companion object {

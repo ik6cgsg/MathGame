@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="custom_red" format="color" />
+    <attr name="colorTest" format="color"/>
+    <attr name="colorPrimary" format="color"/>
+    <attr name="colorPrimaryDisabled" format="color"/>
+    <attr name="colorPrimaryDark" format="color"/>
+    <attr name="colorAccent" format="color"/>
+    <attr name="textColor" format="color"/>
+    <attr name="shapeBackground" format="color"/>
+    <attr name="grayDisabled" format="color"/>
+    <attr name="lightGray" format="color"/>
+    <attr name="backgroundColor" format="color"/>
+    <attr name="test" format="color"/>
+</resources>

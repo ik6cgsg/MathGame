@@ -2,10 +2,39 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="custom_red">#8b039c</item>
+        <item name="colorPrimary">#008577</item>
+        <item name="colorPrimaryDisabled">#33008577</item>
+        <item name="colorPrimaryDark">#00574B</item>
+        <item name="colorAccent">#017A6E</item>
+        <item name="textColor">#C5C5C5</item>
+        <item name="shapeBackground">#2C2C2C</item>
+        <item name="grayDisabled">#332C2C2C</item>
+        <item name="lightGray">#8B8484</item>
+        <item name="backgroundColor">#1F1F1F</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/fade</item>
+        <item name="android:windowExitTransition">@transition/fade</item>
+        <item name="android:windowReturnTransition">@transition/fade</item>
+    </style>
+
+    <style name="AppLightTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="custom_red">#8b030c</item>
+        <item name="colorPrimary">#8d3d9d</item>
+        <item name="colorPrimaryDisabled">#8b030c</item>
+        <item name="colorPrimaryDark">#424874</item>
+        <item name="colorAccent">#27296D</item>
+        <item name="textColor">#171717</item>
+        <item name="shapeBackground">#DCD6F7</item>
+        <item name="grayDisabled">#332C2C2C</item>
+        <item name="lightGray">#8B8484</item>
+        <item name="backgroundColor">#F4EEFF</item>
+
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <!-- enable window content transitions -->
@@ -17,8 +46,8 @@
     </style>
 
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/textColor</item>
+        <item name="android:textColor">?attr/textColor</item>
+        <item name="android:textColorPrimary">?attr/colorPrimary</item>
         <item name="android:typeface">monospace</item>
         <item name="android:windowBackground">@drawable/rect_shape</item>
     </style>

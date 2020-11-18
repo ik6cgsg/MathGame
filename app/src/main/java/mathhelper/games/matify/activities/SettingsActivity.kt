@@ -2,20 +2,25 @@ package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.statistics.Statistics
 import java.util.*
+
 
 class SettingsActivity: AppCompatActivity() {
     private val TAG = "SettingsActivity"
@@ -24,19 +29,35 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var reportDialog: AlertDialog
     private lateinit var resetDialog: AlertDialog
     private lateinit var changeLanguageDialog: AlertDialog
+    private lateinit var changeThemeDialog: AlertDialog
     private lateinit var greetings: TextView
     private lateinit var reset: TextView
     private lateinit var editAccount: TextView
     private lateinit var changePassword: TextView
     private lateinit var changeLanguage: TextView
+    private lateinit var changeTheme: TextView
+    private lateinit var sharedPrefs: SharedPreferences
+
+    private fun setTheme() {
+        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                setTheme(R.style.AppTheme)
+            else
+                setTheme(R.style.AppLightTheme)
+        }
+        else
+            setTheme(R.style.AppTheme)
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme()
         setContentView(R.layout.activity_settings)
         val backView = findViewById<TextView>(R.id.back)
-        AndroidUtil.setOnTouchUpInside(backView, ::back)
+        AndroidUtil.setOnTouchUpInside(this, backView, ::back)
         ratingBar = findViewById(R.id.rating)
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             val ratingDialog = createRatingDialog(rating)
@@ -47,31 +68,36 @@ class SettingsActivity: AppCompatActivity() {
             AndroidUtil.showDialog(ratingDialog)
         }
         editAccount = findViewById(R.id.edit_account)
-        AndroidUtil.setOnTouchUpInsideWithCancel(editAccount) {
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, editAccount) {
             finish()
             startActivity(Intent(this, AccountActivity::class.java))
         }
         reportDialog = createReportDialog()
         reportProblem = findViewById(R.id.report)
-        AndroidUtil.setOnTouchUpInsideWithCancel(reportProblem) {
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, reportProblem) {
             AndroidUtil.showDialog(reportDialog)
         }
         resetDialog = createResetAlert()
         reset = findViewById(R.id.reset)
-        AndroidUtil.setOnTouchUpInsideWithCancel(reset) {
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, reset) {
             AndroidUtil.showDialog(resetDialog)
         }
         changePassword = findViewById(R.id.change_password)
-        AndroidUtil.setOnTouchUpInsideWithCancel(changePassword) {
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, changePassword) {
             startActivity(Intent(this, PasswordActivity::class.java))
+        }
+        changeThemeDialog = createChangeThemeAlert()
+        changeTheme = findViewById(R.id.change_theme)
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, changeTheme) {
+            AndroidUtil.showDialog(changeThemeDialog)
         }
         changeLanguageDialog = createChangeLanguageAlert()
         changeLanguage = findViewById(R.id.change_language)
-        AndroidUtil.setOnTouchUpInsideWithCancel(changeLanguage) {
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, changeLanguage) {
             AndroidUtil.showDialog(changeLanguageDialog)
         }
         val tutorial = findViewById<TextView>(R.id.tutorial)
-        AndroidUtil.setOnTouchUpInsideWithCancel(tutorial) {
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, tutorial) {
             TutorialScene.shared.start(this)
         }
         if (Build.VERSION.SDK_INT < 24) {
@@ -81,6 +107,12 @@ class SettingsActivity: AppCompatActivity() {
         val versionView = findViewById<TextView>(R.id.version)
         versionView.text = versionView.text.toString() + BuildConfig.VERSION_NAME
         greetings = findViewById(R.id.greetings)
+    }
+
+    private fun savePreferences(Theme: String?) {
+        val editor = sharedPrefs.edit()
+        editor.putString("Theme", Theme)
+        editor.apply()
     }
 
     override fun onResume() {
@@ -148,6 +180,33 @@ class SettingsActivity: AppCompatActivity() {
             .setMessage(R.string.this_action_will_reset_all_your_achievements)
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 GlobalScene.shared.resetAll()
+                finish()
+            }
+            .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
+            }
+            .setCancelable(true)
+        return builder.create()
+    }
+
+    private fun createChangeThemeAlert(): AlertDialog {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+
+        val config = Configuration(resources.configuration)
+
+        var themeToChoose = "white"
+        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                themeToChoose = "light"
+            else
+                themeToChoose = "black"
+        }
+
+        builder
+            .setTitle(R.string.change_theme)
+            .setMessage("${resources.getString(R.string.change_language_to)} '${themeToChoose.toUpperCase(config.locale)}'?")
+            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
+                savePreferences(themeToChoose)
                 finish()
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->

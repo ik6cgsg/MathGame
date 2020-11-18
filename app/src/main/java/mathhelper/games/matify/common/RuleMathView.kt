@@ -28,7 +28,7 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
-        setDefaults()
+        setDefaults(context)
     }
 
     constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
@@ -36,16 +36,25 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
         val substFrom = params.getString(R.styleable.RuleMathView_substFrom)
         val substTo = params.getString(R.styleable.RuleMathView_substTo)
         subst = expressionSubstitutionFromStructureStrings(substFrom!!, substTo!!)
-        setDefaults()
+        setDefaults(context)
     }
 
-    private fun setDefaults() {
+    private fun setDefaults(context: Context) {
         textSize = Constants.ruleDefaultSize
         setHorizontallyScrolling(true)
         isHorizontalScrollBarEnabled = true
         isScrollbarFadingEnabled = true
         movementMethod = ScrollingMovementMethod()
-        setTextColor(Color.LTGRAY)
+        val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                setTextColor(Constants.textColorDarkTheme)
+            else
+                setTextColor(Constants.textColorLightTheme)
+        }
+        else
+            setTextColor(Constants.textColorDarkTheme)
+        //setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(
@@ -88,7 +97,16 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
                 Log.d(TAG, "ACTION_DOWN")
                 needClick = true
                 moveCnt = 0
-                setBackgroundColor(Constants.lightGrey)
+                //setBackgroundColor(Constants.lightGray)
+                val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+                if (sharedPrefs.contains("Theme")) {
+                    if ("black" == sharedPrefs.getString("Theme", ""))
+                        setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
+                    else
+                        setBackgroundColor(Constants.onTouchBackgroundColorLightTheme)
+                }
+                else
+                    setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
             }
             event.action == MotionEvent.ACTION_UP -> {
                 Log.d(TAG, "ACTION_UP")

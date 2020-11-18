@@ -1,7 +1,10 @@
 package mathhelper.games.matify.activities
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -34,6 +37,7 @@ class PlayActivity: AppCompatActivity() {
     private lateinit var backDialog: AlertDialog
     private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
+    private lateinit var sharedPrefs: SharedPreferences
 
     lateinit var globalMathView: GlobalMathView
     lateinit var endExpressionView: TextView
@@ -43,6 +47,18 @@ class PlayActivity: AppCompatActivity() {
     lateinit var rulesScrollView: ScrollView
     lateinit var noRules: TextView
     lateinit var timerView: TextView
+
+    private fun setTheme() {
+        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                setTheme(R.style.AppTheme)
+            else
+                setTheme(R.style.AppLightTheme)
+        }
+        else
+            setTheme(R.style.AppTheme)
+    }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
@@ -80,6 +96,7 @@ class PlayActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme()
         setContentView(R.layout.activity_play)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
@@ -187,9 +204,21 @@ class PlayActivity: AppCompatActivity() {
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
         val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $award")
-        spannable.setSpan(BulletSpan(5, Constants.primaryColor), msgTitle.length + 1,
+
+        var spanColor: Int
+        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                spanColor = Constants.primaryColorDarkTheme
+            else
+                spanColor = Constants.primaryColorLightTheme
+        }
+        else
+            spanColor = Constants.primaryColorDarkTheme
+
+        spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(BulletSpan(5, Constants.primaryColor),
+        spannable.setSpan(BulletSpan(5, spanColor),
             msgTitle.length + steps.length + 1, msgTitle.length + steps.length + time.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         winDialog.setMessage(spannable)

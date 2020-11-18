@@ -47,6 +47,7 @@
     <string name="games_from_cloud">☁ игры из глобального поиска ☁</string>
     <string name="search_for_a_game">Найти игру!</string>
     <string name="edit_account">✏ Редактировать профиль</string>
+    <string name="change_theme">🌗 Сменить тему</string>
     <string name="change_password">🔑 Сменить пароль</string>
     <string name="change_language">🌍 Сменить язык</string>
     <string name="change_language_to">Сменить язык на</string>

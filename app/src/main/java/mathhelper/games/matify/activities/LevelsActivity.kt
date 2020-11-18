@@ -1,7 +1,10 @@
 package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.Constants
 import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity() {
@@ -22,18 +26,34 @@ class LevelsActivity: AppCompatActivity() {
     private lateinit var levelsList: LinearLayout
     private var levelTouched: View? = null
     private lateinit var progress: ProgressBar
+    private lateinit var sharedPrefs: SharedPreferences
+
+    private fun setTheme() {
+        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                setTheme(R.style.AppTheme)
+            else
+                setTheme(R.style.AppLightTheme)
+        }
+        else
+            setTheme(R.style.AppTheme)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme()
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
+
         progress.visibility = View.VISIBLE
         loading = true
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27"
         }
+
         levelViews = ArrayList()
         levelsList = findViewById(R.id.levels_list)
         LevelScene.shared.levelsActivity = this
@@ -78,6 +98,18 @@ class LevelsActivity: AppCompatActivity() {
             }
     }
 
+    private fun setViewTextColor(view: TextView) {
+        val sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                view.setTextColor(Constants.textColorDarkTheme)
+            else
+                view.setTextColor(Constants.textColorLightTheme)
+        }
+        else
+            view.setTextColor(Constants.textColorDarkTheme)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun generateList() {
         LevelScene.shared.levels.forEachIndexed { i, level ->
@@ -86,6 +118,7 @@ class LevelsActivity: AppCompatActivity() {
             if (level.lastResult != null) {
                 levelView.text = "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
             }
+            setViewTextColor(levelView)
             levelView.background = getBackgroundByDif(level.difficulty)
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)

@@ -9,4 +9,5 @@
     <color name="grayDisabled">#332C2C2C</color>
     <color name="lightGray">#8B8484</color>
     <color name="background">#1F1F1F</color>
+    <color name="test">#1F1F1F</color>
 </resources>

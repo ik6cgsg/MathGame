@@ -5,7 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -36,17 +38,31 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var serverList: LinearLayout
     private lateinit var serverScroll: ScrollView
     private var askForTutorial = false
+    private lateinit var sharedPrefs: SharedPreferences
 
-    fun setLanguage() {
+    private fun setLanguage() {
         val locale = Locale("en")
         Locale.setDefault(locale)
         val config = Configuration(resources.configuration)
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
+    private fun setTheme() {
+        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                setTheme(R.style.AppTheme)
+            else
+                setTheme(R.style.AppLightTheme)
+        }
+        else
+            setTheme(R.style.AppTheme)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         setLanguage()
+        setTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -129,6 +145,18 @@ class GamesActivity: AppCompatActivity() {
         })
     }
 
+    private fun setViewTextColor(view: TextView) {
+        val sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Theme")) {
+            if ("black" == sharedPrefs.getString("Theme", ""))
+                view.setTextColor(Constants.textColorDarkTheme)
+            else
+                view.setTextColor(Constants.textColorLightTheme)
+        }
+        else
+            view.setTextColor(Constants.textColorDarkTheme)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun generateList(search: CharSequence? = null) {
         GlobalScene.shared.games.forEachIndexed { i, game ->
@@ -138,7 +166,9 @@ class GamesActivity: AppCompatActivity() {
                 }
             }
             val gameView = AndroidUtil.createButtonView(this)
+
             gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
+            setViewTextColor(gameView)
             /*
             if (game.lastResult != null) {
                 gameView.text = "${game.name}\n${game.lastResult!!}"
