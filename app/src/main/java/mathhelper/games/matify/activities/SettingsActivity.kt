@@ -16,8 +16,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.*
-import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.*
 import mathhelper.games.matify.statistics.Statistics
 import java.util.*
 
@@ -36,25 +35,12 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var changePassword: TextView
     private lateinit var changeLanguage: TextView
     private lateinit var changeTheme: TextView
-    private lateinit var sharedPrefs: SharedPreferences
-
-    private fun setTheme() {
-        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        if (sharedPrefs.contains("Theme")) {
-            if ("black" == sharedPrefs.getString("Theme", ""))
-                setTheme(R.style.AppTheme)
-            else
-                setTheme(R.style.AppLightTheme)
-        }
-        else
-            setTheme(R.style.AppTheme)
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme()
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.activity_settings)
         val backView = findViewById<TextView>(R.id.back)
         AndroidUtil.setOnTouchUpInside(this, backView, ::back)
@@ -109,12 +95,6 @@ class SettingsActivity: AppCompatActivity() {
         greetings = findViewById(R.id.greetings)
     }
 
-    private fun savePreferences(Theme: String?) {
-        val editor = sharedPrefs.edit()
-        editor.putString("Theme", Theme)
-        editor.apply()
-    }
-
     override fun onResume() {
         super.onResume()
         greetings.text = "\uD83D\uDC4B ${resources.getString(R.string.hi)}, ${Storage.shared.login(this)}! \uD83D\uDC4B"
@@ -131,7 +111,9 @@ class SettingsActivity: AppCompatActivity() {
 
     private fun createRatingDialog(rating: Float): AlertDialog {
         Log.d(TAG, "createRatingDialog")
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         val view = layoutInflater.inflate(R.layout.dialog_rating, null)
         val ratingBarDialog = view.findViewById<RatingBar>(R.id.rating_dialog)
         ratingBarDialog.rating = rating
@@ -157,7 +139,9 @@ class SettingsActivity: AppCompatActivity() {
 
     private fun createReportDialog(): AlertDialog {
         Log.d(TAG, "createReportDialog")
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         val view = layoutInflater.inflate(R.layout.dialog_reporting, null)
         val commentView = view.findViewById<EditText>(R.id.problem)
         builder
@@ -174,7 +158,9 @@ class SettingsActivity: AppCompatActivity() {
     }
 
     private fun createResetAlert(): AlertDialog {
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle(R.string.are_you_sure)
             .setMessage(R.string.this_action_will_reset_all_your_achievements)
@@ -189,25 +175,24 @@ class SettingsActivity: AppCompatActivity() {
     }
 
     private fun createChangeThemeAlert(): AlertDialog {
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
 
         val config = Configuration(resources.configuration)
 
-        var themeToChoose = "white"
-        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        if (sharedPrefs.contains("Theme")) {
-            if ("black" == sharedPrefs.getString("Theme", ""))
-                themeToChoose = "light"
-            else
-                themeToChoose = "black"
-        }
+        val themeToChoose = when (Storage.shared.theme(this)) {
+                ThemeName.DARK -> ThemeName.LIGHT
+                else -> ThemeName.DARK
+            }
 
         builder
             .setTitle(R.string.change_theme)
-            .setMessage("${resources.getString(R.string.change_language_to)} '${themeToChoose.toUpperCase(config.locale)}'?")
+            .setMessage("${resources.getString(R.string.change_theme_to)} '${themeToChoose.toString().toUpperCase(config.locale)}'?")
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
-                savePreferences(themeToChoose)
-                finish()
+                Storage.shared.setTheme(this, themeToChoose)
+                finishAffinity()
+                startActivity(Intent(this, GamesActivity::class.java))
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
             }
@@ -216,7 +201,9 @@ class SettingsActivity: AppCompatActivity() {
     }
 
     private fun createChangeLanguageAlert(): AlertDialog {
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
 
         val config = Configuration(resources.configuration)
         val languageToChoose = if (config.locale.language == "ru") {
@@ -231,7 +218,8 @@ class SettingsActivity: AppCompatActivity() {
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 config.locale = Locale(languageToChoose); //locale
                 resources.updateConfiguration(config, resources.displayMetrics)
-                finish()
+                finishAffinity()
+                startActivity(Intent(this, GamesActivity::class.java))
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
             }

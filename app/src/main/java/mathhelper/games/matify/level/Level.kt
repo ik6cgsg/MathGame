@@ -182,7 +182,7 @@ class Level {
         }
     }
 
-    fun getAward(resultTime: Long, resultStepsNum: Float): Award {
+    fun getAward(context:Context, resultTime: Long, resultStepsNum: Float): Award {
         Log.d(TAG, "getAward")
         val mark = when {
             resultStepsNum < stepsNum -> 1.0
@@ -192,7 +192,7 @@ class Level {
                 3 * stepsNum.toDouble() / resultStepsNum
                 ) / (1 + 3)
         }
-        return Award(getAwardByCoeff(mark), mark)
+        return Award(context, getAwardByCoeff(mark), mark)
     }
 
     private fun getAwardByCoeff(mark: Double): AwardType {
@@ -256,7 +256,7 @@ class Level {
         if (!resultStr.isNullOrEmpty()) {
             val resultVals = resultStr.split(" ", limit = 4)
             lastResult = Result(resultVals[0].toFloat(), resultVals[1].toLong(),
-                Award(getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
+                Award(context, getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
             if (resultVals.size == 4) {
                 lastResult!!.expression = resultVals[3]
             }

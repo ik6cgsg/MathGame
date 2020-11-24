@@ -9,6 +9,8 @@
     {
       "levelCode": "physics_overview__Hello_World_Level",
       "name": "Начинаем равноускоренное движение",
+      "ru": "Начинаем равноускоренное движение",
+      "en": "Uniformly accelerated movement",
       "difficulty": 1.0,
       "type": "algebra",
       "stepsNum": 1,
@@ -24,6 +26,8 @@
     {
       "levelCode": "physics_overview__Level_01_Express",
       "name": "Электрический заряд",
+      "ru": "Электрический заряд",
+      "en": "Electric charge",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -39,6 +43,8 @@
     {
       "levelCode": "physics_overview__Level_02_Express",
       "name": "Электрическая мощность",
+      "ru": "Электрическая мощность",
+      "en": "Electric power",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -54,6 +60,8 @@
     {
       "levelCode": "physics_overview__Level_03_Express",
       "name": "Идеальный газ",
+      "ru": "Идеальный газ",
+      "en": "Ideal gas",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -69,6 +77,8 @@
     {
       "levelCode": "physics_overview__Level_04_Express",
       "name": "Магнитный поток",
+      "ru": "Магнитный поток",
+      "en": "Magnetic flux",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -84,6 +94,8 @@
     {
       "levelCode": "physics_overview__Level_05_Express",
       "name": "Квантовая энергия",
+      "ru": "Квантовая энергия",
+      "en": "Quantum energy",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -99,6 +111,8 @@
     {
       "levelCode": "physics_overview__Level_06_Express",
       "name": "Энергия идеального газа",
+      "ru": "Энергия идеального газа",
+      "en": "Ideal gas energy",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 4,
@@ -114,6 +128,8 @@
     {
       "levelCode": "physics_overview__Level_07_Express",
       "name": "Движение по кругу",
+      "ru": "Движение по кругу",
+      "en": "Circle movement",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -129,6 +145,8 @@
     {
       "levelCode": "physics_overview__Level_08_Express",
       "name": "Теплота проводника",
+      "ru": "Теплота проводника",
+      "en": "Heat from a conductor",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -144,6 +162,8 @@
     {
       "levelCode": "physics_overview__Level_09_Express",
       "name": "Емкость конденсатора",
+      "ru": "Емкость конденсатора",
+      "en": "Capacitor capacity",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -159,6 +179,8 @@
     {
       "levelCode": "physics_overview__Level_10_Express",
       "name": "Индуктивность конденсатора",
+      "ru": "Индуктивность конденсатора",
+      "en": "Capacitor inductance",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -174,6 +196,8 @@
     {
       "levelCode": "physics_overview__Level_11_Express",
       "name": "Разность потенциалов",
+      "ru": "Разность потенциалов",
+      "en": "Potential difference",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -189,6 +213,8 @@
     {
       "levelCode": "physics_overview__Level_12_Express",
       "name": "Импульс фотона",
+      "ru": "Импульс фотона",
+      "en": "Photon momentum",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 4,

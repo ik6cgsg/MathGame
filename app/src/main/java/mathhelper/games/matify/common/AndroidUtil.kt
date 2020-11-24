@@ -42,30 +42,20 @@ class AndroidUtil {
 
         @SuppressLint("ClickableViewAccessibility")
         fun setOnTouchUpInside(context: Context, view: View, func: (v: View?) -> Unit) {
-            val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
             view.setOnTouchListener { v, event ->
                 val tv = v as TextView
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        //tv.setTextColor(Constants.primaryColor)
-                        if (sharedPrefs.contains("Theme")) {
-                            if ("black" == sharedPrefs.getString("Theme", ""))
-                                tv.setTextColor(Constants.primaryColorDarkTheme)
-                            else
-                                tv.setTextColor(Constants.primaryColorLightTheme)
-                        }
-                        else
-                            tv.setTextColor(Constants.primaryColorDarkTheme)
+                        val themeName = Storage.shared.theme(context)
+                        tv.setTextColor(
+                            ThemeController.shared.getColorByTheme(themeName, ColorName.PRIMARY_COLOR)
+                        )
                     }
                     MotionEvent.ACTION_UP -> {
-                        if (sharedPrefs.contains("Theme")) {
-                            if ("black" == sharedPrefs.getString("Theme", ""))
-                                tv.setTextColor(Constants.textColorDarkTheme)
-                            else
-                                tv.setTextColor(Constants.textColorLightTheme)
-                        }
-                        else
-                            tv.setTextColor(Constants.textColorDarkTheme)
+                        val themeName = Storage.shared.theme(context)
+                        tv.setTextColor(
+                            ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR)
+                        )
                         if (touchUpInsideView(v, event)) {
                             func(v)
                         }
@@ -77,18 +67,13 @@ class AndroidUtil {
 
         @SuppressLint("ClickableViewAccessibility")
         fun setOnTouchUpInsideWithCancel(context: Context, view: View, func: (v: View?) -> Unit) {
-            val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
             view.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        if (sharedPrefs.contains("Theme")) {
-                            if ("black" == sharedPrefs.getString("Theme", ""))
-                                v.setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
-                            else
-                                v.setBackgroundColor(Constants.onTouchBackgroundColorLightTheme)
-                        }
-                        else
-                            v.setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
+                        val themeName = Storage.shared.theme(context)
+                        v.setBackgroundColor(
+                            ThemeController.shared.getColorByTheme(themeName, ColorName.ON_TOUCH_BACKGROUND_COLOR)
+                        )
                     }
                     MotionEvent.ACTION_UP -> {
                         v.setBackgroundColor(Color.TRANSPARENT)
@@ -131,15 +116,8 @@ class AndroidUtil {
             layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
             view.layoutParams = layoutParams
 
-            val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-            if (sharedPrefs.contains("Theme")) {
-                if ("black" == sharedPrefs.getString("Theme", ""))
-                    view.setTextColor(Constants.textColorDarkTheme)
-                else
-                    view.setTextColor(Constants.textColorLightTheme)
-            }
-            else
-                view.setTextColor(Constants.textColorDarkTheme)
+            val themeName = Storage.shared.theme(context)
+            view.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
             return view
         }
     }

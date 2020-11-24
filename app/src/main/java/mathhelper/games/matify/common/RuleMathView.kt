@@ -45,15 +45,8 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
         isHorizontalScrollBarEnabled = true
         isScrollbarFadingEnabled = true
         movementMethod = ScrollingMovementMethod()
-        val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        if (sharedPrefs.contains("Theme")) {
-            if ("black" == sharedPrefs.getString("Theme", ""))
-                setTextColor(Constants.textColorDarkTheme)
-            else
-                setTextColor(Constants.textColorLightTheme)
-        }
-        else
-            setTextColor(Constants.textColorDarkTheme)
+        val themeName = Storage.shared.theme(context)
+        setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
         //setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
         setLineSpacing(0f, Constants.mathLineSpacing)
@@ -97,21 +90,13 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
                 Log.d(TAG, "ACTION_DOWN")
                 needClick = true
                 moveCnt = 0
-                //setBackgroundColor(Constants.lightGray)
-                val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-                if (sharedPrefs.contains("Theme")) {
-                    if ("black" == sharedPrefs.getString("Theme", ""))
-                        setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
-                    else
-                        setBackgroundColor(Constants.onTouchBackgroundColorLightTheme)
-                }
-                else
-                    setBackgroundColor(Constants.onTouchBackgroundColorDarkTheme)
+                val themeName = Storage.shared.theme(context)
+                setBackgroundColor(ThemeController.shared.getColorByTheme(themeName, ColorName.ON_TOUCH_BACKGROUND_COLOR))
             }
             event.action == MotionEvent.ACTION_UP -> {
                 Log.d(TAG, "ACTION_UP")
                 if (needClick && AndroidUtil.touchUpInsideView(this, event)) {
-                    PlayScene.shared.currentRuleView = this
+                    PlayScene.shared.setCurrentRuleView(context, this)
                     needClick = false
                 } else {
                     setBackgroundColor(Color.TRANSPARENT)

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
+import mathhelper.games.matify.R
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -24,6 +25,10 @@ enum class AuthInfo(val str: String) {
 
 enum class BaseInfo(val str: String) {
     DEVICE_ID("deviceId")
+}
+
+enum class SettingInfo(val str: String) {
+    THEME("theme")
 }
 
 data class AuthInfoObjectFull(
@@ -52,6 +57,7 @@ data class AuthInfoCoeffs(
 class Storage {
     companion object {
         private const val userInfoFile = "USER_INFO"
+        private const val settingFile = "SETTINGS"
         private const val logFile = "LOGS"
         private const val base = "BASE"
         val shared = Storage()
@@ -105,6 +111,20 @@ class Storage {
     fun serverToken(context: Context): String {
         return context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
             .getString(AuthInfo.SERVER_TOKEN.str, "")!!
+    }
+
+    fun theme(context: Context) : ThemeName {
+        val theme = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+            .getString(SettingInfo.THEME.str, "")
+        return when (theme) {
+            "DARK" -> ThemeName.DARK
+            "LIGHT" -> ThemeName.LIGHT
+            else -> ThemeName.DARK
+        }
+    }
+
+    fun themeInt(context: Context) : Int {
+        return theme(context).resId
     }
 
     @SuppressLint("ApplySharedPref")
@@ -173,6 +193,13 @@ class Storage {
             prefEdit.putString(AuthInfo.SERVER_TOKEN.str, info.serverToken)
         }
         prefEdit.commit()
+    }
+
+    fun setTheme(context: Context, theme: ThemeName?) {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        prefEdit.putString(SettingInfo.THEME.str, theme.toString())
+        prefEdit.apply()
     }
 
     fun getUserInfoBase(context: Context): AuthInfoObjectBase {

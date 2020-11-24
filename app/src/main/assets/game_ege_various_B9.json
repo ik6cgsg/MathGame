@@ -9,6 +9,8 @@
     {
       "levelCode": "ege_various_B9__Hello_World_Level",
       "name": "Начнем с простого",
+      "ru": "Начнем с простого",
+      "en": "Let's start simple",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 4,
@@ -27,6 +29,8 @@
     {
       "levelCode": "ege_various_B9__Level_01_Prove",
       "name": "Уровень 1 Логарифм",
+      "ru": "Уровень 1 Логарифм",
+      "en": "Level 1 Logarithm",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -41,6 +45,8 @@
     {
       "levelCode": "ege_various_B9__Level_02_Compute",
       "name": "Уровень 2 Иррациональность",
+      "ru": "Уровень 2 Иррациональность",
+      "en": "Level 2 Irrationality",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -57,6 +63,8 @@
     {
       "levelCode": "ege_various_B9__Level_03_Compute",
       "name": "Уровень 3 Упрощение",
+      "ru": "Уровень 3 Упрощение",
+      "en": "Level 3 Simplification",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 8,
@@ -79,6 +87,8 @@
     {
       "levelCode": "ege_various_B9__Level_04_Compute",
       "name": "Уровень 4 Упрощение логарифма",
+      "ru": "Уровень 4 Упрощение логарифма",
+      "en": "Level 4 Simplification of the logarithm",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 4,
@@ -103,6 +113,8 @@
     {
       "levelCode": "ege_various_B9__Level_05_Prove",
       "name": "Уровень 5 Логарифм",
+      "ru": "Уровень 5 Логарифм",
+      "en": "Level 5 Logarithm",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -118,6 +130,8 @@
     {
       "levelCode": "ege_various_B9__Level_06_Compute",
       "name": "Уровень 6 Косинус",
+      "ru": "Уровень 6 Косинус",
+      "en": "Level 6 Cosine",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -134,6 +148,8 @@
     {
       "levelCode": "ege_various_B9__Level_07_Compute",
       "name": "Уровень 7 Синус и косинус",
+      "ru": "Уровень 7 Синус и косинус",
+      "en": "Level 7 Sine and Cosine",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 12,
@@ -154,6 +170,8 @@
     {
       "levelCode": "ege_various_B9__Level_08_Compute",
       "name": "Уровень 8 Тангенс",
+      "ru": "Уровень 8 Тангенс",
+      "en": "Level 8 tangent",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 9,
@@ -173,6 +191,8 @@
     {
       "levelCode": "ege_various_B9__Level_09_Compute",
       "name": "Уровень 9 Тригонометрия",
+      "ru": "Уровень 9 Тригонометрия",
+      "en": "Level 9 Trigonometry",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 25,
@@ -188,6 +208,8 @@
     {
       "levelCode": "ege_logarithm__Level_10_Compute",
       "name": "Уровень 10 Упрощение логарифмов",
+      "ru": "Уровень 10 Упрощение логарифмов",
+      "en": "Level 10 Simplify logarithms",
       "difficulty": 7.0,
       "type": "algebra",
       "stepsNum": 20,

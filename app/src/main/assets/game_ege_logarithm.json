@@ -9,6 +9,8 @@
     {
       "levelCode": "ege_logarithm__Hello_World_Level",
       "name": "Начнем с простого",
+      "ru": "Начнем с простого",
+      "en": "Let's start simple",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -25,6 +27,8 @@
     {
       "levelCode": "ege_logarithm__Level_01_Compute",
       "name": "Уровень 1 Упрощение",
+      "ru": "Уровень 1 Упрощение",
+      "en": "Level 1 Simplification",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 7,
@@ -44,6 +48,8 @@
     {
       "levelCode": "ege_logarithm__Level_02_Compute",
       "name": "Уровень 2 Вычисление",
+      "ru": "Уровень 2 Вычисление",
+      "en": "Level 2 Calculation",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -62,6 +68,8 @@
     {
       "levelCode": "ege_logarithm__Level_03_Compute",
       "name": "Уровень 3 Вычисление",
+      "ru": "Уровень 3 Вычисление",
+      "en": "Level 3 Calculation",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -79,6 +87,8 @@
     {
       "levelCode": "ege_logarithm__Level_04_Compute",
       "name": "Уровень 4 Вычисление",
+      "ru": "Уровень 4 Вычисление",
+      "en": "Level 4 Calculation",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 4,
@@ -95,6 +105,8 @@
     {
       "levelCode": "ege_logarithm__Level_05_Compute",
       "name": "Уровень 5 Упрощение",
+      "ru": "Уровень 5 Упрощение",
+      "en": "Level 5 Simplification",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -112,6 +124,8 @@
     {
       "levelCode": "ege_logarithm__Level_06_Compute",
       "name": "Уровень 6 Вычисление",
+      "ru": "Уровень 6 Вычисление",
+      "en": "Level 6 Calculation",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 4,
@@ -129,6 +143,8 @@
     {
       "levelCode": "ege_logarithm__Level_07_Compute",
       "name": "Уровень 7 Упрощение",
+      "ru": "Уровень 7 Упрощение",
+      "en": "Level 7 Simplification",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 8,
@@ -145,6 +161,8 @@
     {
       "levelCode": "ege_logarithm__Level_08_Compute",
       "name": "Уровень 8 Вычисление",
+      "ru": "Уровень 8 Вычисление",
+      "en": "Level 8 Calculation",
       "difficulty": 7.0,
       "type": "algebra",
       "stepsNum": 13,
@@ -166,6 +184,8 @@
     {
       "levelCode": "ege_logarithm__Level_09_Compute",
       "name": "Уровень 9 Вычисление",
+      "ru": "Уровень 9 Вычисление",
+      "en": "Level 9 Calculation",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 8,
@@ -185,6 +205,8 @@
     {
       "levelCode": "ege_logarithm__Level_10_Compute",
       "name": "Уровень 10 Вычисление",
+      "ru": "Уровень 10 Вычисление",
+      "en": "Level 10 Calculation",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 7,

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.Storage
 
 class TutorialLevelsActivity: AppCompatActivity() {
     private val TAG = "TutorialLevelsActivity"
@@ -25,6 +26,7 @@ class TutorialLevelsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.tutorial_activity_levels)
         pointer = findViewById(R.id.pointer_level)
         dialog = TutorialScene.shared.createTutorialDialog(this)

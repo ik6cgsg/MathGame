@@ -1,5 +1,6 @@
 package mathhelper.games.matify.common
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.CountDownTimer
@@ -57,7 +58,7 @@ class MathUpTimer(val interval: Long) {
     private val TAG = "MathUpTimer"
     private lateinit var timer: Timer
 
-    fun start() {
+    fun start(context: Context) {
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
@@ -71,7 +72,7 @@ class MathUpTimer(val interval: Long) {
                 } else {
                     PlayScene.shared.stepsCount
                 }
-                val award = LevelScene.shared.currentLevel!!.getAward(PlayScene.shared.currentTime, steps)
+                val award = LevelScene.shared.currentLevel!!.getAward(context, PlayScene.shared.currentTime, steps)
                 text.setSpan(ForegroundColorSpan(award.color), start.length,
                     text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
                 val activity = PlayScene.shared.playActivity!!

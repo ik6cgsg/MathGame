@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.tutorial.TutorialPlayActivity
 import mathhelper.games.matify.common.RuleMathView
+import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.level.Type
@@ -339,7 +341,9 @@ class TutorialScene {
     }
 
     fun createTutorialDialog(context: Context): AlertDialog {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(context))
+        )
         builder
             .setTitle("")
             .setMessage(R.string.got_it)
@@ -376,7 +380,9 @@ class TutorialScene {
 
     fun createLeaveDialog(context: Context): AlertDialog {
         Log.d(TAG, "createLeaveDialog")
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(context))
+            )
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.wanna_leave)

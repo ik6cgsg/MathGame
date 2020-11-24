@@ -48,6 +48,7 @@
     <string name="search_for_a_game">Search for a game!</string>
     <string name="edit_account">✏ Edit account</string>
     <string name="change_theme">🌗 Change theme</string>
+    <string name="change_theme_to">Change theme to</string>
     <string name="change_password">🔑 Change password</string>
     <string name="change_language">🌍 Change language</string>
     <string name="change_language_to">Change language to</string>

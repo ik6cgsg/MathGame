@@ -33,6 +33,7 @@ class SignUpActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.activity_sign_up)
         loginView = findViewById(R.id.login)
         passwordView = findViewById(R.id.password)

@@ -15,12 +15,10 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import mathhelper.games.matify.level.Award
-import mathhelper.games.matify.common.GlobalMathView
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.common.Constants
+import mathhelper.games.matify.common.*
 import java.lang.Exception
 import kotlin.math.max
 import kotlin.math.min
@@ -37,7 +35,6 @@ class PlayActivity: AppCompatActivity() {
     private lateinit var backDialog: AlertDialog
     private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
-    private lateinit var sharedPrefs: SharedPreferences
 
     lateinit var globalMathView: GlobalMathView
     lateinit var endExpressionView: TextView
@@ -47,18 +44,6 @@ class PlayActivity: AppCompatActivity() {
     lateinit var rulesScrollView: ScrollView
     lateinit var noRules: TextView
     lateinit var timerView: TextView
-
-    private fun setTheme() {
-        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        if (sharedPrefs.contains("Theme")) {
-            if ("black" == sharedPrefs.getString("Theme", ""))
-                setTheme(R.style.AppTheme)
-            else
-                setTheme(R.style.AppLightTheme)
-        }
-        else
-            setTheme(R.style.AppTheme)
-    }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
@@ -96,7 +81,7 @@ class PlayActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme()
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.activity_play)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
@@ -138,7 +123,7 @@ class PlayActivity: AppCompatActivity() {
         endExpressionView.text = ""
         progress.visibility = View.VISIBLE
         try {
-            PlayScene.shared.loadLevel(continueGame, resources.configuration.locale.language)
+            PlayScene.shared.loadLevel(this, continueGame, resources.configuration.locale.language)
         } catch (e: Exception) {
             Log.e(TAG, "Error while level loading")
             Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
@@ -156,7 +141,7 @@ class PlayActivity: AppCompatActivity() {
     fun restart(v: View?) {
         if (!loading) {
             scale = 1f
-            PlayScene.shared.restart(resources.configuration.locale.language)
+            PlayScene.shared.restart(this, resources.configuration.locale.language)
         }
     }
 
@@ -175,7 +160,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun returnToMenu(save: Boolean) {
-        PlayScene.shared.menu(save)
+        PlayScene.shared.menu(this, save)
         finish()
     }
 
@@ -205,16 +190,8 @@ class PlayActivity: AppCompatActivity() {
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
         val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $award")
 
-        var spanColor: Int
-        sharedPrefs = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        if (sharedPrefs.contains("Theme")) {
-            if ("black" == sharedPrefs.getString("Theme", ""))
-                spanColor = Constants.primaryColorDarkTheme
-            else
-                spanColor = Constants.primaryColorLightTheme
-        }
-        else
-            spanColor = Constants.primaryColorDarkTheme
+        val themeName = Storage.shared.theme(this)
+        val spanColor = ThemeController.shared.getColorByTheme(themeName, ColorName.PRIMARY_COLOR)
 
         spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -231,18 +208,20 @@ class PlayActivity: AppCompatActivity() {
 
     private fun createWinDialog(): AlertDialog {
         Log.d(TAG, "createWinDialog")
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle(R.string.congratulations)
             .setMessage("")
             .setPositiveButton(R.string.next) { dialog: DialogInterface, id: Int -> }
             .setNeutralButton(R.string.menu) { dialog: DialogInterface, id: Int ->
-                PlayScene.shared.menu(false)
+                PlayScene.shared.menu(this,false)
                 finish()
             }
             .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
                 scale = 1f
-                PlayScene.shared.restart(resources.configuration.locale.language)
+                PlayScene.shared.restart(this, resources.configuration.locale.language)
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -262,7 +241,9 @@ class PlayActivity: AppCompatActivity() {
 
     private fun createLooseDialog(): AlertDialog {
         Log.d(TAG, "createLooseDialog")
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle(R.string.time_out)
             .setPositiveButton(R.string.restart) { dialog: DialogInterface, id: Int ->
@@ -277,7 +258,9 @@ class PlayActivity: AppCompatActivity() {
 
     private fun createBackDialog(): AlertDialog {
         Log.d(TAG, "createBackDialog")
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.save_your_current_state)
@@ -294,7 +277,9 @@ class PlayActivity: AppCompatActivity() {
 
     private fun createContinueDialog(): AlertDialog {
         Log.d(TAG, "createContinueDialog")
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle(R.string.welkome_back)
             .setMessage(R.string.continue_from_where_you_stopped)

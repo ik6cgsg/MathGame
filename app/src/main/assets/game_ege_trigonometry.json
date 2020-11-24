@@ -9,6 +9,8 @@
     {
       "levelCode": "ege_trigonometry__Hello_World_Level",
       "name": "Начнем с простого",
+      "ru": "Начнем с простого",
+      "en": "Let's start simple",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -24,6 +26,8 @@
     {
       "levelCode": "ege_trigonometry__Level_01_Compute",
       "name": "Уровень 1 Вычисление",
+      "ru": "Уровень 1 Вычисление",
+      "en": "Level 1 Calculation",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -41,6 +45,8 @@
     {
       "levelCode": "ege_trigonometry__Level_02_Compute",
       "name": "Уровень 2 Вычисление",
+      "ru": "Уровень 2 Вычисление",
+      "en": "Level 2 Calculation",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -56,6 +62,8 @@
     {
       "levelCode": "ege_trigonometry__Level_03_Compute",
       "name": "Уровень 3 Упрощение",
+      "ru": "Уровень 3 Упрощение",
+      "en": "Level 3 Simplification",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 11,
@@ -73,6 +81,8 @@
     {
       "levelCode": "ege_trigonometry__Level_04_Compute",
       "name": "Уровень 4 Вычисление",
+      "ru": "Уровень 4 Вычисление",
+      "en": "Level 4 Calculation",
       "difficulty": 7.0,
       "type": "algebra",
       "stepsNum": 41,
@@ -95,6 +105,8 @@
     {
       "levelCode": "ege_trigonometry__Level_05_Compute",
       "name": "Уровень 5 Упрощение",
+      "ru": "Уровень 5 Упрощение",
+      "en": "Level 5 Simplification",
       "difficulty": 8.0,
       "type": "algebra",
       "stepsNum": 41,
@@ -116,6 +128,8 @@
     {
       "levelCode": "ege_trigonometry__Level_06_Compute",
       "name": "Уровень 6 Вычисление",
+      "ru": "Уровень 6 Вычисление",
+      "en": "Level 6 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 8,
@@ -136,6 +150,8 @@
     {
       "levelCode": "ege_trigonometry__Level_07_Simplify",
       "name": "Уровень 7 Упрощение",
+      "ru": "Уровень 7 Упрощение",
+      "en": "Level 7 Simplification",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -150,6 +166,8 @@
     {
       "levelCode": "ege_trigonometry__Level_08_Compute",
       "name": "Уровень 8 Вычисление",
+      "ru": "Уровень 8 Вычисление",
+      "en": "Level 8 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 13,
@@ -177,6 +195,8 @@
     {
       "levelCode": "ege_trigonometry__Level_09_Prove",
       "name": "Уровень 9 Доказательство",
+      "ru": "Уровень 9 Доказательство",
+      "en": "Level 9 Proof",
       "difficulty": 9.0,
       "type": "algebra",
       "stepsNum": 66,
@@ -191,6 +211,8 @@
     {
       "levelCode": "ege_trigonometry__Level_10_Prove",
       "name": "Уровень 10 Доказательство",
+      "ru": "Уровень 10 Доказательство",
+      "en": "Level 10 Proof",
       "difficulty": 10.0,
       "type": "algebra",
       "stepsNum": 66,

@@ -9,6 +9,8 @@
     {
       "levelCode": "ege_various_B9_2_01",
       "name": "Уровень 1",
+      "ru": "Уровень 1",
+      "en": "Level 1",
       "difficulty": 2.0,
       "type": "trigonometry",
       "stepsNum": 8,
@@ -26,6 +28,8 @@
     {
       "levelCode": "ege_various_B9_2_02",
       "name": "Уровень 2",
+      "ru": "Уровень 2",
+      "en": "Level 2",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 6,
@@ -41,6 +45,8 @@
     {
       "levelCode": "ege_various_B9_2_03",
       "name": "Уровень 3",
+      "ru": "Уровень 3",
+      "en": "Level 3",
       "difficulty": 2.0,
       "type": "trigonometry",
       "stepsNum": 6,
@@ -56,6 +62,8 @@
     {
       "levelCode": "ege_various_B9_2_04",
       "name": "Уровень 4",
+      "ru": "Уровень 4",
+      "en": "Level 4",
       "difficulty": 5.0,
       "type": "trigonometry",
       "stepsNum": 17,
@@ -76,6 +84,8 @@
     {
       "levelCode": "test_05",
       "name": "Уровень 5",
+      "ru": "Уровень 5",
+      "en": "Level 5",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 13,
@@ -92,6 +102,8 @@
     {
       "levelCode": "ege_various_B9_2_06",
       "name": "Уровень 6",
+      "ru": "Уровень 6",
+      "en": "Level 6",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 19,
@@ -112,6 +124,8 @@
     {
       "levelCode": "ege_various_B9_2_07",
       "name": "Уровень 7",
+      "ru": "Уровень 7",
+      "en": "Level 7",
       "difficulty": 3.0,
       "type": "trigonometry",
       "stepsNum": 16,
@@ -128,6 +142,8 @@
     {
       "levelCode": "ege_various_B9_2_08",
       "name": "Уровень 8",
+      "ru": "Уровень 8",
+      "en": "Level 8",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 14,
@@ -144,6 +160,8 @@
     {
       "levelCode": "ege_various_B9_2_09",
       "name": "Уровень 9",
+      "ru": "Уровень 9",
+      "en": "Level 9",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 12,
@@ -160,6 +178,8 @@
     {
       "levelCode": "ege_various_B9_2_10",
       "name": "Уровень 10",
+      "ru": "Уровень 10",
+      "en": "Level 10",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 10,

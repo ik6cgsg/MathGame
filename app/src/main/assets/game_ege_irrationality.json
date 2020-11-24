@@ -9,6 +9,8 @@
     {
       "levelCode": "ege_irrationality__Hello_World_Level",
       "name": "Начнем с простого",
+      "ru": "Начнем с простого",
+      "en": "Let's start simple",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -23,6 +25,8 @@
     {
       "levelCode": "ege_irrationality__Level_01_Compute",
       "name": "Уровень 1 Вычисление",
+      "ru": "Уровень 1 Вычисление",
+      "en": "Level 1 Calculation",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 4,
@@ -37,6 +41,8 @@
     {
       "levelCode": "ege_irrationality__Level_02_Compute",
       "name": "Уровень 2 Вычисление",
+      "ru": "Уровень 2 Вычисление",
+      "en": "Level 2 Calculation",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 6,
@@ -51,6 +57,8 @@
     {
       "levelCode": "ege_irrationality__Level_03_Compute",
       "name": "Уровень 3 Вычисление",
+      "ru": "Уровень 3 Вычисление",
+      "en": "Level 3 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 14,
@@ -74,6 +82,8 @@
     {
       "levelCode": "ege_irrationality__Level_04_Compute",
       "name": "Уровень 4 Упрощение",
+      "ru": "Уровень 4 Упрощение",
+      "en": "Level 4 Simplification",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 9,
@@ -90,6 +100,8 @@
     {
       "levelCode": "ege_irrationality__Level_05_Compute",
       "name": "Уровень 5 Упрощение",
+      "ru": "Уровень 5 Упрощение",
+      "en": "Level 5 Simplification",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 6,
@@ -104,6 +116,8 @@
     {
       "levelCode": "ege_irrationality__Level_06_Compute",
       "name": "Уровень 6 Вычисление",
+      "ru": "Уровень 6 Вычисление",
+      "en": "Level 6 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 16,
@@ -118,6 +132,8 @@
     {
       "levelCode": "ege_irrationality__Level_07_Compute",
       "name": "Уровень 7 Вычисление",
+      "ru": "Уровень 7 Вычисление",
+      "en": "Level 7 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 11,
@@ -138,6 +154,8 @@
     {
       "levelCode": "ege_irrationality__Level_08_Compute",
       "name": "Уровень 8 Вычисление",
+      "ru": "Уровень 8 Вычисление",
+      "en": "Level 8 Calculation",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 22,
@@ -155,6 +173,8 @@
     {
       "levelCode": "ege_irrationality__Level_09_Compute",
       "name": "Уровень 9 Вычисление",
+      "ru": "Уровень 9 Вычисление",
+      "en": "Level 9 Calculation",
       "difficulty": 7.0,
       "type": "algebra",
       "stepsNum": 30,
@@ -172,6 +192,8 @@
     {
       "levelCode": "ege_irrationality__Level_10_Compute",
       "name": "Уровень 10 Упрощение",
+      "ru": "Уровень 10 Упрощение",
+      "en": "Level 10 Simplification",
       "difficulty": 7.0,
       "type": "algebra",
       "stepsNum": 12,

@@ -9,6 +9,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_01_Prove",
       "name": "Level 1 Prove",
+      "ru": "Уровень 1 Доказательство",
+      "en": "Level 1 Prove",
       "difficulty": 1.0,
       "type": "set",
       "stepsNum": 2,
@@ -22,6 +24,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_02_CNF",
       "name": "Level 2 CNF",
+      "ru": "Уровень 2 CNF",
+      "en": "Level 2 CNF",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 3,
@@ -37,6 +41,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_03_Prove",
       "name": "Level 3 Prove",
+      "ru": "Уровень 3 Доказательство",
+      "en": "Level 3 Prove",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 4,
@@ -50,6 +56,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_04_Prove",
       "name": "Level 4 Prove",
+      "ru": "Уровень 4 Доказательство",
+      "en": "Level 4 Prove",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 4,
@@ -64,6 +72,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_05_DNF",
       "name": "Level 5 DNF",
+      "ru": "Уровень 5 DNF",
+      "en": "Level 5 DNF",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 4,
@@ -79,6 +89,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_06_3-CNF",
       "name": "Level 6 3-CNF",
+      "ru": "Уровень 6 3-CNF",
+      "en": "Level 6 3-CNF",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 4,
@@ -94,6 +106,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_07_2-CNF",
       "name": "Level 7 2-CNF",
+      "ru": "Уровень 7 2-CNF",
+      "en": "Level 7 2-CNF",
       "difficulty": 2.0,
       "type": "set",
       "stepsNum": 7,
@@ -109,6 +123,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_08_Prove",
       "name": "Level 8 Prove",
+      "ru": "Уровень 8 Доказательство",
+      "en": "Level 8 Prove",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 7,
@@ -123,6 +139,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_09_Resolution",
       "name": "Level 9 Resolution",
+      "ru": "Уровень 9 Резолюция",
+      "en": "Level 9 Resolution",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 6,
@@ -137,6 +155,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_10_DNF",
       "name": "Level 10 DNF",
+      "ru": "Уровень 10 DNF",
+      "en": "Level 10 DNF",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 5,
@@ -154,6 +174,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_11_Prove",
       "name": "Level 11 Prove",
+      "ru": "Уровень 11 Доказательство",
+      "en": "Level 11 Prove",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 6,
@@ -170,6 +192,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_12_Prove",
       "name": "Level 12 Prove",
+      "ru": "Уровень 12 Доказательство",
+      "en": "Level 12 Prove",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 8,
@@ -186,6 +210,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_13_DNF",
       "name": "Level 13 DNF",
+      "ru": "Уровень 13 DNF",
+      "en": "Level 13 DNF",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 10,
@@ -203,6 +229,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_14_DNF",
       "name": "Level 14 DNF",
+      "ru": "Уровень 14 DNF",
+      "en": "Level 14 DNF",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 9,
@@ -220,6 +248,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_15_Prove",
       "name": "Level 15 Prove",
+      "ru": "Уровень 15 Доказательство",
+      "en": "Level 15 Prove",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 13,
@@ -236,6 +266,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_16_Prove",
       "name": "Level 16 Prove",
+      "ru": "Уровень 16 Доказательство",
+      "en": "Level 16 Prove",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 22,
@@ -252,6 +284,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_17_Prove",
       "name": "Level 17 Prove",
+      "ru": "Уровень 17 Доказательство",
+      "en": "Level 17 Prove",
       "difficulty": 4.0,
       "type": "set",
       "stepsNum": 10,
@@ -268,6 +302,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_18_DNF",
       "name": "Level 18 DNF",
+      "ru": "Уровень 18 DNF",
+      "en": "Level 18 DNF",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 22,
@@ -285,6 +321,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_19_Resolution",
       "name": "Level 19 Resolution",
+      "ru": "Уровень 19 Резолюция",
+      "en": "Level 19 Resolution",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 7,
@@ -299,6 +337,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_20_Resolution",
       "name": "Level 20 Resolution",
+      "ru": "Уровень 20 Резолюция",
+      "en": "Level 20 Resolution",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 9,
@@ -313,6 +353,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_21_Resolution",
       "name": "Level 21 Resolution",
+      "ru": "Уровень 21 Резолюция",
+      "en": "Level 21 Resolution",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 16,
@@ -327,6 +369,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_22_Resolution",
       "name": "Level 22 Resolution",
+      "ru": "Уровень 22 Резолюция",
+      "en": "Level 22 Resolution",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 11,
@@ -341,6 +385,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_23_DNF",
       "name": "Level 23 DNF",
+      "ru": "Уровень 23 DNF",
+      "en": "Level 23 DNF",
       "difficulty": 6.0,
       "type": "set",
       "stepsNum": 36,
@@ -358,6 +404,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_24_CNF",
       "name": "Level 24 CNF",
+      "ru": "Уровень 24 CNF",
+      "en": "Level 24 CNF",
       "difficulty": 6.0,
       "type": "set",
       "stepsNum": 27,
@@ -375,6 +423,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_25_CNF",
       "name": "Level 25 CNF",
+      "ru": "Уровень 25 CNF",
+      "en": "Level 25 CNF",
       "difficulty": 6.0,
       "type": "set",
       "stepsNum": 27,
@@ -392,6 +442,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_26_DNF",
       "name": "Level 26 DNF",
+      "ru": "Уровень 26 DNF",
+      "en": "Level 26 DNF",
       "difficulty": 6.0,
       "type": "set",
       "stepsNum": 26,
@@ -409,6 +461,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_27_CNF",
       "name": "Level 27 CNF",
+      "ru": "Уровень 27 CNF",
+      "en": "Level 27 CNF",
       "difficulty": 6.0,
       "type": "set",
       "stepsNum": 36,
@@ -426,6 +480,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_28_DNF",
       "name": "Level 28 DNF",
+      "ru": "Уровень 28 DNF",
+      "en": "Level 28 DNF",
       "difficulty": 6.0,
       "type": "set",
       "stepsNum": 36,
@@ -443,6 +499,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_29_3-DNF",
       "name": "Level 29 3-DNF",
+      "ru": "Уровень 29 3-DNF",
+      "en": "Level 29 3-DNF",
       "difficulty": 7.0,
       "type": "set",
       "stepsNum": 70,
@@ -460,6 +518,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_30_3-CNF",
       "name": "Level 30 3-CNF",
+      "ru": "Уровень 30 3-CNF",
+      "en": "Level 30 3-CNF",
       "difficulty": 7.0,
       "type": "set",
       "stepsNum": 70,
@@ -477,6 +537,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_31_3-CNF",
       "name": "Level 31 3-CNF",
+      "ru": "Уровень 31 3-CNF",
+      "en": "Level 31 3-CNF",
       "difficulty": 7.0,
       "type": "set",
       "stepsNum": 70,
@@ -494,6 +556,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_32_3-DNF",
       "name": "Level 32 3-DNF",
+      "ru": "Уровень 32 3-DNF",
+      "en": "Level 32 3-DNF",
       "difficulty": 7.0,
       "type": "set",
       "stepsNum": 70,
@@ -511,6 +575,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_33_3-CNF",
       "name": "Level 33 3-CNF",
+      "ru": "Уровень 33 3-CNF",
+      "en": "Level 33 3-CNF",
       "difficulty": 7.0,
       "type": "set",
       "stepsNum": 70,
@@ -528,6 +594,8 @@
     {
       "levelCode": "logical_calculus_combo__Level_34_3-DNF",
       "name": "Level 34 3-DNF",
+      "ru": "Уровень 34 3-DNF",
+      "en": "Level 34 3-DNF",
       "difficulty": 7.0,
       "type": "set",
       "stepsNum": 70,

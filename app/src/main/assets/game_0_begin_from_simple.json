@@ -9,6 +9,8 @@
     {
       "levelCode": "begin_from_simple__Level_00_Compute",
       "name": "Несокращенная дробь",
+      "ru": "Несокращенная дробь",
+      "en": "Uncanceled fraction",
       "difficulty": 1.0,
       "type": "algebra",
       "stepsNum": 1,
@@ -23,6 +25,8 @@
     {
       "levelCode": "begin_from_simple__Level_01_Compute",
       "name": "Невычисленный корень",
+      "ru": "Невычисленный корень",
+      "en": "Uncalculated root",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -37,6 +41,8 @@
     {
       "levelCode": "begin_from_simple__Level_02_Compute",
       "name": "Разность квадратов",
+      "ru": "Разность квадратов",
+      "en": "Difference of squares",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -51,6 +57,8 @@
     {
       "levelCode": "begin_from_simple__Level_03_Compute",
       "name": "Квадрат разности",
+      "ru": "Квадрат разности",
+      "en": "Square of difference",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 4,
@@ -65,6 +73,8 @@
     {
       "levelCode": "begin_from_simple__Level_04_Compute",
       "name": "Догадайся 1",
+      "ru": "Догадайся 1",
+      "en": "Guess 1",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -79,6 +89,8 @@
     {
       "levelCode": "begin_from_simple__Level_05_Compute",
       "name": "Догадайся 2",
+      "ru": "Догадайся 2",
+      "en": "Guess 2",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 7,
@@ -93,6 +105,8 @@
     {
       "levelCode": "begin_from_simple__Level_06_Compute",
       "name": "Cумма кубов",
+      "ru": "Сумма кубов",
+      "en": "Sum of cubes",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 6,
@@ -107,6 +121,8 @@
     {
       "levelCode": "begin_from_simple__Level_07_Compute",
       "name": "Разность кубов",
+      "ru": "Разность кубов",
+      "en": "Difference cubes",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 6,
@@ -121,6 +137,8 @@
     {
       "levelCode": "begin_from_simple__Level_08_Compute",
       "name": "Куб суммы",
+      "ru": "Куб суммы",
+      "en": "Sum cube",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 7,
@@ -135,6 +153,8 @@
     {
       "levelCode": "begin_from_simple__Level_09_Compute",
       "name": "Догадайся 3",
+      "ru": "Догадайся 3",
+      "en": "Guess 3",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 9,
@@ -149,6 +169,8 @@
     {
       "levelCode": "begin_from_simple__Level_10_Compute",
       "name": "Догадайся 4",
+      "ru": "Догадайся 4",
+      "en": "Guess 4",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 16,
@@ -163,6 +185,8 @@
     {
       "levelCode": "begin_from_simple__Level_11_Compute",
       "name": "Логарифм",
+      "ru": "Логарифм",
+      "en": "Logarithm",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -177,6 +201,8 @@
     {
       "levelCode": "begin_from_simple__Level_12_Compute",
       "name": "Разность логарифмов",
+      "ru": "Разность логарифмов",
+      "en": "Difference of logarithms",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -191,6 +217,8 @@
     {
       "levelCode": "begin_from_simple__Level_13_Compute",
       "name": "Частное логарифмов",
+      "ru": "Частное логарифмов",
+      "en": "Quotient of logarithms",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -205,6 +233,8 @@
     {
       "levelCode": "begin_from_simple__Level_14_Compute",
       "name": "Догадайся 5",
+      "ru": "Догадайся 5",
+      "en": "Guess 5",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -219,6 +249,8 @@
     {
       "levelCode": "begin_from_simple__Level_15_Compute",
       "name": "Догадайся 6",
+      "ru": "Догадайся 6",
+      "en": "Guess 6",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 5,

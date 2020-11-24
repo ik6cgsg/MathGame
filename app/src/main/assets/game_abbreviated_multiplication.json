@@ -9,6 +9,8 @@
     {
       "levelCode": "abbreviated_multiplication__Hello_World_Level",
       "name": "Начнем с простого",
+      "ru": "Начнем с простого",
+      "en": "Let's start simple",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -23,6 +25,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_01_Compute",
       "name": "Уровень 1 Упрощение",
+      "ru": "Уровень 1 Упрощение",
+      "en": "Level 1 Simplification",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 11,
@@ -38,6 +42,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_02_Compute",
       "name": "Уровень 2 Вычисление",
+      "ru": "Уровень 2 Вычисление",
+      "en": "Level 2 Calculation",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 19,
@@ -61,6 +67,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_03_Compute",
       "name": "Уровень 3 Упрощение",
+      "ru": "Уровень 3 Упрощение",
+      "en": "Level 3 Simplification",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 39,
@@ -82,6 +90,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_04_Compute",
       "name": "Уровень 4 Вычисление",
+      "ru": "Уровень 4 Вычисление",
+      "en": "Level 4 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 30,
@@ -99,6 +109,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_05_Compute",
       "name": "Уровень 5 Упрощение",
+      "ru": "Уровень 5 Упрощение",
+      "en": "Level 5 Simplification",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 10,
@@ -114,6 +126,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_06_Compute",
       "name": "Уровень 6 Упрощение",
+      "ru": "Уровень 6 Упрощение",
+      "en": "Level 6 Simplification",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 61,
@@ -134,6 +148,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_07_Compute",
       "name": "Уровень 7 Упрощение",
+      "ru": "Уровень 7 Упрощение",
+      "en": "Level 7 Simplification",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 72,
@@ -152,6 +168,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_08_Compute",
       "name": "Уровень 8 Упрощение",
+      "ru": "Уровень 8 Упрощение",
+      "en": "Level 8 Simplification",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 72,
@@ -167,6 +185,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_09_Compute",
       "name": "Уровень 9 Упрощение",
+      "ru": "Уровень 9 Упрощение",
+      "en": "Level 9 Simplification",
       "difficulty": 6.0,
       "type": "algebra",
       "stepsNum": 67,
@@ -183,6 +203,8 @@
     {
       "levelCode": "abbreviated_multiplication__Level_10_Compute",
       "name": "Уровень 10 Теорема Виета",
+      "ru": "Уровень 10 Теорема Виета",
+      "en": "Level 10 Vieta's theorem",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 4,
