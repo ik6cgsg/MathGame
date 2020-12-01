@@ -99,7 +99,7 @@ class GlobalMathView: TextView {
 //                compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
 //                compiledExpressionSimpleAdditionalTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(x)", "(^(x;1))"))
 //            }
-            // findApplicableSubstitutionsInSelectedPlace(expression, selectedNodeIds, CompiledConfiguration())
+            //findApplicableSubstitutionsInSelectedPlace(expression, selectedNodeIds, CompiledConfiguration(), withReadyApplicationResult = true)
             val substitutionPlaces = findSubstitutionPlacesInExpression(expression!!, subst)
             if (substitutionPlaces.isNotEmpty()) {
                 val substPlace = substitutionPlaces.find {
