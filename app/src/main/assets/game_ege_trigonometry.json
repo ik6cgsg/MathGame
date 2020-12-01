@@ -776,7 +776,7 @@
         {"left": "(cos(+(π;-(a))))","right": "(+(-(cos(a))))"},
         {"left": "(+(-(cos(a))))","right": "(cos(+(π;-(a))))"},
         {"left": "(-(cos(a)))","right": "(cos(+(π;-(a))))"},
-        {"left": "(sin(+(π;a)))","right": "(sin(-(a)))"},
+        {"left": "(sin(+(π;a)))","right": "(sin(+(-(a))))"},
         {"left": "(sin(+(π;-(a))))","right": "(sin(a))"},
         {"left": "(sin(a))","right": "(sin(+(π;-(a))))"},
 
