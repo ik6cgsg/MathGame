@@ -1,7 +1,7 @@
 package mathhelper.games.matify.level
 
 import android.util.Log
-import com.twf.expressiontree.ExpressionNode
+import expressiontree.ExpressionNode
 
 data class State(var expression: ExpressionNode, var depth: Int = 0)
 

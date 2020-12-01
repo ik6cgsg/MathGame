@@ -13,9 +13,10 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.Toast
 import androidx.core.text.getSpans
-import com.twf.api.*
-import com.twf.expressiontree.ExpressionNode
-import com.twf.expressiontree.ExpressionSubstitution
+import api.*
+import config.CompiledConfiguration
+import expressiontree.ExpressionNode
+import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.level.Type
@@ -84,6 +85,21 @@ class GlobalMathView: TextView {
         if (expression == null || currentAtom == null) {
             Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
         } else {
+
+            // selectedNodeIds = listOf()
+            // val compiledConfiguration = CompiledConfiguration() // TODO конструировать один раз на уровень и передавать всюду сконструированное значение как ниже
+//            val compiledConfiguration = CompiledConfiguration().apply {
+//                compiledExpressionTreeTransformationRules.clear() // allowed transformation rules
+//                compiledExpressionTreeTransformationRules.add(subst)
+//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(^(sin(x);2))", "(^(sin(x);2))"))
+//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(+(*(6;a);-(*(4;a));y;-(*(2;a));*(8;a)))", "(+(1;-(^(cos(x);2))))"))
+//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(+(*(6;a);-(*(4;a));a;-(*(2;a));*(8;a)))", "(*(9;a))"))
+//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(+(a;-(b);y;d;e))", "(+(e;a;-(b);y;d))"))
+//
+//                compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
+//                compiledExpressionSimpleAdditionalTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(x)", "(^(x;1))"))
+//            }
+            // findApplicableSubstitutionsInSelectedPlace(expression, selectedNodeIds, CompiledConfiguration())
             val substitutionPlaces = findSubstitutionPlacesInExpression(expression!!, subst)
             if (substitutionPlaces.isNotEmpty()) {
                 val substPlace = substitutionPlaces.find {

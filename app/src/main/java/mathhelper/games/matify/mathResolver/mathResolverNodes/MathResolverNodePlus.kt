@@ -1,7 +1,7 @@
 package mathhelper.games.matify.mathResolver.mathResolverNodes
 
-import com.twf.expressiontree.ExpressionNode
-import com.twf.expressiontree.NodeType
+import expressiontree.ExpressionNode
+import expressiontree.NodeType
 import mathhelper.games.matify.mathResolver.*
 
 class MathResolverNodePlus(

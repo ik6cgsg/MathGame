@@ -1,6 +1,6 @@
 package mathhelper.games.matify.mathResolver
 
-import com.twf.expressiontree.ExpressionNode
+import expressiontree.ExpressionNode
 
 class CustomSymbolsHandler {
     companion object {

@@ -8,8 +8,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.TextView
-import com.twf.api.expressionSubstitutionFromStructureStrings
-import com.twf.expressiontree.ExpressionSubstitution
+import api.expressionSubstitutionFromStructureStrings
+import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.level.Type

@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
-import com.twf.api.expressionToStructureString
-import com.twf.expressiontree.ExpressionNode
-import com.twf.expressiontree.ExpressionSubstitution
+import api.expressionToStructureString
+import expressiontree.ExpressionNode
+import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.BuildConfig
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene

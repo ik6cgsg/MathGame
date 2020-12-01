@@ -7,7 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.text.getSpans
-import com.twf.expressiontree.ExpressionNode
+import expressiontree.ExpressionNode
 
 class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStringBuilder) {
     private fun insideBox(x: Int, y: Int, lt: Point, rb: Point): Boolean {

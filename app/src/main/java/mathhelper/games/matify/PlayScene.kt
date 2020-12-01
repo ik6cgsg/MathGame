@@ -7,9 +7,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.twf.api.expressionToStructureString
-import com.twf.expressiontree.ExpressionSubstitution
-import com.twf.expressiontree.SimpleComputationRuleParams
+import api.expressionToStructureString
+import expressiontree.ExpressionSubstitution
+import expressiontree.SimpleComputationRuleParams
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.MathDownTimer
 import mathhelper.games.matify.common.MathUpTimer

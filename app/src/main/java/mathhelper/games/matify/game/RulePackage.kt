@@ -1,10 +1,10 @@
 package mathhelper.games.matify.game
 
 import android.util.Log
-import com.twf.api.expressionSubstitutionFromStructureStrings
-import com.twf.api.findSubstitutionPlacesInExpression
-import com.twf.expressiontree.ExpressionNode
-import com.twf.expressiontree.ExpressionSubstitution
+import api.expressionSubstitutionFromStructureStrings
+import api.findSubstitutionPlacesInExpression
+import expressiontree.ExpressionNode
+import expressiontree.ExpressionSubstitution
 import org.json.JSONObject
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.level.Type.*
