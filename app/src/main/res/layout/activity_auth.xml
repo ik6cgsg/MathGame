@@ -247,7 +247,7 @@
                 android:nextFocusDown="@id/passwordText"
                 android:singleLine="true"
                 android:textColor="?attr/textColor"
-                android:textColorHint="?attr/lightGray"
+                android:textColorHint="?attr/colorHint"
                 android:textSize="21sp"
                 android:typeface="monospace" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -258,7 +258,7 @@
             android:layout_height="wrap_content"
             android:textColorHint="@color/ic_launcher_background"
             app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/lightGray">
+            app:passwordToggleTint="?attr/colorHint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordText"

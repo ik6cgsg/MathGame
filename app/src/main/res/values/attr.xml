@@ -8,8 +8,7 @@
     <attr name="colorAccent" format="color"/>
     <attr name="textColor" format="color"/>
     <attr name="shapeBackground" format="color"/>
-    <attr name="grayDisabled" format="color"/>
-    <attr name="lightGray" format="color"/>
+    <attr name="colorHint" format="color"/>
+    <attr name="dividerColor" format="color"/>
     <attr name="backgroundColor" format="color"/>
-    <attr name="test" format="color"/>
 </resources>

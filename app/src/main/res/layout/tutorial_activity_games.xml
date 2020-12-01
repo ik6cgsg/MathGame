@@ -72,7 +72,7 @@
         android:paddingBottom="7dp"
         android:singleLine="true"
         android:textColor="?attr/textColor"
-        android:textColorHint="@color/lightGray"
+        android:textColorHint="?attr/colorHint"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

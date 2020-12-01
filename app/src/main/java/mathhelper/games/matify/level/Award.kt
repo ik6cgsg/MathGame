@@ -19,10 +19,14 @@ enum class AwardType(val str: String) {
 
 data class Award(val context: Context, val value: AwardType, val coeff: Double) {
     var color: Int = when (value) {
-        AwardType.GOLD -> Color.rgb(255, 215, 0)
-        AwardType.SILVER -> Color.rgb(145, 142, 140)
-        AwardType.BRONZE -> Color.rgb(174, 104, 66)
-        else -> ThemeController.shared.getColorByTheme(Storage.shared.theme(context), ColorName.TEXT_COLOR)
+        AwardType.GOLD ->
+            ThemeController.shared.getColorByTheme(Storage.shared.theme(context), ColorName.AWARD_TIMER_GOLD_COLOR)
+        AwardType.SILVER ->
+            ThemeController.shared.getColorByTheme(Storage.shared.theme(context), ColorName.AWARD_TIMER_SILVER_COLOR)
+        AwardType.BRONZE ->
+            ThemeController.shared.getColorByTheme(Storage.shared.theme(context), ColorName.AWARD_TIMER_BRONZE_COLOR)
+        else ->
+            ThemeController.shared.getColorByTheme(Storage.shared.theme(context), ColorName.TEXT_COLOR)
     }
 
     companion object {

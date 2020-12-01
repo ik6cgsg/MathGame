@@ -7,7 +7,10 @@ enum class ColorName(val str: String) {
     PRIMARY_COLOR("primaryColor"),
     TEXT_COLOR("textColor"),
     ON_TOUCH_BACKGROUND_COLOR("onTouchBackgroundColor"),
-    TEXT_HIGHLIGHT_COLOR("textHighlightColor")
+    TEXT_HIGHLIGHT_COLOR("textHighlightColor"),
+    AWARD_TIMER_GOLD_COLOR("awardTimerGoldColor"),
+    AWARD_TIMER_SILVER_COLOR("awardTimerSilverColor"),
+    AWARD_TIMER_BRONZE_COLOR("awardTimerBronzeColor")
 }
 
 enum class ThemeName(val resId: Int){
@@ -31,13 +34,19 @@ class ThemeController {
         ColorName.PRIMARY_COLOR to "#008577",
         ColorName.TEXT_COLOR to "#C5C5C5",
         ColorName.ON_TOUCH_BACKGROUND_COLOR to "#8B8484",
-        ColorName.TEXT_HIGHLIGHT_COLOR to "#00FFFF"
+        ColorName.TEXT_HIGHLIGHT_COLOR to "#00FFFF",
+        ColorName.AWARD_TIMER_GOLD_COLOR to "#FFD700",
+        ColorName.AWARD_TIMER_SILVER_COLOR to "#918E8C",
+        ColorName.AWARD_TIMER_BRONZE_COLOR to "#AE6842"
     )
     private val light = mapOf(
         ColorName.PRIMARY_COLOR to "#4A266A",
         ColorName.TEXT_COLOR to "#171717",
         ColorName.ON_TOUCH_BACKGROUND_COLOR to "#B9BBDF",
-        ColorName.TEXT_HIGHLIGHT_COLOR to "#6639A6"
+        ColorName.TEXT_HIGHLIGHT_COLOR to "#6639A6",
+        ColorName.AWARD_TIMER_GOLD_COLOR to "#B8860B",
+        ColorName.AWARD_TIMER_SILVER_COLOR to "#787573",
+        ColorName.AWARD_TIMER_BRONZE_COLOR to "#AE6842"
     )
 
     private val themes = mapOf(
