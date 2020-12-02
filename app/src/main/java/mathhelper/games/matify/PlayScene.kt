@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import api.expressionToStructureString
+import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import expressiontree.SimpleComputationRuleParams
 import mathhelper.games.matify.activities.PlayActivity
@@ -75,7 +76,11 @@ class PlayScene() {
         val oldSteps = stepsCount
         var levelPassed = false
         if (currentRuleView!!.subst != null) {
-            val res = activity.globalMathView.performSubstitution(currentRuleView!!.subst!!)
+            var res : ExpressionNode? = null
+            if (activity.globalMathView.flagInMultiselect)
+                res = activity.globalMathView.performSubstitutionForMultiselect(currentRuleView!!.subst!!)
+            else
+                res = activity.globalMathView.performSubstitution(currentRuleView!!.subst!!)
             if (res != null) {
                 stepsCount++
                 history.saveState(State(prev))
@@ -108,6 +113,33 @@ class PlayScene() {
             val rules = LevelScene.shared.currentLevel!!.getRulesFor(activity.globalMathView.currentAtom!!,
                 activity.globalMathView.expression!!, SimpleComputationRuleParams(true)
             )
+            if (rules != null) {
+                activity.noRules.visibility = View.GONE
+                activity.rulesScrollView.visibility = View.VISIBLE
+                redrawRules(rules)
+            } else {
+                showMessage(activity.getString(R.string.no_rules))
+                clearRules()
+                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
+            }
+        }
+        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom!!)
+    }
+
+    fun onAtomClicked() {
+        Log.d(TAG, "onAtomClicked")
+        //TODO
+//        if (GlobalScene.shared.tutorialProcessing) {
+//            TutorialScene.shared.onExpressionClicked()
+//            return
+//        }
+        val activity = playActivity!!
+        if (activity.globalMathView.currentSubatoms.isNotEmpty()) {
+            val pair = LevelScene.shared.currentLevel!!.getRulesFor(activity.globalMathView.currentSubatoms,
+                activity.globalMathView.expression!!, SimpleComputationRuleParams(true))
+            val rules = pair.first
+            activity.globalMathView.currentRulesToResult = pair.second
+
             if (rules != null) {
                 activity.noRules.visibility = View.GONE
                 activity.rulesScrollView.visibility = View.VISIBLE

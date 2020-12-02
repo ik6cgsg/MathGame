@@ -107,4 +107,18 @@ private constructor(
         }
         return res
     }
+
+    fun getAllRules(): List<ExpressionSubstitution>? {
+        var res : ArrayList<ExpressionSubstitution> = rules
+        for (pckg in children) {
+            val rulesFromPack = pckg.getAllRules()
+            if (rulesFromPack != null) {
+                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
+            }
+        }
+        if (res.isEmpty()) {
+            return null
+        }
+        return res
+    }
 }

@@ -30,6 +30,10 @@ class GlobalMathView: TextView {
         private set
     var currentAtom: ExpressionNode? = null
         private set
+    var currentSubatoms: ArrayList<ExpressionNode> = arrayListOf()
+        private set
+    var currentRulesToResult : Map<ExpressionSubstitution, ExpressionNode>? = null
+    var flagInMultiselect = false
     private var mathPair: MathResolverPair? = null
     private var type: Type = Type.OTHER
 
@@ -85,21 +89,6 @@ class GlobalMathView: TextView {
         if (expression == null || currentAtom == null) {
             Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
         } else {
-
-            // selectedNodeIds = listOf()
-            // val compiledConfiguration = CompiledConfiguration() // TODO конструировать один раз на уровень и передавать всюду сконструированное значение как ниже
-//            val compiledConfiguration = CompiledConfiguration().apply {
-//                compiledExpressionTreeTransformationRules.clear() // allowed transformation rules
-//                compiledExpressionTreeTransformationRules.add(subst)
-//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(^(sin(x);2))", "(^(sin(x);2))"))
-//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(+(*(6;a);-(*(4;a));y;-(*(2;a));*(8;a)))", "(+(1;-(^(cos(x);2))))"))
-//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(+(*(6;a);-(*(4;a));a;-(*(2;a));*(8;a)))", "(*(9;a))"))
-//                compiledExpressionTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(+(a;-(b);y;d;e))", "(+(e;a;-(b);y;d))"))
-//
-//                compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
-//                compiledExpressionSimpleAdditionalTreeTransformationRules.add(expressionSubstitutionFromStructureStrings("(x)", "(^(x;1))"))
-//            }
-            //findApplicableSubstitutionsInSelectedPlace(expression, selectedNodeIds, CompiledConfiguration(), withReadyApplicationResult = true)
             val substitutionPlaces = findSubstitutionPlacesInExpression(expression!!, subst)
             if (substitutionPlaces.isNotEmpty()) {
                 val substPlace = substitutionPlaces.find {
@@ -113,6 +102,22 @@ class GlobalMathView: TextView {
                     currentAtom = null
                 }
             }
+        }
+        return res
+    }
+
+    fun performSubstitutionForMultiselect(subst: ExpressionSubstitution): ExpressionNode? {
+        Log.d(TAG, "performSubstitution")
+        var res: ExpressionNode? = null
+        if (expression == null || currentRulesToResult == null) {
+            Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
+        } else {
+            res = currentRulesToResult!![subst]
+            expression = res!!.clone()
+            setTextFromExpression()
+            currentAtom = null
+            currentRulesToResult = null
+            currentSubatoms = arrayListOf()
         }
         return res
     }
@@ -150,7 +155,12 @@ class GlobalMathView: TextView {
             return false
         }
         if (expression != null && AndroidUtil.touchUpInsideView(this, event)) {
-            selectCurrentAtom(event)
+            if (currentAtom == null) {
+                currentSubatoms = arrayListOf()
+                selectCurrentAtom(event)
+            }
+            else
+                selectCurrentSubatom(event)
         }
         return true
     }
@@ -167,13 +177,36 @@ class GlobalMathView: TextView {
 
             val themeName = Storage.shared.theme(context)
             val atomColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_HIGHLIGHT_COLOR)
+
             val atom = mathPair!!.getColoredAtom(offset, atomColor)
             if (atom != null) {
                 if (currentAtom == null || currentAtom!!.nodeId != atom.nodeId) {
                     currentAtom = atom
                     text = mathPair!!.matrix
+                    flagInMultiselect = false
                     PlayScene.shared.onExpressionClicked()
                 }
+            }
+        }
+    }
+
+    private fun selectCurrentSubatom(event: MotionEvent) {
+        Log.d(TAG, "selectCurrentSubatom")
+        val x = event.x - textSize / 4
+        val y = event.y - textSize / 4
+        if (layout != null) {
+            val offset = getOffsetForPosition(x, y)
+
+            val themeName = Storage.shared.theme(context)
+            val atomColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_HIGHLIGHT_COLOR)
+
+            val atom = mathPair!!.getColoredSubatom(offset, currentAtom!!, Color.RED)
+            if (atom != null) {
+                if (currentSubatoms.isEmpty() || !currentSubatoms.any{it.nodeId == atom.nodeId})
+                    currentSubatoms.add(atom)
+                    text = mathPair!!.matrix
+                    flagInMultiselect = true
+                    PlayScene.shared.onAtomClicked()
             }
         }
     }

@@ -61,4 +61,39 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         }
         return resNode
     }
+
+    private fun isParentOf(parent: ExpressionNode, node: ExpressionNode): Boolean {
+        var cur : ExpressionNode? = node.parent
+        while (cur != null) {
+            if (cur.nodeId == parent.nodeId)
+                return true
+            cur = cur.parent
+        }
+        return false
+    }
+
+    fun getColoredSubatom(offset: Int, parentNode: ExpressionNode, color: Int = Color.RED): ExpressionNode? {
+        var resNode: ExpressionNode? = null
+        if (tree != null && offset % (tree.length + 1) != tree.length) {
+            val lines = offset / (tree.length + 1)
+            val correctedOffset = offset - lines
+            val y = correctedOffset / tree.length
+            val x = correctedOffset % tree.length
+            if (insideBox(x, y, tree.leftTop, tree.rightBottom)) {
+                val mathNode = getNode(tree, x, y) ?: tree
+                resNode = mathNode.origin
+                if (!isParentOf(parentNode, resNode))
+                    return null
+                for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
+                    val start = i * (tree.length + 1) + mathNode.leftTop.x
+                    val end = i * (tree.length + 1) + mathNode.rightBottom.x + 1
+                    matrix.setSpan(ForegroundColorSpan(color),
+                        start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    matrix.setSpan(StyleSpan(Typeface.BOLD),
+                        start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                }
+            }
+        }
+        return resNode
+    }
 }

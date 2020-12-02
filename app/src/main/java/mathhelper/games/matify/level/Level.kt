@@ -8,8 +8,10 @@ import org.json.JSONObject
 import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
 import api.*
+import config.CompiledConfiguration
 import expressiontree.ExpressionStructureConditionNode
 import expressiontree.SimpleComputationRuleParams
+import mathhelper.games.matify.common.GlobalMathView
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.game.PackageField
@@ -73,6 +75,7 @@ class Level {
     var time: Long = 180
     var timeMultCoeff = 1f
     var endless = true
+    private var compiledConfiguration: CompiledConfiguration? = null
 
     fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
         nameRu
@@ -156,6 +159,18 @@ class Level {
                 else -> return false
             }
         }
+
+        var allRules : ArrayList<ExpressionSubstitution> = rules
+        for (pckgName in packages) {
+            val rulesFromPack = game.rulePacks[pckgName]?.getAllRules()
+            if (rulesFromPack != null) {
+                allRules = (allRules + rulesFromPack) as ArrayList<ExpressionSubstitution>
+            }
+        }
+        compiledConfiguration = CompiledConfiguration().apply {
+            compiledExpressionTreeTransformationRules.clear()
+            compiledExpressionTreeTransformationRules.addAll(allRules)
+        }
         return true
     }
 
@@ -237,6 +252,35 @@ class Level {
         res = res.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
         res.sortByDescending { it.left.identifier.length }
         return res
+    }
+
+    fun getRulesFor(nodes: List<ExpressionNode>, expression: ExpressionNode, simpleComputationRules: SimpleComputationRuleParams):
+        Pair<List<ExpressionSubstitution>?, Map<ExpressionSubstitution, ExpressionNode>?> {
+        Log.d(TAG, "getRulesFor")
+
+        var simpleRules : ArrayList<ExpressionSubstitution> = arrayListOf()
+        for (node in nodes) {
+            val res = optGenerateSimpleComputationRule(node, simpleComputationRules)
+            simpleRules = (res + simpleRules) as ArrayList<ExpressionSubstitution>
+        }
+
+        compiledConfiguration?.apply {
+            compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
+            compiledExpressionSimpleAdditionalTreeTransformationRules.addAll(simpleRules)
+        }
+
+        val nodeIds = nodes.map{it.nodeId}
+
+        val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds, compiledConfiguration!!, withReadyApplicationResult = true)
+        if (list.isEmpty()) {
+            return Pair(null, null)
+        }
+
+        var rules = list.map { it.expressionSubstitution }
+        rules = rules.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
+        rules.sortByDescending { it.left.identifier.length }
+        val rulesToResult = list.map { it.expressionSubstitution to it.resultExpression }.toMap()
+        return Pair(rules, rulesToResult)
     }
 
     fun save(context: Context) {
