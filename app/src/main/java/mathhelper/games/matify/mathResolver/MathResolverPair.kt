@@ -31,48 +31,37 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         return resNode
     }
 
-    fun getColoredAtom(offset: Int, color: Int = Color.RED): ExpressionNode? {
-        var resNode: ExpressionNode? = null
-        if (tree != null && offset % (tree.length + 1) != tree.length) {
-            val lines = offset / (tree.length + 1)
-            val correctedOffset = offset - lines
-            val y = correctedOffset / tree.length
-            val x = correctedOffset % tree.length
-            if (insideBox(x, y, tree.leftTop, tree.rightBottom)) {
-                val mathNode = getNode(tree, x, y) ?: tree
-                resNode = mathNode.origin
-                val colorSpans = matrix.getSpans<ForegroundColorSpan>(0, matrix.length)
+    private fun findNodeByExpression(currentTree: MathResolverNodeBase?, expressionNode: ExpressionNode): MathResolverNodeBase? {
+        if (currentTree == null)
+            return null
+        if (expressionNode.nodeId == currentTree.origin.nodeId)
+            return currentTree
+        var res: MathResolverNodeBase? = null
+        for (child in currentTree.children)
+            res = findNodeByExpression(child, expressionNode)?:res
+        return res
+    }
+
+    fun deleteSpanForAtom(atom: ExpressionNode) {
+        val mathNode = findNodeByExpression(tree, atom)!!
+        if (tree != null && mathNode != null) {
+            for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
+                val start = i * (tree.length + 1) + mathNode.leftTop.x
+                val end = i * (tree.length + 1) + mathNode.rightBottom.x + 1
+
+                val colorSpans = matrix.getSpans<ForegroundColorSpan>(start, end)
                 for (cs in colorSpans) {
                     matrix.removeSpan(cs)
                 }
-                val boldSpans = matrix.getSpans<StyleSpan>(0, matrix.length)
+                val boldSpans = matrix.getSpans<StyleSpan>(start, end)
                 for (bs in boldSpans) {
                     matrix.removeSpan(bs)
                 }
-                for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
-                    val start = i * (tree.length + 1) + mathNode.leftTop.x
-                    val end = i * (tree.length + 1) + mathNode.rightBottom.x + 1
-                    matrix.setSpan(ForegroundColorSpan(color),
-                        start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                    matrix.setSpan(StyleSpan(Typeface.BOLD),
-                        start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                }
             }
         }
-        return resNode
     }
 
-    private fun isParentOf(parent: ExpressionNode, node: ExpressionNode): Boolean {
-        var cur : ExpressionNode? = node.parent
-        while (cur != null) {
-            if (cur.nodeId == parent.nodeId)
-                return true
-            cur = cur.parent
-        }
-        return false
-    }
-
-    fun getColoredSubatom(offset: Int, parentNode: ExpressionNode, color: Int = Color.RED): ExpressionNode? {
+    fun getColoredAtom(offset: Int, multiselectionMode: Boolean = false, color: Int = Color.RED): ExpressionNode? {
         var resNode: ExpressionNode? = null
         if (tree != null && offset % (tree.length + 1) != tree.length) {
             val lines = offset / (tree.length + 1)
@@ -82,8 +71,16 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
             if (insideBox(x, y, tree.leftTop, tree.rightBottom)) {
                 val mathNode = getNode(tree, x, y) ?: tree
                 resNode = mathNode.origin
-                if (!isParentOf(parentNode, resNode))
-                    return null
+                if (!multiselectionMode) {
+                    val colorSpans = matrix.getSpans<ForegroundColorSpan>(0, matrix.length)
+                    for (cs in colorSpans) {
+                        matrix.removeSpan(cs)
+                    }
+                    val boldSpans = matrix.getSpans<StyleSpan>(0, matrix.length)
+                    for (bs in boldSpans) {
+                        matrix.removeSpan(bs)
+                    }
+                }
                 for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
                     val start = i * (tree.length + 1) + mathNode.leftTop.x
                     val end = i * (tree.length + 1) + mathNode.rightBottom.x + 1

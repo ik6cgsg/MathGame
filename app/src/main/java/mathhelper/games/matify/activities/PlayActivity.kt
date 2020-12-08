@@ -1,10 +1,7 @@
 package mathhelper.games.matify.activities
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
-import android.content.SharedPreferences
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -45,6 +42,14 @@ class PlayActivity: AppCompatActivity() {
     lateinit var noRules: TextView
     lateinit var timerView: TextView
 
+    private lateinit var startStopMultiselectionMode: TextView
+    private lateinit var restart: TextView
+    private lateinit var back: TextView
+    private lateinit var info: Button
+    private lateinit var previous: TextView
+
+    private val messageTimer = MessageTimer()
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
         scaleDetector.onTouchEvent(event)
@@ -76,6 +81,39 @@ class PlayActivity: AppCompatActivity() {
         rulesScrollView = findViewById(R.id.rules_scroll_view)
         noRules = findViewById(R.id.no_rules)
         timerView = findViewById(R.id.timer_view)
+        back = findViewById(R.id.back)
+        restart = findViewById(R.id.restart)
+        previous = findViewById(R.id.previous)
+        info = findViewById(R.id.info)
+        startStopMultiselectionMode = findViewById(R.id.start_stop_multiselection_mode)
+        progress = findViewById(R.id.progress)
+    }
+
+    private fun setLongClick() {
+        startStopMultiselectionMode.setOnLongClickListener{
+            startStopMultiselectionModeLong()
+            true
+        }
+
+        back.setOnLongClickListener{
+            backLong()
+            true
+        }
+
+        previous.setOnLongClickListener{
+            previousLong()
+            true
+        }
+
+        restart.setOnLongClickListener{
+            restartLong()
+            true
+        }
+
+        info.setOnLongClickListener{
+            infoLong()
+            true
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +123,6 @@ class PlayActivity: AppCompatActivity() {
         setContentView(R.layout.activity_play)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
-        progress = findViewById(R.id.progress)
         looseDialog = createLooseDialog()
         winDialog = createWinDialog()
         backDialog = createBackDialog()
@@ -94,6 +131,7 @@ class PlayActivity: AppCompatActivity() {
         Handler().postDelayed({
             startCreatingLevelUI()
         }, 100)
+        setLongClick()
     }
 
     override fun onBackPressed() {
@@ -134,8 +172,21 @@ class PlayActivity: AppCompatActivity() {
 
     fun previous(v: View?) {
         if (!loading) {
-            PlayScene.shared.previousStep()
+            if (!globalMathView.multiselectionMode)
+                PlayScene.shared.previousStep()
+            else
+                globalMathView.deleteLastSelect()
         }
+    }
+
+    fun previousLong() {
+        if (globalMathView.multiselectionMode)
+            messageView.text = getString(R.string.previous_multiselect_info)
+        else
+            messageView.text = getString(R.string.previous_info)
+        messageView.visibility = View.VISIBLE
+        messageTimer.cancel()
+        messageTimer.start()
     }
 
     fun restart(v: View?) {
@@ -145,8 +196,41 @@ class PlayActivity: AppCompatActivity() {
         }
     }
 
+    fun restartLong() {
+        messageView.text = getString(R.string.restart_info)
+        messageView.visibility = View.VISIBLE
+        messageTimer.cancel()
+        messageTimer.start()
+    }
+
+    fun startStopMultiselectionMode(v: View?) {
+        val startStopView: TextView = findViewById(R.id.start_stop_multiselection_mode)
+        globalMathView.multiselectionMode = !globalMathView.multiselectionMode
+        if (!globalMathView.multiselectionMode)
+            startStopView.text = getText(R.string.start_multiselect)
+        else
+            startStopView.text = getText(R.string.end_multiselect)
+    }
+
+    fun startStopMultiselectionModeLong() {
+        if (globalMathView.multiselectionMode)
+            messageView.text = getString(R.string.end_multiselect_info)
+        else
+            messageView.text = getString(R.string.start_multiselect_info)
+        messageView.visibility = View.VISIBLE
+        messageTimer.cancel()
+        messageTimer.start()
+    }
+
     fun info(v: View?) {
         PlayScene.shared.info(resources.configuration.locale.language)
+    }
+
+    fun infoLong() {
+        messageView.text = getString(R.string.i_info)
+        messageView.visibility = View.VISIBLE
+        messageTimer.cancel()
+        messageTimer.start()
     }
 
     fun back(v: View?) {
@@ -157,6 +241,13 @@ class PlayActivity: AppCompatActivity() {
                 returnToMenu(false)
             }
         }
+    }
+
+    fun backLong() {
+        messageView.text = getString(R.string.back_info)
+        messageView.visibility = View.VISIBLE
+        messageTimer.cancel()
+        messageTimer.start()
     }
 
     private fun returnToMenu(save: Boolean) {

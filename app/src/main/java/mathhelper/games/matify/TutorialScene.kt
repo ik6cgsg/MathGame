@@ -26,6 +26,7 @@ import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
+import mathhelper.games.matify.statistics.Statistics
 import mathhelper.games.matify.tutorial.TutorialGamesActivity
 import mathhelper.games.matify.tutorial.TutorialLevelsActivity
 
@@ -210,7 +211,7 @@ class TutorialScene {
         Log.d(TAG, "onRuleClicked")
         val activity = tutorialPlayActivity!!
         if (ruleView.subst != null) {
-            val res = activity.globalMathView.performSubstitution(ruleView.subst!!)
+            val res = activity.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
             if (res != null) {
                 if (wantedRule) {
                     activity.ruleClickSucceeded()
@@ -226,17 +227,56 @@ class TutorialScene {
         }
     }
 
-    fun onExpressionClicked() {
-        Log.d(TAG, "onExpressionClicked")
+//    fun onExpressionClicked() {
+//        Log.d(TAG, "onExpressionClicked")
+//        if (wantedZoom) {
+//            return
+//        }
+//        val activity = tutorialPlayActivity!!
+//        if (activity.globalMathView.currentAtom != null) {
+//            val rules = tutorialLevel.getRulesFor(activity.globalMathView.currentAtom!!,
+//                activity.globalMathView.expression!!, SimpleComputationRuleParams(false)
+//            )
+//            if (rules != null) {
+//                activity.noRules.visibility = View.GONE
+//                activity.rulesScrollView.visibility = View.VISIBLE
+//                if (wantedClick) {
+//                    activity.expressionClickSucceeded()
+//                } else {
+//                    showMessage(activity.resources.getString(R.string.a_good_choice))
+//                }
+//                redrawRules(rules)
+//            } else {
+//                showMessage(activity.resources.getString(R.string.no_rules_try_another))
+//                clearRules()
+//                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
+//            }
+//        }
+//    }
+
+    fun onAtomClicked() {
+        Log.d(TAG, "onAtomClicked")
         if (wantedZoom) {
             return
         }
         val activity = tutorialPlayActivity!!
-        if (activity.globalMathView.currentAtom != null) {
-            val rules = tutorialLevel.getRulesFor(activity.globalMathView.currentAtom!!,
-                activity.globalMathView.expression!!, SimpleComputationRuleParams(false)
+        if (activity.globalMathView.currentSubatoms.isNotEmpty()) {
+            val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
+                activity.globalMathView.currentSubatoms,
+                activity.globalMathView.expression!!,
+                SimpleComputationRuleParams(true)
             )
-            if (rules != null) {
+
+            if (substitutionApplication == null) {
+                showMessage(activity.getString(R.string.no_rules_try_another))
+                clearRules()
+                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
+            } else {
+                val rules =
+                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
+                activity.globalMathView.currentRulesToResult =
+                    LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
+
                 activity.noRules.visibility = View.GONE
                 activity.rulesScrollView.visibility = View.VISIBLE
                 if (wantedClick) {
@@ -245,13 +285,10 @@ class TutorialScene {
                     showMessage(activity.resources.getString(R.string.a_good_choice))
                 }
                 redrawRules(rules)
-            } else {
-                showMessage(activity.resources.getString(R.string.no_rules_try_another))
-                clearRules()
-                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
             }
         }
     }
+
 
     fun clearRules() {
         val activity = tutorialPlayActivity!!

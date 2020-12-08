@@ -83,30 +83,30 @@ private constructor(
         }
     }
 
-    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
-        var res = rules
-            .filter {
-                val list = findSubstitutionPlacesInExpression(expression, it)
-                if (list.isEmpty()) {
-                    false
-                } else {
-                    val substPlace = list.find { sp ->
-                        sp.originalValue.nodeId == node.nodeId
-                    }
-                    substPlace != null
-                }
-            }
-        for (pckg in children) {
-            val rulesFromPack = pckg.getRulesFor(node, expression)
-            if (rulesFromPack != null) {
-                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
-            }
-        }
-        if (res.isEmpty()) {
-            return null
-        }
-        return res
-    }
+//    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
+//        var res = rules
+//            .filter {
+//                val list = findSubstitutionPlacesInExpression(expression, it)
+//                if (list.isEmpty()) {
+//                    false
+//                } else {
+//                    val substPlace = list.find { sp ->
+//                        sp.originalValue.nodeId == node.nodeId
+//                    }
+//                    substPlace != null
+//                }
+//            }
+//        for (pckg in children) {
+//            val rulesFromPack = pckg.getRulesFor(node, expression)
+//            if (rulesFromPack != null) {
+//                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
+//            }
+//        }
+//        if (res.isEmpty()) {
+//            return null
+//        }
+//        return res
+//    }
 
     fun getAllRules(): List<ExpressionSubstitution>? {
         var res : ArrayList<ExpressionSubstitution> = rules

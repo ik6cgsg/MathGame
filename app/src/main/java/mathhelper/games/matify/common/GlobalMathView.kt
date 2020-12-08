@@ -11,6 +11,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.core.text.getSpans
 import api.*
@@ -32,8 +33,8 @@ class GlobalMathView: TextView {
         private set
     var currentSubatoms: ArrayList<ExpressionNode> = arrayListOf()
         private set
+    var multiselectionMode = false
     var currentRulesToResult : Map<ExpressionSubstitution, ExpressionNode>? = null
-    var flagInMultiselect = false
     private var mathPair: MathResolverPair? = null
     private var type: Type = Type.OTHER
 
@@ -83,28 +84,6 @@ class GlobalMathView: TextView {
     }
 
     /** Scene interaction **/
-    fun performSubstitution(subst: ExpressionSubstitution): ExpressionNode? {
-        Log.d(TAG, "performSubstitution")
-        var res: ExpressionNode? = null
-        if (expression == null || currentAtom == null) {
-            Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
-        } else {
-            val substitutionPlaces = findSubstitutionPlacesInExpression(expression!!, subst)
-            if (substitutionPlaces.isNotEmpty()) {
-                val substPlace = substitutionPlaces.find {
-                    it.originalValue.nodeId == currentAtom!!.nodeId
-                }
-                if (substPlace != null) {
-                    expression = substPlace.originalExpression
-                    applySubstitution(expression!!, subst, listOf(substPlace))
-                    setTextFromExpression()
-                    res = expression!!.clone()
-                    currentAtom = null
-                }
-            }
-        }
-        return res
-    }
 
     fun performSubstitutionForMultiselect(subst: ExpressionSubstitution): ExpressionNode? {
         Log.d(TAG, "performSubstitution")
@@ -115,7 +94,7 @@ class GlobalMathView: TextView {
             res = currentRulesToResult!![subst]
             expression = res!!.clone()
             setTextFromExpression()
-            currentAtom = null
+            //currentAtom = null
             currentRulesToResult = null
             currentSubatoms = arrayListOf()
         }
@@ -135,6 +114,7 @@ class GlobalMathView: TextView {
 
     fun clearExpression() {
         currentAtom = null
+        currentSubatoms = arrayListOf()
         val newText = SpannableString(text)
         val colorSpans = newText.getSpans<ForegroundColorSpan>(0, text.length)
         for (cs in colorSpans) {
@@ -155,12 +135,7 @@ class GlobalMathView: TextView {
             return false
         }
         if (expression != null && AndroidUtil.touchUpInsideView(this, event)) {
-            if (currentAtom == null) {
-                currentSubatoms = arrayListOf()
-                selectCurrentAtom(event)
-            }
-            else
-                selectCurrentSubatom(event)
+            selectCurrentAtom(event)
         }
         return true
     }
@@ -168,6 +143,16 @@ class GlobalMathView: TextView {
     /** View OVERRIDES **/
 
     /** UTILS **/
+    private fun isParentOf(parent: ExpressionNode, node: ExpressionNode): Boolean {
+        var cur : ExpressionNode? = node.parent
+        while (cur != null) {
+            if (cur.nodeId == parent.nodeId)
+                return true
+            cur = cur.parent
+        }
+        return false
+    }
+
     private fun selectCurrentAtom(event: MotionEvent) {
         Log.d(TAG, "selectCurrentAtom")
         val x = event.x - textSize / 4
@@ -178,37 +163,27 @@ class GlobalMathView: TextView {
             val themeName = Storage.shared.theme(context)
             val atomColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_HIGHLIGHT_COLOR)
 
-            val atom = mathPair!!.getColoredAtom(offset, atomColor)
+            val atom = mathPair!!.getColoredAtom(offset, multiselectionMode, atomColor)
             if (atom != null) {
-                if (currentAtom == null || currentAtom!!.nodeId != atom.nodeId) {
-                    currentAtom = atom
-                    text = mathPair!!.matrix
-                    flagInMultiselect = false
-                    PlayScene.shared.onExpressionClicked()
+                if (currentSubatoms.any{isParentOf(it, atom)})
+                    return
+                if (currentSubatoms.isEmpty() || !currentSubatoms.any{it.nodeId == atom.nodeId}) {
+                    if (!multiselectionMode)
+                        currentSubatoms.clear()
+                    currentSubatoms.add(atom)
                 }
+                text = mathPair!!.matrix
+                PlayScene.shared.onAtomClicked()
             }
         }
     }
 
-    private fun selectCurrentSubatom(event: MotionEvent) {
-        Log.d(TAG, "selectCurrentSubatom")
-        val x = event.x - textSize / 4
-        val y = event.y - textSize / 4
-        if (layout != null) {
-            val offset = getOffsetForPosition(x, y)
-
-            val themeName = Storage.shared.theme(context)
-            val atomColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_HIGHLIGHT_COLOR)
-
-            val atom = mathPair!!.getColoredSubatom(offset, currentAtom!!, Color.RED)
-            if (atom != null) {
-                if (currentSubatoms.isEmpty() || !currentSubatoms.any{it.nodeId == atom.nodeId})
-                    currentSubatoms.add(atom)
-                    text = mathPair!!.matrix
-                    flagInMultiselect = true
-                    PlayScene.shared.onAtomClicked()
-            }
-        }
+    fun deleteLastSelect() {
+        val atom = currentSubatoms.last()
+        currentSubatoms.remove(atom)
+        mathPair!!.deleteSpanForAtom(atom)
+        text = mathPair!!.matrix
+        PlayScene.shared.onAtomClicked()
     }
 
     private fun setTextFromExpression() {

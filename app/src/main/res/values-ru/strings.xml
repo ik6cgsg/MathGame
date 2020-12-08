@@ -77,6 +77,15 @@
     <string name="wanna_say_something">Обратная связь</string>
     <string name="tell_about_your_problem">Описание проблемы</string>
     <string name="i">i</string>
+    <string name="start_multiselect">▶️</string>
+    <string name="end_multiselect">⏹</string>
+    <string name="start_multiselect_info">Войти в режим мультивыбора</string>
+    <string name="end_multiselect_info">Выйти из режима мультивыбора</string>
+    <string name="previous_info">Предыдущий шаг</string>
+    <string name="previous_multiselect_info">Отмена последнего выделения</string>
+    <string name="restart_info">Начать сначала</string>
+    <string name="i_info">Информация об уровне</string>
+    <string name="back_info">Вернуться к списку уровней</string>
     <string name="save_your_current_state">Сохранить текущее состояние?</string>
     <string name="welkome_back">С возвращением!</string>
     <string name="continue_from_where_you_stopped">Продолжить с сохраненного состояния?</string>

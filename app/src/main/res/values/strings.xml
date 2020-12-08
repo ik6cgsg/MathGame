@@ -77,6 +77,15 @@
     <string name="wanna_say_something">Wanna say something?</string>
     <string name="tell_about_your_problem">Tell about your problem</string>
     <string name="i">i</string>
+    <string name="start_multiselect">▶️</string>
+    <string name="end_multiselect">⏹</string>
+    <string name="start_multiselect_info">Start the multiselection mode</string>
+    <string name="end_multiselect_info">Exit from the multiselection mode</string>
+    <string name="previous_info">Previous step</string>
+    <string name="previous_multiselect_info">Cancel the last selection</string>
+    <string name="restart_info">Restart</string>
+    <string name="i_info">About level</string>
+    <string name="back_info">Back to levels</string>
     <string name="save_your_current_state">Save your current state?</string>
     <string name="welkome_back">Welcome back!</string>
     <string name="continue_from_where_you_stopped">Continue from where you stopped?</string>

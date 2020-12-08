@@ -47,7 +47,6 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
         movementMethod = ScrollingMovementMethod()
         val themeName = Storage.shared.theme(context)
         setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
-        //setTextColor(Color.LTGRAY)
         typeface = Typeface.MONOSPACE
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(

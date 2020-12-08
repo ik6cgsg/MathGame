@@ -130,9 +130,9 @@
 
     <LinearLayout
         android:id="@+id/background"
-        android:background="?attr/shapeBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/shapeBackground"
         android:weightSum="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_weight="0.1"
+            android:layout_weight="0.12"
             android:onClick="back"
             android:text="@string/back"
             android:textAlignment="viewStart"
@@ -159,7 +159,7 @@
             android:id="@+id/info"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.12"
             android:background="@android:color/transparent"
             android:onClick="info"
             android:text="@string/i"
@@ -169,23 +169,22 @@
             android:textSize="25sp"
             android:textStyle="bold|italic"
             android:typeface="monospace"
-            app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Space
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_weight="0.15">
-        </Space>
+            android:layout_height="wrap_content"
+            android:layout_weight="0.11"></Space>
 
         <TextView
             android:id="@+id/timer_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:textColor="?attr/textColor"
             android:textAlignment="center"
+            android:textColor="?attr/textColor"
             android:textSize="20sp"
             android:typeface="monospace"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -194,16 +193,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Space
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_weight="0.15">
-        </Space>
+            android:layout_height="wrap_content"
+            android:layout_weight="0.11"></Space>
 
         <TextView
             android:id="@+id/restart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.08"
             android:onClick="restart"
             android:text="@string/restart"
             android:textAlignment="viewEnd"
@@ -219,10 +217,27 @@
             android:id="@+id/previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="0.1"
+            android:layout_weight="0.08"
             android:onClick="previous"
             android:text="@string/previous"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/light_click"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/start_stop_multiselection_mode"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/start_stop_multiselection_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0.08"
+            android:onClick="startStopMultiselectionMode"
+            android:longClickable="true"
+            android:text="@string/start_multiselect"
             android:textAlignment="viewEnd"
             android:textColor="@color/light_click"
             android:textSize="30sp"

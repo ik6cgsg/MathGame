@@ -72,22 +72,19 @@ class PlayScene() {
         }
         val activity = playActivity!!
         val prev = activity.globalMathView.expression!!.clone()
-        val place = activity.globalMathView.currentAtom!!.clone()
+        //val place = activity.globalMathView.currentAtom!!.clone()
         val oldSteps = stepsCount
         var levelPassed = false
         if (currentRuleView!!.subst != null) {
-            var res : ExpressionNode? = null
-            if (activity.globalMathView.flagInMultiselect)
-                res = activity.globalMathView.performSubstitutionForMultiselect(currentRuleView!!.subst!!)
-            else
-                res = activity.globalMathView.performSubstitution(currentRuleView!!.subst!!)
+            val res = activity.globalMathView.performSubstitutionForMultiselect(currentRuleView!!.subst!!)
             if (res != null) {
                 stepsCount++
                 history.saveState(State(prev))
                 if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
                     levelPassed = true
-                    Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
-                        currentRuleView!!.subst, place)
+                    //TODO
+                    //Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
+                    //    currentRuleView!!.subst, place)
                     onWin(context)
                 }
                 clearRules()
@@ -96,61 +93,44 @@ class PlayScene() {
             }
 
         }
-        if (!levelPassed) {
-            Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
-                currentRuleView!!.subst, place)
-        }
-    }
-
-    fun onExpressionClicked() {
-        Log.d(TAG, "onExpressionClicked")
-        if (GlobalScene.shared.tutorialProcessing) {
-            TutorialScene.shared.onExpressionClicked()
-            return
-        }
-        val activity = playActivity!!
-        if (activity.globalMathView.currentAtom != null) {
-            val rules = LevelScene.shared.currentLevel!!.getRulesFor(activity.globalMathView.currentAtom!!,
-                activity.globalMathView.expression!!, SimpleComputationRuleParams(true)
-            )
-            if (rules != null) {
-                activity.noRules.visibility = View.GONE
-                activity.rulesScrollView.visibility = View.VISIBLE
-                redrawRules(rules)
-            } else {
-                showMessage(activity.getString(R.string.no_rules))
-                clearRules()
-                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
-            }
-        }
-        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom!!)
+        //TODO
+//        if (!levelPassed) {
+//            Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
+//                currentRuleView!!.subst, place)
+//        }
     }
 
     fun onAtomClicked() {
         Log.d(TAG, "onAtomClicked")
-        //TODO
-//        if (GlobalScene.shared.tutorialProcessing) {
-//            TutorialScene.shared.onExpressionClicked()
-//            return
-//        }
+        if (GlobalScene.shared.tutorialProcessing) {
+            TutorialScene.shared.onAtomClicked()
+            return
+        }
         val activity = playActivity!!
         if (activity.globalMathView.currentSubatoms.isNotEmpty()) {
-            val pair = LevelScene.shared.currentLevel!!.getRulesFor(activity.globalMathView.currentSubatoms,
-                activity.globalMathView.expression!!, SimpleComputationRuleParams(true))
-            val rules = pair.first
-            activity.globalMathView.currentRulesToResult = pair.second
+            val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
+                activity.globalMathView.currentSubatoms,
+                activity.globalMathView.expression!!,
+                SimpleComputationRuleParams(true)
+            )
 
-            if (rules != null) {
-                activity.noRules.visibility = View.GONE
-                activity.rulesScrollView.visibility = View.VISIBLE
-                redrawRules(rules)
-            } else {
+            if (substitutionApplication == null) {
                 showMessage(activity.getString(R.string.no_rules))
                 clearRules()
                 activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
+            } else {
+                val rules =
+                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
+                activity.globalMathView.currentRulesToResult =
+                    LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
+
+                activity.noRules.visibility = View.GONE
+                activity.rulesScrollView.visibility = View.VISIBLE
+                redrawRules(rules)
             }
         }
-        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom!!)
+        //TODO
+        //Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom!!)
     }
 
     fun loadLevel(context: Context, continueGame: Boolean, languageCode: String): Boolean {
