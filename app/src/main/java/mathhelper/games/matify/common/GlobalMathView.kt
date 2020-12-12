@@ -1,21 +1,19 @@
 package mathhelper.games.matify.common
 
 import android.content.Context
-import android.graphics.Color
-import android.util.AttributeSet
-import android.widget.TextView
-import android.view.MotionEvent
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.AttributeSet
 import android.util.Log
-import android.view.KeyEvent
+import android.view.MotionEvent
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.TypedArrayUtils.getText
 import androidx.core.text.getSpans
-import api.*
-import config.CompiledConfiguration
+import api.structureStringToExpression
 import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
@@ -29,9 +27,7 @@ class GlobalMathView: TextView {
     private val TAG = "GlobalMathView"
     var expression: ExpressionNode? = null
         private set
-    var currentAtom: ExpressionNode? = null
-        private set
-    var currentSubatoms: ArrayList<ExpressionNode> = arrayListOf()
+    var currentAtoms: ArrayList<ExpressionNode> = arrayListOf()
         private set
     var multiselectionMode = false
     var currentRulesToResult : Map<ExpressionSubstitution, ExpressionNode>? = null
@@ -67,7 +63,7 @@ class GlobalMathView: TextView {
         if (expressionStr.isNotEmpty()) {
             expression = structureStringToExpression(expressionStr)
             textSize = Constants.centralExpressionDefaultSize
-            currentAtom = null
+            currentAtoms = arrayListOf()
             setTextFromExpression()
         }
     }
@@ -79,7 +75,7 @@ class GlobalMathView: TextView {
         if (resetSize) {
             textSize = Constants.centralExpressionDefaultSize
         }
-        currentAtom = null
+        currentAtoms = arrayListOf()
         setTextFromExpression()
     }
 
@@ -94,9 +90,8 @@ class GlobalMathView: TextView {
             res = currentRulesToResult!![subst]
             expression = res!!.clone()
             setTextFromExpression()
-            //currentAtom = null
             currentRulesToResult = null
-            currentSubatoms = arrayListOf()
+            currentAtoms = arrayListOf()
         }
         return res
     }
@@ -113,18 +108,17 @@ class GlobalMathView: TextView {
     }
 
     fun clearExpression() {
-        currentAtom = null
-        currentSubatoms = arrayListOf()
-        val newText = SpannableString(text)
-        val colorSpans = newText.getSpans<ForegroundColorSpan>(0, text.length)
+        currentAtoms = arrayListOf()
+        currentRulesToResult = null
+        val colorSpans = mathPair!!.matrix.getSpans<ForegroundColorSpan>(0, mathPair!!.matrix.length)
         for (cs in colorSpans) {
-            newText.removeSpan(cs)
+            mathPair!!.matrix.removeSpan(cs)
         }
-        val boldSpans = newText.getSpans<StyleSpan>(0, text.length)
+        val boldSpans = mathPair!!.matrix.getSpans<StyleSpan>(0, mathPair!!.matrix.length)
         for (bs in boldSpans) {
-            newText.removeSpan(bs)
+            mathPair!!.matrix.removeSpan(bs)
         }
-        text = newText
+        text = mathPair!!.matrix
     }
 
     /** TextView OVERRIDES **/
@@ -165,12 +159,12 @@ class GlobalMathView: TextView {
 
             val atom = mathPair!!.getColoredAtom(offset, multiselectionMode, atomColor)
             if (atom != null) {
-                if (currentSubatoms.any{isParentOf(it, atom)})
+                if (currentAtoms.any{isParentOf(it, atom)})
                     return
-                if (currentSubatoms.isEmpty() || !currentSubatoms.any{it.nodeId == atom.nodeId}) {
+                if (currentAtoms.isEmpty() || !currentAtoms.any{it.nodeId == atom.nodeId}) {
                     if (!multiselectionMode)
-                        currentSubatoms.clear()
-                    currentSubatoms.add(atom)
+                        currentAtoms.clear()
+                    currentAtoms.add(atom)
                 }
                 text = mathPair!!.matrix
                 PlayScene.shared.onAtomClicked()
@@ -179,8 +173,8 @@ class GlobalMathView: TextView {
     }
 
     fun deleteLastSelect() {
-        val atom = currentSubatoms.last()
-        currentSubatoms.remove(atom)
+        val atom = currentAtoms.last()
+        currentAtoms.remove(atom)
         mathPair!!.deleteSpanForAtom(atom)
         text = mathPair!!.matrix
         PlayScene.shared.onAtomClicked()

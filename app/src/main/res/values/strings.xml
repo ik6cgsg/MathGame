@@ -79,6 +79,7 @@
     <string name="i">i</string>
     <string name="start_multiselect">▶️</string>
     <string name="end_multiselect">⏹</string>
+    <string name="msg_on_start_multiselect">The multiselection mode. For cancel, press ⏹</string>
     <string name="start_multiselect_info">Start the multiselection mode</string>
     <string name="end_multiselect_info">Exit from the multiselection mode</string>
     <string name="previous_info">Previous step</string>

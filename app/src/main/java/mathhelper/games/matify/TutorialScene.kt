@@ -227,42 +227,15 @@ class TutorialScene {
         }
     }
 
-//    fun onExpressionClicked() {
-//        Log.d(TAG, "onExpressionClicked")
-//        if (wantedZoom) {
-//            return
-//        }
-//        val activity = tutorialPlayActivity!!
-//        if (activity.globalMathView.currentAtom != null) {
-//            val rules = tutorialLevel.getRulesFor(activity.globalMathView.currentAtom!!,
-//                activity.globalMathView.expression!!, SimpleComputationRuleParams(false)
-//            )
-//            if (rules != null) {
-//                activity.noRules.visibility = View.GONE
-//                activity.rulesScrollView.visibility = View.VISIBLE
-//                if (wantedClick) {
-//                    activity.expressionClickSucceeded()
-//                } else {
-//                    showMessage(activity.resources.getString(R.string.a_good_choice))
-//                }
-//                redrawRules(rules)
-//            } else {
-//                showMessage(activity.resources.getString(R.string.no_rules_try_another))
-//                clearRules()
-//                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
-//            }
-//        }
-//    }
-
     fun onAtomClicked() {
         Log.d(TAG, "onAtomClicked")
         if (wantedZoom) {
             return
         }
         val activity = tutorialPlayActivity!!
-        if (activity.globalMathView.currentSubatoms.isNotEmpty()) {
+        if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
-                activity.globalMathView.currentSubatoms,
+                activity.globalMathView.currentAtoms,
                 activity.globalMathView.expression!!,
                 SimpleComputationRuleParams(true)
             )

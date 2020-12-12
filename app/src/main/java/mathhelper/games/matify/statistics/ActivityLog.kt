@@ -33,7 +33,7 @@ data class ActivityLog (
     var currentExpression: String = "",
     var nextExpression: String = "", // * action == rule || action == restart || action == undo
     var appliedRule: String = "",
-    var selectedPlace: String = "",
+    var selectedPlaces: List<String> = listOf(""),
 
     var currTimeMS: Long = -1,
     var timeFromLastActionMS: Long = -1,
@@ -116,7 +116,7 @@ data class ActivityLog (
         root.put("nextExpression", nextExpression)
 
         root.put("appliedRule", appliedRule)
-        root.put("selectedPlace", selectedPlace)
+        root.put("selectedPlaces", selectedPlaces)
 
         root.put("currTimeMS", currTimeMS)
         root.put("timeFromLastActionMS", timeFromLastActionMS)

@@ -72,7 +72,7 @@ class PlayScene() {
         }
         val activity = playActivity!!
         val prev = activity.globalMathView.expression!!.clone()
-        //val place = activity.globalMathView.currentAtom!!.clone()
+        val places: List<ExpressionNode> = activity.globalMathView.currentAtoms.toList()
         val oldSteps = stepsCount
         var levelPassed = false
         if (currentRuleView!!.subst != null) {
@@ -82,22 +82,29 @@ class PlayScene() {
                 history.saveState(State(prev))
                 if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
                     levelPassed = true
-                    //TODO
-                    //Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
-                    //    currentRuleView!!.subst, place)
+
+                    Statistics.logRule(
+                     oldSteps,
+                     stepsCount,
+                     prev,
+                     activity.globalMathView.expression!!,
+                     currentRuleView!!.subst,
+                     places
+                    )
+
                     onWin(context)
                 }
                 clearRules()
+                activity.globalMathView.currentRulesToResult = null
             } else {
                 showMessage(activity.getString(R.string.wrong_subs))
             }
 
         }
-        //TODO
-//        if (!levelPassed) {
-//            Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
-//                currentRuleView!!.subst, place)
-//        }
+        if (!levelPassed) {
+            Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
+                currentRuleView!!.subst, places)
+        }
     }
 
     fun onAtomClicked() {
@@ -107,9 +114,9 @@ class PlayScene() {
             return
         }
         val activity = playActivity!!
-        if (activity.globalMathView.currentSubatoms.isNotEmpty()) {
+        if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
-                activity.globalMathView.currentSubatoms,
+                activity.globalMathView.currentAtoms,
                 activity.globalMathView.expression!!,
                 SimpleComputationRuleParams(true)
             )
@@ -129,8 +136,7 @@ class PlayScene() {
                 redrawRules(rules)
             }
         }
-        //TODO
-        //Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom!!)
+        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms!!)
     }
 
     fun loadLevel(context: Context, continueGame: Boolean, languageCode: String): Boolean {
@@ -202,13 +208,13 @@ class PlayScene() {
             stepsCount = stepsCount - 1 + penalty
         }
         Statistics.logUndo(oldSteps, stepsCount, oldExpression,
-            activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
+            activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
     fun restart(context: Context, languageCode: String) {
         Log.d(TAG, "restart")
         val activity = playActivity!!
-        Statistics.logRestart(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
+        Statistics.logRestart(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
         loadLevel(context,false, languageCode)
     }
 
@@ -227,7 +233,7 @@ class PlayScene() {
             currentLevel.save(activity)
             LevelScene.shared.levelsActivity!!.updateResult()
         }
-        Statistics.logMenu(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
+        Statistics.logMenu(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
     fun info(languageCode: String) {
@@ -276,7 +282,7 @@ class PlayScene() {
         Log.d(TAG, "onLoose")
         val activity = playActivity!!
         activity.onLoose()
-        Statistics.logLoose(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtom)
+        Statistics.logLoose(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
     private fun showMessage(msg: String) {

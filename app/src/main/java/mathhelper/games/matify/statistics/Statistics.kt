@@ -31,7 +31,7 @@ class Statistics {
 
         fun logRule(
             currSteps: Float, nextSteps: Float, currExpr: ExpressionNode, nextExpr: ExpressionNode,
-            currRule: ExpressionSubstitution?, place: ExpressionNode
+            currRule: ExpressionSubstitution?, places: List<ExpressionNode>
         ) {
             val activity = PlayScene.shared.playActivity!!
             val rule = if (currRule == null) {
@@ -45,20 +45,20 @@ class Statistics {
                 currentExpression = expressionToStructureString(currExpr),
                 nextExpression = expressionToStructureString(nextExpr),
                 appliedRule = rule,
-                selectedPlace = expressionToStructureString(place)
+                selectedPlaces = places.map { expressionToStructureString(it) }
             )
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RULE)
             sendLog(activityLog, activity)
         }
 
-        fun logPlace(currSteps: Float, currExpr: ExpressionNode, place: ExpressionNode) {
+        fun logPlace(currSteps: Float, currExpr: ExpressionNode, places: List<ExpressionNode>) {
             val currExprStr = expressionToStructureString(currExpr)
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
                 currentExpression = currExprStr,
                 nextExpression = currExprStr,
-                selectedPlace = expressionToStructureString(place)
+                selectedPlaces = places.map { expressionToStructureString(it) }
             )
             val activity = PlayScene.shared.playActivity!!
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.PLACE)
@@ -80,62 +80,62 @@ class Statistics {
 
         fun logUndo(
             currSteps: Float, nextSteps: Float, currExpr: ExpressionNode,
-            nextExpr: ExpressionNode, currPlace: ExpressionNode?
+            nextExpr: ExpressionNode, currPlaces: List<ExpressionNode>
         ) {
             val curr = expressionToStructureString(currExpr)
             val next = expressionToStructureString(nextExpr)
-            val place = if (currPlace == null) {
-                ""
+            val places = if (currPlaces.isEmpty()) {
+                listOf("")
             } else {
-                expressionToStructureString(currPlace)
+                currPlaces.map { expressionToStructureString(it) }
             }
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = nextSteps,
                 currentExpression = curr,
                 nextExpression = next,
-                selectedPlace = place
+                selectedPlaces = places
             )
             val activity = PlayScene.shared.playActivity!!
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.UNDO)
             sendLog(activityLog, activity)
         }
 
-        fun logRestart(currSteps: Float, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
+        fun logRestart(currSteps: Float, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
             val activity = PlayScene.shared.playActivity!!
             val curr = expressionToStructureString(currExpr)
             val next = expressionToStructureString(LevelScene.shared.currentLevel!!.startExpression)
-            val place = if (currPlace == null) {
-                ""
+            val places = if (currPlaces.isEmpty()) {
+                listOf("")
             } else {
-                expressionToStructureString(currPlace)
+                currPlaces.map { expressionToStructureString(it) }
             }
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = 0f,
                 currentExpression = curr,
                 nextExpression = next,
-                selectedPlace = place
+                selectedPlaces = places
             )
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RESTART)
             sendLog(activityLog, activity)
             startTime = 0
         }
 
-        fun logMenu(currSteps: Float, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
+        fun logMenu(currSteps: Float, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
             val activity = PlayScene.shared.playActivity!!
             val curr = expressionToStructureString(currExpr)
-            val place = if (currPlace == null) {
-                ""
+            val places = if (currPlaces.isEmpty()) {
+                listOf("")
             } else {
-                expressionToStructureString(currPlace)
+                currPlaces.map { expressionToStructureString(it) }
             }
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
                 currentExpression = curr,
                 nextExpression = curr,
-                selectedPlace = place
+                selectedPlaces = places
             )
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.MENU)
             sendLog(activityLog, activity)
@@ -157,19 +157,19 @@ class Statistics {
             startTime = 0
         }
 
-        fun logLoose(currSteps: Float, currExpr: ExpressionNode, currPlace: ExpressionNode?) {
+        fun logLoose(currSteps: Float, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
             val exprStr = expressionToStructureString(currExpr)
-            val place = if (currPlace == null) {
-                ""
+            val places = if (currPlaces.isEmpty()) {
+                listOf("")
             } else {
-                expressionToStructureString(currPlace)
+                currPlaces.map { expressionToStructureString(it) }
             }
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
                 currentExpression = exprStr,
                 nextExpression = exprStr,
-                selectedPlace = place
+                selectedPlaces = places
             )
             val activity = PlayScene.shared.playActivity!!
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.LOOSE)

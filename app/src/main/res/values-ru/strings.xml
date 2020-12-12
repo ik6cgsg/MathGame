@@ -79,6 +79,7 @@
     <string name="i">i</string>
     <string name="start_multiselect">▶️</string>
     <string name="end_multiselect">⏹</string>
+    <string name="msg_on_start_multiselect">Режим мультивыбора. Для отмены нажмите ⏹</string>
     <string name="start_multiselect_info">Войти в режим мультивыбора</string>
     <string name="end_multiselect_info">Выйти из режима мультивыбора</string>
     <string name="previous_info">Предыдущий шаг</string>

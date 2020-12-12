@@ -15,6 +15,7 @@ import mathhelper.games.matify.level.Award
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
+import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
 import java.lang.Exception
 import kotlin.math.max
@@ -55,7 +56,8 @@ class PlayActivity: AppCompatActivity() {
         scaleDetector.onTouchEvent(event)
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                needClear = true
+                if (!globalMathView.multiselectionMode)
+                    needClear = true
             }
             MotionEvent.ACTION_UP -> {
                 if (needClear) {
@@ -91,27 +93,42 @@ class PlayActivity: AppCompatActivity() {
 
     private fun setLongClick() {
         startStopMultiselectionMode.setOnLongClickListener{
-            startStopMultiselectionModeLong()
+            showMessage(
+                getString(R.string.end_multiselect_info),
+                globalMathView.multiselectionMode,
+                getString(R.string.start_multiselect_info)
+            )
             true
         }
 
         back.setOnLongClickListener{
-            backLong()
+            showMessage(getString(R.string.back_info))
             true
         }
 
         previous.setOnLongClickListener{
-            previousLong()
+            showMessage(
+                getString(R.string.previous_multiselect_info),
+                globalMathView.multiselectionMode,
+                getString(R.string.previous_info)
+            )
             true
         }
 
         restart.setOnLongClickListener{
-            restartLong()
+            showMessage(getString(R.string.restart_info))
             true
         }
 
         info.setOnLongClickListener{
-            infoLong()
+            showMessage(getString(R.string.i_info))
+            true
+        }
+
+        globalMathView.setOnLongClickListener{
+            if (!globalMathView.multiselectionMode) {
+                startStopMultiselectionMode(it)
+            }
             true
         }
     }
@@ -174,19 +191,12 @@ class PlayActivity: AppCompatActivity() {
         if (!loading) {
             if (!globalMathView.multiselectionMode)
                 PlayScene.shared.previousStep()
-            else
+            else {
                 globalMathView.deleteLastSelect()
+                if (globalMathView.currentAtoms.isEmpty())
+                    PlayScene.shared.clearRules()
+            }
         }
-    }
-
-    fun previousLong() {
-        if (globalMathView.multiselectionMode)
-            messageView.text = getString(R.string.previous_multiselect_info)
-        else
-            messageView.text = getString(R.string.previous_info)
-        messageView.visibility = View.VISIBLE
-        messageTimer.cancel()
-        messageTimer.start()
     }
 
     fun restart(v: View?) {
@@ -196,42 +206,24 @@ class PlayActivity: AppCompatActivity() {
         }
     }
 
-    fun restartLong() {
-        messageView.text = getString(R.string.restart_info)
-        messageView.visibility = View.VISIBLE
-        messageTimer.cancel()
-        messageTimer.start()
-    }
-
     fun startStopMultiselectionMode(v: View?) {
         val startStopView: TextView = findViewById(R.id.start_stop_multiselection_mode)
         globalMathView.multiselectionMode = !globalMathView.multiselectionMode
-        if (!globalMathView.multiselectionMode)
+        if (!globalMathView.multiselectionMode) {
             startStopView.text = getText(R.string.start_multiselect)
-        else
+            globalMathView.clearExpression()
+            PlayScene.shared.clearRules()
+        }
+        else {
             startStopView.text = getText(R.string.end_multiselect)
-    }
-
-    fun startStopMultiselectionModeLong() {
-        if (globalMathView.multiselectionMode)
-            messageView.text = getString(R.string.end_multiselect_info)
-        else
-            messageView.text = getString(R.string.start_multiselect_info)
-        messageView.visibility = View.VISIBLE
-        messageTimer.cancel()
-        messageTimer.start()
+            showMessage(getString(R.string.msg_on_start_multiselect))
+        }
     }
 
     fun info(v: View?) {
         PlayScene.shared.info(resources.configuration.locale.language)
     }
 
-    fun infoLong() {
-        messageView.text = getString(R.string.i_info)
-        messageView.visibility = View.VISIBLE
-        messageTimer.cancel()
-        messageTimer.start()
-    }
 
     fun back(v: View?) {
         if (!loading) {
@@ -243,8 +235,11 @@ class PlayActivity: AppCompatActivity() {
         }
     }
 
-    fun backLong() {
-        messageView.text = getString(R.string.back_info)
+    private fun showMessage(msg: String, flag: Boolean = true, ifFlagFalseMsg: String? = null) {
+        if (flag)
+            messageView.text = msg
+        else
+            messageView.text = ifFlagFalseMsg
         messageView.visibility = View.VISIBLE
         messageTimer.cancel()
         messageTimer.start()
