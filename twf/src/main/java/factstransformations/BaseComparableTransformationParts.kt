@@ -317,7 +317,7 @@ class ExpressionChain(
                 } else {
                     val ruleName = (chain[currentRightIndex] as RulePointer).nameLink
                     log.add(ruleName, { "Handling ${CheckingKeyWords.ruleReference} '" }, { "'" }, messageType = MessageType.USER, level = currentLogLevel)
-                    val rules = expressionTransformations.filter { it.name == ruleName }
+                    val rules = expressionTransformations.filter { it.nameEn == ruleName }
                     if (rules.isEmpty()) {
                         log.add(ruleName, { "ERROR: ${CheckingKeyWords.ruleReference} '" }, { "' not found" }, messageType = MessageType.USER, level = currentLogLevel)
                         log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
@@ -326,7 +326,7 @@ class ExpressionChain(
                         coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
                                 factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor))
                         return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex + 1],
-                                "Rule with name '$ruleName' not found. Exists only rules with names: ${expressionTransformations.map { it.name }.filter { it.isNotBlank() }.joinToString { "'$it'" }}")
+                                "Rule with name '$ruleName' not found. Exists only rules with names: ${expressionTransformations.map { it.nameEn }.filter { it.isNotBlank() }.joinToString { "'$it'" }}")
                     }
                     rules.first()
                 }

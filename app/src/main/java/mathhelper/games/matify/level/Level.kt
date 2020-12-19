@@ -41,7 +41,16 @@ enum class LevelField(val str: String) {
     ORIGINAL_EXPRESSION("originalExpression"),
     FINAL_EXPRESSION("finalExpression"),
     FINAL_PATTERN("finalPattern"),
-    RULES("rules")
+    RULES("rules"),
+    MAX_CALC_COMPLEXITY("maxCalcComplexity"),
+    MAX_TEN_POW_ITERATIONS("maxTenPowIterations"),
+    MAX_PLUS_ARG_ROUNDED("maxPlusArgRounded"),
+    MAX_PLUS_RES_ROUNDED("maxPlusResRounded"),
+    MAX_MUL_ARG_ROUNDED("maxMulArgRounded"),
+    MAX_MUL_RES_ROUNDED("maxMulResRounded"),
+    MAX_POW_BASE_ROUNDED("maxPowBaseRounded"),
+    MAX_POW_DEG_ROUNDED("maxPowDegRounded"),
+    MAX_POW_RES_ROUNDED("maxPowResRounded")
 }
 
 class Level {
@@ -59,6 +68,16 @@ class Level {
     lateinit var name: String
     lateinit var nameRu: String
     lateinit var nameEn: String
+    lateinit var maxCalcComplexityStr: String
+    lateinit var maxTenPowIterations: String
+    lateinit var maxPlusArgRounded: String
+    lateinit var maxPlusResRounded: String
+    lateinit var maxMulArgRounded: String
+    lateinit var maxMulResRounded: String
+    lateinit var maxPowBaseRounded: String
+    lateinit var maxPowDegRounded: String
+    lateinit var maxPowResRounded: String
+    var additionalParamsMap = mutableMapOf<String, String>()
     var awardCoeffs = "0.95 0.9 0.8"
     var awardMultCoeff = 1f
     var showWrongRules = false
@@ -163,10 +182,48 @@ class Level {
                 allRules = (allRules + rulesFromPack) as ArrayList<ExpressionSubstitution>
             }
         }
-        compiledConfiguration = CompiledConfiguration().apply {
-            compiledExpressionTreeTransformationRules.clear()
-            compiledExpressionTreeTransformationRules.addAll(allRules)
+
+        maxCalcComplexityStr = levelJson.optString(LevelField.MAX_CALC_COMPLEXITY.str, "")
+        if (maxCalcComplexityStr.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxCalcComplexity", maxCalcComplexityStr)
         }
+        maxTenPowIterations = levelJson.optString(LevelField.MAX_TEN_POW_ITERATIONS.str, "")
+        if (maxTenPowIterations.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxTenPowIterations", maxTenPowIterations)
+        }
+        maxPlusArgRounded = levelJson.optString(LevelField.MAX_PLUS_ARG_ROUNDED.str, "")
+        if (maxPlusArgRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPlusArgRounded", maxPlusArgRounded)
+        }
+        maxPlusResRounded = levelJson.optString(LevelField.MAX_PLUS_RES_ROUNDED.str, "")
+        if (maxPlusResRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPlusResRounded", maxPlusResRounded)
+        }
+        maxMulArgRounded = levelJson.optString(LevelField.MAX_MUL_ARG_ROUNDED.str, "")
+        if (maxMulArgRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxMulArgRounded", maxMulArgRounded)
+        }
+        maxMulResRounded = levelJson.optString(LevelField.MAX_MUL_RES_ROUNDED.str, "")
+        if (maxMulResRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxMulResRounded", maxMulResRounded)
+        }
+        maxPowBaseRounded = levelJson.optString(LevelField.MAX_POW_BASE_ROUNDED.str, "")
+        if (maxPowBaseRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPowBaseRounded", maxPowBaseRounded)
+        }
+        maxPowDegRounded = levelJson.optString(LevelField.MAX_POW_DEG_ROUNDED.str, "")
+        if (maxPowDegRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPowDegRounded", maxPowDegRounded)
+        }
+        maxPowResRounded = levelJson.optString(LevelField.MAX_POW_RES_ROUNDED.str, "")
+        if (maxPowResRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPowResRounded", maxPowResRounded)
+        }
+
+        compiledConfiguration = createCompiledConfigurationFromExpressionSubstitutionsAndParams(
+            allRules.toTypedArray(),
+            additionalParamsMap
+        )
         return true
     }
 
@@ -263,13 +320,8 @@ class Level {
             simpleRules = (res + simpleRules) as ArrayList<ExpressionSubstitution>
         }
 
-        compiledConfiguration?.apply {
-            compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
-            compiledExpressionSimpleAdditionalTreeTransformationRules.addAll(simpleRules)
-        }
-
         val nodeIds = nodes.map{it.nodeId}
-        val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds, compiledConfiguration!!, withReadyApplicationResult = true)
+        val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds.toTypedArray(), compiledConfiguration!!, withReadyApplicationResult = true)
         if (list.isEmpty()) {
             return null
         }

@@ -224,7 +224,7 @@ class LazyLog {
             i = 0
             for (expressionTransformation in expressionTransformations) {
                 val j = i
-                addMessageWithExpressionSubstitutionShort({ "$j. ${expressionTransformation.name}:" }, expressionTransformation, messageType, level = originalLogLevel + 2)
+                addMessageWithExpressionSubstitutionShort({ "$j. ${expressionTransformation.nameEn}:" }, expressionTransformation, messageType, level = originalLogLevel + 2)
                 i++
             }
         }

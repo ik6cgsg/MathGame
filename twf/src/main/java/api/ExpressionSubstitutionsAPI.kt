@@ -33,7 +33,9 @@ fun expressionSubstitutionFromStructureStrings(
         matchJumbledAndNested: Boolean = false,
         simpleAdditional: Boolean = false,
         isExtending: Boolean = false,
-        priority: Int = 50
+        priority: Int = 50,
+        nameEn: String = "",
+        nameRu: String = ""
 ) = ExpressionSubstitution(
         structureStringToExpression(leftStructureString),
         structureStringToExpression(rightStructureString),
@@ -41,7 +43,9 @@ fun expressionSubstitutionFromStructureStrings(
         matchJumbledAndNested = matchJumbledAndNested,
         simpleAdditional = simpleAdditional,
         isExtending = isExtending,
-        priority = priority
+        priority = priority,
+        nameEn = nameEn,
+        nameRu = nameRu
 )
 
 
@@ -83,22 +87,36 @@ fun applySubstitution(
 }
 
 
+fun createCompiledConfigurationFromExpressionSubstitutionsAndParams (
+        expressionSubstitutions: Array<ExpressionSubstitution>,
+        additionalParamsMap: Map<String, String> = mapOf()
+) = CompiledConfiguration(additionalParamsMap = additionalParamsMap).apply {
+    compiledExpressionTreeTransformationRules.clear()
+    compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
+    for (substitution in expressionSubstitutions){
+        compiledExpressionTreeTransformationRules.add(substitution)
+        if (substitution.simpleAdditional) {
+            compiledExpressionSimpleAdditionalTreeTransformationRules.add(substitution)
+        }
+    }
+}
+
+
 fun findApplicableSubstitutionsInSelectedPlace (
         expression: ExpressionNode,
-        selectedNodeIds: List<Int>,
+        selectedNodeIds: Array<Int>,
         compiledConfiguration: CompiledConfiguration,
         simplifyNotSelectedTopArguments: Boolean = false,
-        withReadyApplicationResult: Boolean = false
+        withReadyApplicationResult: Boolean = true
 ) = generateSubstitutionsBySelectedNodes(
         SubstitutionSelectionData(expression, selectedNodeIds, compiledConfiguration),
-        simplifyNotSelectedTopArguments,
         withReadyApplicationResult
 )
 
 
 fun applySubstitutionInSelectedPlace (
         expression: ExpressionNode,
-        selectedNodeIds: List<Int>,
+        selectedNodeIds: Array<Int>,
         substitution: ExpressionSubstitution,
         compiledConfiguration: CompiledConfiguration,
         simplifyNotSelectedTopArguments: Boolean = false

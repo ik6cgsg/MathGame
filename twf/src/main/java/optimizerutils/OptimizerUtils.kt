@@ -8,8 +8,7 @@ import expressiontree.buildDiffNode
 import expressiontree.diff
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.sqrt
+
 
 data class CompressedNodeDouble(val func: String = "", var value: Double = 0.0) {
     var children = mutableListOf<CompressedNodeDouble>()
@@ -30,12 +29,12 @@ data class CompressedNodeDouble(val func: String = "", var value: Double = 0.0) 
 class OptimizerUtils(
         val expression: ExpressionNode,
         baseOperationsDefinitions: BaseOperationsDefinitions = BaseOperationsDefinitions(),
-        compiledConfiguration: CompiledConfiguration = CompiledConfiguration()
+        val compiledConfiguration: CompiledConfiguration = CompiledConfiguration(),
+        domain: DomainPointGenerator? = null
 ) {
-    private val epsilon = 1e-9
     private val baseOperationsComputationDouble = BaseOperationsComputation(ComputationType.DOUBLE)
 
-    private val domainPointGenerator = DomainPointGenerator(arrayListOf(expression), baseOperationsDefinitions)
+    private val domainPointGenerator = if (domain != null) domain else DomainPointGenerator(arrayListOf(expression), baseOperationsDefinitions)
 
     private var variablesList = mutableListOf<VariableInfo>()
 
@@ -61,8 +60,8 @@ class OptimizerUtils(
     }
 
     fun run(
-            descentStartPointsCount: Int = 1,
-            iterationCount: Int = 20,
+            descentStartPointsCount: Int = compiledConfiguration.gradientDescentComparisonConfiguration.startPointsCount,
+            iterationCount: Int = compiledConfiguration.gradientDescentComparisonConfiguration.iterationCount,
             threshold: Double = 0.0
     ): Boolean {
         domainPointGenerator.findPoints(max(0, descentStartPointsCount - domainPointGenerator.foundPointsCount()))
@@ -84,9 +83,9 @@ class OptimizerUtils(
             val lambda = runTernarySearch(
                     variablesList,
                     direction,
-                    1e-9,
-                    1e9,
-                    65,
+                    compiledConfiguration.gradientDescentComparisonConfiguration.ternarySearchLeftBorder,
+                    compiledConfiguration.gradientDescentComparisonConfiguration.ternarySearchRightBorder,
+                    compiledConfiguration.gradientDescentComparisonConfiguration.ternarySearchIterationCount,
                     threshold
             )
             if (lambda == 0.0)
@@ -127,8 +126,8 @@ class OptimizerUtils(
         if (!leftOk && valueAt(right, variableList, direction) == null) {
             return 0.0
         }
-        val alpha = 2.5 // TODO: write about influence of this parameters,
-        val beta = 1
+        val alpha = compiledConfiguration.gradientDescentComparisonConfiguration.ternarySearchAlpha
+        val beta = compiledConfiguration.gradientDescentComparisonConfiguration.ternarySearchBeta
         for (iter in 0 until iterationsCount) {
             val m1 = (alpha * left + beta * right) / (alpha + beta)
             val m2 = (beta * left + alpha * right) / (alpha + beta)
@@ -151,11 +150,6 @@ class OptimizerUtils(
             }
         }
         return if (leftOk) left else right
-    }
-
-    private fun generateMedians(left: Double, right: Double): Pair<Double, Double> {
-        val phi = (3 - sqrt(5.0)) / 2
-        return Pair(left + (right - left) * phi, right - (right - left) * phi)
     }
 
     private fun valueAt(lambda: Double, variableList: List<VariableInfo>, direction: ArrayList<Double>): Double? {

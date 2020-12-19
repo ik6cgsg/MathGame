@@ -51,7 +51,8 @@ class ExpressionComporator(
                                   maxMinNumberOfPointsForEquality: Int = compiledConfiguration.comparisonSettings.minNumberOfPointsForEquality,
                                   allowedPartOfErrorTests: Double = compiledConfiguration.comparisonSettings.allowedPartOfErrorTests,
                                   testWithUndefinedResultIncreasingCoef: Double = compiledConfiguration.comparisonSettings.testWithUndefinedResultIncreasingCoef,
-                                  useCleverDomain: Boolean = false): Boolean {
+                                  useCleverDomain: Boolean = false,
+                                  useGradientDescentComparison: Boolean = false): Boolean {
         val normalized = normalizeExpressionsForComparison(leftOrigin, rightOrigin)
         val left = normalized.first
         val right = normalized.second
@@ -103,24 +104,28 @@ class ExpressionComporator(
         } else {
             if (useCleverDomain) {
                 val domain = DomainPointGenerator(arrayListOf(left, right), baseOperationsDefinitions)
-                while (numberOfRemainingTests-- > 0) {
-                    val pointI = domain.generateNewPoint()
-                    val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
-                            .value.toDoubleOrNull() ?: continue
-                    val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
-                            .value.toDoubleOrNull() ?: continue
-                    if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
-                        return false
-                    } else if (!l.isFinite() || !r.isFinite()) { //todo (optimization: identify this cases with help of computing just domain: if point not in domain - fall here, if in domain - continue data value computation using domain parts values)
-                        numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
-                    } else when (comparisonType) {
-                        ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
-                        ComparisonType.LEFT_MORE -> if (l <= r) return false
-                        ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
-                        ComparisonType.LEFT_LESS -> if (l >= r) return false
+                if (useGradientDescentComparison) {
+                    return gradientDescentComparison(left, right, compiledConfiguration, comparisonType, domain)
+                } else {
+                    while (numberOfRemainingTests-- > 0) {
+                        val pointI = domain.generateNewPoint()
+                        val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
+                                .value.toDoubleOrNull() ?: continue
+                        val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
+                                .value.toDoubleOrNull() ?: continue
+                        if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
+                            return false
+                        } else if (!l.isFinite() || !r.isFinite()) { //todo (optimization: identify this cases with help of computing just domain: if point not in domain - fall here, if in domain - continue data value computation using domain parts values)
+                            numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
+                        } else when (comparisonType) {
+                            ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
+                            ComparisonType.LEFT_MORE -> if (l <= r) return false
+                            ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
+                            ComparisonType.LEFT_LESS -> if (l >= r) return false
+                        }
                     }
+                    return true
                 }
-                return true
             } else {
                 val domain = PointGenerator(baseOperationsDefinitions, arrayListOf(left, right))
                 while (numberOfRemainingTests-- > 0) {
@@ -229,8 +234,8 @@ class ExpressionComporator(
                         originalTransformation.right.cloneWithSortingChildrenForExpressionSubstitutionComparison(),
                         originalTransformation.weight,
                         originalTransformation.basedOnTaskContext,
-                        originalTransformation.name,
-                        originalTransformation.comparisonType)
+                        originalTransformation.nameEn,
+                        comparisonType = originalTransformation.comparisonType)
             } else {
                 originalTransformation
             }

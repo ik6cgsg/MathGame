@@ -31,7 +31,8 @@ data class FunctionProperties(
         val defaultStringDefinitionType: StringDefinitionType = StringDefinitionType.FUNCTION,
         val texStringDefinitionType: StringDefinitionType = defaultStringDefinitionType,
         private val notObligateMainFunction: String? = null,
-        val minNumberOfPointsForEquality: Int = 2
+        val minNumberOfPointsForEquality: Int = 2,
+        val fieldZero: String? = null
 ) {
     fun notObligateMainFunction() = notObligateMainFunction ?: mainFunction
 }
@@ -160,9 +161,9 @@ class FunctionConfiguration (
     var taskContextTreeTransformationRules = mutableListOf<TreeTransformationRule>()
 
     var functionProperties = mutableListOf<FunctionProperties>(
-            FunctionProperties("+", "+", 1.0, -1, isCommutativeWithNullWeight = true, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
+            FunctionProperties("+", "+", 1.0, -1, isCommutativeWithNullWeight = true, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION, fieldZero = "0"),
             FunctionProperties("-", "+", 1.0, -1, mainFunctionIsCommutativeWithNullWeight = true, defaultStringDefinitionType = StringDefinitionType.UNARY_LEFT_OPERATION, notObligateMainFunction = "+"),
-            FunctionProperties("*", "*", 2.0, -1, isCommutativeWithNullWeight = true, texRepresentation = "\\cdot", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION, mainFunctionIsCommutativeWithNullWeight = true),
+            FunctionProperties("*", "*", 2.0, -1, isCommutativeWithNullWeight = true, texRepresentation = "\\cdot", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION, mainFunctionIsCommutativeWithNullWeight = true, fieldZero = "1"),
             FunctionProperties("/", "/", 1.9, -1, texRepresentation = "\\frac", defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION, mainFunctionIsCommutativeWithNullWeight = true, notObligateMainFunction = "*"),  //FunctionProperties("/", "*", 2.0, -1)
             FunctionProperties("^", "^", 3.0, -1, defaultStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
             FunctionProperties("S", "S", 5.0, 4, numberOfDefinitionArguments = 1, minNumberOfPointsForEquality = Int.MAX_VALUE),
