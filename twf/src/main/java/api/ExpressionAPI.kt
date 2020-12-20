@@ -19,6 +19,7 @@ fun normalizeExpressionToUsualForm(
     topExpressionNode.normalizeNullWeightCommutativeFunctions()
     topExpressionNode.reduceExtraSigns(setOf("+"), setOf("-"))
     topExpressionNode.normilizeSubtructions(compiledConfiguration.functionConfiguration)
+    topExpressionNode.normalizeParentLinks()
     topExpressionNode.computeNodeIdsAsNumbersInDirectTraversalAndDistancesToRoot()
     topExpressionNode.normalizeFunctionStringDefinitions(compiledConfiguration.functionConfiguration)
 }

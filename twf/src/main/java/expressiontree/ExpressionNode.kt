@@ -225,7 +225,11 @@ data class ExpressionNode(
                 child.fillStructureStringIdentifiers(getNodeValueString)
             }
             expressionStrictureIdentifier!!.originalOrderIdentifier += children.joinToString (separator = ";") { it.expressionStrictureIdentifier!!.originalOrderIdentifier }
-            expressionStrictureIdentifier!!.commutativeSortedIdentifier += children.sortedBy { it.expressionStrictureIdentifier!!.commutativeSortedIdentifier }.joinToString (separator = ";") { it.expressionStrictureIdentifier!!.commutativeSortedIdentifier }
+            expressionStrictureIdentifier!!.commutativeSortedIdentifier += if (functionStringDefinition?.function?.isCommutativeWithNullWeight == true) {
+                children.sortedBy { it.expressionStrictureIdentifier!!.commutativeSortedIdentifier }.joinToString(separator = ";") { it.expressionStrictureIdentifier!!.commutativeSortedIdentifier }
+            } else {
+                children.joinToString(separator = ";") { it.expressionStrictureIdentifier!!.commutativeSortedIdentifier }
+            }
             expressionStrictureIdentifier!!.originalOrderIdentifier += ")"
             expressionStrictureIdentifier!!.commutativeSortedIdentifier += ")"
         }

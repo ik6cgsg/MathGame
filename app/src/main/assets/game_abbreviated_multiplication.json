@@ -275,6 +275,7 @@
         {"left":"(/(a;1))","right":"(a)"},
         {"left":"(/(a;a))","right":"(1)"},
         {"left":"(a)","right":"(*(a;1))"},
+        {"left":"(a)","right":"(^(a;1))", "simpleAdditional": true},
         {"left":"(a)","right":"(/(1;/(1;a)))"},
         {"left":"(/(1;/(1;a)))","right":"(a)"},
 

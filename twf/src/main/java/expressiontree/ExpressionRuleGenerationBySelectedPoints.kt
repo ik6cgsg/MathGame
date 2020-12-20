@@ -160,7 +160,18 @@ data class SubstitutionApplication(
         val resultExpressionChangingPart: ExpressionNode,
         val substitutionType: String,
         var priority: Int // as smaller as higher in output
-)
+) {
+    override fun toString() = "" +
+            "result: '${resultExpression.toPlainTextView()}'\n" +
+            "expressionSubstitution.left: '${expressionSubstitution.left.toString()}'\n" +
+            "expressionSubstitution.right: '${expressionSubstitution.right.toString()}'\n" +
+            "originalExpression: '${originalExpression.toString()}'\n" +
+            "originalExpressionChangingPart: '${originalExpressionChangingPart.toString()}'\n" +
+            "resultExpression: '${resultExpression.toString()}'\n" +
+            "resultExpressionChangingPart: '${resultExpressionChangingPart.toString()}'\n" +
+            "substitutionType: '${substitutionType}'\n" +
+            "priority: '${priority}'"
+}
 
 fun simpleCommutativeOperationSelectionHandling(substitutionSelectionData: SubstitutionSelectionData) {
     if (substitutionSelectionData.selectedNodeIds.size > 1 && substitutionSelectionData.lowestSubtreeHigh != null && (substitutionSelectionData.lowestSubtreeHigh!!.functionStringDefinition?.function?.isCommutativeWithNullWeight ?: return ||
@@ -334,10 +345,10 @@ fun generateParentBracketsExpansionSubstitution(substitutionSelectionData: Subst
         for (i in 0 until inBracketsNodeIndex) {
             newParent.addChild(inBracketsNodeParent.children[i].clone())
         }
-        for (child in inBracketsNode.children){
+        for (child in inBracketsNode.children) {
             newParent.addChild(child.clone())
         }
-        for (i in (inBracketsNodeIndex+1)..inBracketsNodeParent.children.lastIndex) {
+        for (i in (inBracketsNodeIndex + 1)..inBracketsNodeParent.children.lastIndex) {
             newParent.addChild(inBracketsNodeParent.children[i].clone())
         }
 
@@ -451,29 +462,8 @@ fun generateReduceArithmeticSubstitutions(substitutionSelectionData: Substitutio
     if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder != null && substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.size > 1) {
         substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.fillStructureStringIdentifiers()
         if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.value == "+") { // + (*) -> * (+)
-            var possibleMultipliersSet = getMultipliersFromNode(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first())
-            for (i in 1..substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.lastIndex) {
-                val childMultipliers = getMultipliersFromNode(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children[i])
-                for (possibleMultiplier in possibleMultipliersSet) {
-                    val maxCount = childMultipliers.firstOrNull { it.expressionStrictureIdentifier == possibleMultiplier.expressionStrictureIdentifier }?.count
-                            ?: 0
-                    possibleMultiplier.count = min(possibleMultiplier.count, maxCount)
-                }
-                possibleMultipliersSet = possibleMultipliersSet.filter { it.count > 0 }
-            }
-            if (possibleMultipliersSet.isNotEmpty()) {
-                val prodNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("*", -1)
-                val sumNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("+", -1)
-                handleAdditiveNodeAsReductionPart(substitutionSelectionData, substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first(), possibleMultipliersSet, sumNode, prodNode)
-                for (i in 1..substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.lastIndex) {
-                    handleAdditiveNodeAsReductionPart(substitutionSelectionData, substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children[i], possibleMultipliersSet, sumNode, null)
-                }
-                prodNode.addChild(sumNode)
-                addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
-                        prodNode,
-                        result,
-                        ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode)), "ReduceArithmetic", 5)
-            }
+            val possibleMultipliersSet = tryToAddMonomReduceTransformation(substitutionSelectionData, false, simplifyNotSelectedTopArguments, result)
+            tryToAddMonomReduceTransformation(substitutionSelectionData, true, simplifyNotSelectedTopArguments, result, possibleMultipliersSet)
         }
 
         if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.value == "+") { // a/x+b/x -> (a+b)/x;
@@ -551,6 +541,55 @@ fun generateReduceArithmeticSubstitutions(substitutionSelectionData: Substitutio
 
     }
     return result
+}
+
+private fun tryToAddMonomReduceTransformation(substitutionSelectionData: SubstitutionSelectionData, useExpanded: Boolean, simplifyNotSelectedTopArguments: Boolean, result: MutableList<SubstitutionApplication>,
+                                              otherMultipliers: List<ExpressionStrictureIdentifierCounter> = emptyList()): List<ExpressionStrictureIdentifierCounter> {
+    var possibleMultipliersSet = getMultipliersFromNode(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first(), useExpanded)
+    for (i in 1..substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.lastIndex) {
+        val childMultipliers = getMultipliersFromNode(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children[i], useExpanded)
+        for (possibleMultiplier in possibleMultipliersSet) {
+            val maxCount = childMultipliers.firstOrNull { it.expressionStrictureIdentifier == possibleMultiplier.expressionStrictureIdentifier }?.count
+                    ?: 0
+            possibleMultiplier.count = min(possibleMultiplier.count, maxCount)
+        }
+        possibleMultipliersSet = possibleMultipliersSet.filter { it.count > 0 }
+        if (possibleMultipliersSet.isEmpty()) {
+            break
+        }
+    }
+    if (possibleMultipliersSet.isNotEmpty()) {
+        val onlySelectedMultipliers = possibleMultipliersSet.filter { i ->
+            val originalOrderIdentifier = "(^(${i.expressionStrictureIdentifier.originalOrderIdentifier};${i.count}))"
+            val commutativeSortedIdentifier = "(^(${i.expressionStrictureIdentifier.commutativeSortedIdentifier};${i.count}))"
+            var selected = false
+            for (node in substitutionSelectionData.selectedNodes) {
+                val nodeIdentifier = node.toString()
+                if (nodeIdentifier in originalOrderIdentifier || nodeIdentifier in commutativeSortedIdentifier) {
+                    selected = true
+                    break
+                }
+            }
+            selected
+        }
+        if (onlySelectedMultipliers.isNotEmpty()) {
+            possibleMultipliersSet = onlySelectedMultipliers
+        }
+        if (otherMultipliers.isEmpty() || !otherMultipliers.containsAll(possibleMultipliersSet)) {
+            val prodNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("*", -1)
+            val sumNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("+", -1)
+            handleAdditiveNodeAsReductionPart(substitutionSelectionData, substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first(), possibleMultipliersSet, sumNode, prodNode, useExpanded)
+            for (i in 1..substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.lastIndex) {
+                handleAdditiveNodeAsReductionPart(substitutionSelectionData, substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children[i], possibleMultipliersSet, sumNode, null, useExpanded)
+            }
+            prodNode.addChild(sumNode)
+            addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
+                    prodNode,
+                    result,
+                    ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode)), "ReduceArithmetic", 5)
+        }
+    }
+    return possibleMultipliersSet
 }
 
 fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionSelectionData,
@@ -788,28 +827,43 @@ fun getOperandsFrom2ArgsNode(expressionNode: ExpressionNode, operation: String, 
     }
 }
 
-fun getMultipliersFromNode(expressionNode: ExpressionNode): List<ExpressionStrictureIdentifierCounter> {
+fun getMultipliersFromNode(expressionNode: ExpressionNode, expandPow: Boolean): List<ExpressionStrictureIdentifierCounter> {
     if (expressionNode.value == "-") {
-        return getMultipliersFromNode(expressionNode.children.first())
+        return getMultipliersFromNode(expressionNode.children.first(), expandPow)
     } else if (expressionNode.value == "*") {
         val result = mutableListOf<ExpressionStrictureIdentifierCounter>()
         for (child in expressionNode.children) {
-            val childIndex = result.indexOfFirst { child.expressionStrictureIdentifier == it.expressionStrictureIdentifier }
-            if (childIndex < 0) {
-                result.add(ExpressionStrictureIdentifierCounter(child.expressionStrictureIdentifier!!))
+            if (powExpandCondition(expandPow, child)) {
+                val pow = child.children.last().value.toInt()
+                addMultiplierIdentifierToList(result, child.children.first(), pow)
             } else {
-                result[childIndex].count++
+                addMultiplierIdentifierToList(result, child)
             }
         }
         return result
+    } else if (powExpandCondition(expandPow, expressionNode)) {
+        val pow = expressionNode.children.last().value.toInt()
+        return listOf(ExpressionStrictureIdentifierCounter(expressionNode.children.first().expressionStrictureIdentifier!!, pow))
     } else {
         return listOf(ExpressionStrictureIdentifierCounter(expressionNode.expressionStrictureIdentifier!!))
     }
 }
 
-fun handleAdditiveNodeAsReductionPart(substitutionSelectionData: SubstitutionSelectionData, expressionNode: ExpressionNode, multipliers: List<ExpressionStrictureIdentifierCounter>, sumNode: ExpressionNode, prodNode: ExpressionNode?, hasMinus: Boolean = false) {
+private fun powExpandCondition(expandPow: Boolean, child: ExpressionNode) =
+        expandPow && child.value == "^" && child.children.size == 2 && child.children.last().value.length < 2 && child.children.last().value.all { it.isDigit() }
+
+private fun addMultiplierIdentifierToList(result: MutableList<ExpressionStrictureIdentifierCounter>, node: ExpressionNode, count: Int = 1) {
+    val childIndex = result.indexOfFirst { node.expressionStrictureIdentifier == it.expressionStrictureIdentifier }
+    if (childIndex < 0) {
+        result.add(ExpressionStrictureIdentifierCounter(node.expressionStrictureIdentifier!!, count))
+    } else {
+        result[childIndex].count += count
+    }
+}
+
+fun handleAdditiveNodeAsReductionPart(substitutionSelectionData: SubstitutionSelectionData, expressionNode: ExpressionNode, multipliers: List<ExpressionStrictureIdentifierCounter>, sumNode: ExpressionNode, prodNode: ExpressionNode?, expandPow: Boolean, hasMinus: Boolean = false) {
     if (expressionNode.value == "-") {
-        handleAdditiveNodeAsReductionPart(substitutionSelectionData, expressionNode.children.first(), multipliers, sumNode, prodNode, hasMinus xor true)
+        handleAdditiveNodeAsReductionPart(substitutionSelectionData, expressionNode.children.first(), multipliers, sumNode, prodNode, expandPow, hasMinus xor true)
     } else if (expressionNode.value == "*") {
         val multipliersCopy = mutableListOf<ExpressionStrictureIdentifierCounter>()
         for (multiplier in multipliers) {
@@ -817,28 +871,61 @@ fun handleAdditiveNodeAsReductionPart(substitutionSelectionData: SubstitutionSel
         }
         val sumProdNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("*", -1)
         for (child in expressionNode.children) {
-            val mul = multipliersCopy.firstOrNull { it.expressionStrictureIdentifier == child.expressionStrictureIdentifier }
-            if (mul != null && mul.count >= 1) {
-                mul.count--
-                prodNode?.addChild(child.clone())
+            if (powExpandCondition(expandPow, child)) {
+                val pow = child.children.last().value.toInt()
+                addMultiplierToSumProdNode(multipliersCopy, child.children.first(), prodNode, substitutionSelectionData, sumProdNode, pow)
             } else {
-                if (hasMinus) {
-                    val minusNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("-", -1)
-                    minusNode.addChild(child.clone())
-                    sumProdNode.addChild(minusNode)
-                } else {
-                    sumProdNode.addChild(child.clone())
-                }
+                addMultiplierToSumProdNode(multipliersCopy, child, prodNode, substitutionSelectionData, sumProdNode, 1)
             }
         }
         if (sumProdNode.children.size == 1) {
-            sumNode.addChild(sumProdNode.children.first())
+            sumNode.addChild(minusNode(substitutionSelectionData, sumProdNode.children.first(), hasMinus))
         } else if (sumProdNode.children.size > 1) {
-            sumNode.addChild(sumProdNode)
+            sumNode.addChild(minusNode(substitutionSelectionData, sumProdNode, hasMinus))
         }
     } else {
-        sumNode.addChild(ExpressionNode(NodeType.VARIABLE, "1"))
-        prodNode?.addChild(expressionNode.clone())
+        if (powExpandCondition(expandPow, expressionNode)) {
+            val pow = expressionNode.children.last().value.toInt()
+            val mul = multipliers.firstOrNull { it.expressionStrictureIdentifier == expressionNode.children.first().expressionStrictureIdentifier }
+            if (mul != null && pow > mul.count) {
+                sumNode.addChild(minusNode(substitutionSelectionData, powNode(substitutionSelectionData, expressionNode, pow - mul.count), hasMinus))
+                prodNode?.addChild(minusNode(substitutionSelectionData, powNode(substitutionSelectionData, expressionNode, mul.count), hasMinus))
+                return
+            }
+        }
+        sumNode.addChild(minusNode(substitutionSelectionData, ExpressionNode(NodeType.VARIABLE, "1"), hasMinus))
+        prodNode?.addChild(minusNode(substitutionSelectionData, expressionNode, hasMinus))
+    }
+}
+
+private fun addMultiplierToSumProdNode(multipliersCopy: MutableList<ExpressionStrictureIdentifierCounter>, node: ExpressionNode, prodNode: ExpressionNode?, substitutionSelectionData: SubstitutionSelectionData, sumProdNode: ExpressionNode, count: Int) {
+    val mul = multipliersCopy.firstOrNull { it.expressionStrictureIdentifier == node.expressionStrictureIdentifier }
+    if (mul != null && mul.count >= count) {
+        mul.count -= count
+        prodNode?.addChild(powNode(substitutionSelectionData, node, count))
+    } else if (mul != null && 0 < mul.count && mul.count < count) {
+        prodNode?.addChild(powNode(substitutionSelectionData, node, mul.count))
+        sumProdNode.addChild(powNode(substitutionSelectionData, node, count - mul.count))
+        mul.count = 0
+    } else {
+        sumProdNode.addChild(powNode(substitutionSelectionData, node, count))
+    }
+}
+
+private fun powNode(substitutionSelectionData: SubstitutionSelectionData, node: ExpressionNode, pow: Int) = if (pow == 1) {
+    node.clone()
+} else {
+    substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("^", -1).apply {
+        addChild(node.clone())
+        addChild(ExpressionNode(NodeType.VARIABLE, pow.toString()))
+    }
+}
+
+private fun minusNode(substitutionSelectionData: SubstitutionSelectionData, node: ExpressionNode, hasMinus: Boolean) = if (!hasMinus) {
+    node.clone()
+} else {
+    substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("-", -1).apply {
+        addChild(node.clone())
     }
 }
 
@@ -1125,12 +1212,13 @@ private fun checkLeftCondition(substitutionSelectionData: SubstitutionSelectionD
         tryToGenerateApplicationSubstitutionInstance(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!, expressionSubstitution)
     } else null
     if (substitutionInstance == null || (!fastestAppropriateVersion && !substitutionInstance.isApplicable)) {
-        substitutionInstance = tryToGenerateApplicationSubstitutionInstance(substitutionSelectionData.selectedSubtreeTopArguments ?: return null, expressionSubstitution)
+        substitutionInstance = tryToGenerateApplicationSubstitutionInstance(substitutionSelectionData.selectedSubtreeTopArguments
+                ?: return null, expressionSubstitution)
     }
     return substitutionInstance
 }
 
-private fun tryToGenerateApplicationSubstitutionInstance (expression: ExpressionNode, substitution: ExpressionSubstitution) : SubstitutionInstance {
+private fun tryToGenerateApplicationSubstitutionInstance(expression: ExpressionNode, substitution: ExpressionSubstitution): SubstitutionInstance {
     var result = substitution.checkLeftCondition(expression)
     if (!result.isApplicable && substitution.matchJumbledAndNested) {
         val simplifiedExpression = expression.cloneWithExpandingNestedSameFunctions()
