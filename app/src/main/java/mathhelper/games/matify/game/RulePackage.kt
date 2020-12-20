@@ -15,6 +15,12 @@ enum class PackageField(val str: String) {
     RULE_RIGHT("right"),
     BASED_ON_TASK_CONTEXT("basedOnTaskContext"),
     MATCH_JUMBLED_AND_NESTED("matchJumbledAndNested"),
+    SIMPLE_ADDITIONAL("simpleAdditional"),
+    IS_EXTENDING("isExtending"),
+    PRIORITY("priority"),
+    NAME_EN("nameEn"),
+    NAME_RU("nameRu"),
+
     TYPE("type"),
     NAME("name"),
     RULES("rules")
@@ -79,7 +85,12 @@ private constructor(
             val to = ruleInfo.getString(PackageField.RULE_RIGHT.str)
             val basedOnTaskContext = ruleInfo.optBoolean(PackageField.BASED_ON_TASK_CONTEXT.str, false)
             val matchJumbledAndNested = ruleInfo.optBoolean(PackageField.MATCH_JUMBLED_AND_NESTED.str, false)
-            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested)
+            val simpleAdditional = ruleInfo.optBoolean(PackageField.SIMPLE_ADDITIONAL.str, false)
+            val isExtending = ruleInfo.optBoolean(PackageField.IS_EXTENDING.str, false)
+            val priority = ruleInfo.optInt(PackageField.PRIORITY.str, 50)
+            val nameEn = ruleInfo.optString(PackageField.NAME_EN.str, "")
+            val nameRu = ruleInfo.optString(PackageField.NAME_RU.str, "")
+            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested, simpleAdditional, isExtending, priority, nameEn, nameRu)
         }
     }
 

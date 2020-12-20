@@ -144,6 +144,16 @@ data class ExpressionNode(
         }
     }
 
+    fun normalizeFunctionStringDefinitions(functionConfiguration: FunctionConfiguration) {
+        functionStringDefinition = functionConfiguration.fastFindStringDefinitionByNameAndNumberOfArguments(
+                value,
+                children.size
+        )
+        for (child in children) {
+            child.normalizeFunctionStringDefinitions(functionConfiguration)
+        }
+    }
+
     fun reduceExtraSigns(extraUnaryFunctions: Set<String>, exclusionChildFunctions: Set<String> = setOf()) {
         for (i in children.lastIndex downTo 0) {
             children[i].reduceExtraSigns(extraUnaryFunctions, exclusionChildFunctions)

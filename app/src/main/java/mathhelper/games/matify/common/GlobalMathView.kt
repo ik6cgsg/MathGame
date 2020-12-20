@@ -148,18 +148,18 @@ class GlobalMathView: TextView {
 
             val themeName = Storage.shared.theme(context)
             val atomColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_HIGHLIGHT_COLOR)
+            val atomSecondColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_SECOND_HIGHLIGHT_COLOR)
 
             val atom = mathPair!!.getColoredAtom(offset, multiselectionMode, atomColor)
             if (atom != null) {
                 if (multiselectionMode) {
                     if (currentAtoms.any { it.nodeId == atom.nodeId }) {
-                        currentAtoms = currentAtoms.filter { it.nodeId == atom.nodeId }.toMutableList()
+                        currentAtoms = currentAtoms.filter { it.nodeId != atom.nodeId }.toMutableList()
                     } else {
                         currentAtoms.add(atom)
                     }
                     val topNode = findLowestSubtreeTopOfSelectedNodesInExpression(expression!!, currentAtoms)
-                        ?: return
-                    mathPair!!.recolorExpressionInMultiSelectionMode(currentAtoms, topNode, atomColor)
+                    mathPair!!.recolorExpressionInMultiSelectionMode(currentAtoms, topNode, atomColor, atomSecondColor)
                 } else {
                     currentAtoms.clear()
                     currentAtoms.add(atom)

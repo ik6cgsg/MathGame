@@ -123,7 +123,6 @@ class PlayScene() {
             if (substitutionApplication == null) {
                 showMessage(activity.getString(R.string.no_rules))
                 clearRules()
-                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
             } else {
                 val rules = LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
                 activity.globalMathView.currentRulesToResult =

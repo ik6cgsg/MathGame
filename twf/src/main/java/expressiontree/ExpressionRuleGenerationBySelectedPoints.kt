@@ -347,7 +347,7 @@ fun generateParentBracketsExpansionSubstitution(substitutionSelectionData: Subst
         parentOfParent.setChildOnPosition(newParent, parentNodeIndex)
 
         val resultExpression = substitutionSelectionData.expressionToTransform.clone().apply {
-            normalizeExpressionToUsualForm(this)
+            normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
         } //because this code performs lots times for lots of substitutions
 
         parentOfParent.setChildOnPosition(inBracketsNodeParent, parentNodeIndex)
@@ -390,7 +390,7 @@ fun generatePermutationSubstitutions(substitutionSelectionData: SubstitutionSele
                 val swapResult = substitutionSelectionData.topOfSelection!!.clone()
 
                 val resultExpression = substitutionSelectionData.expressionToTransform.clone().apply {
-                    normalizeExpressionToUsualForm(this)
+                    normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                 } //because this code performs lots times for lots of substitutions
 
                 firstNodeParent.setChildOnPosition(firstNode, firstNodeIndex)
@@ -580,7 +580,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                     substitutionSelectionData.originalExpression,
                     applicationPlace,
                     substitutionSelectionData.expressionToTransform.clone().apply {
-                        normalizeExpressionToUsualForm(this)
+                        normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                     },
                     applicationResultInPlace,
                     "ReduceFraction", 5
@@ -619,7 +619,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                         substitutionSelectionData.originalExpression,
                         applicationPlace,
                         substitutionSelectionData.expressionToTransform.clone().apply {
-                            normalizeExpressionToUsualForm(this)
+                            normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                         },
                         applicationResultInPlace,
                         "ReduceFraction", 5
@@ -674,7 +674,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                         substitutionSelectionData.originalExpression,
                         applicationPlace,
                         substitutionSelectionData.expressionToTransform.clone().apply {
-                            normalizeExpressionToUsualForm(this)
+                            normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                         },
                         applicationResultInPlace,
                         "ReduceFraction", 5
@@ -706,7 +706,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                         substitutionSelectionData.originalExpression,
                         applicationPlaceNumerator,
                         substitutionSelectionData.expressionToTransform.clone().apply {
-                            normalizeExpressionToUsualForm(this)
+                            normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                         },
                         applicationResultInPlaceNumerator,
                         "ReduceFraction", 5
@@ -741,7 +741,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                         substitutionSelectionData.originalExpression,
                         applicationPlaceDenominator,
                         substitutionSelectionData.expressionToTransform.clone().apply {
-                            normalizeExpressionToUsualForm(this)
+                            normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                         },
                         applicationResultInPlaceDenominator,
                         "ReduceFraction", 5
@@ -1074,7 +1074,7 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
                 substitutionSelectionData.originalExpression,
                 applicationPlace,
                 substitutionSelectionData.expressionToTransform.clone().apply {
-                    normalizeExpressionToUsualForm(this)
+                    normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                 }, //because this code performs lots times for lots of substitutions
                 additiveTreeNode,
                 "ComplicatingExtension", 60
@@ -1094,7 +1094,7 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
                 substitutionSelectionData.originalExpression,
                 applicationPlace,
                 substitutionSelectionData.expressionToTransform.clone().apply {
-                    normalizeExpressionToUsualForm(this)
+                    normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                 }, //because this code performs lots times for lots of substitutions
                 multiplicativeTreeNode,
                 "ComplicatingExtension", 60
@@ -1194,7 +1194,7 @@ private fun addApplicationToResults( //default fastest line is to run with 'simp
             substitutionSelectionData.selectedSubtreeTopArguments!!,
             if (withReadyApplicationResult) {
                 substitutionSelectionData.expressionToTransform.clone().apply {
-                    normalizeExpressionToUsualForm(this)
+                    normalizeExpressionToUsualForm(this, substitutionSelectionData.compiledConfiguration)
                 } //because this code performs lots times for lots of substitutions
             } else {
                 ExpressionNode(NodeType.EMPTY, "To get application result use argument 'withReadyApplicationResult' = 'true'")

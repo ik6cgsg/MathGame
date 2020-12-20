@@ -8,6 +8,7 @@ enum class ColorName(val str: String) {
     TEXT_COLOR("textColor"),
     ON_TOUCH_BACKGROUND_COLOR("onTouchBackgroundColor"),
     TEXT_HIGHLIGHT_COLOR("textHighlightColor"),
+    TEXT_SECOND_HIGHLIGHT_COLOR("textSecondHighlightColor"),
     AWARD_TIMER_GOLD_COLOR("awardTimerGoldColor"),
     AWARD_TIMER_SILVER_COLOR("awardTimerSilverColor"),
     AWARD_TIMER_BRONZE_COLOR("awardTimerBronzeColor")
@@ -35,6 +36,7 @@ class ThemeController {
         ColorName.TEXT_COLOR to "#C5C5C5",
         ColorName.ON_TOUCH_BACKGROUND_COLOR to "#8B8484",
         ColorName.TEXT_HIGHLIGHT_COLOR to "#00FFFF",
+        ColorName.TEXT_SECOND_HIGHLIGHT_COLOR to "#0088AA",
         ColorName.AWARD_TIMER_GOLD_COLOR to "#FFD700",
         ColorName.AWARD_TIMER_SILVER_COLOR to "#918E8C",
         ColorName.AWARD_TIMER_BRONZE_COLOR to "#AE6842"
@@ -44,6 +46,7 @@ class ThemeController {
         ColorName.TEXT_COLOR to "#171717",
         ColorName.ON_TOUCH_BACKGROUND_COLOR to "#B9BBDF",
         ColorName.TEXT_HIGHLIGHT_COLOR to "#6639A6",
+        ColorName.TEXT_SECOND_HIGHLIGHT_COLOR to "#331853",
         ColorName.AWARD_TIMER_GOLD_COLOR to "#B8860B",
         ColorName.AWARD_TIMER_SILVER_COLOR to "#787573",
         ColorName.AWARD_TIMER_BRONZE_COLOR to "#AE6842"

@@ -102,15 +102,19 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         return resNode
     }
 
-    fun recolorExpressionInMultiSelectionMode (selectedItems: List<ExpressionNode>, topItem: ExpressionNode, color: Int = Color.RED, otherColor: Int = Color.YELLOW) {
+    fun recolorExpressionInMultiSelectionMode (selectedItems: List<ExpressionNode>, topItem: ExpressionNode?, color: Int = Color.RED, otherColor: Int = Color.YELLOW) {
         clearAllSpans(0, matrix.length)
-        applyStyleToMathNode(findNodeByExpression(tree, topItem) ?: return, { start, end -> matrix.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE) })
+        if (topItem != null) {
+            applyStyleToMathNode(findNodeByExpression(tree, topItem) ?: return, { start, end -> matrix.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE) })
+        }
         val selectedItemsSorted = selectedItems.sortedBy { it.nodeId }
         for (node in selectedItemsSorted) {
             applyStyleToMathNode(
                 findNodeByExpression(tree, node) ?: return, { start, end -> run {
                     val colorSpans = matrix.getSpans<ForegroundColorSpan>(start, end)
-                    val selectionColor = if (colorSpans.any { it.foregroundColor == color }) {
+                    val firstColorSpansCount = colorSpans.count { it.foregroundColor == color }
+                    val otherColorSpansCount = colorSpans.count { it.foregroundColor == otherColor }
+                    val selectionColor = if (firstColorSpansCount > otherColorSpansCount) {
                         // internal selection
                         otherColor
                     } else {

@@ -311,9 +311,9 @@ class Level {
         nodes: List<ExpressionNode>,
         expression: ExpressionNode):
         List<SubstitutionApplication>? {
-        Log.d(TAG, "getSubstitutionApplication")
-
         val nodeIds = nodes.map{it.nodeId}
+        Log.d(TAG, "getSubstitutionApplication of '${expression.toString()}' in '(${nodeIds.joinToString()})'; detail: '${expression.toStringsWithNodeIds()}'")
+
         val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds.toTypedArray(), compiledConfiguration!!, withReadyApplicationResult = true)
         if (list.isEmpty()) {
             return null
