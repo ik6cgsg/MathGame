@@ -57,8 +57,9 @@ fun ExpressionNode.findLowestSubtreeTopOfNodes(nodes: List<ExpressionNode>): Exp
 }
 
 // Pointer on ExpressionNode is specified to mention that this code should be applied to nodeIds in one tree only
-fun ExpressionNode.findLowestSubtreeWithNodes(nodes: List<ExpressionNode>, onlyHigherSelection: Boolean): ExpressionNode? {
+fun ExpressionNode.findLowestSubtreeWithNodes(nodes: List<ExpressionNode>, onlyHigherSelection: Boolean, nestedNodesInSelection: MutableList<Boolean> = mutableListOf(false)): ExpressionNode? {
     var currentSubtree: ExpressionNode? = null
+    val nodeIdsSet = nodes.map { it.nodeId }.toSet()
     val nodeChains = nodes.toMutableList()
     val nodeSelectedChains: MutableList<ExpressionNode?> = nodeChains.map {
         val res = if (onlyHigherSelection) it.copy() else it.clone()
@@ -75,6 +76,9 @@ fun ExpressionNode.findLowestSubtreeWithNodes(nodes: List<ExpressionNode>, onlyH
                             (nodeChains[i].functionStringDefinition?.function?.mainFunction != nodeChains[i].value) ||
                             (nodeChains[i].distanceToRoot == currentSubtree.distanceToRoot && nodeChains[i].nodeId != currentSubtree.nodeId))) {
                 nodeChains[i] = nodeChains[i].parent ?: return null // tree is not consistent
+                if (nestedNodesInSelection.isEmpty() && nodeChains[i].nodeId in nodeIdsSet) {
+                    nestedNodesInSelection.add(true)
+                }
                 val suchPart = treeParts[nodeChains[i].nodeId]
                 if (suchPart != null) {
                     if (suchPart.children.all { it.nodeId != nodeSelectedChains[i]!!.nodeId })
@@ -144,7 +148,8 @@ data class SubstitutionSelectionData(
         var notSelectedSubtreeTopOriginalTree: ExpressionNode? = null,
         var notSelectedSubtreeTopArguments: ExpressionNode? = null, // in original order
         var selectedSubtreeTopArguments: ExpressionNode? = null, // in original order
-        var selectedSubtreeTopArgumentsInSelectionOrder: ExpressionNode? = null
+        var selectedSubtreeTopArgumentsInSelectionOrder: ExpressionNode? = null,
+        var nestedNodesInSelection: Boolean = false
 )
 
 data class SubstitutionApplication(
@@ -287,7 +292,11 @@ fun fillSubstitutionSelectionData(substitutionSelectionData: SubstitutionSelecti
     substitutionSelectionData.topOfSelection = substitutionSelectionData.expressionToTransform.findLowestSubtreeTopOfNodes(substitutionSelectionData.selectedNodes)
     substitutionSelectionData.topOfSelectionParent = substitutionSelectionData.topOfSelection?.parent
     substitutionSelectionData.topOfSelectionIndex = substitutionSelectionData.topOfSelectionParent!!.children.indexOf(substitutionSelectionData.topOfSelection)
-    substitutionSelectionData.lowestSubtree = substitutionSelectionData.expressionToTransform.findLowestSubtreeWithNodes(substitutionSelectionData.selectedNodes, false)
+    var nestedNodesInSelection = mutableListOf<Boolean>()
+    substitutionSelectionData.lowestSubtree = substitutionSelectionData.expressionToTransform.findLowestSubtreeWithNodes(substitutionSelectionData.selectedNodes, false, nestedNodesInSelection)
+    if (nestedNodesInSelection.contains(true)) {
+        substitutionSelectionData.nestedNodesInSelection = true
+    }
     substitutionSelectionData.lowestSubtreeHigh = substitutionSelectionData.expressionToTransform.findLowestSubtreeWithNodes(substitutionSelectionData.selectedNodes, true)
     simpleCommutativeOperationSelectionHandling(substitutionSelectionData)
 }
@@ -361,7 +370,8 @@ fun generatePermutationSubstitutions(substitutionSelectionData: SubstitutionSele
                                      withReadyApplicationResult: Boolean = false,
                                      fastestAppropriateVersion: Boolean = false): List<SubstitutionApplication> {
     val result = mutableListOf<SubstitutionApplication>()
-    if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder != null && substitutionSelectionData.selectedSubtreeTopArguments?.functionStringDefinition?.function?.isCommutativeWithNullWeight == true) {
+    if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder != null && substitutionSelectionData.selectedSubtreeTopArguments?.functionStringDefinition?.function?.isCommutativeWithNullWeight == true &&
+            !substitutionSelectionData.nestedNodesInSelection) {
         val userSelectedDirectlyChildrenOfCommutativeNode = substitutionSelectionData.lowestSubtreeHigh!!.allParentsMainFunctionIs(substitutionSelectionData.lowestSubtreeHigh!!.functionStringDefinition!!.function.mainFunction)
         var swapSubstitutionSuggested = false
         if (userSelectedDirectlyChildrenOfCommutativeNode) {
@@ -379,8 +389,6 @@ fun generatePermutationSubstitutions(substitutionSelectionData: SubstitutionSele
                 secondNodeParent.setChildOnPosition(firstNode, secondNodeIndex)
                 val swapResult = substitutionSelectionData.topOfSelection!!.clone()
 
-
-                substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(substitutionSelectionData.topOfSelection!!.clone(), substitutionSelectionData.topOfSelectionIndex)
                 val resultExpression = substitutionSelectionData.expressionToTransform.clone().apply {
                     normalizeExpressionToUsualForm(this)
                 } //because this code performs lots times for lots of substitutions
@@ -948,7 +956,7 @@ fun generateSimpleComputationSubstitutions(substitutionSelectionData: Substituti
                                            withReadyApplicationResult: Boolean = false,
                                            fastestAppropriateVersion: Boolean = false): List<SubstitutionApplication> {
     val result = mutableListOf<SubstitutionApplication>()
-    if (substitutionSelectionData.compiledConfiguration.simpleComputationRuleParams.isIncluded &&
+    if (!substitutionSelectionData.nestedNodesInSelection && substitutionSelectionData.compiledConfiguration.simpleComputationRuleParams.isIncluded &&
             substitutionSelectionData.selectedSubtreeTopArguments != null && !substitutionSelectionData.selectedSubtreeTopArguments!!.isNumberValue() &&
             substitutionSelectionData.selectedSubtreeTopArguments!!.calcComplexity() <= substitutionSelectionData.compiledConfiguration.simpleComputationRuleParams.maxCalcComplexity &&
             substitutionSelectionData.selectedSubtreeTopArguments!!.getContainedFunctions().subtract(substitutionSelectionData.compiledConfiguration.simpleComputationRuleParams.operationsMap.keys).isEmpty() &&
@@ -1061,7 +1069,6 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
         additiveTreeNode.children.last().addChild(applicationObject.clone())
         val additiveSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(additiveTreeNode))
         applicationPlaceParent.setChildOnPosition(additiveTreeNode, applicationPlaceIndex)
-        substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(substitutionSelectionData.topOfSelection!!.clone(), substitutionSelectionData.topOfSelectionIndex)
         result.add(SubstitutionApplication(
                 additiveSubstitution,
                 substitutionSelectionData.originalExpression,
@@ -1072,6 +1079,7 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
                 additiveTreeNode,
                 "ComplicatingExtension", 60
         ))
+        applicationPlaceParent.setChildOnPosition(applicationPlace, applicationPlaceIndex)
 
         //applicationPlace ~> (applicationPlace * applicationObject) / applicationObject
         val multiplicativeTreeNode = ExpressionNode(NodeType.FUNCTION, "/")
@@ -1081,7 +1089,6 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
         multiplicativeTreeNode.addChild(applicationObject.clone())
         val multiplicativeSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(multiplicativeTreeNode))
         applicationPlaceParent.setChildOnPosition(multiplicativeTreeNode, applicationPlaceIndex)
-        substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(substitutionSelectionData.topOfSelection!!.clone(), substitutionSelectionData.topOfSelectionIndex)
         result.add(SubstitutionApplication(
                 multiplicativeSubstitution,
                 substitutionSelectionData.originalExpression,
@@ -1092,6 +1099,7 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
                 multiplicativeTreeNode,
                 "ComplicatingExtension", 60
         ))
+        applicationPlaceParent.setChildOnPosition(applicationPlace, applicationPlaceIndex)
     }
     return result
 }
@@ -1194,6 +1202,7 @@ private fun addApplicationToResults( //default fastest line is to run with 'simp
             applicationToSelectedPartResult,
             substitutionType, priority
     ))
+    substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(substitutionSelectionData.topOfSelection!!, substitutionSelectionData.topOfSelectionIndex)
 }
 
 fun generateFormIndependentSubstitutionsBySelectedNodes(substitutionSelectionData: SubstitutionSelectionData, simplifyNotSelectedTopArguments: Boolean = false, withReadyApplicationResult: Boolean = false, fastestAppropriateVersion: Boolean = false): List<SubstitutionApplication> {

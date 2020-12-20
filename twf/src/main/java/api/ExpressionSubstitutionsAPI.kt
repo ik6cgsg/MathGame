@@ -110,7 +110,7 @@ fun findApplicableSubstitutionsInSelectedPlace (
         withReadyApplicationResult: Boolean = true
 ) = generateSubstitutionsBySelectedNodes(
         SubstitutionSelectionData(expression, selectedNodeIds, compiledConfiguration),
-        withReadyApplicationResult
+        withReadyApplicationResult = withReadyApplicationResult
 )
 
 
@@ -125,6 +125,13 @@ fun applySubstitutionInSelectedPlace (
     fillSubstitutionSelectionData(substitutionSelectionData)
     return applySubstitution(substitutionSelectionData, substitution, simplifyNotSelectedTopArguments)
 }
+
+
+fun findLowestSubtreeTopOfSelectedNodesInExpression(
+        node: ExpressionNode,
+        selectedNodes: List<ExpressionNode>
+) = node.findLowestSubtreeTopOfNodes(selectedNodes)
+
 
 
 //string API

@@ -309,16 +309,9 @@ class Level {
 
     fun getSubstitutionApplication(
         nodes: List<ExpressionNode>,
-        expression: ExpressionNode,
-        simpleComputationRules: SimpleComputationRuleParams):
+        expression: ExpressionNode):
         List<SubstitutionApplication>? {
         Log.d(TAG, "getSubstitutionApplication")
-
-        var simpleRules : ArrayList<ExpressionSubstitution> = arrayListOf()
-        for (node in nodes) {
-            val res = optGenerateSimpleComputationRule(node, simpleComputationRules)
-            simpleRules = (res + simpleRules) as ArrayList<ExpressionSubstitution>
-        }
 
         val nodeIds = nodes.map{it.nodeId}
         val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds.toTypedArray(), compiledConfiguration!!, withReadyApplicationResult = true)

@@ -2,6 +2,7 @@ package mathhelper.games.matify.common
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -11,8 +12,10 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.TypedArrayUtils.getText
 import androidx.core.text.getSpans
+import api.findLowestSubtreeTopOfSelectedNodesInExpression
 import api.structureStringToExpression
 import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
@@ -27,7 +30,7 @@ class GlobalMathView: TextView {
     private val TAG = "GlobalMathView"
     var expression: ExpressionNode? = null
         private set
-    var currentAtoms: ArrayList<ExpressionNode> = arrayListOf()
+    var currentAtoms: MutableList<ExpressionNode> = mutableListOf()
         private set
     var multiselectionMode = false
     var currentRulesToResult : Map<ExpressionSubstitution, ExpressionNode>? = null
@@ -136,17 +139,6 @@ class GlobalMathView: TextView {
 
     /** View OVERRIDES **/
 
-    /** UTILS **/
-    private fun isParentOf(parent: ExpressionNode, node: ExpressionNode): Boolean {
-        var cur : ExpressionNode? = node.parent
-        while (cur != null) {
-            if (cur.nodeId == parent.nodeId)
-                return true
-            cur = cur.parent
-        }
-        return false
-    }
-
     private fun selectCurrentAtom(event: MotionEvent) {
         Log.d(TAG, "selectCurrentAtom")
         val x = event.x - textSize / 4
@@ -159,11 +151,17 @@ class GlobalMathView: TextView {
 
             val atom = mathPair!!.getColoredAtom(offset, multiselectionMode, atomColor)
             if (atom != null) {
-                if (currentAtoms.any{isParentOf(it, atom)})
-                    return
-                if (currentAtoms.isEmpty() || !currentAtoms.any{it.nodeId == atom.nodeId}) {
-                    if (!multiselectionMode)
-                        currentAtoms.clear()
+                if (multiselectionMode) {
+                    if (currentAtoms.any { it.nodeId == atom.nodeId }) {
+                        currentAtoms = currentAtoms.filter { it.nodeId == atom.nodeId }.toMutableList()
+                    } else {
+                        currentAtoms.add(atom)
+                    }
+                    val topNode = findLowestSubtreeTopOfSelectedNodesInExpression(expression!!, currentAtoms)
+                        ?: return
+                    mathPair!!.recolorExpressionInMultiSelectionMode(currentAtoms, topNode, atomColor)
+                } else {
+                    currentAtoms.clear()
                     currentAtoms.add(atom)
                 }
                 text = mathPair!!.matrix

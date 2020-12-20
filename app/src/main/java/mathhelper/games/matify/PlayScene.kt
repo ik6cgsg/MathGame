@@ -117,8 +117,7 @@ class PlayScene() {
         if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
                 activity.globalMathView.currentAtoms,
-                activity.globalMathView.expression!!,
-                SimpleComputationRuleParams(true)
+                activity.globalMathView.expression!!
             )
 
             if (substitutionApplication == null) {
@@ -126,8 +125,7 @@ class PlayScene() {
                 clearRules()
                 activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
             } else {
-                val rules =
-                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
+                val rules = LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
                 activity.globalMathView.currentRulesToResult =
                     LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
 

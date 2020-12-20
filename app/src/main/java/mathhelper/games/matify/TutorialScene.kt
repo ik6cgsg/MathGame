@@ -236,8 +236,7 @@ class TutorialScene {
         if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
                 activity.globalMathView.currentAtoms,
-                activity.globalMathView.expression!!,
-                SimpleComputationRuleParams(true)
+                activity.globalMathView.expression!!
             )
 
             if (substitutionApplication == null) {
