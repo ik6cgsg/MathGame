@@ -234,7 +234,7 @@ class ExpressionComporator(
                         originalTransformation.right.cloneWithSortingChildrenForExpressionSubstitutionComparison(),
                         originalTransformation.weight,
                         originalTransformation.basedOnTaskContext,
-                        originalTransformation.nameEn,
+                        originalTransformation.code,
                         comparisonType = originalTransformation.comparisonType)
             } else {
                 originalTransformation

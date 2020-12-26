@@ -89,7 +89,7 @@ class Rule(
                             left.data,
                             right.data,
                             basedOnTaskContext = comparisonResult.additionalFactUsed,
-                            nameEn = name,
+                            code = name,
                             comparisonType = root.expressionTransformationChains.first().comparisonType)
                     log.addMessageWithExpressionSubstitutionShort({ "Expression substitution deduced from rule: " }, expressionSubstitution!!, MessageType.USER, level = currentLogLevel)
                 }
@@ -197,7 +197,7 @@ class MainChain(
                     val ruleName = (chain[currentRightIndex] as RulePointer).nameLink
                     log.add(ruleName, { "Handling ${CheckingKeyWords.ruleReference} '" }, { "'" }, messageType = MessageType.USER, level = currentLogLevel)
                     actualFactsTransformations = factsTransformations.filter { it.name == ruleName }
-                    actualExpressionTransformations = expressionTransformations.filter { it.nameEn == ruleName }
+                    actualExpressionTransformations = expressionTransformations.filter { it.code == ruleName }
                     if (actualFactsTransformations.isEmpty() && actualExpressionTransformations.isEmpty()) {
                         log.add(ruleName, { "ERROR: ${CheckingKeyWords.ruleReference} '" }, { "' not found" }, messageType = MessageType.USER, level = currentLogLevel)
                         log.add(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
@@ -206,7 +206,7 @@ class MainChain(
                         coloringTasks.add(ColoringTask(chain[currentLeftIndex].endPosition, chain[currentRightIndex + 1].startPosition,
                                 factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongFactColor))
                         return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex + 1],
-                                "Rule with name '$ruleName' not found. Exists only rules with names: ${expressionTransformations.map { it.nameEn }.filter { it.isNotBlank() }.joinToString { "'$it'" }}")
+                                "Rule with name '$ruleName' not found. Exists only rules with names: ${expressionTransformations.map { it.code }.filter { it.isNotBlank() }.joinToString { "'$it'" }}")
                     }
                 }
                 currentRightIndex = log.assignAndLog(currentRightIndex + 1, currentLogLevel, { "currentRightIndex" })

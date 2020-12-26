@@ -127,6 +127,7 @@ class ExpressionSubstitution(
         val right: ExpressionNode,
         val weight: Double = 1.0,
         val basedOnTaskContext: Boolean = false,
+        val code: String = "",
         val nameEn: String = "",
         val nameRu: String = "",
         val comparisonType: ComparisonType = ComparisonType.EQUAL,

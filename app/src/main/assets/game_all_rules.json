@@ -1,0 +1,100 @@
+{
+  "gameSpace": "",
+  "gameCode": "all_rules",
+  "name": "Все правила",
+  "en": "All Rules",
+  "ru": "Все правила",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "add_in_correct_order__Level_00_Compute",
+      "name": "Самый простой",
+      "ru": "Самый простой",
+      "en": "The most simple",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 70,
+      "originalExpression": "(+(6;5;4))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "maxCalcComplexity": "2",
+      "maxPlusArgRounded": "10",
+      "maxPlusResRounded": "10",
+      "rules":[
+        {"rulePack": "MathBase"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "ArithmeticSimplePositiveAddition",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a;0))","right":"(a)"},
+        {"left":"(+(0;a))","right":"(a)"},
+        {"left":"(a)","right":"(+(a;0))"},
+        {"code": "SimpleComputation"},
+        {"code": "PositiveNumberPlusMinus1"},
+        {"code": "ParentBracketsExpansion"},
+        {"code": "ArgumentsSwap"},
+        {"code": "ArgumentsPermutation"},
+        {"code": "ArgumentsPermutationInOther", "priority": 90}
+      ]
+    },
+    {
+      "name": "ArithmeticAddition",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a;0))","right":"(a)"},
+        {"left":"(+(0;a))","right":"(a)"},
+        {"left":"(a)","right":"(+(a;0))"},
+        {"code": "SimpleComputation"},
+        {"code": "NumberPlusMinus1"},
+        {"code": "ParentBracketsExpansion"},
+        {"code": "ArgumentsSwap"},
+        {"code": "ArgumentsPermutation"},
+        {"code": "ArgumentsPermutationInOther", "priority": 90},
+        {"code": "AdditiveComplicatingExtension"}
+      ]
+    },
+    {
+      "name": "ArithmeticMultiplication",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticAddition"},
+
+        {"left":"(*(a;0))","right":"(0)"},
+        {"left":"(*(0;a))","right":"(0)"},
+        {"left":"(0)","right":"(*(a;0))"},
+        {"left":"(*(a;1))","right":"(a)"},
+        {"left":"(*(1;a))","right":"(a)"},
+        {"left":"(a)","right":"(*(a;1))"},
+        {"code": "OpeningBrackets"},
+        {"code": "ReduceArithmetic"},
+        {"code": "MultiplicationFactorization"}
+      ]
+    },
+    {
+      "name": "ArithmeticDivision",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticMultiplication"},
+
+        {"code": "MultiplicativeComplicatingExtension", "priority": 60},
+        {"code": "ReduceFraction"},
+        {"code": "DecimalToFraction"}
+      ]
+    },
+    {
+      "name": "ArithmeticPow",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticDivision"},
+
+        {"code": "PowFactorization"}
+      ]
+    }
+
+  ]
+}
