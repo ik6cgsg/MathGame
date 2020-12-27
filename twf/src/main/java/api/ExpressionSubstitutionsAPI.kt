@@ -26,7 +26,7 @@ fun expressionSubstitutionFromStrings(
         basedOnTaskContext = basedOnTaskContext,
         matchJumbledAndNested = matchJumbledAndNested,
         priority = priority,
-        code = code,
+        code = if (code.isNotBlank()) code else "'${stringToStructureString(left, compiledConfiguration = compiledConfiguration)}'->'${stringToStructureString(right, compiledConfiguration = compiledConfiguration)}'",
         nameEn = nameEn,
         nameRu = nameRu
 )
@@ -51,7 +51,7 @@ fun expressionSubstitutionFromStructureStrings(
         simpleAdditional = simpleAdditional,
         isExtending = isExtending,
         priority = priority,
-        code = code,
+        code = if (code.isNotBlank()) code else "'$leftStructureString'->'$rightStructureString'",
         nameEn = nameEn,
         nameRu = nameRu
 )
@@ -96,8 +96,8 @@ fun applySubstitution(
 
 
 fun createCompiledConfigurationFromExpressionSubstitutionsAndParams (
-    expressionSubstitutions: Array<ExpressionSubstitution>,
-    additionalParamsMap: Map<String, String> = mapOf()
+        expressionSubstitutions: Array<ExpressionSubstitution>,
+        additionalParamsMap: Map<String, String> = mapOf()
 ) = CompiledConfiguration(additionalParamsMap = additionalParamsMap).apply {
     compiledExpressionTreeTransformationRules.clear()
     compiledExpressionSimpleAdditionalTreeTransformationRules.clear()

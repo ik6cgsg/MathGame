@@ -22,4 +22,5 @@ fun normalizeExpressionToUsualForm(
     topExpressionNode.normalizeParentLinks()
     topExpressionNode.computeNodeIdsAsNumbersInDirectTraversalAndDistancesToRoot()
     topExpressionNode.normalizeFunctionStringDefinitions(compiledConfiguration.functionConfiguration)
+    topExpressionNode.computeIdentifier()
 }

@@ -20,6 +20,7 @@ enum class PackageField(val str: String) {
     PRIORITY("priority"),
     NAME_EN("nameEn"),
     NAME_RU("nameRu"),
+    CODE("code"),
 
     TYPE("type"),
     NAME("name"),
@@ -71,7 +72,7 @@ private constructor(
                     }
                     /** SUBSTITUTION */
                     type != null &&
-                            ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str) -> {
+                        ((ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str)) || ruleInfo.has(PackageField.CODE.str)) -> {
                         resPckg.rules.add(parseRule(ruleInfo, type))
                     }
                     else -> return null
@@ -81,8 +82,8 @@ private constructor(
         }
 
         fun parseRule(ruleInfo: JSONObject, type: Type): ExpressionSubstitution {
-            val from = ruleInfo.getString(PackageField.RULE_LEFT.str)
-            val to = ruleInfo.getString(PackageField.RULE_RIGHT.str)
+            val from = ruleInfo.optString(PackageField.RULE_LEFT.str, "")
+            val to = ruleInfo.optString(PackageField.RULE_RIGHT.str, "")
             val basedOnTaskContext = ruleInfo.optBoolean(PackageField.BASED_ON_TASK_CONTEXT.str, false)
             val matchJumbledAndNested = ruleInfo.optBoolean(PackageField.MATCH_JUMBLED_AND_NESTED.str, false)
             val simpleAdditional = ruleInfo.optBoolean(PackageField.SIMPLE_ADDITIONAL.str, false)
@@ -90,7 +91,8 @@ private constructor(
             val priority = ruleInfo.optInt(PackageField.PRIORITY.str, 50)
             val nameEn = ruleInfo.optString(PackageField.NAME_EN.str, "")
             val nameRu = ruleInfo.optString(PackageField.NAME_RU.str, "")
-            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested, simpleAdditional, isExtending, priority, nameEn, nameRu)
+            val code = ruleInfo.optString(PackageField.CODE.str, "")
+            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested, simpleAdditional, isExtending, priority, code, nameEn, nameRu)
         }
     }
 

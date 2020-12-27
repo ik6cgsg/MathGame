@@ -56,6 +56,11 @@ data class ExpressionNode(
         newNode.parent = this
     }
 
+    fun addChildOnPosition(newNode: ExpressionNode, position: Int) {
+        children.add(position, newNode)
+        newNode.parent = this
+    }
+
     fun setChildOnPosition(newNode: ExpressionNode, position: Int) {
         children[position] = newNode
         newNode.parent = this
