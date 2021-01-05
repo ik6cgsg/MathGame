@@ -171,9 +171,11 @@ class GlobalMathView: TextView {
     }
 
     fun deleteLastSelect() {
-        val atom = currentAtoms.last()
-        currentAtoms.remove(atom)
-        mathPair!!.deleteSpanForAtom(atom)
+        val atom = currentAtoms.lastOrNull()
+        if (atom != null) {
+            currentAtoms.remove(atom)
+            mathPair!!.deleteSpanForAtom(atom)
+        }
         text = mathPair!!.matrix
         PlayScene.shared.onAtomClicked()
     }

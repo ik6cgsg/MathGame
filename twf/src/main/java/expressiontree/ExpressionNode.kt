@@ -111,6 +111,18 @@ data class ExpressionNode(
         return result
     }
 
+    fun getChildNodesWhileOperation(operationList: List<String>): List<ExpressionNode> {
+        val result = mutableListOf<ExpressionNode>()
+        if (value !in operationList){
+            result.add(this)
+        } else {
+            for (child in children) {
+                result.addAll(child.getChildNodesWhileOperation(operationList))
+            }
+        }
+        return result
+    }
+
     fun resetNodeIds() {
         nodeId = -1
         for (child in children) {
@@ -648,6 +660,15 @@ data class ExpressionNode(
         return result
     }
 
+    fun getAllChildrenNodeIds(): Set<Int> {
+        val result = mutableSetOf<Int>()
+        for (child in children) {
+            result.add(child.nodeId)
+            result.addAll(child.getAllChildrenNodeIds())
+        }
+        return result
+    }
+
     fun allParentsMainFunctionIs(topOperation: String): Boolean {
         if (!topOperationIsPossibleMainFunction(topOperation)) {
             return children.isEmpty() // all children parents main function is not 'topOperation'
@@ -825,16 +846,40 @@ data class ExpressionNode(
         return result
     }
 
-    fun cloneAndSimplifyByComputeSimplePlaces(): ExpressionNode {
-        if (calcComplexity() < 4 && !containsVariables()) {
-            val computed = computeNodeIfSimple()
+    fun cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration: CompiledConfiguration = CompiledConfiguration(), selectedNodeIds: Array<Int> = emptyArray()): ExpressionNode {
+        if ((selectedNodeIds.isEmpty() || !getAllChildrenNodeIds().containsAny(selectedNodeIds)) &&
+                calcComplexity() <= compiledConfiguration.simpleComputationRuleParams.maxCalcComplexity && !containsVariables()) {
+            val computed = computeNodeIfSimple(compiledConfiguration.simpleComputationRuleParams)
+            if (computed != null) {
+                val actualNodeId = nodeId
+                return compiledConfiguration.createExpressionVariableNode(computed).apply { nodeId = actualNodeId }
+            }
+        }
+        val result = copy()
+        for (child in children) {
+            val simplifiedChild = child.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration, selectedNodeIds)
+            if (simplifiedChild.value == value && functionStringDefinition?.function?.isCommutativeWithNullWeight == true && simplifiedChild.nodeId !in selectedNodeIds) {
+                for (childOfChild in simplifiedChild.children) {
+                    result.addChild(childOfChild.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration, selectedNodeIds))
+                }
+            } else {
+                result.addChild(simplifiedChild)
+            }
+        }
+        return result
+    }
+
+    fun cloneAndSimplifyByComputeSimplePlaces(simpleComputationRuleParams: SimpleComputationRuleParams = simpleComputationRuleParamsDefault, selectedNodeIds: Array<Int> = emptyArray()): ExpressionNode {
+        if ((selectedNodeIds.isEmpty() || !getAllChildrenNodeIds().containsAny(selectedNodeIds)) &&
+                calcComplexity() <= simpleComputationRuleParams.maxCalcComplexity && !containsVariables()) {
+            val computed = computeNodeIfSimple(simpleComputationRuleParams)
             if (computed != null) {
                 return ExpressionNode(NodeType.VARIABLE, computed.toShortString(), nodeId = nodeId)
             }
         }
         val result = copy()
         for (child in children) {
-            result.addChild(child.cloneAndSimplifyByComputeSimplePlaces())
+            result.addChild(child.cloneAndSimplifyByComputeSimplePlaces(simpleComputationRuleParams, selectedNodeIds))
         }
         return result
     }

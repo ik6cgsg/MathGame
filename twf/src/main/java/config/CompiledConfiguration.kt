@@ -137,19 +137,14 @@ class CompiledConfiguration(
                 simpleComputationRuleParams.maxPlusArgRounded = simpleComputationRuleParamsMaxPlusArgRounded
             }
 
-            val simpleComputationRuleParamsMaxPlusResRounded = additionalParamsMap["simpleComputationRuleParamsMaxPlusResRounded"]?.toIntOrNull()
-            if (simpleComputationRuleParamsMaxPlusResRounded != null) {
-                simpleComputationRuleParams.maxPlusResRounded = simpleComputationRuleParamsMaxPlusResRounded
-            }
-
             val simpleComputationRuleParamsMaxMulArgRounded = additionalParamsMap["simpleComputationRuleParamsMaxMulArgRounded"]?.toIntOrNull()
             if (simpleComputationRuleParamsMaxMulArgRounded != null) {
                 simpleComputationRuleParams.maxMulArgRounded = simpleComputationRuleParamsMaxMulArgRounded
             }
 
-            val simpleComputationRuleParamsMaxMulResRounded = additionalParamsMap["simpleComputationRuleParamsMaxMulResRounded"]?.toIntOrNull()
-            if (simpleComputationRuleParamsMaxMulResRounded != null) {
-                simpleComputationRuleParams.maxMulResRounded = simpleComputationRuleParamsMaxMulResRounded
+            val simpleComputationRuleParamsMaxDivBaseRounded = additionalParamsMap["simpleComputationRuleParamsMaxDivBaseRounded"]?.toIntOrNull()
+            if (simpleComputationRuleParamsMaxDivBaseRounded != null) {
+                simpleComputationRuleParams.maxDivBaseRounded = simpleComputationRuleParamsMaxDivBaseRounded
             }
 
             val simpleComputationRuleParamsMaxPowBaseRounded = additionalParamsMap["simpleComputationRuleParamsMaxPowBaseRounded"]?.toIntOrNull()
@@ -162,9 +157,14 @@ class CompiledConfiguration(
                 simpleComputationRuleParams.maxPowDegRounded = simpleComputationRuleParamsMaxPowDegRounded
             }
 
-            val simpleComputationRuleParamsMaxPowResRounded = additionalParamsMap["simpleComputationRuleParamsMaxPowResRounded"]?.toIntOrNull()
-            if (simpleComputationRuleParamsMaxPowResRounded != null) {
-                simpleComputationRuleParams.maxPowResRounded = simpleComputationRuleParamsMaxPowResRounded
+            val simpleComputationRuleParamsMaxLogBaseRounded = additionalParamsMap["simpleComputationRuleParamsMaxLogBaseRounded"]?.toIntOrNull()
+            if (simpleComputationRuleParamsMaxLogBaseRounded != null) {
+                simpleComputationRuleParams.maxLogBaseRounded = simpleComputationRuleParamsMaxLogBaseRounded
+            }
+
+            val simpleComputationRuleParamsMaxResRounded = additionalParamsMap["simpleComputationRuleParamsMaxResRounded"]?.toIntOrNull()
+            if (simpleComputationRuleParamsMaxResRounded != null) {
+                simpleComputationRuleParams.maxResRounded = simpleComputationRuleParamsMaxResRounded
             }
         }
     }

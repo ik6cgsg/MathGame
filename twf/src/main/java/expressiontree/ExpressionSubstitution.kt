@@ -255,7 +255,8 @@ class ExpressionSubstitution(
                                 isMatched = true
                                 break
                             }
-                            if (!isMatched && conditionNode.functionStringDefinition?.function?.fieldZero != null && conditionNode.children[i].nodeType == NodeType.VARIABLE) {
+                            if (!isMatched && conditionNode.functionStringDefinition?.function?.fieldZero != null &&
+                                    conditionNode.children[i].nodeType == NodeType.VARIABLE && !conditionNode.children[i].isNumberValue()) {
                                 val varValue = substitutionInstance.getExprVar(conditionNode.children[i].value)
                                 if (varValue == null) {
                                     isMatched = true

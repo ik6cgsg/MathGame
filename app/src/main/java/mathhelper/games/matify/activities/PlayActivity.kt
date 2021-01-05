@@ -189,12 +189,10 @@ class PlayActivity: AppCompatActivity() {
 
     fun previous(v: View?) {
         if (!loading) {
-            if (!globalMathView.multiselectionMode)
+            if (!globalMathView.multiselectionMode || globalMathView.currentAtoms.isEmpty())
                 PlayScene.shared.previousStep()
             else {
                 globalMathView.deleteLastSelect()
-                if (globalMathView.currentAtoms.isEmpty())
-                    PlayScene.shared.clearRules()
             }
         }
     }

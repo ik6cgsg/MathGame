@@ -6,15 +6,15 @@ import kotlin.math.pow
 
 data class SimpleComputationRuleParams(
         var isIncluded: Boolean,
-        var maxCalcComplexity: Int = 4,
+        var maxCalcComplexity: Int = 5,
         var maxTenPowIterations: Int = 10,
         var maxPlusArgRounded: Int = 200,
-        var maxPlusResRounded: Int = maxPlusArgRounded * 3 / 2,
         var maxMulArgRounded: Int = 50,
-        var maxMulResRounded: Int = maxPlusArgRounded * 2,
+        var maxDivBaseRounded: Int = 400,
         var maxPowBaseRounded: Int = 50,
         var maxPowDegRounded: Int = 10,
-        var maxPowResRounded: Int = 400,
+        var maxResRounded: Int = 400,
+        var maxLogBaseRounded: Int = 400,
         var operationsMap: Map<String, (List<Double>) -> Double?> = mapOf()
 ) {
     init {
@@ -47,6 +47,14 @@ fun ExpressionNode.calcComplexity(): Int {
 }
 
 fun ExpressionNode.computeNodeIfSimple(simpleComputationRuleParams: SimpleComputationRuleParams = simpleComputationRuleParamsDefault): Double? {
+    val result = computeNodeIfSimpleRecursive(simpleComputationRuleParams) ?: return null
+    if (roundNumber(result) > simpleComputationRuleParams.maxResRounded) {
+        return null
+    }
+    return result
+}
+
+private fun ExpressionNode.computeNodeIfSimpleRecursive(simpleComputationRuleParams: SimpleComputationRuleParams = simpleComputationRuleParamsDefault): Double? {
     if (nodeType == NodeType.VARIABLE) {
         return value.toDoubleOrNull()
     } else if (children.isEmpty()) {
@@ -55,7 +63,7 @@ fun ExpressionNode.computeNodeIfSimple(simpleComputationRuleParams: SimpleComput
 
     val listOfArgs = mutableListOf<Double>()
     for (childNode in children) {
-        childNode.computeNodeIfSimple(simpleComputationRuleParams)?.let { listOfArgs.add(it) } ?: return null
+        childNode.computeNodeIfSimpleRecursive(simpleComputationRuleParams)?.let { listOfArgs.add(it) } ?: return null
     }
 
     return simpleComputationRuleParams.operationsMap[value]?.invoke(listOfArgs)
@@ -97,9 +105,6 @@ private fun plus(args: List<Double>, simpleComputationRuleParams: SimpleComputat
         return null
     }
     val result = args.sum()
-    if (roundNumber(result) > simpleComputationRuleParams.maxPlusResRounded) {
-        return null
-    }
     return result
 }
 
@@ -115,14 +120,11 @@ private fun mul(args: List<Double>, simpleComputationRuleParams: SimpleComputati
         return args.first() * args.last()
     }
 
-    if (args.any { roundNumber(it) > simpleComputationRuleParams.maxMulArgRounded }) {
-        return null
-    }
     var result = 1.0
     for (arg in args) {
         result *= arg
     }
-    if (roundNumber(result) > simpleComputationRuleParams.maxMulResRounded) {
+    if (args.any { roundNumber(it) > simpleComputationRuleParams.maxMulArgRounded } && roundNumber(result) > simpleComputationRuleParams.maxResRounded) {
         return null
     }
     return result
@@ -132,13 +134,10 @@ private fun div(args: List<Double>, simpleComputationRuleParams: SimpleComputati
     if (args.size != 2) {
         return null
     }
-    if (roundNumber(args.first()) > simpleComputationRuleParams.maxMulResRounded || roundNumber(args.last()) > simpleComputationRuleParams.maxMulArgRounded || args.last() == 0.0) {
+    if (roundNumber(args.first()) > simpleComputationRuleParams.maxDivBaseRounded || roundNumber(args.last()) > simpleComputationRuleParams.maxMulArgRounded || args.last() == 0.0) {
         return null
     }
     val result = args.first() / args.last()
-    if (roundNumber(result) > simpleComputationRuleParams.maxMulResRounded) {
-        return null
-    }
     return result
 }
 
@@ -146,11 +145,12 @@ private fun pow(args: List<Double>, simpleComputationRuleParams: SimpleComputati
     if (args.size != 2) {
         return null
     }
-    if (roundNumber(args.first()) > simpleComputationRuleParams.maxPowBaseRounded || roundNumber(args.last()) > simpleComputationRuleParams.maxPowDegRounded) {
+    val result = args.first().pow(args.last())
+    if (!result.isFinite()) {
         return null
     }
-    val result = args.first().pow(args.last())
-    if (!result.isFinite() || roundNumber(result) > simpleComputationRuleParams.maxPowResRounded) {
+    if (roundNumber(result) > simpleComputationRuleParams.maxResRounded &&
+            (roundNumber(args.first()) > simpleComputationRuleParams.maxPowBaseRounded || roundNumber(args.last()) > simpleComputationRuleParams.maxPowDegRounded)) {
         return null
     }
     return result
@@ -160,11 +160,12 @@ private fun log(args: List<Double>, simpleComputationRuleParams: SimpleComputati
     if (args.size != 2) {
         return null
     }
-    if (roundNumber(args.first()) > simpleComputationRuleParams.maxPowBaseRounded || roundNumber(args.last()) > simpleComputationRuleParams.maxPowResRounded) {
+    val result = kotlin.math.log(args.first(), args.last())
+    if (!result.isFinite() || (roundNumber(result) >= 1 && !inZ(result))) {
         return null
     }
-    val result = kotlin.math.log(args.first(), args.last())
-    if (!result.isFinite() || roundNumber(result) > simpleComputationRuleParams.maxPowDegRounded || (roundNumber(result) >= 1 && !inZ(result))) {
+    if (roundNumber(result) > simpleComputationRuleParams.maxResRounded &&
+            (roundNumber(args.first()) > simpleComputationRuleParams.maxPowBaseRounded || roundNumber(args.last()) > simpleComputationRuleParams.maxLogBaseRounded)) {
         return null
     }
     return result
