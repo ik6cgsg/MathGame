@@ -11,7 +11,8 @@ fun Char.isLetterOrUnderscore() = this.isLetter() || this == '_'
 fun Char.isDigit() = this in '0'..'9'
 fun Char.isLetterOrDigit() = this.isLetter() || this.isDigit()
 fun Char.isLetterOrDigitOrUnderscore() = this.isLetterOrDigit() || this == '_'
-fun Char.isNameOrNaturalNumberPart() = this.isLetterOrDigitOrUnderscore() || this == '.'
+fun Char.isNamePart() = this.isLetterOrDigitOrUnderscore() || this > '~'
+fun Char.isNameOrNumberPart() = this.isNamePart() || this == '.'
 fun Char.isNumberPart() = this.isDigit() || this == '.'
 fun Char.isOpenBracket() = this == '(' || this == '{' || this == '['
 fun Char.isCloseBracket() = this == ')' || this == '}' || this == ']'
@@ -341,7 +342,7 @@ fun splitBySubstringOnTopLevel(substrings: List<String>, expression: String, sta
 }
 
 fun readOpenTagStringIfItPresent(expression: String, currentPosition: Int): String? {
-    if (expression[currentPosition] == '<' && expression.length > (currentPosition + 1) && expression[currentPosition + 1].isLetterOrDigitOrUnderscore()) {
+    if (expression[currentPosition] == '<' && expression.length > (currentPosition + 1) && expression[currentPosition + 1].isNamePart()) {
         val end = skipFromRemainingExpressionWhile({ it != '>' }, expression, currentPosition)
         if (end >= expression.length || expression[end] != '>') return null
         return expression.substring(currentPosition, end + 1)

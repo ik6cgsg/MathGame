@@ -607,9 +607,9 @@ class ExpressionTreeParser(
                                 break
                             }
                         }
-                    } else if (node.value[currentPosition].isLetterOrDigitOrUnderscore() || (node.value[currentPosition] == '&' && isMathML)) {
+                    } else if (node.value[currentPosition].isNamePart() || (node.value[currentPosition] == '&' && isMathML)) {
                         state = ParserState.NUMBER_READ
-                        if (node.value[currentPosition].isLetterOrDigitOrUnderscore()) {
+                        if (node.value[currentPosition].isNamePart()) {
                             value += node.value[currentPosition]
                             currentPosition++
                         } else {
@@ -623,7 +623,7 @@ class ExpressionTreeParser(
                                 currentPosition++
                                 continue
                             }
-                            if (node.value[currentPosition].isLetterOrDigitOrUnderscore() ||
+                            if (node.value[currentPosition].isNamePart() ||
                                     node.value[currentPosition] == '.' || (node.value[currentPosition] == '&' && isMathML)) {
                                 if (node.value[currentPosition] != '&') {
                                     value += node.value[currentPosition]

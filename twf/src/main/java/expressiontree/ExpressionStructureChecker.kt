@@ -2,10 +2,9 @@ package expressiontree
 
 import baseoperations.BaseOperationsComputation.Companion.additivelyEqual
 import baseoperations.BaseOperationsComputation.Companion.epsilon
+import config.CompiledConfiguration
 import config.FunctionConfiguration
-import standartlibextensions.isLetter
-import standartlibextensions.isLetterOrDigitOrUnderscore
-import standartlibextensions.isNumberPart
+import standartlibextensions.*
 import kotlin.math.floor
 
 
@@ -366,8 +365,8 @@ fun checkExpressionStructure(rootNode: ExpressionNode, structureNode: Expression
 }
 
 
-class ExpressionStructureConditionConstructor(val functionConfiguration: FunctionConfiguration = FunctionConfiguration()) {
-    val nameSymbols = functionConfiguration.functionProperties.map { it.function }.filterNot {
+class ExpressionStructureConditionConstructor(val compiledConfiguration: CompiledConfiguration = CompiledConfiguration()) {
+    val nameSymbols = compiledConfiguration.functionConfiguration.functionProperties.map { it.function }.filterNot {
         it.firstOrNull()?.isLetterOrDigitOrUnderscore() ?: true
     }.joinToString(separator = "")
 
@@ -382,7 +381,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
     fun parseExpressionStructureConditionNode(pattern: String, startPosition: Int, result: ExpressionStructureConditionNode): Int {
         var currentPosition = startPosition
         currentPosition = parseWhitespaces(pattern, currentPosition)
-        if (currentPosition < pattern.length && (pattern[currentPosition].isNameOrNumberPart() || pattern[currentPosition] == freeValueSign || pattern[currentPosition] == negativeSign)) {
+        if (currentPosition < pattern.length && (pattern[currentPosition].isFunctionNameOrNumberPart() || pattern[currentPosition] == freeValueSign || pattern[currentPosition] == negativeSign)) {
             currentPosition = parseFunctionsCondition(pattern, currentPosition, result.nodeFunctions)
             if (currentPosition < pattern.length && pattern[currentPosition] == childrenListSeparator) {
                 return currentPosition + 1
@@ -485,7 +484,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
         var currentNotNumber = 0
         currentPosition = parseWhitespaces(pattern, currentPosition)
         var previousPosition = currentPosition
-        while (currentPosition < pattern.length && (pattern[currentPosition].isNameOrNumberPart() || pattern[currentPosition] == freeValueSign || pattern[currentPosition] == negativeSign)) {
+        while (currentPosition < pattern.length && (pattern[currentPosition].isFunctionNameOrNumberPart() || pattern[currentPosition] == freeValueSign || pattern[currentPosition] == negativeSign)) {
             if (pattern[currentPosition] == negativeSign) {
                 currentNotNumber++
                 currentPosition++
@@ -516,9 +515,9 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
     fun parseFunctionCondition(pattern: String, startPosition: Int, result: FunctionCondition): Int {
         var currentPosition = startPosition
         val value = StringBuilder()
-        currentPosition = parseValue(pattern, currentPosition, value, { it -> it.isNameOrNumberPart() })
+        currentPosition = parseValue(pattern, currentPosition, value, { it -> it.isFunctionNameOrNumberPart() })
         result.name = value.toString()
-        currentPosition = parseSpaces(pattern, currentPosition, { it -> it.isLetterOrDigitOrUnderscore() || it == listSeparator })
+        currentPosition = parseSpaces(pattern, currentPosition, { it -> it.isNamePart() || it == listSeparator })
         if (currentPosition < pattern.length && pattern[currentPosition].isNumberPart()) {
             currentPosition = parseNumberInterval(pattern, currentPosition, result.numberOfArgumentsInterval)
         }
@@ -549,7 +548,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
         var currentNotNumber = 0
         currentPosition = parseWhitespaces(pattern, currentPosition)
         var previousPosition = currentPosition
-        while (currentPosition < pattern.length && (pattern[currentPosition].isLetterOrDigitOrUnderscore() || pattern[currentPosition] == freeValueSign || pattern[currentPosition] == negativeSign)) {
+        while (currentPosition < pattern.length && (pattern[currentPosition].isNamePart() || pattern[currentPosition] == freeValueSign || pattern[currentPosition] == negativeSign)) {
             if (pattern[currentPosition] == negativeSign) {
                 currentNotNumber++
                 currentPosition++
@@ -590,7 +589,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
             currentPosition = parseNumberInterval(pattern, currentPosition, result.intervals.last())
         } else {
             val value = StringBuilder()
-            currentPosition = parseValue(pattern, currentPosition, value, { it -> it.isLetterOrDigitOrUnderscore() })
+            currentPosition = parseValue(pattern, currentPosition, value, { it -> it.isNamePart() })
             result.variableName = value.toString()
         }
         return currentPosition
@@ -697,9 +696,7 @@ class ExpressionStructureConditionConstructor(val functionConfiguration: Functio
         return currentPosition
     }
 
-    private fun Char.isNameOrNumberPartStart() = this.isLetterOrDigitOrUnderscore()
-    private fun Char.isNameOrNumberPart() = this.isLetterOrDigitOrUnderscore() || nameSymbols.contains(this)
-    private fun Char.isSeparatorPart() = ((this == tokenSeparator) || (this == listSeparator) || (this == openChildBracket) || (this == closeChildBracket))
+    private fun Char.isFunctionNameOrNumberPart() = this.isLetterOrDigitOrUnderscore() || nameSymbols.contains(this)
 
     private fun throwExpectException(expectType: String, position: Int): Int {
         throw IllegalArgumentException("$expectType expected on position '$position'"); return Int.MAX_VALUE

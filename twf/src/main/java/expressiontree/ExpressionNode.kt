@@ -186,7 +186,7 @@ data class ExpressionNode(
             children[i].normilizeSubtructions(functionConfiguration)
             if (children[i].nodeType == NodeType.VARIABLE && children[i].value.startsWith("-")) {
                 val double = children[i].value.toDoubleOrNull()
-                if (double != null && double < 0) {
+                if (double != null && double <= 0) {
                     if (value == "-") {
                         setVariable((-double).toString())
                     } else {
@@ -1105,7 +1105,7 @@ class ExpressionNodeConstructor(
             }
             return newNode
         } else {
-            val notDigitVariableSymbolIndex = identifier.indexOfFirst { !it.isNameOrNaturalNumberPart()}
+            val notDigitVariableSymbolIndex = identifier.indexOfFirst { !it.isNameOrNumberPart()}
             if (notDigitVariableSymbolIndex >= 0) {
                 return ExpressionNode(NodeType.ERROR, value = "Wrong variable symbol '${identifier[notDigitVariableSymbolIndex]}'", startPosition = startPosition + notDigitVariableSymbolIndex, endPosition = startPosition + notDigitVariableSymbolIndex + 1)
             }

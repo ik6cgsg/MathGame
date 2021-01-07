@@ -75,7 +75,7 @@ fun checkFactsInTex(
                 return TexVerificationResult(result, "$errorPrefix: answer is empty")
             }
 
-            val expressionStructureConditionConstructor = ExpressionStructureConditionConstructor(compiledConfiguration.functionConfiguration)
+            val expressionStructureConditionConstructor = ExpressionStructureConditionConstructor(compiledConfiguration)
             val patternNode = expressionStructureConditionConstructor.parse(targetFactPattern)
             log.addMessage({ "parsed answer pattern: '''$patternNode'''" }, level = 0)
 

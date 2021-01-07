@@ -166,6 +166,9 @@ class GlobalMathView: TextView {
                 }
                 text = mathPair!!.matrix
                 PlayScene.shared.onAtomClicked()
+                if (currentAtoms.isEmpty()) {
+                    PlayScene.shared.clearRules()
+                }
             }
         }
     }
@@ -178,6 +181,9 @@ class GlobalMathView: TextView {
         }
         text = mathPair!!.matrix
         PlayScene.shared.onAtomClicked()
+        if (currentAtoms.isEmpty()) {
+            PlayScene.shared.clearRules()
+        }
     }
 
     private fun setTextFromExpression() {
