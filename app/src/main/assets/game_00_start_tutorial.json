@@ -1,7 +1,7 @@
 {
   "gameSpace": "",
   "gameCode": "start_tutorial",
-  "name": "Игра-туториал",
+  "name": "Игра-туториал (начни с меня)",
   "en": "Game-tutorial",
   "ru": "Игра-туториал",
   "version": 10,
@@ -40,6 +40,25 @@
       "rules":[
         {"rulePack": "ArithmeticSimplePositiveAddition"}
       ]
+    },
+    {
+      "levelCode": "start_tutorial__Level_02_Compute",
+      "name": "2 numbers with sum=10",
+      "ru": "Выделить 2 для расширения",
+      "en": "2 numbers with sum=10",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 20,
+      "originalExpression": "(+(8;5;2))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "simpleComputationRuleParamsMaxCalcComplexity": "2",
+      "simpleComputationRuleParamsMaxPlusArgRounded": "1",
+      "simpleComputationRuleParamsMaxResRounded": "10",
+      "rules":[
+        {"rulePack": "ArithmeticSimplePositiveAddition"}
+      ]
     }
   ],
   "rulePacks":[
@@ -58,7 +77,7 @@
         {"code": "ParentBracketsExpansion"},
         {"code": "ArgumentsSwap"},
         {"code": "ArgumentsPermutation"},
-        {"code": "ArgumentsPermutationInOther", "priority": 90}
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 90}
       ]
     },
     {
@@ -91,7 +110,7 @@
         {"code": "ParentBracketsExpansion"},
         {"code": "ArgumentsSwap"},
         {"code": "ArgumentsPermutation"},
-        {"code": "ArgumentsPermutationInOther", "priority": 90},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 90},
         {"code": "AdditiveComplicatingExtension"}
       ]
     },
@@ -288,7 +307,7 @@
         {"code": "ArgumentsSwap"},
         {"code": "ArgumentsPermutation"},
         {"code": "OpeningBrackets"},
-        {"code": "ArgumentsPermutationInOther", "priority": 90}
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 90}
       ]
     },
     {

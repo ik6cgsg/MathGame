@@ -328,6 +328,7 @@ class Level {
         var rules = substitutionApplication.map { it.expressionSubstitution }
         rules = rules.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
         rules.sortBy { it.right.identifier.length - it.left.identifier.length }
+        rules.sortBy { it.priority }
         return rules
     }
 

@@ -31,6 +31,8 @@ data class SimpleComputationRuleParams(
 
 val simpleComputationRuleParamsDefault = SimpleComputationRuleParams(true)
 
+val simpleComputationRuleParamsNoLimits = SimpleComputationRuleParams(true, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+
 fun ExpressionNode.calcComplexity(): Int {
     if (nodeType == NodeType.VARIABLE && (value == "1" || value == "0" || (value.toDoubleOrNull() != null && (roundNumber(value.toDouble()) - 1.0).toReal().additivelyEqualToZero()))) {
         return 0
@@ -44,6 +46,11 @@ fun ExpressionNode.calcComplexity(): Int {
         else -> 2
     } + children.sumBy { it.calcComplexity() }
     return nodeComplexity
+}
+
+fun ExpressionNode.computeNodeIfPossible(): Double? {
+    val result = computeNodeIfSimpleRecursive(simpleComputationRuleParamsNoLimits) ?: return null
+    return result
 }
 
 fun ExpressionNode.computeNodeIfSimple(simpleComputationRuleParams: SimpleComputationRuleParams = simpleComputationRuleParamsDefault): Double? {

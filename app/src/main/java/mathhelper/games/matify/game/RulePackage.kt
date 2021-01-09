@@ -5,6 +5,7 @@ import api.expressionSubstitutionFromStructureStrings
 import api.findSubstitutionPlacesInExpression
 import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
+import mathhelper.games.matify.common.Constants.Companion.defaultRulePriority
 import org.json.JSONObject
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.level.Type.*
@@ -88,38 +89,13 @@ private constructor(
             val matchJumbledAndNested = ruleInfo.optBoolean(PackageField.MATCH_JUMBLED_AND_NESTED.str, false)
             val simpleAdditional = ruleInfo.optBoolean(PackageField.SIMPLE_ADDITIONAL.str, false)
             val isExtending = ruleInfo.optBoolean(PackageField.IS_EXTENDING.str, false)
-            val priority = ruleInfo.optInt(PackageField.PRIORITY.str, 50)
+            val priority = ruleInfo.optInt(PackageField.PRIORITY.str, defaultRulePriority)
             val nameEn = ruleInfo.optString(PackageField.NAME_EN.str, "")
             val nameRu = ruleInfo.optString(PackageField.NAME_RU.str, "")
             val code = ruleInfo.optString(PackageField.CODE.str, "")
             return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested, simpleAdditional, isExtending, priority, code, nameEn, nameRu)
         }
     }
-
-//    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
-//        var res = rules
-//            .filter {
-//                val list = findSubstitutionPlacesInExpression(expression, it)
-//                if (list.isEmpty()) {
-//                    false
-//                } else {
-//                    val substPlace = list.find { sp ->
-//                        sp.originalValue.nodeId == node.nodeId
-//                    }
-//                    substPlace != null
-//                }
-//            }
-//        for (pckg in children) {
-//            val rulesFromPack = pckg.getRulesFor(node, expression)
-//            if (rulesFromPack != null) {
-//                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
-//            }
-//        }
-//        if (res.isEmpty()) {
-//            return null
-//        }
-//        return res
-//    }
 
     fun getAllRules(): List<ExpressionSubstitution>? {
         var res : ArrayList<ExpressionSubstitution> = rules
