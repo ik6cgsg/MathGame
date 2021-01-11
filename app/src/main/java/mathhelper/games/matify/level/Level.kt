@@ -168,7 +168,7 @@ class Level {
                     packages.add(rule.getString(PackageField.RULE_PACK.str))
                 }
                 /** SUBSTITUTION */
-                rule.has(PackageField.RULE_LEFT.str) && rule.has(PackageField.RULE_RIGHT.str) -> {
+                (rule.has(PackageField.RULE_LEFT.str) && rule.has(PackageField.RULE_RIGHT.str)) || rule.has(PackageField.CODE.str) -> {
                     rules.add(RulePackage.parseRule(rule, type))
                 }
                 else -> return false
@@ -325,9 +325,12 @@ class Level {
     fun getRulesFromSubstitutionApplication(substitutionApplication: List<SubstitutionApplication>): List<ExpressionSubstitution> {
         Log.d(TAG, "getRulesFromSubstitutionApplication")
 
-        var rules = substitutionApplication.map { it.expressionSubstitution }
+        var rules = substitutionApplication.map {
+            Log.d(TAG, "expressionSubstitution code: '${it.expressionSubstitution.code}'; priority: '${it.expressionSubstitution.priority}'")
+            it.expressionSubstitution
+        }
         rules = rules.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
-        rules.sortBy { it.right.identifier.length - it.left.identifier.length }
+        rules.sortByDescending { it.left.toString().length }
         rules.sortBy { it.priority }
         return rules
     }

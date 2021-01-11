@@ -237,7 +237,14 @@
 
         {"rulePack": "ShortMultiplication"},
 
-        {"rulePack": "ArithmeticPlusSelections"}
+        {"rulePack": "ArithmeticPlusSelections"},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "NumberPlusMinus1", "priority": 20},
+        {"code": "MultiplicationFactorization", "priority": 15},
+        {"code": "DecimalToFraction", "priority": 15},
+        {"code": "PowFactorization", "priority": 15}
       ]
     },
     {
@@ -645,8 +652,10 @@
         {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"},
         {"left": "(^(-(A);2))","right": "(^(A;2))"},
 
-        {"left": "(a)","right": "(^(^(a;2);/(1;2)))"},
-        {"left": "(a)","right": "(^(^(a;3);/(1;3)))"},
+        {"left": "(a)","right": "(^(^(a;2);/(1;2)))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;/(1;2));2))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;3);/(1;3)))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;/(1;3));3))", "priority": 96, "isExtending": true},
         {"left": "(^(^(a;b);/(1;b)))","right": "(a)"}
       ]
     },

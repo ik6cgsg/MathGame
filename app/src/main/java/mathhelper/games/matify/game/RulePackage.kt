@@ -72,8 +72,7 @@ private constructor(
                         }
                     }
                     /** SUBSTITUTION */
-                    type != null &&
-                        ((ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str)) || ruleInfo.has(PackageField.CODE.str)) -> {
+                    (type != null && (ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str)) || ruleInfo.has(PackageField.CODE.str)) -> {
                         resPckg.rules.add(parseRule(ruleInfo, type))
                     }
                     else -> return null
@@ -82,7 +81,7 @@ private constructor(
             return resPckg
         }
 
-        fun parseRule(ruleInfo: JSONObject, type: Type): ExpressionSubstitution {
+        fun parseRule(ruleInfo: JSONObject, type: Type?): ExpressionSubstitution {
             val from = ruleInfo.optString(PackageField.RULE_LEFT.str, "")
             val to = ruleInfo.optString(PackageField.RULE_RIGHT.str, "")
             val basedOnTaskContext = ruleInfo.optBoolean(PackageField.BASED_ON_TASK_CONTEXT.str, false)

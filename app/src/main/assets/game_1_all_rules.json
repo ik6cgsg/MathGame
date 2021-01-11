@@ -7,48 +7,10 @@
   "version": 10,
   "levels":[
     {
-      "levelCode": "all_rules__Level_00_Compute",
-      "name": "Самый простой",
-      "ru": "Самый простой",
-      "en": "The most simple",
-      "difficulty": 1.0,
-      "type": "algebra",
-      "stepsNum": 2,
-      "time": 70,
-      "originalExpression": "(+(6;5;4))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "maxCalcComplexity": "2",
-      "maxPlusArgRounded": "10",
-      "maxPlusResRounded": "10",
-      "rules":[
-        {"rulePack": "ArithmeticSimplePositiveAddition"}
-      ]
-    },
-    {
       "levelCode": "all_rules__Level_01_Compute",
-      "name": "Самый простой",
-      "ru": "Самый простой",
-      "en": "1",
-      "difficulty": 1.0,
-      "type": "algebra",
-      "stepsNum": 2,
-      "time": 70,
-      "originalExpression": "(+(66;7;34;-(8);1))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "maxCalcComplexity": "2",
-      "maxPlusArgRounded": "100",
-      "maxPlusResRounded": "100",
-      "rules":[
-        {"rulePack": "ArithmeticSimplePositiveAddition"}
-      ]
-    },
-    {
-      "levelCode": "all_rules__Level_02_Compute",
-      "name": "Самый простой",
-      "ru": "Самый простой",
-      "en": "2",
+      "name": "Smart Multiplication",
+      "ru": "Умное умножение",
+      "en": "Smart Multiplication",
       "difficulty": 1.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -56,18 +18,18 @@
       "originalExpression": "(*(5;35;4;9;1))",
       "finalExpression": "Вычислить",
       "finalPattern": "?:0:?:?N",
-      "maxCalcComplexity": "3",
-      "maxPlusArgRounded": "100",
-      "maxPlusResRounded": "100",
+      "simpleComputationRuleParamsMaxCalcComplexity": "3",
+      "simpleComputationRuleParamsMaxMulArgRounded": "10",
+      "simpleComputationRuleParamsMaxResRounded": "100",
       "rules":[
         {"rulePack": "ArithmeticMultiplication"}
       ]
     },
     {
-      "levelCode": "all_rules__Level_03_Compute",
-      "name": "Самый простой",
-      "ru": "Самый простой",
-      "en": "3",
+      "levelCode": "all_rules__Level_02_Compute",
+      "name": "Smart Reduction",
+      "ru": "Умное сокращение",
+      "en": "Smart Reduction",
       "difficulty": 1.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -75,18 +37,144 @@
       "originalExpression": "(/(*(96;9;512);*(36;24)))",
       "finalExpression": "Сократить",
       "finalPattern": "?:0:?:?N",
-      "maxCalcComplexity": "3",
-      "maxPlusArgRounded": "100",
-      "maxPlusResRounded": "100",
+      "simpleComputationRuleParamsMaxCalcComplexity": "3",
       "rules":[
         {"rulePack": "ArithmeticDivision"}
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_09_Resolution",
-      "name": "Level 9 Resolution",
-      "ru": "Уровень 9 Резолюция",
-      "en": "Level 9 Resolution",
+      "levelCode": "all_rules__Level_03_Compute",
+      "name": "Abbreviated Multiplication",
+      "ru": "Сокращенное умножение",
+      "en": "Abbreviated Multiplication",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 9,
+      "time": 300,
+      "originalExpression": "(+(*(+(4;53);+(16;-(*(4;53));^(53;2)));*(+(4;-(53));+(^(4;2);*(4;53);^(53;2)))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "ShortMultiplication"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_04_Compute",
+      "name": "Tricky Cubes",
+      "ru": "Хитрые кубы",
+      "en": "Tricky Cubes",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 16,
+      "time": 500,
+      "originalExpression": "(^(+(^(26;3);1;*(27;+(-(+(^(26;2);-(26))))));/(1;3)))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "ShortMultiplication"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_05_Compute",
+      "name": "Logs Calculation",
+      "ru": "Вычисление логарифмов",
+      "en": "Logs Calculation",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 13,
+      "time": 290,
+      "originalExpression": "(*(+(1;-(log(12;2)));+(1;-(log(12;6)))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "Logarithm"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_06_Compute",
+      "name": "Complex simplification",
+      "ru": "Сложное упрощение",
+      "en": "Complex simplification",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 67,
+      "time": 600,
+      "originalExpression": "(/(+(*(2;^(x;+(*(2;m);2)));-(*(4;^(x;+(m;2))));*(2;^(x;2)));*(x;^(+(^(x;m);-(1));2))))",
+      "finalExpression": "Сократить",
+      "finalPattern": "*:2",
+      "rules": [
+        {"rulePack": "ShortMultiplication"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_07_Compute",
+      "name": "One more log",
+      "ru": "Еще один логарифм",
+      "en": "One more log",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 7,
+      "time": 190,
+      "originalExpression": "(+(^(3;log(7;3));^(49;log(^(13;/(1;2));7))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "Logarithm"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_08_Compute",
+      "name": "Trigonometry",
+      "ru": "Тригонометрия",
+      "en": "Trigonometry",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 41,
+      "time": 300,
+      "originalExpression": "(+(-(*(18;/(sin(+(-(/(*(3;π);4))));^(2;0.5))))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "TrigonometryCompleteTgCtg"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_09_Prove",
+      "name": "Complete trigonometry",
+      "ru": "Сложная тригонометрия",
+      "en": "Complete trigonometry",
+      "difficulty": 5.0,
+      "type": "algebra",
+      "stepsNum": 66,
+      "time": 900,
+      "originalExpression": "(+(/(1;(+(tg(*(3;a));tg(a))));-(/(1;(+(ctg(*(3;a));ctg(a)))))))",
+      "finalExpression": "(ctg(*(4;a)))",
+      "finalPattern": "",
+      "rules": [
+        {"rulePack": "TrigonometryCompleteTgCtg"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_10_Prove",
+      "name": "Sets",
+      "ru": "Множества",
+      "en": "Sets",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 60,
+      "originalExpression": "(or(set-(not(A);B);C))",
+      "finalExpression": "(implic(or(A;B);C))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_11_Prove",
+      "name": "Resolution",
+      "ru": "Резолюция",
+      "en": "Resolution",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 6,
@@ -99,10 +187,10 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_10_DNF",
-      "name": "Level 10 DNF",
-      "ru": "Уровень 10 DNF",
-      "en": "Level 10 DNF",
+      "levelCode": "all_rules__Level_12_Prove",
+      "name": "3-DNF",
+      "ru": "3-DNF",
+      "en": "3-DNF",
       "difficulty": 3.0,
       "type": "set",
       "stepsNum": 5,
@@ -116,10 +204,10 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_22_Resolution",
-      "name": "Level 22 Resolution",
-      "ru": "Уровень 22 Резолюция",
-      "en": "Level 22 Resolution",
+      "levelCode": "all_rules__Level_13_Prove",
+      "name": "Advanced Resolution",
+      "ru": "Пррдвинутые резолюции",
+      "en": "Advanced Resolution",
       "difficulty": 5.0,
       "type": "set",
       "stepsNum": 11,
@@ -132,8 +220,8 @@
       ]
     },
     {
-      "levelCode": "logical_calculus_combo__Level_17_Prove",
-      "name": "Level 17 Prove",
+      "levelCode": "all_rules__Level_14_Prove",
+      "name": "Set Prove",
       "ru": "Уровень 17 Доказательство",
       "en": "Level 17 Prove",
       "difficulty": 4.0,
@@ -148,26 +236,10 @@
       ]
     },
     {
-      "levelCode": "ege_logarithm__Level_10_Compute",
-      "name": "Уровень 10 Вычисление",
-      "ru": "Уровень 10 Вычисление",
-      "en": "Level 10 Calculation",
-      "difficulty": 6.0,
-      "type": "algebra",
-      "stepsNum": 7,
-      "time": 190,
-      "originalExpression": "(+(^(3;log(7;3));^(49;log(^(13;/(1;2));7))))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "Logarithm"}
-      ]
-    },
-    {
-      "levelCode": "simple_combinatorics__Level_02_Prove",
-      "name": "Level 2 Prove Stirling-II",
-      "ru": "Уровень 2 Доказательство Стирлинг-II",
-      "en": "Level 2 Prove Stirling-II",
+      "levelCode": "all_rules__Level_16_Prove",
+      "name": "Prove Stirling-II",
+      "ru": "Доказательство Стирлинг-II",
+      "en": "Prove Stirling-II",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -179,10 +251,25 @@
       ]
     },
     {
-      "levelCode": "physics_overview__Level_04_Express",
-      "name": "Магнитный поток",
-      "ru": "Магнитный поток",
-      "en": "Magnetic flux",
+      "levelCode": "all_rules__Level_17_Prove",
+      "name": "More Combinatoric",
+      "ru": "Еще комбинаторика",
+      "en": "More Combinatoric",
+      "difficulty": 5.0,
+      "type": "algebra",
+      "stepsNum": 41,
+      "time": 200,
+      "originalExpression": "(/(V(+(m;1);+(n;k;1));A(+(k;m;1);+(k;1))))",
+      "finalExpression": "(/(A(+(m;n;k;1);n);P(+(n;k;1))))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "all_rules__Level_18_Express",
+      "name": "Little bit physics",
+      "ru": "Немного физики",
+      "en": "Little bit physics",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -193,365 +280,6 @@
       "rules":[
         {"rulePack": "PhysicsElectrodynamics"},
         {"rulePack": "Logarithm"}
-      ]
-    },
-    {
-      "levelCode": "ege_trigonometry__Level_03_Compute",
-      "name": "Уровень 3 Упрощение",
-      "ru": "Уровень 3 Упрощение",
-      "en": "Level 3 Simplification",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 11,
-      "time": 200,
-      "originalExpression": "(/(+(sin(+(/(π;2);a));-(*(5;cos(+(π;-(a))))));-(cos(+(*(3;π);a)))))",
-      "finalExpression": "Упростить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "Trigonometry"},
-        {"left":"(cos(+(*(3;π);a)))","right":"(cos(+(π;a)))"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Hello_World_Level",
-      "name": "Начнем с простого",
-      "ru": "Начнем с простого",
-      "en": "Let's start simple",
-      "difficulty": 2.0,
-      "type": "algebra",
-      "stepsNum": 2,
-      "time": 70,
-      "originalExpression": "(/(+(^(a;2);-(^(b;2)));+(a;-(b))))",
-      "finalExpression": "Сократить дробь",
-      "finalPattern": "+:2",
-      "rules":[
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_01_Compute",
-      "name": "Уровень 1 Упрощение",
-      "ru": "Уровень 1 Упрощение",
-      "en": "Level 1 Simplification",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 11,
-      "time": 300,
-      "originalExpression": "(/(^(+(^(a;0.5);^(b;0.5));2);+(a;b;*(2;^(*(a;b);0.5)))))",
-      "finalExpression": "Сократить при a,b > 0",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_02_Compute",
-      "name": "Уровень 2 Вычисление",
-      "ru": "Уровень 2 Вычисление",
-      "en": "Level 2 Calculation",
-      "difficulty": 4.0,
-      "type": "algebra",
-      "stepsNum": 19,
-      "time": 200,
-      "originalExpression": "(/(+(*(8;^(k;4));*(8;^(k;2));2);^(+(*(2;^(k;2));1);2)))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_03_Compute",
-      "name": "Уровень 3 Упрощение",
-      "ru": "Уровень 3 Упрощение",
-      "en": "Level 3 Simplification",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 39,
-      "time": 200,
-      "originalExpression": "(/(+(*(18;^(x;5));-(*(12;^(x;3);y));*(2;x;^(y;2)));^(+(*(3;^(x;2));-(y));2)))",
-      "finalExpression": "Сократить",
-      "finalPattern": "*:2",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_04_Compute",
-      "name": "Уровень 4 Вычисление",
-      "ru": "Уровень 4 Вычисление",
-      "en": "Level 4 Calculation",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 30,
-      "time": 120,
-      "originalExpression": "(+(^(26;3);1;*(27;+(-(+(^(26;2);-(27);1))))))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_05_Compute",
-      "name": "Уровень 5 Упрощение",
-      "ru": "Уровень 5 Упрощение",
-      "en": "Level 5 Simplification",
-      "difficulty": 4.0,
-      "type": "algebra",
-      "stepsNum": 10,
-      "time": 100,
-      "originalExpression": "(+(*(+(a;3);+(^(a;2);-(*(a;3));9));*(+(a;-(3));+(^(a;2);*(a;3);9));-(^(a;3))))",
-      "finalExpression": "Упростить",
-      "finalPattern": "^:2",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_06_Compute",
-      "name": "Уровень 6 Упрощение",
-      "ru": "Уровень 6 Упрощение",
-      "en": "Level 6 Simplification",
-      "difficulty": 4.0,
-      "type": "algebra",
-      "stepsNum": 61,
-      "time": 600,
-      "originalExpression": "(/(+(^(k;3);*(4;^(k;2));*(20;k);125);+(^(k;2);-(k);25)))",
-      "finalExpression": "Сократить",
-      "finalPattern": "+:2",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_07_Compute",
-      "name": "Уровень 7 Упрощение",
-      "ru": "Уровень 7 Упрощение",
-      "en": "Level 7 Simplification",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 72,
-      "time": 700,
-      "originalExpression": "(/(+(^(a;2);*(4;a;b);*(3;^(b;2)));+(a;*(3;b))))",
-      "finalExpression": "Сократить",
-      "finalPattern": "+:2",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_08_Compute",
-      "name": "Уровень 8 Упрощение",
-      "ru": "Уровень 8 Упрощение",
-      "en": "Level 8 Simplification",
-      "difficulty": 6.0,
-      "type": "algebra",
-      "stepsNum": 72,
-      "time": 700,
-      "originalExpression": "(/(+(^(+(a;b);3);^(+(a;-(b));3);-(*(3;a)));+(*(2;^(a;2));*(6;^(b;2));-(3))))",
-      "finalExpression": "Сократить",
-      "finalPattern": "?:0",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "abbreviated_multiplication__Level_09_Compute",
-      "name": "Уровень 9 Упрощение",
-      "ru": "Уровень 9 Упрощение",
-      "en": "Level 9 Simplification",
-      "difficulty": 6.0,
-      "type": "algebra",
-      "stepsNum": 67,
-      "time": 600,
-      "originalExpression": "(/(+(*(2;^(x;+(*(2;m);2)));-(*(4;^(x;+(m;2))));*(2;^(x;2)));*(x;^(+(^(x;m);-(1));2))))",
-      "finalExpression": "Сократить",
-      "finalPattern": "*:2",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Hello_World_Level",
-      "name": "Начнем с простого",
-      "ru": "Начнем с простого",
-      "en": "Let's start simple",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 5,
-      "time": 90,
-      "originalExpression": "(^(+(^(65;2);-(^(56;2)));0.5))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules":[
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_01_Compute",
-      "name": "Уровень 1 Вычисление",
-      "ru": "Уровень 1 Вычисление",
-      "en": "Level 1 Calculation",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 4,
-      "time": 100,
-      "originalExpression": "(/(*(^(11;1.4);^(11;0.45));^(11;0.85)))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_02_Compute",
-      "name": "Уровень 2 Вычисление",
-      "ru": "Уровень 2 Вычисление",
-      "en": "Level 2 Calculation",
-      "difficulty": 3.0,
-      "type": "algebra",
-      "stepsNum": 6,
-      "time": 120,
-      "originalExpression": "(/(*(^(*(b;2);0.2);^(16;0.2));^(b;0.2)))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_03_Compute",
-      "name": "Уровень 3 Вычисление",
-      "ru": "Уровень 3 Вычисление",
-      "en": "Level 3 Calculation",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 14,
-      "time": 200,
-      "originalExpression": "(*(+(^(54;/(1;2));-(^(24;/(1;2))));^(6;/(1;2))))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "simpleComputationRuleParamsMaxCalcComplexity": "6",
-      "simpleComputationRuleParamsMaxResRounded": "100",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_04_Compute",
-      "name": "Уровень 4 Упрощение",
-      "ru": "Уровень 4 Упрощение",
-      "en": "Level 4 Simplification",
-      "difficulty": 6.0,
-      "type": "algebra",
-      "stepsNum": 9,
-      "time": 150,
-      "originalExpression": "(+(/(+(*(5;^(x;0.5));2);^(x;0.5));-(/(*(2;^(x;0.5));x))))",
-      "finalExpression": "Упростить при x > 0",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_05_Compute",
-      "name": "Уровень 5 Упрощение",
-      "ru": "Уровень 5 Упрощение",
-      "en": "Level 5 Simplification",
-      "difficulty": 4.0,
-      "type": "algebra",
-      "stepsNum": 6,
-      "time": 100,
-      "originalExpression": "(/(*(y;^(x;0.1);^(^(x;0.2);2));^(x;0.5)))",
-      "finalExpression": "Упростить при x > 0",
-      "finalPattern": "?:0",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_06_Compute",
-      "name": "Уровень 6 Вычисление",
-      "ru": "Уровень 6 Вычисление",
-      "en": "Level 6 Calculation",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 16,
-      "time": 200,
-      "originalExpression": "(/(^(+(^(7;/(1;2));^(13;/(1;2)));2);+(10;^(91;/(1;2)))))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_07_Compute",
-      "name": "Уровень 7 Вычисление",
-      "ru": "Уровень 7 Вычисление",
-      "en": "Level 7 Calculation",
-      "difficulty": 5.0,
-      "type": "algebra",
-      "stepsNum": 11,
-      "time": 200,
-      "originalExpression": "(+(x;^(+(^(^(x;4);0.5);-(*(4;x));4);0.5)))",
-      "finalExpression": "Вычислить при x < 2",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"},
-        {"left":"(^(^(+(x;-(2));2);0.5))","right":"(+(2;-(x)))"},
-        {"left":"(^(^(+(2;-(x));2);0.5))","right":"(+(2;-(x)))"},
-        {"left":"(^(^(+(-(2);x);2);0.5))","right":"(+(2;-(x)))"},
-        {"left":"(^(^(+(-(x);2);2);0.5))","right":"(+(2;-(x)))"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_08_Compute",
-      "name": "Уровень 8 Вычисление",
-      "ru": "Уровень 8 Вычисление",
-      "en": "Level 8 Calculation",
-      "difficulty": 6.0,
-      "type": "algebra",
-      "stepsNum": 22,
-      "time": 400,
-      "originalExpression": "(^(+(^(26;3);1;*(27;+(-(+(^(26;2);-(26))))));/(1;3)))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_09_Compute",
-      "name": "Уровень 9 Вычисление",
-      "ru": "Уровень 9 Вычисление",
-      "en": "Level 9 Calculation",
-      "difficulty": 7.0,
-      "type": "algebra",
-      "stepsNum": 30,
-      "time": 500,
-      "originalExpression": "(+(^(+(*(27;+(1;x));*(9;^(x;2));^(x;3));/(1;3));-(x)))",
-      "finalExpression": "Вычислить",
-      "finalPattern": "?:0:?:?N",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
-      ]
-    },
-    {
-      "levelCode": "ege_irrationality__Level_10_Compute",
-      "name": "Уровень 10 Упрощение",
-      "ru": "Уровень 10 Упрощение",
-      "en": "Level 10 Simplification",
-      "difficulty": 7.0,
-      "type": "algebra",
-      "stepsNum": 12,
-      "time": 200,
-      "originalExpression": "(^(/(+(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2)));*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))));2);/(1;3)))",
-      "finalExpression": "Упростить",
-      "finalPattern": "?:0",
-      "rules": [
-        {"rulePack": "ShortMultiplication"}
       ]
     }
   ],
@@ -579,15 +307,15 @@
         {"left":"(+(a))","right":"(a)", "priority": 30},
         {"left":"(+(a;b))","right":"(+(b;a))", "priority": 20, "isExtending": true},
         {"left":"(a)","right":"(+(a;0))", "priority": 90, "isExtending": true},
-        {"left":"(+(-(+(-(a)))))","right":"(a)", "priority": 5},
-        {"left":"(-(+(-(a))))","right":"(a)", "priority": 5},
-        {"left":"(-(-(a)))","right":"(a)", "priority": 5},
+        {"left":"(+(-(+(-(a)))))","right":"(a)", "priority": 4},
+        {"left":"(-(+(-(a))))","right":"(a)", "priority": 4},
+        {"left":"(-(-(a)))","right":"(a)", "priority": 4},
         {"left":"(a)","right":"(-(+(-(a))))", "priority": 95, "isExtending": true},
 
-        {"left":"(+(a;-(a)))","right":"(0)", "priority": 5},
-        {"left":"(+(-(a);a))","right":"(0)", "priority": 5},
-        {"left":"(+(a;+(-(a))))","right":"(0)", "priority": 5},
-        {"left":"(+(+(-(a));a))","right":"(0)", "priority": 5},
+        {"left":"(+(a;-(a)))","right":"(0)", "priority": 4},
+        {"left":"(+(-(a);a))","right":"(0)", "priority": 4},
+        {"left":"(+(a;+(-(a))))","right":"(0)", "priority": 4},
+        {"left":"(+(+(-(a));a))","right":"(0)", "priority": 4},
 
         {"code": "SimpleComputation", "priority": 5},
         {"code": "ZeroComputation", "priority": 5},
@@ -606,11 +334,11 @@
       "rules":[
         {"rulePack": "ArithmeticAddition"},
 
-        {"left":"(*(a;0))","right":"(0)", "priority": 10},
-        {"left":"(*(0;a))","right":"(0)", "priority": 10},
+        {"left":"(*(a;0))","right":"(0)", "priority": 4},
+        {"left":"(*(0;a))","right":"(0)", "priority": 4},
         {"left":"(0)","right":"(*(a;0))", "isExtending": true},
-        {"left":"(*(a;1))","right":"(a)", "priority": 10},
-        {"left":"(*(1;a))","right":"(a)", "priority": 10},
+        {"left":"(*(a;1))","right":"(a)", "priority": 4},
+        {"left":"(*(1;a))","right":"(a)", "priority": 4},
         {"left":"(a)","right":"(*(a;1))", "isExtending": true},
         {"left":"(*(a;b))","right":"(*(b;a))", "priority": 20, "isExtending": true},
         {"code": "OpeningBrackets", "priority": 30},
@@ -621,7 +349,30 @@
         {"left":"(+(a;a))","right":"(*(2;a))"},
         {"left":"(+(a;+(a)))","right":"(*(2;a))"},
         {"left":"(+(+(a);a))","right":"(*(2;a))"},
-        {"left":"(*(2;a))","right":"(+(a;a))"}
+        {"left":"(*(2;a))","right":"(+(a;a))"},
+
+        {"left": "(+(a;*(a;n)))","right": "(*(a;+(n;1)))"},
+        {"left": "(*(a;+(n;1)))","right": "(+(a;*(a;n)))"},
+        {"left": "(+(*(a;n);a))","right": "(*(a;+(1;n)))"},
+        {"left": "(*(a;+(1;n)))","right": "(+(*(a;n);a))"},
+
+        {"left": "(-(*(A;C)))","right": "(*(+(-(A));C))"},
+        {"left": "(*(-(A);C))","right": "(+(-(*(A;C))))"},
+        {"left": "(-(*(A;C)))","right": "(*(A;+(-(C))))"},
+        {"left": "(*(A;-(C)))","right": "(+(-(*(A;C))))"},
+        {"left": "(*(A;-(C)))","right": "(*(+(-(A);C)))"},
+        {"left": "(*(-(A);C))","right": "(*(A;+(-(C))))"},
+
+        {"left": "(+(-(*(A;C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(+(-(*(A;C))))"},
+        {"left": "(+(-(*(A;C))))","right": "(*(A;+(-(C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(+(-(*(A;C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(*(A;+(-(C))))"},
+
+        {"left": "(*(-(A);-(B)))","right": "(*(A;B))"},
+        {"left": "(*(A;B))","right": "(*(+(-(A));+(-(B))))", "priority": 80, "isExtending": true},
+        {"left": "(*(+(-(A));+(-(B))))","right": "(*(A;B))"}
       ]
     },
     {
@@ -630,11 +381,11 @@
       "rules":[
         {"rulePack": "ArithmeticMultiplication"},
 
-        {"left":"(/(0;a))","right":"(0)", "priority": 10},
-        {"left":"(/(a;1))","right":"(a)", "priority": 10},
-        {"left":"(/(a;a))","right":"(1)", "priority": 10},
-        {"left":"(*(/(1;a);a))","right":"(1)", "priority": 10},
-        {"left":"(/(1;/(1;a)))","right":"(a)", "priority": 10, "matchJumbledAndNested": true},
+        {"left":"(/(0;a))","right":"(0)", "priority": 4},
+        {"left":"(/(a;1))","right":"(a)", "priority": 4},
+        {"left":"(/(a;a))","right":"(1)", "priority": 4},
+        {"left":"(*(/(1;a);a))","right":"(1)", "priority": 4},
+        {"left":"(/(1;/(1;a)))","right":"(a)", "priority": 4, "matchJumbledAndNested": true},
         {"left":"(a)","right":"(/(1;/(1;a)))", "priority": 90, "isExtending": true},
         {"left": "(0.5)","right": "(/(1;2))", "priority": 15, "simpleAdditional": true},
         {"left": "(/(1;2))","right": "(0.5)", "priority": 5, "simpleAdditional": true},
@@ -642,7 +393,58 @@
 
         {"code": "MultiplicativeComplicatingExtension", "priority": 92},
         {"code": "ReduceFraction", "priority": 10},
-        {"code": "DecimalToFraction", "priority": 15}
+        {"code": "DecimalToFraction", "priority": 15},
+
+        {"left": "(/(*(a;n);a))","right": "(*(a;+(n;-(1))))"},
+        {"left": "(*(a;+(n;-(1))))","right": "(/(*(a;n);a))"},
+
+        {"left": "(-(/(A;C)))","right": "(/(+(-(A);C)))"},
+        {"left": "(/(-(A);C))","right": "(+(-(/(A;C))))"},
+        {"left": "(-(/(A;C)))","right": "(/(A;+(-(C))))"},
+        {"left": "(/(A;-(C)))","right": "(+(-(/(A;C))))"},
+        {"left": "(/(A;-(C)))","right": "(/(+(-(A);C)))"},
+        {"left": "(/(-(A);C))","right": "(/(A;+(-(C))))"},
+
+        {"left": "(+(-(/(A;C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(+(-(/(A;C))))"},
+        {"left": "(+(-(/(A;C))))","right": "(/(A;+(-(C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(+(-(/(A;C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(/(A;+(-(C))))"},
+
+        {"left": "(/(-(A);-(B)))","right": "(/(A;B))"},
+        {"left": "(/(A;B))","right": "(/(+(-(A));+(-(B))))", "priority": 80, "isExtending": true},
+        {"left": "(/(+(-(A));+(-(B))))","right": "(/(A;B))"},
+
+        {"left": "(+(/(B;C);/(A;D)))","right": "(/(+(*(B;D);*(C;A));*(C;D)))"},
+        {"left": "(+(/(B;C);-(/(A;D))))","right": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"},
+
+        {"left": "(*(A;/(B;A)))","right": "(B)"},
+        {"left": "(*(/(B;A);A))","right": "(B)"},
+
+        {"left": "(*(A;/(B;C)))","right": "(/(*(A;B);C))"},
+        {"left": "(*(/(B;C);A))","right": "(/(*(A;B);C))"},
+        {"left": "(*(/(B;C);A))","right": "(*(/(B;A);C))"},
+        {"left": "(/(A;B))","right": "(/(1;/(B;A)))"},
+        {"left": "(/(1;/(B;A)))","right": "(/(A;B))"},
+        {"left": "(/(*(A;B);C))","right": "(*(A;/(B;C)))"},
+
+        {"left": "(/(/(B;C);A))","right": "(/(B;*(A;C)))"},
+        {"left": "(/(B;*(A;C)))","right": "(/(/(B;C);A))"},
+
+        {"left": "(/(A;/(B;C)))","right": "(/(*(A;C);B))"},
+        {"left": "(/(*(A;C);B))","right": "(/(A;/(B;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(A;B);/(1;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(1;B);/(A;C)))"},
+        {"left": "(*(/(A;B);/(1;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(1;B);/(A;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(D;B);/(A;C)))","right": "(/(*(D;A);*(B;C)))"},
+        {"left": "(/(*(D;A);*(B;C)))","right": "(*(/(D;B);/(A;C)))"},
+        {"left": "(/(*(D;A);*(B;A)))","right": "(/(D;B))"},
+
+        {"left": "(/(*(D;A);*(D;C)))","right": "(/(A;C))"},
+        {"left": "(/(*(D;A);D))","right": "(A)"},
+        {"left": "(/(*(A;D);D))","right": "(A)"}
       ]
     },
     {
@@ -651,11 +453,11 @@
       "rules":[
         {"rulePack": "ArithmeticDivision"},
 
-        {"left":"(a)","right":"(^(a;1))", "simpleAdditional": true, "isExtending": true},
-        {"left":"(1)","right":"(^(1;2))", "simpleAdditional": true, "isExtending": true},
-        {"left":"(1)","right":"(^(1;3))", "simpleAdditional": true, "isExtending": true},
-        {"left": "(/(1;a))","right": "(^(a;+(-(1))))"},
-        {"left": "(^(a;+(-(1))))","right": "(/(1;a))"},
+        {"left":"(a)","right":"(^(a;1))", "priority": 95, "simpleAdditional": true, "isExtending": true},
+        {"left":"(1)","right":"(^(1;2))", "priority": 95, "simpleAdditional": true, "isExtending": true},
+        {"left":"(1)","right":"(^(1;3))", "priority": 95, "simpleAdditional": true, "isExtending": true},
+        {"left": "(/(1;a))","right": "(^(a;+(-(1))))", "priority": 80},
+        {"left": "(^(a;+(-(1))))","right": "(/(1;a))", "priority": 40},
         {"code": "PowFactorization", "priority": 15},
 
         {"left": "(^(a;+(b;-(c))))","right": "(/(^(a;b);^(a;c)))"},
@@ -673,8 +475,8 @@
         {"left": "(^(A;1))","right": "(A)", "priority": 5},
         {"left": "(^(0;A))","right": "(0)", "priority": 5},
 
-        {"left": "(*(a;a))","right": "(^(a;2))", "simpleAdditional": true},
-        {"left": "(^(a;2))","right": "(*(a;a))", "simpleAdditional": true},
+        {"left": "(*(a;a))","right": "(^(a;2))", "priority": 40, "simpleAdditional": true},
+        {"left": "(^(a;2))","right": "(*(a;a))", "priority": 40, "simpleAdditional": true},
 
         {"left": "(*(a;^(a;n)))","right": "(^(a;+(n;1)))"},
         {"left": "(^(a;+(n;1)))","right": "(*(a;^(a;n)))"},
@@ -690,11 +492,26 @@
         {"left": "(^(/(B;C);A))","right": "(/(^(B;A);^(C;A)))"},
         {"left": "(/(^(B;A);^(C;A)))","right": "(^(/(B;C);A))"},
 
-        {"left": "(^(A;*(2;n)))","right": "(^(-(A);*(2;n)))"},
         {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"},
         {"left": "(^(-(A);2))","right": "(^(A;2))"},
+        {"left": "(^(+(-(A));*(2;n)))","right": "(^(A;*(2;n)))"},
+        {"left": "(^(+(-(A));2))","right": "(^(A;2))"},
+        {"left": "(^(a;*(2;n)))","right": "(^(+(-(a));*(2;n)))"},
+        {"left": "(^(a;2))","right": "(^(+(-(a));2))"},
 
         {"left": "(^(^(a;b);/(1;b)))","right": "(a)", "priority": 5}
+      ]
+    },
+    {
+      "name": "ArithmeticPowExtensions",
+      "type": "algebra",
+      "rules": [
+        {"rulePack": "ArithmeticPow"},
+
+        {"left": "(a)","right": "(^(^(a;2);/(1;2)))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;/(1;2));2))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;3);/(1;3)))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;/(1;3));3))", "priority": 96, "isExtending": true}
       ]
     },
     {
@@ -736,7 +553,7 @@
       "name": "Logarithm",
       "type": "algebra",
       "rules":[
-        {"rulePack": "ArithmeticPow"},
+        {"rulePack": "ShortMultiplication"},
 
         {"left": "(^(a;log(b;a)))","right": "(b)", "priority": 5},
 

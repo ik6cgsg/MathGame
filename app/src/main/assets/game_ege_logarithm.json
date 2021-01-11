@@ -234,7 +234,14 @@
         {"rulePack": "ShortMultiplication"},
         {"rulePack": "Logarithm"},
 
-        {"rulePack": "ArithmeticPlusSelections"}
+        {"rulePack": "ArithmeticPlusSelections"},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "NumberPlusMinus1", "priority": 20},
+        {"code": "MultiplicationFactorization", "priority": 15},
+        {"code": "DecimalToFraction", "priority": 15},
+        {"code": "PowFactorization", "priority": 15}
       ]
     },
     {
