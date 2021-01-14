@@ -620,11 +620,11 @@
         {"left": "(tg(/(π;4)))","right": "(1)", "priority": 5},
         {"left": "(1)","right": "(tg(/(π;4)))", "priority": 89},
         {"left": "(ctg(/(π;4)))","right": "(1)", "priority": 5},
-        {"left": "(1)","right": "(сtg(/(π;4)))", "priority": 89},
+        {"left": "(1)","right": "(ctg(/(π;4)))", "priority": 89},
         {"left": "(tg(0))","right": "(0)", "priority": 5},
         {"left": "(0)","right": "(tg(0))", "priority": 89},
         {"left": "(ctg(/(π;2)))","right": "(0)", "priority": 5},
-        {"left": "(0)","right": "(сtg(/(π;2)))", "priority": 89},
+        {"left": "(0)","right": "(ctg(/(π;2)))", "priority": 89},
 
         {"left": "(sin(a))","right": "(+(-(sin(+(a;π)))))", "priority": 89},
         {"left": "(sin(a))","right": "(+(-(sin(+(a;-(π))))))", "priority": 89},
