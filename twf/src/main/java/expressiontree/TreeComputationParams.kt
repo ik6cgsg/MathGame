@@ -4,8 +4,13 @@ import numbers.toReal
 import kotlin.math.abs
 import kotlin.math.pow
 
+const val TREE_COMPUTATION_RULES_PRIORITY = 5
+const val TREE_COMPUTATION_DEFAULT = "SimpleComputation"
+
+
 data class SimpleComputationRuleParams(
-        var isIncluded: Boolean,
+        var ruleCodes: Set<String> = setOf(),
+        var isIncluded: Boolean = true,
         var maxCalcComplexity: Int = 5,
         var maxTenPowIterations: Int = 10,
         var maxPlusArgRounded: Int = 200,
@@ -13,8 +18,8 @@ data class SimpleComputationRuleParams(
         var maxDivBaseRounded: Int = 400,
         var maxPowBaseRounded: Int = 50,
         var maxPowDegRounded: Int = 10,
-        var maxResRounded: Int = 400,
         var maxLogBaseRounded: Int = 400,
+        var maxResRounded: Int = 400,
         var operationsMap: Map<String, (List<Double>) -> Double?> = mapOf()
 ) {
     init {
@@ -26,12 +31,63 @@ data class SimpleComputationRuleParams(
                 "^" to { args -> pow(args, this) },
                 "log" to { args -> log(args, this) }
         )
+
+        if (ruleCodes.isNotEmpty()) {
+            if (ruleCodes.contains("SimpleComputationBeforeSchool")) {
+                maxCalcComplexity = 2
+                maxTenPowIterations = 3
+                maxPlusArgRounded = 1
+                maxMulArgRounded = 1
+                maxDivBaseRounded = 1
+                maxPowBaseRounded = 1
+                maxPowDegRounded = 1
+                maxLogBaseRounded = 1
+
+                maxResRounded = 10
+
+            } else if (ruleCodes.contains("SimpleComputationYoungSchool")) {
+                maxCalcComplexity = 3
+                maxTenPowIterations = 5
+                maxPlusArgRounded = 100
+                maxMulArgRounded = 10
+                maxDivBaseRounded = 10
+                maxPowBaseRounded = 1
+                maxPowDegRounded = 1
+                maxLogBaseRounded = 1
+
+                maxResRounded = 100
+
+            } else if (ruleCodes.contains("SimpleComputationMiddleSchool")) {
+                maxCalcComplexity = 5
+                maxTenPowIterations = 10
+                maxPlusArgRounded = 200
+                maxMulArgRounded = 50
+                maxDivBaseRounded = 400
+                maxPowBaseRounded = 50
+                maxPowDegRounded = 10
+                maxLogBaseRounded = 400
+
+                maxResRounded = 400
+
+            } else if (ruleCodes.contains("SimpleComputationUniversity")) {
+                maxCalcComplexity = Int.MAX_VALUE
+                maxTenPowIterations = 11
+                maxPlusArgRounded = Int.MAX_VALUE
+                maxMulArgRounded = Int.MAX_VALUE
+                maxDivBaseRounded = Int.MAX_VALUE
+                maxPowBaseRounded = Int.MAX_VALUE
+                maxPowDegRounded = Int.MAX_VALUE
+                maxLogBaseRounded = Int.MAX_VALUE
+
+                maxResRounded = Int.MAX_VALUE
+            }
+        }
     }
 }
 
-val simpleComputationRuleParamsDefault = SimpleComputationRuleParams(true)
+val simpleComputationRuleParamsDefault = SimpleComputationRuleParams()
 
-val simpleComputationRuleParamsNoLimits = SimpleComputationRuleParams(true, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+val simpleComputationRuleParamsNoLimits = SimpleComputationRuleParams(setOf("SimpleComputationUniversity"), true)
 
 fun ExpressionNode.calcComplexity(): Int {
     if (nodeType == NodeType.VARIABLE && (value == "1" || value == "0" || (value.toDoubleOrNull() != null && (roundNumber(value.toDouble()) - 1.0).toReal().additivelyEqualToZero()))) {

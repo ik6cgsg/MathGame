@@ -208,8 +208,8 @@
       "name": "BaseUAPCV",
       "type": "algebra",
       "rules":[
-        {"left": "(U(m;n))","right": "(^(m,n))"},
-        {"left": "(^(m,n))","right": "(U(m;n))"},
+        {"left": "(U(m;n))","right": "(^(m;n))"},
+        {"left": "(^(m;n))","right": "(U(m;n))"},
 
         {"left": "(P(n))","right": "(factorial(n))"},
         {"left": "(factorial(n))","right": "(P(n))"},

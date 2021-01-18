@@ -43,6 +43,8 @@ fun checkFactsInTex(
     val error = transformationChainParser.parse()
     if (error != null) {
         return TexVerificationResult(returnParsingError(error, texSolution), "Syntax error (underlined): ${error.description}")
+    } else if (transformationChainParser.root.factTransformationChains.isEmpty() && transformationChainParser.root.expressionTransformationChains.isEmpty()) {
+        return TexVerificationResult(texSolution, "Error: No transformations found")
     } else {
         log.addMessage({ "input transformations are parsed successfully" }, MessageType.USER, level = 0)
         log.addMessageWithFactDetail({ "parsed input transformations: " }, transformationChainParser.root, MessageType.USER)

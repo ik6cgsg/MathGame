@@ -427,9 +427,9 @@ class ExpressionSubstitution(
 
     fun checkAndApply(expressionNode: ExpressionNode): ExpressionNode? {
         val substitutionInstance = checkLeftCondition(expressionNode)
-        if (substitutionInstance.isApplicable)
+        if (substitutionInstance.isApplicable) {
             return applyRight(substitutionInstance, topNodeId = expressionNode.nodeId)
-        else
+        } else
             return null
     }
 }

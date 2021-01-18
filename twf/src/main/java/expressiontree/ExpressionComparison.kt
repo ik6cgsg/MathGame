@@ -171,7 +171,7 @@ class ExpressionComporator(
             right.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgs, this)
             return probabilityTestComparison(left, right, comparisonType, justInDomainsIntersection = justInDomainsIntersection)
         }
-        return compareAsIs (left, right, withBracketUnification = true)
+        return compareAsIs (left.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration), right.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration), withBracketUnification = true)
     }
 
     fun compareWithTreeTransformationRules(leftOriginal: ExpressionNode, rightOriginal: ExpressionNode, transformations: Collection<ExpressionSubstitution>,
