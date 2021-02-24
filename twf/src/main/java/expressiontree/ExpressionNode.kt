@@ -565,10 +565,14 @@ data class ExpressionNode(
                 (
                         if (it.isNumberValue())
                             "1${it.identifier}"
-                        else if (it.nodeType == NodeType.FUNCTION)
+                        else if (it.nodeType == NodeType.FUNCTION && !it.haveComplexNode())
                             "2${it.value}"
+                        else if (it.nodeType == NodeType.FUNCTION && it.haveComplexNode())
+                            "3${it.value}"
+                        else if (it.value != "sys_def_i_complex")
+                            "4"
                         else
-                            "3"
+                            "5"
                         )
             } //first: sorted numbers; than functions and variables in the original order //TODO: it leads to the problem of wrong matching if order is changed
         return this
@@ -602,10 +606,22 @@ data class ExpressionNode(
         return false
     }
 
+    fun haveComplexNode (): Boolean{
+        if (value == "sys_def_i_complex")  {
+            return true
+        } else {
+            for (child in children) {
+                if (child.haveComplexNode())
+                    return true
+            }
+        }
+        return false
+    }
+
     fun getVariableNames(): Set<String> {
         var result = mutableSetOf<String>()
         if (nodeType == NodeType.VARIABLE) {
-            if (value.toDoubleOrNull() == null)
+            if (value.toDoubleOrNull() == null && value != "sys_def_i_complex")
                 result.add(value)
         } else for (child in children)
             result.addAll(child.getVariableNames())
@@ -965,6 +981,21 @@ data class ExpressionNode(
         return (expressionValue - matchingValue).abs() < 11.9e-7  // todo: unify with approach in BaseOperationDefinitions.kt
     }
 
+    fun containsFunctionBesides (definedFunctionNameNumberOfArgsSet: Set<String>):Boolean {
+        if (nodeType == NodeType.FUNCTION) {
+            if (!definedFunctionNameNumberOfArgsSet.contains(value + "_" + children.size) &&
+                    !definedFunctionNameNumberOfArgsSet.contains(value + "_-1")) {
+                return true
+            }
+            for (child in children) {
+                if (child.containsFunctionBesides(definedFunctionNameNumberOfArgsSet)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     fun replaceNotDefinedFunctionsOnVariables(
             functionIdentifierToVariableMap: MutableMap<ExpressionNode, String>,
             definedFunctionNameNumberOfArgsSet: Set<String>,
@@ -1049,8 +1080,8 @@ class ExpressionNodeConstructor(
         val compiledImmediateVariableReplacements: Map<String, String> = mapOf()
 ) {
     fun construct(identifier: String): ExpressionNode {
-        if (identifier.isEmpty()) {
-            return ExpressionNode(NodeType.FUNCTION, "")
+        if (identifier.isBlank()) {
+            return ExpressionNode(NodeType.ERROR, value = "No expression found", startPosition = 0, endPosition = 1)
         }
         val child = if (identifier.first() == '(' && identifier.last() == ')') {
             constructRecursive(identifier.substring(1, identifier.lastIndex), 1)

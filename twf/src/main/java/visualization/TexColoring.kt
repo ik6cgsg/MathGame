@@ -49,13 +49,22 @@ fun dropPerformedTexBrushingInternal (string: String): String {
         if (index != null){
             result.append(string.substring(currentPosition, index.first))
             currentPosition = index.first + index.second.length
-            currentPosition = skipFromRemainingExpressionWhile({ it != '}' }, string, currentPosition) + 1
+            currentPosition = skipFromRemainingExpressionWhile({ it != '}' }, string, currentPosition) + 2
             val newCurrentPosition = skipFromRemainingExpressionWhileClosingBracketNotFound("}", "{", string, currentPosition)
             result.append(string.substring(currentPosition, newCurrentPosition))
             currentPosition = newCurrentPosition + 1
         } else {
-            result.append(string.substring(currentPosition))
-            break
+            val underlineIndex = string.findAnyOf(listOf("\\underline{"), currentPosition)
+            if (underlineIndex != null) {
+                result.append(string.substring(currentPosition, underlineIndex.first))
+                currentPosition = underlineIndex.first + underlineIndex.second.length
+                val newCurrentPosition = skipFromRemainingExpressionWhileClosingBracketNotFound("}", "{", string, currentPosition)
+                result.append(string.substring(currentPosition, newCurrentPosition))
+                currentPosition = newCurrentPosition + 1
+            } else {
+                result.append(string.substring(currentPosition))
+                break
+            }
         }
     }
     return result.toString()

@@ -2,6 +2,14 @@ package config
 
 enum class ComparisonType(val string: String) { LEFT_MORE_OR_EQUAL(">="), LEFT_LESS_OR_EQUAL("<="), EQUAL("="), LEFT_MORE(">"), LEFT_LESS("<") } //order is important for parser
 
+fun ComparisonType.reverse () = when (this){
+    ComparisonType.LEFT_MORE_OR_EQUAL -> ComparisonType.LEFT_LESS_OR_EQUAL
+    ComparisonType.LEFT_LESS_OR_EQUAL -> ComparisonType.LEFT_MORE_OR_EQUAL
+    ComparisonType.LEFT_MORE -> ComparisonType.LEFT_LESS
+    ComparisonType.LEFT_LESS -> ComparisonType.LEFT_MORE
+    else -> this
+}
+
 fun strictComparison(comp: ComparisonType) : Boolean {
     return comp == ComparisonType.LEFT_LESS || comp == ComparisonType.LEFT_MORE
 }

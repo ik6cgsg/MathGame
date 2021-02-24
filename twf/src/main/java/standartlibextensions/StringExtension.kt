@@ -23,7 +23,8 @@ fun isUnarySignPart(c: Char): Boolean = (c == '!' || c == '#' || c == '\'')
 fun isBinarySignPart(c: Char, isMathML: Boolean = false): Boolean = (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '%' || c == '|' || c == '\\' || (c == '&' && !isMathML))
 fun Char.isSign(isMathML: Boolean = false) = isUnarySignPart(this) || isBinarySignPart(this, isMathML)
 
-
+fun String.isWhiteSpace(index: Int) = (this[index].isWhitespace() ||
+        (this[index] == '\\' && (index + 1 >= this.length || this[index + 1].isWhitespace())))
 
 fun texStringPrefiltering(string: String): String {
     var i = 0

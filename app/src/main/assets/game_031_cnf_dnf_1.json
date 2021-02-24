@@ -1,0 +1,461 @@
+{
+  "gameSpace": "",
+  "gameCode": "game_031_cnf_dnf_1",
+  "name": "CNF DNF forms-1",
+  "en": "CNF DNF forms-1",
+  "ru": "КНФ ДНФ формы-1",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_01_NF",
+      "name": "Level 1 CNF",
+      "ru": "Уровень 1 КНФ",
+      "en": "Level 1 CNF",
+      "difficulty": 1.0,
+      "type": "set",
+      "stepsNum": 3,
+      "time": 50,
+      "originalExpression": "(set-(A;set-(A;B)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_02_NF",
+      "name": "Level 2 DNF",
+      "ru": "Уровень 2 ДНФ",
+      "en": "Level 2 DNF",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 60,
+      "originalExpression": "(implic(implic(A;not(B));C))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_03_NF",
+      "name": "Level 3 CNF",
+      "ru": "Уровень 3 КНФ",
+      "en": "Level 3 CNF",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 90,
+      "originalExpression": "(not(and(A;set-(B;C))))",
+      "finalExpression": "3-CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_04_NF",
+      "name": "Level 4 2-CNF",
+      "ru": "Уровень 4 2-КНФ",
+      "en": "Level 4 2-CNF",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 70,
+      "originalExpression": "(not(or(and(not(A);not(B));and(not(C);not(D)))))",
+      "finalExpression": "2-CNF",
+      "finalPattern": "and : (or : 2) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_05_NF",
+      "name": "Level 5 3-DNF",
+      "ru": "Уровень 5 3-ДНФ",
+      "en": "Level 5 3-DNF",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(not(or(A;B;C)))",
+      "finalExpression": "3-DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_06_NF",
+      "name": "Level 6 DNF",
+      "ru": "Уровень 6 ДНФ",
+      "en": "Level 6 DNF",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 10,
+      "time": 200,
+      "originalExpression": "(implic(and(implic(C;B);not(or(A;B;C)));C))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_07_NF",
+      "name": "Level 7 DNF",
+      "ru": "Уровень 7 ДНФ",
+      "en": "Level 7 DNF",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 9,
+      "time": 200,
+      "originalExpression": "(and(not(or(and(A;B;or(and(B;C);not(A)));A));and(B;A)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_08_NF",
+      "name": "Level 8 DNF",
+      "ru": "Уровень 8 ДНФ",
+      "en": "Level 8 DNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 22,
+      "time": 300,
+      "originalExpression": "(implic(implic(implic(implic(A;B);C);implic(implic(B;C);A));implic(implic(C;A);B)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_09_NF",
+      "name": "Level 9 DNF",
+      "ru": "Уровень 9 ДНФ",
+      "en": "Level 9 DNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 400,
+      "originalExpression": "(and(or(A;B;not(C));or(A;not(B);C);or(not(A);B;C)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_10_NF",
+      "name": "Level 10 СNF",
+      "ru": "Уровень 10 КНФ",
+      "en": "Level 10 CNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 27,
+      "time": 400,
+      "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_11_NF",
+      "name": "Level 11 СNF",
+      "ru": "Уровень 11 КНФ",
+      "en": "Level 11 CNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 27,
+      "time": 400,
+      "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_12_NF",
+      "name": "Level 12 DNF",
+      "ru": "Уровень 12 ДНФ",
+      "en": "Level 12 DNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 26,
+      "time": 400,
+      "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_13_NF",
+      "name": "Level 13 СNF",
+      "ru": "Уровень 13 КНФ",
+      "en": "Level 13 CNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 400,
+      "originalExpression": "(or(and(A;not(B);C;not(D));and(not(A);B;not(C);D)))",
+      "finalExpression": "CNF",
+      "finalPattern": "and : (or) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_14_NF",
+      "name": "Level 14 DNF",
+      "ru": "Уровень 14 ДНФ",
+      "en": "Level 14 DNF",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 400,
+      "originalExpression": "(and(or(A;not(B);C;not(D));or(not(A);B;not(C);D)))",
+      "finalExpression": "DNF",
+      "finalPattern": "or : (and) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    }
+  ,
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_15_NF",
+      "name": "Level 15 3-DNF",
+      "ru": "Уровень 15 3-ДНФ",
+      "en": "Level 15 3-DNF",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 400,
+      "originalExpression": "(and(or(A;B;not(C));or(A;not(B);C);or(not(A);B;C)))",
+      "finalExpression": "3-DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_16_NF",
+      "name": "Level 16 3-СNF",
+      "ru": "Уровень 16 3-КНФ",
+      "en": "Level 16 3-CNF",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 27,
+      "time": 400,
+      "originalExpression": "(or(and(A;not(B);not(C));and(A;not(B);C);and(not(A);B;C)))",
+      "finalExpression": "3-CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_17_NF",
+      "name": "Level 17 3-СNF",
+      "ru": "Уровень 17 3-КНФ",
+      "en": "Level 17 3-CNF",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 27,
+      "time": 400,
+      "originalExpression": "(or(and(A;not(B));and(C;not(D));and(not(A);B);and(not(C);D)))",
+      "finalExpression": "3-CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_18_NF",
+      "name": "Level 18 3-DNF",
+      "ru": "Уровень 18 3-ДНФ",
+      "en": "Level 18 3-DNF",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 26,
+      "time": 400,
+      "originalExpression": "(and(or(A;not(B));or(C;not(D));or(not(A);B);or(not(C);D)))",
+      "finalExpression": "3-DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_19_NF",
+      "name": "Level 19 3-СNF",
+      "ru": "Уровень 19 3-КНФ",
+      "en": "Level 19 3-CNF",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 400,
+      "originalExpression": "(or(and(A;not(B);C;not(D));and(not(A);B;not(C);D)))",
+      "finalExpression": "3-CNF",
+      "finalPattern": "and : (or : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_031_cnf_dnf_1__Level_20_NF",
+      "name": "Level 20 3-DNF",
+      "ru": "Уровень 20 3-ДНФ",
+      "en": "Level 20 3-DNF",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 36,
+      "time": 400,
+      "originalExpression": "(and(or(A;not(B);C;not(D));or(not(A);B;not(C);D)))",
+      "finalExpression": "3-DNF",
+      "finalPattern": "or : (and : 3) : : : not",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "SetDeMorgan",
+      "type": "set",
+      "rules":[
+        {"left": "(not(and(A;B)))","right": "(or(not(A);not(B)))", "priority": 15},
+        {"left": "(or(not(A);not(B)))","right": "(not(and(A;B)))", "priority": 10},
+        {"left": "(not(or(A;B)))","right": "(and(not(A);not(B)))", "priority": 15},
+        {"left": "(and(not(A);not(B)))","right": "(not(or(A;B)))", "priority": 10}
+      ]
+    },
+    {
+      "name": "LogicAndOrBase",
+      "type": "set",
+      "rules":[
+        {"rulePack": "SetDeMorgan"},
+
+        {"left": "(not(not(a)))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(not(not(a)))", "isExtending": true, "priority": 89},
+
+        {"left": "(or(a;a))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(or(a;a))", "isExtending": true, "priority": 90},
+        {"left": "(and(a;a))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(and(a;a))", "isExtending": true, "priority": 90},
+
+        {"left":"(and(a;b))","right":"(and(b;a))", "priority": 40, "isExtending": true},
+        {"left":"(or(a;b))","right":"(or(b;a))", "priority": 40, "isExtending": true},
+
+        {"left":"(a)","right":"(and(a;1))", "priority": 90, "isExtending": true},
+        {"left":"(a)","right":"(or(a;0))", "priority": 90, "isExtending": true},
+
+        {"left": "(or(A;not(A)))","right": "(1)", "priority": 5},
+        {"left": "(or(not(A);A))","right": "(1)", "priority": 5},
+        {"left": "(and(A;not(A)))","right": "(0)", "priority": 5},
+        {"left": "(and(not(A);A))","right": "(0)", "priority": 5},
+        {"left": "(or(A;1))","right": "(1)", "priority": 5},
+        {"left": "(or(1;A))","right": "(1)", "priority": 5},
+        {"left": "(and(A;1))","right": "(A)", "priority": 5},
+        {"left": "(and(1;A))","right": "(A)", "priority": 5},
+        {"left": "(or(A;0))","right": "(A)", "priority": 5},
+        {"left": "(or(0;A))","right": "(A)", "priority": 5},
+        {"left": "(and(A;0))","right": "(0)", "priority": 5},
+        {"left": "(and(0;A))","right": "(0)", "priority": 5},
+
+        {"left": "(not(0))","right": "(1)", "priority": 5},
+        {"left": "(not(1))","right": "(0)", "priority": 5},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "SetComplicatingExtension", "priority": 92},
+        {"code": "ParentBracketsExpansion", "priority": 30},
+        {"code": "ArgumentsSwap", "priority": 40},
+        {"code": "ArgumentsPermutation", "priority": 40},
+        {"code": "OpeningBrackets", "priority": 30},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41},
+        {"code": "ReduceArithmetic", "priority": 10},
+        {"code": "TwoSidesArithmeticReduce", "priority": 10}
+      ]
+    },
+    {
+      "name": "LogicImplicationDifference",
+      "type": "set",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+
+        {"left": "(or(not(A);B))","right": "(implic(A;B))"},
+        {"left": "(or(B;not(A)))","right": "(implic(A;B))"},
+        {"left": "(implic(A;B))","right": "(or(not(A);B))"},
+
+        {"left": "(and(A;not(B)))","right": "(set-(A;B))"},
+        {"left": "(and(not(B);A))","right": "(set-(A;B))"},
+        {"left": "(set-(A;B))","right": "(and(A;not(B)))"},
+
+        {"left": "(set-(A;B))","right": "(not(implic(A;B)))"},
+        {"left": "(not(implic(A;B)))","right": "(set-(A;B))"},
+        {"left": "(implic(A;B))","right": "(not(set-(A;B)))"},
+        {"left": "(not(set-(A;B)))","right": "(implic(A;B))"},
+
+        {"left": "(set-(A;0))","right": "(A)", "priority": 5},
+        {"left": "(set-(A;1))","right": "(0)", "priority": 5},
+        {"left": "(set-(0;A))","right": "(0)", "priority": 5},
+        {"left": "(set-(1;A))","right": "(not(A))", "priority": 5},
+
+        {"left": "(implic(0;A))","right": "(1)", "priority": 5},
+        {"left": "(implic(A;1))","right": "(1)", "priority": 5},
+        {"left": "(implic(A;0))","right": "(not(A))", "priority": 5},
+        {"left": "(implic(1;A))","right": "(A)", "priority": 5},
+
+        {"left": "(A)","right": "(set-(A;0))", "priority": 91, "isExtending": true},
+        {"left": "(A)","right": "(implic(1;A))", "priority": 91, "isExtending": true}
+      ]
+    },
+    {
+      "name": "LogicAbsorptionLaw",
+      "type": "set",
+      "rules":[
+        {"left": "(and(A;or(A;B)))","right": "(A)", "priority": 6},
+        {"left": "(or(A;and(A;B)))","right": "(A)", "priority": 6},
+        {"left": "(and(A;or(B;A)))","right": "(A)", "priority": 6},
+        {"left": "(or(A;and(B;A)))","right": "(A)", "priority": 6},
+        {"left": "(and(or(A;B);A))","right": "(A)", "priority": 6},
+        {"left": "(or(and(A;B);A))","right": "(A)", "priority": 6},
+        {"left": "(and(or(B;A);A))","right": "(A)", "priority": 6},
+        {"left": "(or(and(B;A);A))","right": "(A)", "priority": 6},
+
+        {"left": "(A)","right": "(and(A;or(A;B)))", "priority": 90, "isExtending": true},
+        {"left": "(A)","right": "(or(A;and(A;B)))", "priority": 90, "isExtending": true}
+      ]
+    }
+  ]
+}

@@ -157,27 +157,6 @@ data class SubstitutionSelectionData(
         var nestedNodesInSelection: Boolean = false
 )
 
-data class SubstitutionApplication(
-        val expressionSubstitution: ExpressionSubstitution,
-        val originalExpression: ExpressionNode,
-        val originalExpressionChangingPart: ExpressionNode,
-        val resultExpression: ExpressionNode,
-        val resultExpressionChangingPart: ExpressionNode,
-        val substitutionType: String,
-        var priority: Int // as smaller as higher in output
-) {
-    override fun toString() = "" +
-            "result: '${resultExpression.toPlainTextView()}'\n" +
-            "expressionSubstitution.left: '${expressionSubstitution.left.toString()}'\n" +
-            "expressionSubstitution.right: '${expressionSubstitution.right.toString()}'\n" +
-            "originalExpression: '${originalExpression.toString()}'\n" +
-            "originalExpressionChangingPart: '${originalExpressionChangingPart.toString()}'\n" +
-            "resultExpression: '${resultExpression.toString()}'\n" +
-            "resultExpressionChangingPart: '${resultExpressionChangingPart.toString()}'\n" +
-            "substitutionType: '${substitutionType}'\n" +
-            "priority: '${priority}'"
-}
-
 fun simpleCommutativeOperationSelectionHandling(substitutionSelectionData: SubstitutionSelectionData) {
     if (substitutionSelectionData.selectedNodeIds.size > 1 && substitutionSelectionData.lowestSubtreeHigh != null && (substitutionSelectionData.lowestSubtreeHigh!!.functionStringDefinition?.function?.isCommutativeWithNullWeight ?: return ||
                     (substitutionSelectionData.selectedNodeIds.size == 2 && substitutionSelectionData.lowestSubtreeHigh!!.getChildNodesOnDepthOrWhileOperation(2, listOf("*", "/")).map { it.nodeId }.containsAll(substitutionSelectionData.selectedNodeIds.toList()) &&
@@ -387,7 +366,8 @@ fun generateParentBracketsExpansionSubstitution(substitutionSelectionData: Subst
 
             parentOfParent.setChildOnPosition(inBracketsNodeParent, parentNodeIndex)
 
-            val swapSubstitution = ExpressionSubstitution(addRootNodeToExpression(inBracketsNodeParent.clone()), addRootNodeToExpression(newParent), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val swapSubstitution = ExpressionSubstitution(addRootNodeToExpression(inBracketsNodeParent.clone()), addRootNodeToExpression(newParent),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             result.add(SubstitutionApplication(
                     swapSubstitution,
                     substitutionSelectionData.originalExpression,
@@ -439,7 +419,8 @@ fun generateMinusInOutBracketsSubstitution(substitutionSelectionData: Substituti
             }
             parentOfParent.setChildOnPosition(inBracketsNodeParent, parentNodeIndex)
 
-            val minusInBracketsSubstitution = ExpressionSubstitution(addRootNodeToExpression(left), addRootNodeToExpression(newInBracketsNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val minusInBracketsSubstitution = ExpressionSubstitution(addRootNodeToExpression(left), addRootNodeToExpression(newInBracketsNode),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             result.add(SubstitutionApplication(
                     minusInBracketsSubstitution,
                     originalExpression,
@@ -472,7 +453,8 @@ fun generateMinusInOutBracketsSubstitution(substitutionSelectionData: Substituti
                     addChild(right.clone())
                 }
             }
-            val minusOutBracketsSubstitution = ExpressionSubstitution(addRootNodeToExpression(inBracketsNode), addRootNodeToExpression(right), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val minusOutBracketsSubstitution = ExpressionSubstitution(addRootNodeToExpression(inBracketsNode), addRootNodeToExpression(right),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             result.add(SubstitutionApplication(
                     minusOutBracketsSubstitution,
                     originalExpression,
@@ -521,7 +503,8 @@ fun generatePermutationSubstitutions(substitutionSelectionData: SubstitutionSele
                 firstNodeParent.setChildOnPosition(firstNode, firstNodeIndex)
                 secondNodeParent.setChildOnPosition(secondNode, secondNodeIndex)
 
-                val swapSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(swapResult), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                val swapSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(swapResult),
+                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                 result.add(SubstitutionApplication(
                         swapSubstitution,
                         originalExpression,
@@ -555,7 +538,8 @@ fun generatePermutationSubstitutions(substitutionSelectionData: SubstitutionSele
                 addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                         selectedPartTransformationResultInSelectedOrderInBrackets,
                         result,
-                        ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(selectedPartTransformationResultInSelectedOrderInBrackets), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                        ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(selectedPartTransformationResultInSelectedOrderInBrackets),
+                                code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                         "SelectedOrderExtraction", subst.priority ?: 90)
 
                 if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.toString() != substitutionSelectionData.selectedSubtreeTopArguments!!.toString() &&
@@ -572,7 +556,8 @@ fun generatePermutationSubstitutions(substitutionSelectionData: SubstitutionSele
                     addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                             selectedPartTransformationResultInOriginalOrderInBrackets,
                             result,
-                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(selectedPartTransformationResultInOriginalOrderInBrackets), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(selectedPartTransformationResultInOriginalOrderInBrackets),
+                                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                             "OriginalOrderExtraction", subst.priority ?: 90)
                 }
             }
@@ -623,7 +608,8 @@ fun generateReduceArithmeticSubstitutions(substitutionSelectionData: Substitutio
                         addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                                 degNode,
                                 result,
-                                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(degNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(degNode),
+                                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                                 "ReduceArithmetic", subst.priority ?: 5)
                     }
                 }
@@ -648,7 +634,8 @@ fun generateReduceArithmeticSubstitutions(substitutionSelectionData: Substitutio
                     addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                             degNode,
                             result,
-                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(degNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(degNode),
+                                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                             "ReduceArithmetic", subst.priority ?: 5)
                 }
             }
@@ -673,7 +660,8 @@ fun generateReduceArithmeticSubstitutions(substitutionSelectionData: Substitutio
                         addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                                 degNode,
                                 result,
-                                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(degNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(degNode),
+                                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                                 "ReduceArithmetic", subst.priority ?: 5)
                     }
                 }
@@ -728,7 +716,8 @@ private fun tryToAddMonomReduceTransformation(plusOperation: String, dotOperatio
             addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                     prodNode,
                     result,
-                    ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                    ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode),
+                            code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                     "TwoSidesArithmeticReduce", subst.priority ?: 5)
         }
     }
@@ -759,7 +748,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                             addChild(numerator)
                             addChild(denominator)
                         }),
-                        addRootNodeToExpression(ExpressionNode(NodeType.VARIABLE, "1")), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                        addRootNodeToExpression(ExpressionNode(NodeType.VARIABLE, "1")), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                 val applicationPlace = substitutionSelectionData.topOfSelection!!.clone()
                 val applicationResultInPlace = rightBase.clone().normalizeReduceFractionResult()
                 substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(applicationResultInPlace, substitutionSelectionData.topOfSelectionIndex)
@@ -792,7 +781,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                                 addChild(numerator)
                                 addChild(denominator)
                             }),
-                            addRootNodeToExpression(resNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                            addRootNodeToExpression(resNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                     val applicationPlace = substitutionSelectionData.topOfSelection!!.clone()
                     val applicationResultInPlace = rightBase.clone().apply {
                         if (resNode.value == "/") {
@@ -847,7 +836,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                                 addChild(numerator)
                                 addChild(denominator)
                             }),
-                            addRootNodeToExpression(resNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                            addRootNodeToExpression(resNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                     val applicationPlace = substitutionSelectionData.topOfSelection!!.clone()
                     val applicationResultInPlace = rightBase.clone().apply {
                         if (resNode.value == "/") {
@@ -883,7 +872,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                                 addChild(numerator)
                                 addChild(denominator)
                             }),
-                            addRootNodeToExpression(resNodeNumerator), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                            addRootNodeToExpression(resNodeNumerator), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                     val applicationPlaceNumerator = substitutionSelectionData.topOfSelection!!.clone()
                     val applicationResultInPlaceNumerator = rightBase.clone().apply {
                         children.first().addChild(resNodeNumerator.clone())
@@ -918,7 +907,7 @@ fun generateReduceFractionSubstitutions(substitutionSelectionData: SubstitutionS
                                 addChild(numerator)
                                 addChild(denominator)
                             }),
-                            addRootNodeToExpression(resNodeDenominator), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                            addRootNodeToExpression(resNodeDenominator), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                     val applicationPlaceDenominator = substitutionSelectionData.topOfSelection!!.clone()
                     val applicationResultInPlaceDenominator = rightBase.clone().apply {
                         children.last().addChild(resNodeDenominator.children.last().clone())
@@ -1103,7 +1092,8 @@ fun generateZeroComputationSubstitutions(substitutionSelectionData: Substitution
             }
 
             if (zeroElementFound) {
-                val zeroComputationSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(topNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                val zeroComputationSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(topNode),
+                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                 val originalExpression = substitutionSelectionData.originalExpression.clone()
                 substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(topNode, substitutionSelectionData.topOfSelectionIndex)
                 result.add(SubstitutionApplication(
@@ -1125,7 +1115,8 @@ fun generateZeroComputationSubstitutions(substitutionSelectionData: Substitution
                 substitutionSelectionData.topOfSelection?.children?.any { it.value == substitutionSelectionData.topOfSelection?.functionStringDefinition?.function?.fieldMulZero } == true) {
             val topNode = ExpressionNode(NodeType.VARIABLE, substitutionSelectionData.topOfSelection!!.functionStringDefinition!!.function.fieldMulZero!!)
 
-            val zeroComputationSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(topNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val zeroComputationSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(topNode),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             val originalExpression = substitutionSelectionData.originalExpression.clone()
             substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(topNode, substitutionSelectionData.topOfSelectionIndex)
             result.add(SubstitutionApplication(
@@ -1144,20 +1135,6 @@ fun generateZeroComputationSubstitutions(substitutionSelectionData: Substitution
     return result
 }
 
-private fun plusOperationByDot(dotOperation: String): String = when (dotOperation) {
-    "*","/" -> "+"
-    "and" -> "or"
-    "or" -> "and"
-    else -> ""
-}
-
-private fun dotOperationByPlus(plusOperation: String) = when (plusOperation) {
-    "+" -> "*"
-    "and" -> "or"
-    "or" -> "and"
-    else -> ""
-}
-
 fun generateOpeningBracketsSubstitutions(substitutionSelectionData: SubstitutionSelectionData,
                                          simplifyNotSelectedTopArguments: Boolean = false,
                                          withReadyApplicationResult: Boolean = false,
@@ -1174,7 +1151,8 @@ fun generateOpeningBracketsSubstitutions(substitutionSelectionData: Substitution
                     topNode.addChild(child.clone())
                 }
 
-                val expandingSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(topNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                val expandingSubstitution = ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(topNode),
+                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                 val originalExpression = substitutionSelectionData.originalExpression.clone()
                 substitutionSelectionData.topOfSelectionParent!!.setChildOnPosition(topNode, substitutionSelectionData.topOfSelectionIndex)
                 result.add(SubstitutionApplication(
@@ -1191,41 +1169,18 @@ fun generateOpeningBracketsSubstitutions(substitutionSelectionData: Substitution
             }
         }
 
-        if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder != null && substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.size == 2) {
-            val dotOperation: String = substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.value
-            val plusOperation: String = plusOperationByDot(dotOperation)
-            if (plusOperation.isNotBlank()) {
-                if (dotOperation != "/" &&
-                        substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.last().value == plusOperation &&
-                        substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.last().children.size > 1) {
-                    // all from fist X all from last transformation
-                    val sumNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode(plusOperation, -1)
-                    val lChildren = if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first().value == plusOperation) {
-                        substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first().children
-                    } else {
-                        listOf(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first())
-                    }
-                    val rChildren = if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.last().value == plusOperation) {
-                        substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.last().children
-                    } else {
-                        listOf(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.last())
-                    }
-                    addSumOpeningBracketsResult(lChildren, rChildren, substitutionSelectionData, sumNode, simplifyNotSelectedTopArguments, result)
-                }
 
-                if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first().value == plusOperation &&
-                        substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first().children.size > 1) {
-                    // all from fist X last transformation
-                    val sumNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode(plusOperation, -1)
-                    val lChildren = if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first().value == plusOperation) {
-                        substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first().children
-                    } else {
-                        listOf(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first())
-                    }
-                    val rChildren = listOf(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.last())
-                    addSumOpeningBracketsResult(lChildren, rChildren, substitutionSelectionData, sumNode, simplifyNotSelectedTopArguments, result)
-                }
-            }
+        if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder != null && substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.size == 2) {
+            result.addAll(generalOpeningBracketsSubstitutions(substitutionSelectionData.originalExpression,
+                    substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder,
+                    substitutionSelectionData.topOfSelectionParent,
+                    substitutionSelectionData.topOfSelectionIndex,
+                    substitutionSelectionData.compiledConfiguration,
+                    substitutionSelectionData.expressionToTransform,
+                    substitutionSelectionData.notSelectedSubtreeTopArguments,
+                    substitutionSelectionData.notSelectedSubtreeTopOriginalTree,
+                    substitutionSelectionData.topOfSelection,
+                    simplifyNotSelectedTopArguments))
 
             if (substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.value == "^" &&
                     substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.children.first().value == "*" &&
@@ -1240,7 +1195,8 @@ fun generateOpeningBracketsSubstitutions(substitutionSelectionData: Substitution
                 addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                         prodNode,
                         result,
-                        ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                        ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode),
+                                code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                         , "OpeningBrackets", subst.priority ?: 20)
             }
 
@@ -1262,46 +1218,13 @@ fun generateOpeningBracketsSubstitutions(substitutionSelectionData: Substitution
                 addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                         prodNode,
                         result,
-                        ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+                        ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(prodNode),
+                                code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
                         , "OpeningBrackets", subst.priority ?: 20)
             }
         }
     }
     return result
-}
-
-private fun addSumOpeningBracketsResult(lChildren: List<ExpressionNode>, rChildren: List<ExpressionNode>, substitutionSelectionData: SubstitutionSelectionData, sumNode: ExpressionNode, simplifyNotSelectedTopArguments: Boolean, result: MutableList<SubstitutionApplication>) {
-    if (substitutionSelectionData.compiledConfiguration.expressionTreeAutogeneratedTransformationRuleIdentifiers.containsKey("OpeningBrackets")) {
-        val subst = substitutionSelectionData.compiledConfiguration.expressionTreeAutogeneratedTransformationRuleIdentifiers["OpeningBrackets"]!!
-        for (lChild in lChildren) {
-            for (rChild in rChildren) {
-                val productionNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode(substitutionSelectionData.selectedSubtreeTopArgumentsInSelectionOrder!!.value, -1)
-                var needMinus = false
-                val lMul = if (lChild.value == "-") {
-                    needMinus = needMinus xor true
-                    lChild.children.first()
-                } else lChild
-                val rMul = if (rChild.value == "-") {
-                    needMinus = needMinus xor true
-                    rChild.children.first()
-                } else rChild
-                productionNode.addChild(lMul.clone())
-                productionNode.addChild(rMul.clone())
-                if (needMinus) {
-                    val minusNode = substitutionSelectionData.compiledConfiguration.createExpressionFunctionNode("-", -1)
-                    minusNode.addChild(productionNode)
-                    sumNode.addChild(minusNode)
-                } else {
-                    sumNode.addChild(productionNode)
-                }
-            }
-        }
-        addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
-                sumNode,
-                result,
-                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.selectedSubtreeTopArguments!!.clone()), addRootNodeToExpression(sumNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
-                , "OpeningBrackets", subst.priority ?: 20)
-    }
 }
 
 
@@ -1351,7 +1274,8 @@ fun generateNumberTransformationSubstitutions(substitutionSelectionData: Substit
                     addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                             mulTreeNode,
                             result,
-                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(mulTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(mulTreeNode),
+                                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                             "NumberTransformation", subst.priority ?: 50)
                 }
             }
@@ -1371,7 +1295,8 @@ fun generateNumberTransformationSubstitutions(substitutionSelectionData: Substit
                     addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                             degTreeNode,
                             result,
-                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(degTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                            ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(degTreeNode),
+                                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                             "NumberTransformation", subst.priority ?: 50)
                 }
             }
@@ -1390,7 +1315,8 @@ fun generateNumberTransformationSubstitutions(substitutionSelectionData: Substit
             addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                     divTreeNode,
                     result,
-                    ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(divTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                    ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(divTreeNode),
+                            code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                     "NumberTransformation", subst.priority ?: 60)
         }
     }
@@ -1404,7 +1330,8 @@ fun generateNumberTransformationSubstitutions(substitutionSelectionData: Substit
         addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                 plusTreeNode,
                 result,
-                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(plusTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(plusTreeNode),
+                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                 "NumberTransformation", subst.priority ?: 70)
 
         //x ~> (x+1) - 1
@@ -1415,7 +1342,8 @@ fun generateNumberTransformationSubstitutions(substitutionSelectionData: Substit
         addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                 minusTreeNode,
                 result,
-                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(minusTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(minusTreeNode),
+                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                 "NumberTransformation", subst.priority ?: 70)
 
     } else if (currentValue >= 0 && substitutionSelectionData.compiledConfiguration.expressionTreeAutogeneratedTransformationRuleIdentifiers.containsKey("PositiveNumberPlusMinus1")) {
@@ -1429,7 +1357,8 @@ fun generateNumberTransformationSubstitutions(substitutionSelectionData: Substit
             addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                     plusTreeNode,
                     result,
-                    ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(plusTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                    ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(plusTreeNode),
+                            code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                     "NumberTransformation", subst.priority ?: 70)
         }
 
@@ -1441,7 +1370,8 @@ fun generateNumberTransformationSubstitutions(substitutionSelectionData: Substit
         addApplicationToResults(true, substitutionSelectionData, simplifyNotSelectedTopArguments,
                 minusTreeNode,
                 result,
-                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(minusTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu),
+                ExpressionSubstitution(addRootNodeToExpression(substitutionSelectionData.topOfSelection!!.clone()), addRootNodeToExpression(minusTreeNode),
+                        code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority),
                 "NumberTransformation", subst.priority ?: 70)
     }
     return result
@@ -1471,7 +1401,8 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
             additiveTreeNode.addChild(ExpressionNode(NodeType.FUNCTION, "-"))
             additiveTreeNode.children.last().addChild(applicationObject.clone())
 
-            val additiveSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(additiveTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val additiveSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(additiveTreeNode),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             applicationPlaceParent.setChildOnPosition(additiveTreeNode, applicationPlaceIndex)
             result.add(SubstitutionApplication(
                     additiveSubstitution,
@@ -1497,7 +1428,8 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
             multiplicativeTreeNode.children.last().addChild(applicationObject.clone())
             multiplicativeTreeNode.addChild(applicationObject.clone())
 
-            val multiplicativeSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(multiplicativeTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val multiplicativeSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(multiplicativeTreeNode),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             applicationPlaceParent.setChildOnPosition(multiplicativeTreeNode, applicationPlaceIndex)
             result.add(SubstitutionApplication(
                     multiplicativeSubstitution,
@@ -1521,7 +1453,8 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
             andOrTreeNode.children.last().addChild(applicationPlace.clone())
             andOrTreeNode.children.last().addChild(applicationObject.clone())
 
-            val andOrSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(andOrTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val andOrSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(andOrTreeNode),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             applicationPlaceParent.setChildOnPosition(andOrTreeNode, applicationPlaceIndex)
             result.add(SubstitutionApplication(
                     andOrSubstitution,
@@ -1542,7 +1475,8 @@ fun generateComplicatingExtensionSubstitutions(substitutionSelectionData: Substi
             orAndTreeNode.children.last().addChild(applicationPlace.clone())
             orAndTreeNode.children.last().addChild(applicationObject.clone())
 
-            val orAndSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(orAndTreeNode), code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu)
+            val orAndSubstitution = ExpressionSubstitution(addRootNodeToExpression(applicationPlace.clone()), addRootNodeToExpression(orAndTreeNode),
+                    code = subst.code, nameEn = subst.nameEn, nameRu = subst.nameRu, priority = subst.priority)
             applicationPlaceParent.setChildOnPosition(orAndTreeNode, applicationPlaceIndex)
             result.add(SubstitutionApplication(
                     orAndSubstitution,

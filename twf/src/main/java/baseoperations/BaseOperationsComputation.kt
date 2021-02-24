@@ -2,6 +2,8 @@ package baseoperations
 
 import expressiontree.ExpressionNode
 import numbers.Complex
+import numbers.Form
+import numbers.Real
 import numbers.toComplex
 import optimizerutils.CompressedNode
 import optimizerutils.CompressedNodeDouble
@@ -202,7 +204,11 @@ class BaseOperationsComputation(private val computationType: ComputationType) {
 
     fun compute(expressionNode : ExpressionNode) : Any {
         return if (expressionNode.children.isEmpty()) {
-            stringToNumber(expressionNode.value)
+            if (expressionNode.value == "sys_def_i_complex") {
+                Complex(Real(0), Real(1), Form.ALGEBRAIC)
+            } else {
+                stringToNumber(expressionNode.value)
+            }
         } else {
             if (isFoldedExpression(expressionNode)) {
                 return calculateFoldedExpression(expressionNode)

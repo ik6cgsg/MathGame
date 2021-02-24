@@ -116,7 +116,7 @@ data class ExpressionParserNode(
         return minPriority
     }
 
-    fun resolveBinaryOperationsWithPriorityRecursive(priority: Double, functionConfiguration: FunctionConfiguration) {
+    fun resolveBinaryOperationsWithPriorityRecursive(priority: Double, functionConfiguration: FunctionConfiguration) { //TODO: investigate why we have startPosition = -1 if operation "+" in root; fix positions; example: "a*b + 5"
         var operationWithMinPriority = ExpressionParserNode(Type.BINARY_OPERATION, "", startPosition, endPosition)
         for (child in children) {
             child.resolveBinaryOperationsWithPriorityRecursive(priority, functionConfiguration)
@@ -162,8 +162,9 @@ class ExpressionTreeParser(
     private var parsedTree: MathMlTagTreeNode = MathMlTagTreeNode(MathMlTagTreeNode.Type.BRACKET_FUNCTION, "", 0, originalExpression.length)
     private var parsedTreeWithMultiples: MathMlTagTreeNode = MathMlTagTreeNode(MathMlTagTreeNode.Type.BRACKET_FUNCTION, "", 0, originalExpression.length)
     private var rootNotPrioritized: ExpressionParserNode = ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, "", 0, originalExpression.length)
-    private var rootNotPrioritizedWithMultiplications: ExpressionParserNode = ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, "", 0, originalExpression.length)
     private var rootNotPrioritizedUnaries: ExpressionParserNode = ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, "", 0, originalExpression.length)
+    private var rootNotPrioritizedWithComplexes: ExpressionParserNode = ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, "", 0, originalExpression.length)
+    private var rootNotPrioritizedWithMultiplications: ExpressionParserNode = ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, "", 0, originalExpression.length)
 
 
     var root: ExpressionNode = ExpressionNode(NodeType.FUNCTION, "", 0, originalExpression.length)
@@ -212,11 +213,15 @@ class ExpressionTreeParser(
         val combineUnaryError = combineUnary(rootNotPrioritized, rootNotPrioritizedUnaries)
         if (combineUnaryError != null) return normalisePositionInParseError(combineUnaryError)
 
-        // 6. Add multiplications if two neighboring children are not binary operations
-        val addMultiplicationsError = addMultiplications(rootNotPrioritizedUnaries, rootNotPrioritizedWithMultiplications)
+        // 6. Add complexes nodes
+        val replaceComplexOneError = replaceComplexOne(rootNotPrioritizedUnaries, rootNotPrioritizedWithComplexes)
+        if (replaceComplexOneError != null) return normalisePositionInParseError(replaceComplexOneError)
+
+        // 7. Add multiplications if two neighboring children are not binary operations
+        val addMultiplicationsError = addMultiplications(rootNotPrioritizedWithComplexes, rootNotPrioritizedWithMultiplications)
         if (addMultiplicationsError != null) return normalisePositionInParseError(addMultiplicationsError)
 
-        // 7. Resolve binary operations according to customized priorities
+        // 8. Resolve binary operations according to customized priorities
         resolveBinaryOperations(rootNotPrioritizedWithMultiplications)
         toExpressionTree(rootNotPrioritizedWithMultiplications, root)
         root.correctPositions()
@@ -227,6 +232,9 @@ class ExpressionTreeParser(
     }
 
     private fun parseMathMlTagTree(): ParserError? {
+        if (expression.isBlank()) {
+            return ParserError(0, "No expression found")
+        }
         var actualParent = bracketCompleteTagTree
         var numberOfOpenBrackets = 0
         var currentPosition = 0
@@ -235,7 +243,7 @@ class ExpressionTreeParser(
         var skipMrowCount = 0 //to skip mrow to handle case in test 'testMrowInEnd()'
         actualParent.startPosition = currentPosition
         while (currentPosition < expression.length) {
-            if (expression[currentPosition].isWhitespace()) {
+            if (expression.isWhiteSpace(currentPosition)) {
                 currentPosition++
                 continue
             }
@@ -475,7 +483,7 @@ class ExpressionTreeParser(
                 var value = ""
                 node.value += " "
                 while (currentPosition < node.value.length) {
-                    if (node.value[currentPosition].isWhitespace()) {
+                    if (node.value.isWhiteSpace(currentPosition)) {
                         currentPosition++
                         continue
                     }
@@ -507,7 +515,7 @@ class ExpressionTreeParser(
                             isFunctionArgumentPart = true
                             currentPosition++
                         }
-                        if (currentPosition >= node.value.length || node.value[currentPosition].isWhitespace()) {
+                        if (currentPosition >= node.value.length || node.value.isWhiteSpace(currentPosition)) {
                             currentPosition++
                             continue
                         }
@@ -779,6 +787,7 @@ class ExpressionTreeParser(
 
     private fun mathMlTreeToExpressionTree(oldTreeActualParent: MathMlTagTreeNode, newTreeActualParent: ExpressionParserNode): ParserError? {
         var i = 0
+        val cashedChildExpressionTreesMap = mutableMapOf<Int, ExpressionParserNode>()
         while (i < oldTreeActualParent.children.size) {
             if (oldTreeActualParent.children[i].value == "") {
                 if (i > 0 && oldTreeActualParent.children[i - 1].type == MathMlTagTreeNode.Type.MATH_ML_FUNCTION &&
@@ -798,10 +807,14 @@ class ExpressionTreeParser(
                         }
                     }
                 }
-                newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, "",
-                        oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i].endPosition))
-                val res = mathMlTreeToExpressionTree(oldTreeActualParent.children[i], newTreeActualParent.children.last())
-                if (res != null) return res
+                if (cashedChildExpressionTreesMap[i] != null) {
+                    newTreeActualParent.addChild(cashedChildExpressionTreesMap[i]!!)
+                } else {
+                    newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, "",
+                            oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i].endPosition))
+                    val res = mathMlTreeToExpressionTree(oldTreeActualParent.children[i], newTreeActualParent.children.last())
+                    if (res != null) return res
+                }
                 i++
                 continue
             } else if (oldTreeActualParent.children[i].value == "msub") {
@@ -976,10 +989,11 @@ class ExpressionTreeParser(
                     if (res != null) return res
                     val functionDefinition = functionConfiguration.findFunctionStringDefinition(oldTreeActualParent.children[i].value,
                             StringDefinitionType.FUNCTION, newParentNode/*oldTreeActualParent.children[i + 1]*/.children.size, nameForRuleDesignationsPossible)
-                    if (functionDefinition == null)
+                    if (functionDefinition == null) {
+                        cashedChildExpressionTreesMap.put(i + 1, newParentNode)
                         newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, oldTreeActualParent.children[i].value,
                                 oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i].endPosition))
-                    else {
+                    } else {
                         newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.FUNCTION, functionDefinition.function.function,
                                 oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i + 1].endPosition,
                                 functionStringDefinition = functionDefinition))
@@ -1059,17 +1073,93 @@ class ExpressionTreeParser(
         return null
     }
 
+    private var isNeedReplace: Boolean = true
+    private var SorPLevelsReplaces = mutableMapOf<Int, Boolean>()
+    private val complexVar: String = "sys_def_i_complex"
+    private val lenOfComplexVar: Int = complexVar.length
+
+    private fun replaceComplexOne(
+            oldTreeActualParent: ExpressionParserNode,
+            newTreeActualParent: ExpressionParserNode,
+            currentLevel: Int = 0,
+            onlyZeroNumberOfChildInSorP: Boolean = false
+    ): ParserError? {
+        if (oldTreeActualParent.children.size == 0) {
+            return null
+        }
+        var i = 0
+        if (((oldTreeActualParent.value == "P") || (oldTreeActualParent.value == "S")) && (oldTreeActualParent.children.size == 4)) {
+            SorPLevelsReplaces[currentLevel] = isNeedReplace
+        }
+        if (isNeedReplace && onlyZeroNumberOfChildInSorP && (SorPLevelsReplaces.isNotEmpty()) && (SorPLevelsReplaces.keys.last() < currentLevel) && (oldTreeActualParent.children[0].value.isNotEmpty()) && (oldTreeActualParent.children[0].value == "i")){
+            isNeedReplace = false
+            SorPLevelsReplaces[SorPLevelsReplaces.keys.last()] = false
+        }
+        while (i < oldTreeActualParent.children.size) {
+            if (isNeedReplace && (oldTreeActualParent.children[i].type == ExpressionParserNode.Type.VARIABLE)) {
+                when(oldTreeActualParent.children[i].value) {
+                    "i" -> {
+                        newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, complexVar,
+                                oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i].startPosition + 1))
+                    }
+                    "pi" -> {
+                        newTreeActualParent.addChild(oldTreeActualParent.children[i].copy())
+                    }
+                    "ipi" -> {
+                        newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, complexVar,
+                                oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i].startPosition + 1))
+                        newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, oldTreeActualParent.children[i].value.substring(1),
+                                oldTreeActualParent.children[i].startPosition + 1, oldTreeActualParent.children[i].endPosition))
+                    } else -> {
+                        when('i') {
+                            oldTreeActualParent.children[i].value.last() -> {
+                                newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, oldTreeActualParent.children[i].value.substring(0, oldTreeActualParent.children[i].value.lastIndex),
+                                        oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i].endPosition - 1))
+                                newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, complexVar,
+                                        oldTreeActualParent.children[i].endPosition, oldTreeActualParent.children[i].endPosition + 1))
+                            }
+                            oldTreeActualParent.children[i].value[0] -> {
+                                newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, complexVar,
+                                        oldTreeActualParent.children[i].startPosition, oldTreeActualParent.children[i].startPosition + 1))
+                                newTreeActualParent.addChild(ExpressionParserNode(ExpressionParserNode.Type.VARIABLE, oldTreeActualParent.children[i].value.substring(1),
+                                        oldTreeActualParent.children[i].startPosition + 1, oldTreeActualParent.children[i].endPosition))
+                            } else -> {
+                                newTreeActualParent.addChild(oldTreeActualParent.children[i].copy())
+                            }
+                        }
+                    }
+                }
+            } else {
+                newTreeActualParent.addChild(oldTreeActualParent.children[i].copy())
+            }
+            val res = replaceComplexOne(oldTreeActualParent.children[i], newTreeActualParent.children.last(), currentLevel + 1, onlyZeroNumberOfChildInSorP = ((i == 0) && (onlyZeroNumberOfChildInSorP || (SorPLevelsReplaces.isNotEmpty() && currentLevel == SorPLevelsReplaces.keys.last()))))
+            if (res != null) {
+                return res
+            }
+            i++
+        }
+        if (SorPLevelsReplaces.isNotEmpty() && SorPLevelsReplaces.keys.last() == currentLevel) {
+            SorPLevelsReplaces.remove(currentLevel)
+            if (SorPLevelsReplaces.isNotEmpty()) {
+                isNeedReplace = SorPLevelsReplaces[SorPLevelsReplaces.keys.last()]!!
+            } else {
+                isNeedReplace = true
+            }
+        }
+        return null
+    }
+
     private fun addMultiplications(oldTreeActualParent: ExpressionParserNode, newTreeActualParent: ExpressionParserNode): ParserError? {
         if (oldTreeActualParent.children.size == 0) return null
         var i = 0
-        if (oldTreeActualParent.value.isNotEmpty())
+        if (oldTreeActualParent.value.isNotEmpty()) {
             while (i < oldTreeActualParent.children.size) {
                 newTreeActualParent.addChild(oldTreeActualParent.children[i].copy())
                 val res = addMultiplications(oldTreeActualParent.children[i], newTreeActualParent.children[i])
                 if (res != null) return res
                 i++
             }
-        else {
+        } else {
             newTreeActualParent.addChild(oldTreeActualParent.children[0].copy())
             val res = addMultiplications(oldTreeActualParent.children[0], newTreeActualParent.children[0])
             if (res != null) return res

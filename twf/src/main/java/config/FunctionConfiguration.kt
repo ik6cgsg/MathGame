@@ -94,7 +94,8 @@ class FunctionConfiguration (
             FunctionIdentifier("atg", 1),
             FunctionIdentifier("exp", 1),
             FunctionIdentifier("ln", 1),
-            FunctionIdentifier("abs", 1)
+            FunctionIdentifier("abs", 1),
+            FunctionIdentifier("compconj", 1)
     ).filter {
         it.name == "" ||
             notChangesOnVariablesInComparisonFunctionFilter.isEmpty() ||
@@ -188,6 +189,7 @@ class FunctionConfiguration (
             FunctionProperties("exp", "exp", 5.0, 1),
             FunctionProperties("ln", "ln", 5.0, 1),
             FunctionProperties("abs", "abs", 5.0, 1, minNumberOfPointsForEquality = Int.MAX_VALUE),
+            FunctionProperties("compconj", "compconj", 5.0, 1),
             FunctionProperties("log", "log", 5.0, 2, texStringDefinitionType = StringDefinitionType.BINARY_OPERATION),
             FunctionProperties("mod", "mod", 5.0, 2),
 
@@ -291,7 +293,7 @@ class FunctionConfiguration (
             FunctionStringDefinition(functionPropertiesByName["implic_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\Rightarrow"),
             FunctionStringDefinition(functionPropertiesByName["implic_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\to"),
             FunctionStringDefinition(functionPropertiesByName["implic_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\implies"),
-            FunctionStringDefinition(functionPropertiesByName["set-_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\"),
+            FunctionStringDefinition(functionPropertiesByName["set-_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\\\"),
             FunctionStringDefinition(functionPropertiesByName["set-_-1"]!!, StringDefinitionType.BINARY_OPERATION, "\\setminus"),
 
             FunctionStringDefinition(functionPropertiesByName["and_-1"]!!, StringDefinitionType.FUNCTION, "and"),
@@ -353,6 +355,7 @@ class FunctionConfiguration (
             FunctionStringDefinition(functionPropertiesByName["csch_1"]!!, StringDefinitionType.FUNCTION, "csch"),
 
             FunctionStringDefinition(functionPropertiesByName["exp_1"]!!, StringDefinitionType.FUNCTION, "exp"),
+            FunctionStringDefinition(functionPropertiesByName["exp_1"]!!, StringDefinitionType.FUNCTION, "\\exp", definitionArgumentsCount = 1),
             FunctionStringDefinition(functionPropertiesByName["ln_1"]!!, StringDefinitionType.FUNCTION, "ln"),
             FunctionStringDefinition(functionPropertiesByName["ln_1"]!!, StringDefinitionType.FUNCTION, "\\ln", definitionArgumentsCount = 1),
             FunctionStringDefinition(functionPropertiesByName["ln_1"]!!, StringDefinitionType.FUNCTION, "log"),
@@ -361,6 +364,8 @@ class FunctionConfiguration (
             FunctionStringDefinition(functionPropertiesByName["log_2"]!!, StringDefinitionType.FUNCTION, "\\log", definitionArgumentsCount = 2, underlinedAsLast = true, powSeparatedAsPow = true),
             FunctionStringDefinition(functionPropertiesByName["abs_1"]!!, StringDefinitionType.FUNCTION, "abs"),
             FunctionStringDefinition(functionPropertiesByName["abs_1"]!!, StringDefinitionType.FUNCTION, "mfenced_|__|"),
+            FunctionStringDefinition(functionPropertiesByName["compconj_1"]!!, StringDefinitionType.FUNCTION, "compconj"),
+            FunctionStringDefinition(functionPropertiesByName["compconj_1"]!!, StringDefinitionType.FUNCTION, "\\compconj"),
 
             FunctionStringDefinition(functionPropertiesByName["sqrt_1"]!!, StringDefinitionType.FUNCTION, "msqrt"),
             FunctionStringDefinition(functionPropertiesByName["root_2"]!!, StringDefinitionType.FUNCTION, "mroot"),

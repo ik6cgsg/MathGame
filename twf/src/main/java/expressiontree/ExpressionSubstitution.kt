@@ -260,7 +260,7 @@ class ExpressionSubstitution(
                                 val varValue = substitutionInstance.getExprVar(conditionNode.children[i].value)
                                 if (varValue == null) {
                                     isMatched = true
-                                    if (onlyCheckListFlag == null) {
+                                    if (onlyCheckListFlag == null && conditionNode.children[i].value != "sys_def_i_complex") {
                                         substitutionInstance.putExprVar(conditionNode.children[i].value, ExpressionNode(NodeType.VARIABLE, conditionNode.functionStringDefinition!!.function.fieldAddZero!!))
                                     }
                                 } else {
@@ -308,6 +308,14 @@ class ExpressionSubstitution(
                 } else {
                     val varValue = substitutionInstance.getExprVar(conditionNode.value)
                     if (varValue == null) {
+                        if (conditionNode.value == "sys_def_i_complex" && expressionNode.value != "sys_def_i_complex") {
+                            if (onlyCheckListFlag == null) {
+                                substitutionInstance.isApplicable = false
+                            } else {
+                                onlyCheckListFlag.add(false)
+                            }
+                            return
+                        }
                         if (onlyCheckListFlag != null) return
                         substitutionInstance.putExprVar(conditionNode.value, expressionNode)
                     } else {
@@ -458,4 +466,25 @@ fun ExpressionNode.applyAllSubstitutions(expressionSubstitutions: Collection<Exp
 fun ExpressionNode.applyAllImmediateSubstitutions(compiledConfiguration: CompiledConfiguration) {
     variableReplacement(compiledConfiguration.compiledImmediateVariableReplacements)
     applyAllSubstitutions(compiledConfiguration.compiledImmediateTreeTransformationRules)
+}
+
+data class SubstitutionApplication(
+        val expressionSubstitution: ExpressionSubstitution,
+        val originalExpression: ExpressionNode,
+        var originalExpressionChangingPart: ExpressionNode,
+        val resultExpression: ExpressionNode,
+        var resultExpressionChangingPart: ExpressionNode,
+        val substitutionType: String,
+        var priority: Int // as smaller as higher in output
+) {
+    override fun toString() = "" +
+            "result: '${resultExpression.toPlainTextView()}'\n" +
+            "expressionSubstitution.left: '${expressionSubstitution.left.toString()}'\n" +
+            "expressionSubstitution.right: '${expressionSubstitution.right.toString()}'\n" +
+            "originalExpression: '${originalExpression.toString()}'\n" +
+            "originalExpressionChangingPart: '${originalExpressionChangingPart.toString()}'\n" +
+            "resultExpression: '${resultExpression.toString()}'\n" +
+            "resultExpressionChangingPart: '${resultExpressionChangingPart.toString()}'\n" +
+            "substitutionType: '${substitutionType}'\n" +
+            "priority: '${priority}'"
 }

@@ -128,11 +128,19 @@ fun findApplicableSubstitutionsInSelectedPlace (
         selectedNodeIds: Array<Int>,
         compiledConfiguration: CompiledConfiguration,
         simplifyNotSelectedTopArguments: Boolean = false,
-        withReadyApplicationResult: Boolean = true
+        withReadyApplicationResult: Boolean = true,
+        withFullExpressionChangingPart: Boolean = true
 ) = generateSubstitutionsBySelectedNodes(
         SubstitutionSelectionData(expression, selectedNodeIds, compiledConfiguration),
         withReadyApplicationResult = withReadyApplicationResult
-)
+).apply {
+    if (withFullExpressionChangingPart) {
+        forEach {
+            it.originalExpressionChangingPart = ExpressionNode(NodeType.FUNCTION, "").apply { addChild(it.originalExpressionChangingPart) }
+            it.resultExpressionChangingPart = ExpressionNode(NodeType.FUNCTION, "").apply { addChild(it.resultExpressionChangingPart) }
+        }
+    }
+}
 
 
 fun applySubstitutionInSelectedPlace (

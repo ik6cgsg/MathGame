@@ -111,3 +111,30 @@ fun investigateIfExpressionFormIsStructureString (expression: String): Boolean {
     }
     return true
 }
+
+fun decodeUrlSymbols (string: String) = string
+        .replace("%20", " ", ignoreCase = true)
+        .replace("%22", "\"", ignoreCase = true)
+        .replace("%23", "#", ignoreCase = true)
+        .replace("%24", "$", ignoreCase = true)
+        .replace("%25", "%", ignoreCase = true)
+        .replace("%26", "&", ignoreCase = true)
+        .replace("%2b", "+", ignoreCase = true)
+        .replace("%2c", ",", ignoreCase = true)
+        .replace("%2f", "/", ignoreCase = true)
+        .replace("%3a", ":", ignoreCase = true)
+        .replace("%3b", ";", ignoreCase = true)
+        .replace("%3c", "<", ignoreCase = true)
+        .replace("%3d", "=", ignoreCase = true)
+        .replace("%3e", ">", ignoreCase = true)
+        .replace("%3f", "?", ignoreCase = true)
+        .replace("%40", "@", ignoreCase = true)
+        .replace("%5b", "[", ignoreCase = true)
+        .replace("%5c", "\\", ignoreCase = true)
+        .replace("%5d", "]", ignoreCase = true)
+        .replace("%5e", "^", ignoreCase = true)
+        .replace("%60", "`", ignoreCase = true)
+        .replace("%7b", "{", ignoreCase = true)
+        .replace("%7c", "|", ignoreCase = true)
+        .replace("%7d", "}", ignoreCase = true)
+        .replace("%7e", "~", ignoreCase = true)
