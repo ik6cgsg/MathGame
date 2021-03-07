@@ -250,7 +250,7 @@ fun emptyExpression() = Expression(0, 0, ExpressionNode(NodeType.EMPTY, ""))
 class ExpressionChain(
         override val startPosition: Int = 0,
         override val endPosition: Int = 0,
-        val comparisonType: ComparisonType,
+        var comparisonType: ComparisonType,
         val chain: MutableList<ComparableTransformationsPart> = mutableListOf(),
         override var identifier: String = ""
 ) : ComparableTransformationsPart {
@@ -413,7 +413,11 @@ class ExpressionChain(
                                     factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor))
                             log.addMessage({ "${CheckingKeyWords.verificationFailed}" }, MessageType.USER, level = currentLogLevel)
                             return ComparisonResult(false, coloringTasks, chain[currentLeftIndex], chain[currentRightIndex],
-                                    "Unclear transformation between '${(chain[currentLeftIndex] as Expression).data}' and '${(chain[currentRightIndex] as Expression).data}' ")
+                                    if (comparisonType == ComparisonType.EQUAL) {
+                                        "Unclear transformation between '${(chain[currentLeftIndex] as Expression).data}' and '${(chain[currentRightIndex] as Expression).data}' "
+                                    } else {
+                                        "Unclear transformation '${(chain[currentLeftIndex] as Expression).data}' ${comparisonType.string} '${(chain[currentRightIndex] as Expression).data}' "
+                                    })
                         }
                     }
                 }
@@ -529,7 +533,11 @@ class ExpressionComparison(
                             factComporator.compiledConfiguration.checkedFactAccentuation.checkedFactColor.wrongTransformationFactColor))
                     log.addMessage({ "${CheckingKeyWords.verificationFailed}" }, MessageType.USER, level = currentLogLevel)
                     return ComparisonResult(false, coloringTasks, leftExpression, rightExpression,
-                            "Unclear transformation between '${leftExpression.data}' and '${rightExpression.data}' ")
+                            if (comparisonType == ComparisonType.EQUAL) {
+                                "Unclear transformation between '${leftExpression.data}' and '${rightExpression.data}' "
+                            } else {
+                                "Unclear transformation '${leftExpression.data}' ${comparisonType.string} '${rightExpression.data}' "
+                            })
                 }
             }
         }

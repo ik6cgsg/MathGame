@@ -262,15 +262,17 @@ class BaseOperationsComputation(private val computationType: ComputationType) {
         for (node in treeNodes){
             if (node.children.isEmpty() && node.func == "")
                 continue
-            else if (node.children.isNotEmpty() && node.func != ""){
+            else if (node.children.isNotEmpty() && node.func != "") {
                 // TODO isFoldedExpression
 
                 val listOfArgs = mutableListOf<Double>()
-                for (child in node.children)
+                for (child in node.children) {
                     listOfArgs.add(child.value)
+                }
                 node.value = node.functor!!(listOfArgs)
-            } else if (node.children.size == 1 && node.func == "")
+            } else if (node.children.size == 1 && node.func == "") {
                 node.value = node.children[0].value
+            }
         }
     }
 

@@ -182,4 +182,6 @@ class CompiledConfiguration(
         plusNode.children.last().addChild(ExpressionNode(NodeType.VARIABLE, (-value).toShortString()))
         plusNode
     }
+
+    fun createExpressionVariableNode (value: String) = ExpressionNode(NodeType.VARIABLE, value)
 }

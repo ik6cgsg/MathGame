@@ -42,7 +42,8 @@ fun expressionSubstitutionFromStructureStrings(
         priority: Int = 50,
         code: String = "",
         nameEn: String = "",
-        nameRu: String = ""
+        nameRu: String = "",
+        normType: ExpressionSubstitutionNormType = ExpressionSubstitutionNormType.ORIGINAL
 ) = ExpressionSubstitution(
         if (leftStructureString.isNotBlank()) structureStringToExpression(leftStructureString) else ExpressionNode(NodeType.EMPTY, ""),
         if (rightStructureString.isNotBlank()) structureStringToExpression(rightStructureString) else ExpressionNode(NodeType.EMPTY, ""),
@@ -53,13 +54,15 @@ fun expressionSubstitutionFromStructureStrings(
         priority = priority,
         code = if (code.isNotBlank()) code else "'$leftStructureString'->'$rightStructureString'",
         nameEn = nameEn,
-        nameRu = nameRu
+        nameRu = nameRu,
+        normType = normType
 )
 
 
 fun findSubstitutionPlacesInExpression(
         expression: ExpressionNode,
-        substitution: ExpressionSubstitution
+        substitution: ExpressionSubstitution,
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration()
 ): MutableList<SubstitutionPlace> {
     if (substitution.leftFunctions.isNotEmpty() && substitution.leftFunctions.intersect(expression.getContainedFunctions())
                     .isEmpty() &&
@@ -68,14 +71,14 @@ fun findSubstitutionPlacesInExpression(
         return mutableListOf()
     }
     var expr = expression
-    var result = substitution.findAllPossibleSubstitutionPlaces(expression)
+    var result = substitution.findAllPossibleSubstitutionPlaces(expression, compiledConfiguration.factComporator.expressionComporator)
     if (result.isEmpty() && substitution.matchJumbledAndNested && expression.containsNestedSameFunctions()){
         expr = expression.cloneWithExpandingNestedSameFunctions()
-        result = substitution.findAllPossibleSubstitutionPlaces(expr)
+        result = substitution.findAllPossibleSubstitutionPlaces(expr, compiledConfiguration.factComporator.expressionComporator)
     }
     if (result.isEmpty()){
         expr = expr.cloneAndSimplifyByComputeSimplePlaces()
-        result = substitution.findAllPossibleSubstitutionPlaces(expr)
+        result = substitution.findAllPossibleSubstitutionPlaces(expr, compiledConfiguration.factComporator.expressionComporator)
     }
     return result
 }
@@ -84,9 +87,10 @@ fun findSubstitutionPlacesInExpression(
 fun applySubstitution(
         expression: ExpressionNode,
         substitution: ExpressionSubstitution,
-        substitutionPlaces: List<SubstitutionPlace> //containsPointersOnExpressionPlaces
+        substitutionPlaces: List<SubstitutionPlace>, //containsPointersOnExpressionPlaces
+        compiledConfiguration: CompiledConfiguration = CompiledConfiguration()
 ): ExpressionNode {
-    substitution.applySubstitution(substitutionPlaces)
+    substitution.applySubstitution(substitutionPlaces, compiledConfiguration.factComporator.expressionComporator)
     expression.getTopNode().reduceExtraSigns(setOf("+"), setOf("-"))
     expression.getTopNode().normilizeSubtructions(FunctionConfiguration())
     expression.getTopNode().computeNodeIdsAsNumbersInDirectTraversalAndDistancesToRoot()

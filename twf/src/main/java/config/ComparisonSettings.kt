@@ -1,8 +1,10 @@
 package config
 
+import standartlibextensions.SplittingString
+
 enum class ComparisonType(val string: String) { LEFT_MORE_OR_EQUAL(">="), LEFT_LESS_OR_EQUAL("<="), EQUAL("="), LEFT_MORE(">"), LEFT_LESS("<") } //order is important for parser
 
-fun ComparisonType.reverse () = when (this){
+fun ComparisonType.reverse() = when (this) {
     ComparisonType.LEFT_MORE_OR_EQUAL -> ComparisonType.LEFT_LESS_OR_EQUAL
     ComparisonType.LEFT_LESS_OR_EQUAL -> ComparisonType.LEFT_MORE_OR_EQUAL
     ComparisonType.LEFT_MORE -> ComparisonType.LEFT_LESS
@@ -10,7 +12,7 @@ fun ComparisonType.reverse () = when (this){
     else -> this
 }
 
-fun strictComparison(comp: ComparisonType) : Boolean {
+fun strictComparison(comp: ComparisonType): Boolean {
     return comp == ComparisonType.LEFT_LESS || comp == ComparisonType.LEFT_MORE
 }
 
@@ -23,8 +25,16 @@ fun valueOfComparisonType(value: String) = when (value) {
     else -> ComparisonType.EQUAL
 }
 
-fun valueFromMathMLString(value: String) = when (value) {
+fun valueFromSignString(value: String) = when (value) {
     "<mo>=</mo>" -> ComparisonType.EQUAL
+    "<=" -> ComparisonType.LEFT_LESS_OR_EQUAL
+    ">=" -> ComparisonType.LEFT_MORE_OR_EQUAL
+    "<" -> ComparisonType.LEFT_LESS
+    ">" -> ComparisonType.LEFT_MORE
+    "\\lt" -> ComparisonType.LEFT_LESS
+    "\\le" -> ComparisonType.LEFT_LESS_OR_EQUAL
+    "\\gt" -> ComparisonType.LEFT_MORE
+    "\\ge" -> ComparisonType.LEFT_MORE_OR_EQUAL
     "<mo>&#x2265;</mo>" -> ComparisonType.LEFT_MORE_OR_EQUAL
     "<mo>&#x2A7E;</mo>" -> ComparisonType.LEFT_MORE_OR_EQUAL
     "<mo>&#x2264;</mo>" -> ComparisonType.LEFT_LESS_OR_EQUAL
@@ -36,18 +46,32 @@ fun valueFromMathMLString(value: String) = when (value) {
     else -> ComparisonType.EQUAL
 }
 
-fun getAllComparisonTypeMathML() = listOf(
-        "=",
-        "<mo>=</mo>",
-        "<mo>&gt;</mo><mo>=</mo>",
-        "<mo>&lt;</mo><mo>=</mo>",
-        "<mo>&gt;</mo>",
-        "<mo>&lt;</mo>",
-        "<mo>&#x2265;</mo>",
-        "<mo>&#x2A7E;</mo>",
-        "<mo>&#x2264;</mo>",
-        "<mo>&#x2A7D;</mo>"
-)
+fun getAllComparisonTypeSignStrings(isMathML: Boolean) = if (isMathML) {
+    listOf(
+            SplittingString("="),
+            SplittingString("<mo>=</mo>"),
+            SplittingString("<mo>&gt;</mo><mo>=</mo>"),
+            SplittingString("<mo>&lt;</mo><mo>=</mo>"),
+            SplittingString("<mo>&gt;</mo>"),
+            SplittingString("<mo>&lt;</mo>"),
+            SplittingString("<mo>&#x2265;</mo>"),
+            SplittingString("<mo>&#x2A7E;</mo>"),
+            SplittingString("<mo>&#x2264;</mo>"),
+            SplittingString("<mo>&#x2A7D;</mo>")
+    )
+} else {
+    listOf(
+            SplittingString("="),
+            SplittingString("<="),
+            SplittingString(">="),
+            SplittingString("<"),
+            SplittingString(">"),
+            SplittingString("\\lt"),
+            SplittingString("\\le", listOf("\\left")),
+            SplittingString("\\gt"),
+            SplittingString("\\ge")
+    )
+}
 
 
 data class ComparisonSettings(

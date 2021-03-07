@@ -30,16 +30,16 @@ class ExpressionComporator(
     fun compareAsIs(left: ExpressionNode, right: ExpressionNode, nameArgsMap: MutableMap<String, String> = mutableMapOf(),
                     withBracketUnification: Boolean = false): Boolean {
         val normilized = normalizeExpressionsForComparison(left, right)
-        if (normilized.first.isNodeSubtreeEquals(normilized.second, nameArgsMap)){
+        if (normilized.first.isNodeSubtreeEquals(normilized.second, nameArgsMap)) {
             return true
-        } else if (!withBracketUnification){
+        } else if (!withBracketUnification) {
             return false
         }
         val lUnified = normilized.first
         lUnified.dropBracketNodesIfOperationsSame()
         val rUnified = normilized.second
         rUnified.dropBracketNodesIfOperationsSame()
-        if (lUnified.isNodeSubtreeEquals(rUnified, nameArgsMap)){
+        if (lUnified.isNodeSubtreeEquals(rUnified, nameArgsMap)) {
             return true
         }
         lUnified.normalizeSubTree(sorted = true)
@@ -70,22 +70,30 @@ class ExpressionComporator(
         if (variables.size > maxBustCount) {
             return true
         }
-        val variableValues = variables.map {Pair(it, "0")}.toMap().toMutableMap()
+        val variableValues = variables.map { Pair(it, "0") }.toMap().toMutableMap()
 
         return logicFullSearchComparisonRecursive(variables, variableValues, left, right, comparisonType, 0)
     }
 
-    fun logicFullSearchComparisonRecursive (variables: List<String>, variableValues: MutableMap<String, String>, left: ExpressionNode, right: ExpressionNode, comparisonType: ComparisonType, currentIndex: Int): Boolean {
+    fun logicFullSearchComparisonRecursive(variables: List<String>, variableValues: MutableMap<String, String>, left: ExpressionNode, right: ExpressionNode, comparisonType: ComparisonType, currentIndex: Int): Boolean {
         if (currentIndex == variables.size) {
             val l = baseOperationsComputationDouble.compute(
                     left.cloneWithNormalization(variableValues, sorted = false)) as Double
             val r = baseOperationsComputationDouble.compute(
                     right.cloneWithNormalization(variableValues, sorted = false)) as Double
             when (comparisonType) {
-                ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
-                ComparisonType.LEFT_MORE -> if (l <= r) return false
-                ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
-                ComparisonType.LEFT_LESS -> if (l >= r) return false
+                ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r && !baseOperationsDefinitions.additivelyEqual(l, r)) {
+                    return false
+                }
+                ComparisonType.LEFT_MORE -> if (l <= r || baseOperationsDefinitions.additivelyEqual(l, r)) {
+                    return false
+                }
+                ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r && !baseOperationsDefinitions.additivelyEqual(l, r)) {
+                    return false
+                }
+                ComparisonType.LEFT_LESS -> if (l >= r || baseOperationsDefinitions.additivelyEqual(l, r)) {
+                    return false
+                }
                 else -> if (!baseOperationsDefinitions.additivelyEqual(l, r)) return false
             }
         } else {
@@ -109,7 +117,6 @@ class ExpressionComporator(
                                   maxMinNumberOfPointsForEquality: Int = compiledConfiguration.comparisonSettings.minNumberOfPointsForEquality,
                                   allowedPartOfErrorTests: Double = compiledConfiguration.comparisonSettings.allowedPartOfErrorTests,
                                   testWithUndefinedResultIncreasingCoef: Double = compiledConfiguration.comparisonSettings.testWithUndefinedResultIncreasingCoef,
-                                  useCleverDomain: Boolean = false,
                                   useGradientDescentComparison: Boolean = false): Boolean {
         val normalized = normalizeExpressionsForComparison(leftOrigin, rightOrigin)
         val left = normalized.first
@@ -129,6 +136,13 @@ class ExpressionComporator(
             var passedTests = 0.0
             val minNumberOfPointsForEquality = max(max(left.getMaxMinNumberOfPointsForEquality(), right.getMaxMinNumberOfPointsForEquality()), maxMinNumberOfPointsForEquality)
             val isHaveComplexNode = left.haveComplexNode() || right.haveComplexNode()
+            if (domain.variablesSet.isEmpty()) {
+                if (isHaveComplexNode) {
+                    return (baseOperationsComputationComplex.compute(left) as Complex).equals(baseOperationsComputationComplex.compute(right) as Complex)
+                } else {
+                    return baseOperationsDefinitions.additivelyEqual(baseOperationsComputationDouble.compute(left) as Double, baseOperationsComputationDouble.compute(right) as Double)
+                }
+            }
             while (numberOfRemainingTests-- > 0) {
                 val pointI = domain.generateNewPoint()
                 if (isHaveComplexNode) {
@@ -167,54 +181,58 @@ class ExpressionComporator(
                     return true
                 }
             }
-            return (passedTests >= totalTests * (1 - allowedPartOfErrorTests) && passedTests >= minNumberOfPointsForEquality) || (passedTests >= totalTests)
-        } else {
-            if (useCleverDomain) {
-                val domain = DomainPointGenerator(arrayListOf(left, right), baseOperationsDefinitions)
-                if (useGradientDescentComparison) {
-                    return gradientDescentComparison(left, right, compiledConfiguration, comparisonType, domain)
-                } else {
-                    while (numberOfRemainingTests-- > 0) {
-                        val pointI = domain.generateNewPoint()
-                        val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
-                                .value.toDoubleOrNull() ?: continue
-                        val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
-                                .value.toDoubleOrNull() ?: continue
-                        if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
-                            return false
-                        } else if (!l.isFinite() || !r.isFinite()) { //todo (optimization: identify this cases with help of computing just domain: if point not in domain - fall here, if in domain - continue data value computation using domain parts values)
-                            numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
-                        } else when (comparisonType) {
-                            ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
-                            ComparisonType.LEFT_MORE -> if (l <= r) return false
-                            ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
-                            ComparisonType.LEFT_LESS -> if (l >= r) return false
-                        }
-                    }
-                    return true
-                }
+            if ((passedTests >= totalTests * (1 - allowedPartOfErrorTests) && passedTests >= minNumberOfPointsForEquality) || (passedTests >= totalTests)) {
+                return true
             } else {
-                val domain = PointGenerator(baseOperationsDefinitions, arrayListOf(left, right))
-                while (numberOfRemainingTests-- > 0) {
-                    val pointI = domain.generateNewPoint()
-                    val l = baseOperationsDefinitions.computeExpressionTree(left.cloneWithNormalization(pointI, sorted = false))
-                            .value.toDoubleOrNull() ?: continue
-                    val r = baseOperationsDefinitions.computeExpressionTree(right.cloneWithNormalization(pointI, sorted = false))
-                            .value.toDoubleOrNull() ?: continue
-                    if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
-                        return false
-                    } else if (!l.isFinite() || !r.isFinite()) { //todo (optimization: identify this cases with help of computing just domain: if point not in domain - fall here, if in domain - continue data value computation using domain parts values)
-                        numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
-                    } else when (comparisonType) {
-                        ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r) return false
-                        ComparisonType.LEFT_MORE -> if (l <= r) return false
-                        ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r) return false
-                        ComparisonType.LEFT_LESS -> if (l >= r) return false
-                    }
+                return false
+            }
+        } else {
+            val domain = DomainPointGenerator(arrayListOf(left, right), baseOperationsDefinitions)
+            if (!domain.hasVariables()) {
+                return compareInequalityInPoint(left, mutableMapOf(), right, justInDomainsIntersection, comparisonType)
+            }
+            val points = domain.generateSimplePoints()
+            for (pointI in points) {
+                if (!compareInequalityInPoint(left, pointI, right, justInDomainsIntersection, comparisonType)) {
+                    return false
                 }
+            }
+            while (numberOfRemainingTests-- > 0) {
+                val pointI = domain.generateNewPoint()
+                if (!compareInequalityInPoint(left, pointI, right, justInDomainsIntersection, comparisonType)) {
+                    return false
+                }
+            }
+            if (useGradientDescentComparison) {
+                return gradientDescentComparison(left, right, compiledConfiguration, comparisonType, domain)
+            } else {
                 return true
             }
         }
+    }
+
+    private fun compareInequalityInPoint(left: ExpressionNode, pointI: MutableMap<String, String>, right: ExpressionNode, justInDomainsIntersection: Boolean, comparisonType: ComparisonType): Boolean {
+        val l = baseOperationsComputationDouble.compute(
+                left.cloneWithNormalization(pointI, sorted = false)) as Double
+        val r = baseOperationsComputationDouble.compute(
+                right.cloneWithNormalization(pointI, sorted = false)) as Double
+        if (justInDomainsIntersection && (l.isNaN() != r.isNaN())) {
+            return false
+        } else when (comparisonType) {
+            ComparisonType.LEFT_MORE_OR_EQUAL -> if (l < r && !baseOperationsDefinitions.additivelyEqual(l, r)) {
+                return false
+            }
+            ComparisonType.LEFT_MORE -> if (l <= r || baseOperationsDefinitions.additivelyEqual(l, r)) {
+                return false
+            }
+            ComparisonType.LEFT_LESS_OR_EQUAL -> if (l > r && !baseOperationsDefinitions.additivelyEqual(l, r)) {
+                return false
+            }
+            ComparisonType.LEFT_LESS -> if (l >= r || baseOperationsDefinitions.additivelyEqual(l, r)) {
+                return false
+            }
+        }
+        return true
     }
 
     fun compareWithoutSubstitutions(l: ExpressionNode, r: ExpressionNode,
@@ -229,6 +247,8 @@ class ExpressionComporator(
         right.applyAllImmediateSubstitutions(compiledConfiguration)
         left.applyAllSubstitutions(compiledConfiguration.compiledFunctionDefinitions)
         right.applyAllSubstitutions(compiledConfiguration.compiledFunctionDefinitions)
+        left.variableReplacement(compiledConfiguration.variableConfiguration.variableImmediateReplacementMap)
+        right.variableReplacement(compiledConfiguration.variableConfiguration.variableImmediateReplacementMap)
         left.normalizeSubTree(sorted = true)
         right.normalizeSubTree(sorted = true)
         if (compiledConfiguration.comparisonSettings.compareExpressionsWithProbabilityRulesWhenComparingExpressions &&
@@ -238,10 +258,10 @@ class ExpressionComporator(
             right.replaceNotDefinedFunctionsOnVariables(functionIdentifierToVariableMap, definedFunctionNameNumberOfArgs, this)
             return probabilityTestComparison(left, right, comparisonType, justInDomainsIntersection = justInDomainsIntersection)
         }
-        return compareAsIs (left.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration), right.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration), withBracketUnification = true)
+        return compareAsIs(left.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration), right.cloneAndSimplifyByCommutativeNormalizeAndComputeSimplePlaces(compiledConfiguration), withBracketUnification = true)
     }
 
-    fun checkOpeningBracketsSubstitutions (expressionToTransform: ExpressionNode, otherExpression: ExpressionNode, expressionChainComparisonType: ComparisonType): Boolean {
+    fun checkOpeningBracketsSubstitutions(expressionToTransform: ExpressionNode, otherExpression: ExpressionNode, expressionChainComparisonType: ComparisonType): Boolean {
         val openingBracketsTransformationResults = expressionToTransform.computeResultsOfOpeningBracketsSubstitutions(compiledConfiguration)
         for (expression in openingBracketsTransformationResults) {
             if (compareWithoutSubstitutions(expression, otherExpression, expressionChainComparisonType)) {
@@ -263,6 +283,8 @@ class ExpressionComporator(
         right.applyAllImmediateSubstitutions(compiledConfiguration)
         left.applyAllSubstitutions(compiledConfiguration.compiledFunctionDefinitions)
         right.applyAllSubstitutions(compiledConfiguration.compiledFunctionDefinitions)
+        left.variableReplacement(compiledConfiguration.variableConfiguration.variableImmediateReplacementMap)
+        right.variableReplacement(compiledConfiguration.variableConfiguration.variableImmediateReplacementMap)
         if (!left.containsFunctionBesides(algebraAutoCheckingFunctionsSet) && !right.containsFunctionBesides(algebraAutoCheckingFunctionsSet)) {
             if (!probabilityTestComparison(left, right, comparisonType, compiledConfiguration.comparisonSettings.justInDomainsIntersection)) {
                 return false
@@ -275,6 +297,9 @@ class ExpressionComporator(
         return true
     }
 
+    fun fastProbabilityCheckOnZero (expression: ExpressionNode) = fastProbabilityCheckOnIncorrectTransformation(expression, ExpressionNode(NodeType.FUNCTION, "")
+            .apply { addChild(ExpressionNode(NodeType.VARIABLE, "0") )}, ComparisonType.EQUAL)
+
     fun compareWithTreeTransformationRules(leftOriginal: ExpressionNode, rightOriginal: ExpressionNode, transformations: Collection<ExpressionSubstitution>,
                                            maxTransformationWeight: Double = compiledConfiguration.comparisonSettings.maxExpressionTransformationWeight,
                                            maxBustCount: Int = compiledConfiguration.comparisonSettings.maxExpressionBustCount,
@@ -282,7 +307,10 @@ class ExpressionComporator(
                                                    ?: 1.0,
                                            expressionChainComparisonType: ComparisonType = ComparisonType.EQUAL,
                                            maxDistBetweenDiffSteps: Double = 1.0): Boolean {
-        fastProbabilityCheckOnIncorrectTransformation(leftOriginal, rightOriginal, expressionChainComparisonType, maxBustCount) // incorrect comparisons take much more time to check it becouse of importance of all rules combination searching. Here we try to avoid such
+        if (transformations.all { !it.basedOnTaskContext } &&
+                !fastProbabilityCheckOnIncorrectTransformation(leftOriginal, rightOriginal, expressionChainComparisonType, maxBustCount)) { // incorrect comparisons take much more time to check it becouse of importance of all rules combination searching. Here we try to avoid such
+            return false
+        }
 
         val resultForOperandsInOriginalOrder = compareWithTreeTransformationRulesInternal(leftOriginal, rightOriginal, transformations, maxTransformationWeight,
                 maxBustCount, minTransformationWeight, expressionChainComparisonType, false, maxDistBetweenDiffSteps = maxDistBetweenDiffSteps)
@@ -304,6 +332,7 @@ class ExpressionComporator(
                                                    expressionChainComparisonType: ComparisonType = ComparisonType.EQUAL,
                                                    sortOperands: Boolean = false,
                                                    maxDistBetweenDiffSteps: Double = 1.0): Boolean {
+        val normFormsOfExpressionNode = mutableMapOf<ExpressionSubstitutionNormType, Pair<ExpressionNode, ExpressionNode>>()
         val left = if (sortOperands) leftOriginal.cloneWithSortingChildrenForExpressionSubstitutionComparison() else leftOriginal.clone()
         val right = if (sortOperands) rightOriginal.cloneWithSortingChildrenForExpressionSubstitutionComparison() else rightOriginal.clone()
         left.applyAllImmediateSubstitutions(compiledConfiguration)
@@ -313,9 +342,9 @@ class ExpressionComporator(
         } else {
             compiledConfiguration.definedFunctionNameNumberOfArgsSet
         } //set as global class instance parameter because it also mast be used for function arguments comparison
-        if (compareWithoutSubstitutions(left, right, expressionChainComparisonType)) return true
+        if (compareWithoutSubstitutions(left, right, expressionChainComparisonType)) return true //we can have situation, when this true after first sorted, but we require sort with only substitution
         if (maxTransformationWeight < minTransformationWeight) return false
-        if (left.containsDifferentiation() || right.containsDifferentiation()){
+        if (left.containsDifferentiation() || right.containsDifferentiation()) {
             var leftDiffWeight = (listOf(0.0) + if (maxDistBetweenDiffSteps > unlimitedWeight) listOf(maxDistBetweenDiffSteps) else emptyList()).toMutableList()
             var rightDiffWeight = (listOf(0.0) + if (maxDistBetweenDiffSteps > unlimitedWeight) listOf(maxDistBetweenDiffSteps) else emptyList()).toMutableList()
             val leftDiff = left.diff(leftDiffWeight, compiledConfiguration)
@@ -333,7 +362,7 @@ class ExpressionComporator(
         for (originalTransformation in transformations.filter { it.weight <= maxTransformationWeight }) {
             if (!originalTransformation.basedOnTaskContext && //taskContextRules contains quite small count of rules and its applicability depends not only on functions
                     originalTransformation.leftFunctions.isNotEmpty() &&
-                    functionsInExpression.intersect(originalTransformation.leftFunctions).isEmpty()){ //fast check to indicate that rule is not applicable
+                    functionsInExpression.intersect(originalTransformation.leftFunctions).isEmpty()) { //fast check to indicate that rule is not applicable
                 continue
             }
             val transformation = if (sortOperands) {
@@ -350,13 +379,24 @@ class ExpressionComporator(
                         originalTransformation.priority,
                         originalTransformation.changeOnlyOrder,
                         originalTransformation.simpleAdditional,
-                        originalTransformation.isExtending
+                        originalTransformation.isExtending,
+                        originalTransformation.normType
                 )
             } else {
                 originalTransformation
             }
-            val l = if (sortOperands) left.cloneWithSortingChildrenForExpressionSubstitutionComparison() else left.clone()
-            val r = if (sortOperands) right.cloneWithSortingChildrenForExpressionSubstitutionComparison() else right.clone()
+            if (!normFormsOfExpressionNode.containsKey(transformation.normType)) {
+                val l = if (sortOperands) left.cloneWithSortingChildrenForExpressionSubstitutionComparison() else left.clone()
+                val r = if (sortOperands) right.cloneWithSortingChildrenForExpressionSubstitutionComparison() else right.clone()
+                when(transformation.normType) {
+                    ExpressionSubstitutionNormType.ORIGINAL -> normFormsOfExpressionNode[transformation.normType] = Pair(l, r)
+                    ExpressionSubstitutionNormType.SORTED -> normFormsOfExpressionNode[transformation.normType] = Pair(left.cloneWithSortingChildrenForExpressionSubstitutionComparison(), right.cloneWithSortingChildrenForExpressionSubstitutionComparison())
+                    ExpressionSubstitutionNormType.I_MULTIPLICATED -> normFormsOfExpressionNode[transformation.normType] = Pair(left.cloneWithIMultipleNorm(), right.clone())//for right not need normalization because all substitutions in normal forms
+                    ExpressionSubstitutionNormType.SORTED_AND_I_MULTIPLICATED -> normFormsOfExpressionNode[transformation.normType] = Pair(left.cloneWithSortingChildrenForExpressionSubstitutionComparison().iMultiplicativeNormForm(), right.cloneWithSortingChildrenForExpressionSubstitutionComparison())
+                }
+            }
+            val l = normFormsOfExpressionNode[transformation.normType]!!.first.clone()
+            val r = normFormsOfExpressionNode[transformation.normType]!!.second.clone()
             val direction = getComparingDirection(expressionChainComparisonType, transformation.comparisonType)
             if (direction == null) {
                 log.add(expressionChainComparisonType.string, transformation.comparisonType.string, {
@@ -364,18 +404,18 @@ class ExpressionComporator(
                 }, { "' in expression vs '" }, { "' in rule. MSG_CODE_" }, messageType = MessageType.USER)
             }
             val substitutionPlaces = if (direction != SubstitutionDirection.RIGHT_TO_LEFT) {
-                transformation.findAllPossibleSubstitutionPlaces(l)
+                transformation.findAllPossibleSubstitutionPlaces(l, this)
             } else {
                 listOf<SubstitutionPlace>()
             } +
                     if (direction != SubstitutionDirection.LEFT_TO_RIGHT) {
-                        transformation.findAllPossibleSubstitutionPlaces(r)
+                        transformation.findAllPossibleSubstitutionPlaces(r, this)
                     } else {
                         listOf<SubstitutionPlace>()
                     }
             val bitMaskCount = 1 shl substitutionPlaces.size
             if (bitMaskCount * transformations.size > maxBustCount) {
-                transformation.applySubstitution(substitutionPlaces)
+                transformation.applySubstitution(substitutionPlaces, this)
                 if (compareWithTreeTransformationRulesInternal(l, r, transformations, maxTransformationWeight - transformation.weight,
                                 maxBustCount, minTransformationWeight, expressionChainComparisonType, sortOperands))
                     return true

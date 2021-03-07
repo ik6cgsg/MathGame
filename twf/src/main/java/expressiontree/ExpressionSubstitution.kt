@@ -14,6 +14,8 @@ val additionalFactUsedVarName = "AFU"
 
 enum class SubstitutionInstanceVarType { EXPR_VAR, EXPR_FUNC, COMPARABLE_VAR, INFO }
 
+enum class ExpressionSubstitutionNormType { ORIGINAL, SORTED, I_MULTIPLICATED, SORTED_AND_I_MULTIPLICATED }
+
 data class SubstitutionInstanceVar(val name: String, val type: SubstitutionInstanceVarType, val time: Int)
 
 class VarNamesTimeStorage(var time: Int = 0) {
@@ -136,7 +138,8 @@ class ExpressionSubstitution(
         var priority: Int? = null,
         var changeOnlyOrder: Boolean = false,
         var simpleAdditional: Boolean = false,
-        var isExtending: Boolean = false
+        var isExtending: Boolean = false,
+        var normType: ExpressionSubstitutionNormType = ExpressionSubstitutionNormType.ORIGINAL
 ) {
     init {
         if (!changeOnlyOrder) {
@@ -157,9 +160,19 @@ class ExpressionSubstitution(
     fun checkCondition(
             expressionNode: ExpressionNode, conditionNode: ExpressionNode,
             substitutionInstance: SubstitutionInstance,
+            expressionComporator: ExpressionComporator?,
             nameArgsMap: MutableMap<String, String> = mutableMapOf()
     ) {
         checkConditionCompanion(expressionNode, conditionNode, substitutionInstance, nameArgsMap, basedOnTaskContext, matchJumbledAndNested)
+        if (substitutionInstance.isApplicable && expressionComporator != null) {
+            val nonZeroVariables = right.getNonZeroVariables()
+            for (nonZeroVariable in nonZeroVariables) {
+                val nonZeroVariableValue = substitutionInstance.getExprVar(nonZeroVariable)
+                if (expressionComporator.fastProbabilityCheckOnZero(nonZeroVariableValue?: return)) {
+                    substitutionInstance.isApplicable = false
+                }
+            }
+        }
     }
 
     companion object {
@@ -378,31 +391,31 @@ class ExpressionSubstitution(
         }
     }
 
-    fun checkLeftCondition(expressionNode: ExpressionNode): SubstitutionInstance {
+    fun checkLeftCondition(expressionNode: ExpressionNode, expressionComporator: ExpressionComporator? = null): SubstitutionInstance {
         val substitutionInstance = SubstitutionInstance()
-        checkCondition(expressionNode, left.children[0], substitutionInstance)
+        checkCondition(expressionNode, left.children[0], substitutionInstance, expressionComporator)
         return substitutionInstance
     }
 
-    private fun findAllPossibleSubstitutionPlaces(root: ExpressionNode, originalExpression: ExpressionNode, result: MutableList<SubstitutionPlace>) {
+    private fun findAllPossibleSubstitutionPlaces(root: ExpressionNode, originalExpression: ExpressionNode, expressionComporator: ExpressionComporator?, result: MutableList<SubstitutionPlace>) {
         for (i in 0 until root.children.size) {
-            findAllPossibleSubstitutionPlaces(root.children[i], originalExpression, result)
-            val substitutionInstance = checkLeftCondition(root.children[i])
+            findAllPossibleSubstitutionPlaces(root.children[i], originalExpression, expressionComporator, result)
+            val substitutionInstance = checkLeftCondition(root.children[i], expressionComporator)
             if (substitutionInstance.isApplicable) {
                 result.add(SubstitutionPlace(root, i, substitutionInstance, root.children[i], originalExpression))
             }
         }
     }
 
-    fun findAllPossibleSubstitutionPlaces(root: ExpressionNode): MutableList<SubstitutionPlace> {
+    fun findAllPossibleSubstitutionPlaces(root: ExpressionNode, expressionComporator: ExpressionComporator?): MutableList<SubstitutionPlace> {
         val result = mutableListOf<SubstitutionPlace>()
-        findAllPossibleSubstitutionPlaces(root, root, result)
+        findAllPossibleSubstitutionPlaces(root, root, expressionComporator, result)
         return result
     }
 
-    fun applySubstitution(substitutionPlaces: List<SubstitutionPlace>) {
+    fun applySubstitution(substitutionPlaces: List<SubstitutionPlace>, expressionComporator: ExpressionComporator? = null) {
         for (substitutionPlace in substitutionPlaces) {
-            val newValue = checkAndApply(substitutionPlace.nodeParent.children[substitutionPlace.nodeChildIndex])
+            val newValue = checkAndApply(substitutionPlace.nodeParent.children[substitutionPlace.nodeChildIndex], expressionComporator)
             if (newValue != null) {
                 substitutionPlace.nodeParent.children[substitutionPlace.nodeChildIndex] = newValue
                 substitutionPlace.nodeParent.normalizeParentLinks()
@@ -433,8 +446,8 @@ class ExpressionSubstitution(
                 nodeId = topNodeId
             }
 
-    fun checkAndApply(expressionNode: ExpressionNode): ExpressionNode? {
-        val substitutionInstance = checkLeftCondition(expressionNode)
+    fun checkAndApply(expressionNode: ExpressionNode, expressionComporator: ExpressionComporator? = null): ExpressionNode? {
+        val substitutionInstance = checkLeftCondition(expressionNode, expressionComporator = expressionComporator)
         if (substitutionInstance.isApplicable) {
             return applyRight(substitutionInstance, topNodeId = expressionNode.nodeId)
         } else
@@ -448,7 +461,7 @@ fun ExpressionNode.applyAllFunctionSubstitutions(compiledSubstitutions: Map<Stri
         children[i].applyAllFunctionSubstitutions(compiledSubstitutions)
         val substitution = compiledSubstitutions.get(children[i].value + "_" + children[i].children.size)
         if (substitution != null) {
-            children[i] = substitution.checkAndApply(children[i]) ?: children[i]
+            children[i] = substitution.checkAndApply(children[i], null) ?: children[i]
         }
         i++
     }
@@ -457,8 +470,8 @@ fun ExpressionNode.applyAllFunctionSubstitutions(compiledSubstitutions: Map<Stri
 
 fun ExpressionNode.applyAllSubstitutions(expressionSubstitutions: Collection<ExpressionSubstitution>) {
     for (substitution in expressionSubstitutions) {
-        val substitutionPlaces = substitution.findAllPossibleSubstitutionPlaces(this)
-        substitution.applySubstitution(substitutionPlaces)
+        val substitutionPlaces = substitution.findAllPossibleSubstitutionPlaces(this, null)
+        substitution.applySubstitution(substitutionPlaces, null)
     }
     normalizeParentLinks()
 }

@@ -65,14 +65,17 @@ class OptimizerUtils(
             threshold: Double = 0.0
     ): Boolean {
         domainPointGenerator.findPoints(max(0, descentStartPointsCount - domainPointGenerator.foundPointsCount()))
-        if (!canStart())
+        if (!canStart()) {
             return false
+        }
         for (run in 0 until min(descentStartPointsCount, domainPointGenerator.foundPointsCount())) {
             val point = domainPointGenerator.generateNewPoint(centreID = run % domainPointGenerator.foundPointsCount())
-            for (variable in variablesList)
+            for (variable in variablesList) {
                 variable.value = point.get(variable.name)!!.toDouble()
-            if (runGradientDescent(iterationCount, threshold))
+            }
+            if (runGradientDescent(iterationCount, threshold)) {
                 return true
+            }
         }
         return false
     }
@@ -88,10 +91,12 @@ class OptimizerUtils(
                     compiledConfiguration.gradientDescentComparisonConfiguration.ternarySearchIterationCount,
                     threshold
             )
-            if (lambda == 0.0)
+            if (lambda == 0.0) {
                 break
-            for (i in variablesList.indices)
+            }
+            for (i in variablesList.indices) {
                 variablesList[i].value += lambda * direction[i]
+            }
             val result = calculateValue(variablesList, treeNodes, nodesWithVariables)
             if (result < threshold)
                 return true

@@ -22,6 +22,7 @@ fun checkSolutionInTex(
 
         endExpressionIdentifier: String = "", //Expression, which learner need to deduce
         targetFactIdentifier: String = "", //Fact that learner need to deduce. It is more flexible than startExpressionIdentifier and endExpressionIdentifier, allow to specify inequality like '''EXPRESSION_COMPARISON{(+(/(sin(x);+(1;cos(x)));/(+(1;cos(x));sin(x))))}{<=}{(/(2;sin(x)))}'''
+        comparisonSign: String = "", //Comparison sign
 
         //// general configuration parameters
         //functions, which null-weight transformations allowed (if no other transformations), split by configSeparator
@@ -66,6 +67,7 @@ fun checkSolutionInTex(
             endExpressionIdentifier,
             targetFactIdentifier,
             targetFactPattern,
+            comparisonSign,
             additionalFactsIdentifiers,
             shortErrorDescription,
             compiledConfiguration)
@@ -79,6 +81,7 @@ fun checkSolutionInTexWithCompiledConfiguration(
         //// individual task parameters:
         startExpressionIdentifier: String = "", //Expression, from which learner need to start the transformations
         targetFactPattern: String = "", //Pattern that specify criteria that learner's answer must meet
+        comparisonSign: String = "", //Comparison sign
         additionalFactsIdentifiers: String = "", ///Identifiers split by configSeparator - task condition facts should be here, that can be used as rules only for this task
 
         endExpressionIdentifier: String = "", //Expression, which learner need to deduce
@@ -92,6 +95,7 @@ fun checkSolutionInTexWithCompiledConfiguration(
             endExpressionIdentifier,
             targetFactIdentifier,
             targetFactPattern,
+            comparisonSign,
             additionalFactsIdentifiers,
             shortErrorDescription,
             compiledConfiguration)

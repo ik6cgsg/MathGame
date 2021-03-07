@@ -139,10 +139,68 @@ class DomainPointGenerator(
         return result
     }
 
+    fun hasVariables() = variablesList.size > 0
+
+    fun generateSimplePoints() : List<MutableMap<String, String>> {
+        val points = mutableListOf<MutableMap<String, String>>()
+        for (zeroIndex in 0..variablesList.size) {
+            val point = mutableMapOf<String, String>()
+            for (i in 0..variablesList.lastIndex) {
+                point[variablesList[i].name] = if (i == zeroIndex) "0" else "1"
+            }
+            points.add(point)
+        }
+        for (oneIndex in 0..variablesList.size) {
+            val point = mutableMapOf<String, String>()
+            for (i in 0..variablesList.lastIndex) {
+                point[variablesList[i].name] = if (i == oneIndex) "1" else "-1"
+            }
+            points.add(point)
+        }
+        for (minusOneIndex in 0..variablesList.size) {
+            val point = mutableMapOf<String, String>()
+            for (i in 0..variablesList.lastIndex) {
+                point[variablesList[i].name] = if (i == minusOneIndex) "-1" else "0"
+            }
+            points.add(point)
+        }
+        val encreasingPoint = mutableMapOf<String, String>()
+        var currentVal = 1.0
+        for (i in 0..variablesList.lastIndex) {
+            encreasingPoint[variablesList[i].name] = currentVal.toString()
+            currentVal *= 10000
+        }
+        points.add(encreasingPoint)
+
+        val decreasingPoint = mutableMapOf<String, String>()
+        for (i in 0..variablesList.lastIndex) {
+            encreasingPoint[variablesList[i].name] = currentVal.toString()
+            currentVal /= 10000
+        }
+        points.add(encreasingPoint)
+
+        val encreasingSmallPoint = mutableMapOf<String, String>()
+        currentVal = 0.00001
+        for (i in 0..variablesList.lastIndex) {
+            encreasingSmallPoint[variablesList[i].name] = currentVal.toString()
+            currentVal *= 10000
+        }
+        points.add(encreasingSmallPoint)
+
+        val decreasingSmallPoint = mutableMapOf<String, String>()
+        for (i in 0..variablesList.lastIndex) {
+            decreasingSmallPoint[variablesList[i].name] = currentVal.toString()
+            currentVal /= 10000
+        }
+        points.add(decreasingSmallPoint)
+        return points
+    }
+
     fun generateNewPoint(domainArea: Double = 1e-5, randomPointTries: Int = 10, centreID: Int = -1): MutableMap<String, String> {
         for (iterNumber in 0 until randomPointTries) {
-            for (variable in variablesList)
+            for (variable in variablesList) {
                 variable.value = random(-2 * maxConstant, 2 * maxConstant)
+            }
             if (calculatePenalty(variablesList) < epsilon)
                 return variablesListToMap(variablesList)
         }
@@ -159,8 +217,9 @@ class DomainPointGenerator(
 
     fun variablesListToMap(variableList: List<VariableInfo>): MutableMap<String, String> {
         val result = mutableMapOf<String, String>()
-        for (variable in variableList)
+        for (variable in variableList) {
             result[variable.name] = variable.value.toString()
+        }
         return result
     }
 

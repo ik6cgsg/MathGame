@@ -12,7 +12,8 @@ class TransformationChainParser(
         val functionConfiguration: FunctionConfiguration = FunctionConfiguration(),
         val factsLogicConfiguration: FactsLogicConfiguration = FactsLogicConfiguration(),
         val compiledImmediateVariableReplacements: Map<String, String> = mapOf(),
-        var transformationChain: String = originalTransformationChain
+        var transformationChain: String = originalTransformationChain,
+        var isMathML: Boolean = true
 ) {
     var root: MainLineAndNode = MainLineAndNode(0, transformationChain.length, null)
 
@@ -489,7 +490,7 @@ class TransformationChainParser(
         log.addMessage({ "Current log level: ${currentLogLevel}" }, level = currentLogLevel)
 
         log.addMessage({ "Splitting_on_parts_started" }, level = currentLogLevel)
-        val allParts = splitBySubstringOnTopLevel(getAllComparisonTypeMathML(), transformationChain, startPosition, endPosition)
+        val allParts = splitBySubstringOnTopLevel(getAllComparisonTypeSignStrings(isMathML), transformationChain, startPosition, endPosition)
         val parts = allParts.mapNotNull {
             log.add(it.startPosition, it.endPosition, it.splittingSubstring.toString(), { "part positions: from '" }, {"' to '"}, { "'; split by '" }, {"'"}, currentLogLevel)
             val partString = transformationChain
@@ -526,7 +527,7 @@ class TransformationChainParser(
                 return null
             }
             log.add(rightPartParser.root, { "right expression = '''" }, { "''' parsed" }, currentLogLevel)
-            val sign = valueFromMathMLString(parts[0].splittingSubstring!!)
+            val sign = valueFromSignString(parts[0].splittingSubstring!!)
             log.add(sign, { "sign = '" }, { "' parsed" }, currentLogLevel)
             if (factsLogicConfiguration.alwaysLetTwoPartsComparisonsAsExpressionComparisons) {
                 val result = ExpressionComparison(startPosition, endPosition,
@@ -583,7 +584,7 @@ class TransformationChainParser(
                     log.add(partParser.root, { "parsed part expression: '''" }, { "'''" }, currentLogLevel)
                     log.add(part.splittingSubstring.toString(), { "part.splittingSign: '" }, { "'" }, currentLogLevel)
                     if (part.splittingSubstring != null) {
-                        val sign = valueFromMathMLString(part.splittingSubstring!!)
+                        val sign = valueFromSignString(part.splittingSubstring!!)
                         when (sign) {
                             ComparisonType.EQUAL -> hasEquality = log.assignAndLog(true, currentLogLevel, { "hasEquality" })
                             ComparisonType.LEFT_MORE_OR_EQUAL -> {

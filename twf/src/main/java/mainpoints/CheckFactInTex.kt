@@ -25,6 +25,7 @@ fun checkFactsInTex(
         endExpressionIdentifier: String = "",
         targetFactIdentifier: String = "", //Fact that learner need to prove should be here
         targetFactPattern: String = "", //Pattern that specify criteria that learner's answer must meet
+        comparisonSign: String = "", //Comparison sign
         additionalFactsIdentifiers: String = "", ///Identifiers split by configSeparator - task condition facts should be here
         shortErrorDescription: String = "0", //crop parsed steps from error description
         compiledConfiguration: CompiledConfiguration
@@ -38,7 +39,8 @@ fun checkFactsInTex(
             nameForRuleDesignationsPossible = false,
             functionConfiguration = compiledConfiguration.functionConfiguration,
             factsLogicConfiguration = compiledConfiguration.factsLogicConfiguration,
-            compiledImmediateVariableReplacements = compiledConfiguration.compiledImmediateVariableReplacements)
+            compiledImmediateVariableReplacements = compiledConfiguration.compiledImmediateVariableReplacements,
+            isMathML = false)
     log.addMessage({ "input transformations parsing started" }, MessageType.USER, level = 0)
     val error = transformationChainParser.parse()
     if (error != null) {
@@ -49,7 +51,7 @@ fun checkFactsInTex(
         log.addMessage({ "input transformations are parsed successfully" }, MessageType.USER, level = 0)
         log.addMessageWithFactDetail({ "parsed input transformations: " }, transformationChainParser.root, MessageType.USER)
         val factComporator = compiledConfiguration.factComporator
-        val solutionRoot = combineSolutionRoot(targetFactIdentifier, transformationChainParser, compiledConfiguration, startExpressionIdentifier, endExpressionIdentifier)
+        val solutionRoot = combineSolutionRoot(targetFactIdentifier, transformationChainParser, compiledConfiguration, startExpressionIdentifier, endExpressionIdentifier, comparisonSign)
         log.addMessage({ "input transformations checking started" }, MessageType.USER, level = 0)
         val checkingResult = solutionRoot.check(factComporator, false,
                 listOf(),

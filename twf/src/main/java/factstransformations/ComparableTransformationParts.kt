@@ -9,6 +9,7 @@ import config.CheckingKeyWords.Companion.verificationFailed
 import expressiontree.*
 import logs.MessageType
 import logs.log
+import standartlibextensions.SplittingString
 import standartlibextensions.splitBySubstringOnTopLevel
 import standartlibextensions.splitStringByBracketsOnTopLevel
 import visualization.ColoringTask
@@ -748,7 +749,7 @@ class MainLineAndNode(
     companion object {
         fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration()): MainLineAndNode? {
             val mainPart = string.substring("AND_NODE(".length, string.length - ")".length)
-            val parts = splitBySubstringOnTopLevel(listOf(";-->>;"), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
+            val parts = splitBySubstringOnTopLevel(listOf(SplittingString(";-->>;")), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
             val result = MainLineAndNode(parent = parent)
             result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent, functionConfiguration))
             result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent, functionConfiguration))
@@ -921,7 +922,7 @@ class MainLineOrNode(
     companion object {
         fun parseFromFactIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration = FunctionConfiguration()): MainLineOrNode? {
             val mainPart = string.substring("OR_NODE(".length, string.length - ")".length)
-            val parts = splitBySubstringOnTopLevel(listOf(";-->>;"), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
+            val parts = splitBySubstringOnTopLevel(listOf(SplittingString(";-->>;")), mainPart).map { mainPart.substring(it.startPosition, it.endPosition) }
             val result = MainLineOrNode(parent = parent)
             result.inFacts.addAll(parsePartsFromIdentifier(parts[0], parent, functionConfiguration))
             result.outFacts.addAll(parsePartsFromIdentifier(if (parts.size > 1) parts[1] else parts[0], parent, functionConfiguration))
@@ -961,7 +962,7 @@ fun getOutFactsFromMainLineNode(factNode: ComparableTransformationsPart) =
 
 
 fun parsePartsFromIdentifier(string: String, parent: MainLineNode? = null, functionConfiguration: FunctionConfiguration): MutableList<MainChainPart> {
-    val parts = splitBySubstringOnTopLevel(listOf(";mn;"), string).map { string.substring(it.startPosition, it.endPosition) }
+    val parts = splitBySubstringOnTopLevel(listOf(SplittingString(";mn;")), string).map { string.substring(it.startPosition, it.endPosition) }
     val result = mutableListOf<MainChainPart>()
     for (part in parts) {
         result.add(parseFromFactIdentifier(part, parent, functionConfiguration) ?: continue)

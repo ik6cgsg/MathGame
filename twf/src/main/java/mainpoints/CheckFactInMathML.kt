@@ -56,7 +56,8 @@ fun checkFactsInMathML(
             nameForRuleDesignationsPossible = false,
             functionConfiguration = compiledConfiguration.functionConfiguration,
             factsLogicConfiguration = compiledConfiguration.factsLogicConfiguration,
-            compiledImmediateVariableReplacements = compiledConfiguration.compiledImmediateVariableReplacements)
+            compiledImmediateVariableReplacements = compiledConfiguration.compiledImmediateVariableReplacements,
+            isMathML = true)
     log.addMessage({ "input transformations parsing started" }, MessageType.USER, level = 0)
     val error = transformationChainParser.parse()
     if (error != null) {
@@ -247,9 +248,15 @@ fun specificMathMlSystemReplacements(mathML: String): String {
 
 fun addErrorStringToMathMLSolution(mathML: String, error: String, errorPrefix: String): String {
     val withoutEnd = mathML.substring(0, mathML.length - "</math>".length)
-    val escapedError = error
-            .replace("<", "&lt")
-            .replace(">", "&gt")
+    val escapedError = if (error.contains("<=")) {
+        error.replace("<=", "</mtext><mo mathvariant=\"bold\" mathcolor=\"#FF0000\">&le;</mo><mtext mathvariant=\"bold\" mathcolor=\"#FF0000\">")
+    } else if (error.contains(">=")) {
+        error.replace(">=", "</mtext><mo mathvariant=\"bold\" mathcolor=\"#FF0000\">&ge;</mo><mtext mathvariant=\"bold\" mathcolor=\"#FF0000\">")
+    } else if (error.contains("<")) {
+        error.replace("<", "</mtext><mo mathvariant=\"bold\" mathcolor=\"#FF0000\">&lt;</mo><mtext mathvariant=\"bold\" mathcolor=\"#FF0000\">")
+    } else {
+        error.replace(">", "</mtext><mo mathvariant=\"bold\" mathcolor=\"#FF0000\">&gt;</mo><mtext mathvariant=\"bold\" mathcolor=\"#FF0000\">")
+    }
     return withoutEnd + "<mspace linebreak=\"newline\"/>" +
             "<mtext mathvariant=\"bold\" mathcolor=\"#FF0000\">$errorPrefix: " + escapedError +
             "</mtext></math>"

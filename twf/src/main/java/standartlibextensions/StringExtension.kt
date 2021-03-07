@@ -287,7 +287,12 @@ fun splitStringByBracketsOnTopLevel(originalString: String, openBracket: Char, c
     return NamedList(name, result, endPosition)
 }
 
-fun splitBySubstringOnTopLevel(substrings: List<String>, expression: String, startPosition: Int = 0, endPosition: Int = expression.length): List<StringPart> {
+data class SplittingString(
+        val string: String,
+        val keywordsWithStringAsPrefix: List<String> = listOf()
+)
+
+fun splitBySubstringOnTopLevel(substrings: List<SplittingString>, expression: String, startPosition: Int = 0, endPosition: Int = expression.length): List<StringPart> {
     val result = mutableListOf<StringPart>()
     var pos = startPosition
     var lastStartPos = startPosition
@@ -295,8 +300,9 @@ fun splitBySubstringOnTopLevel(substrings: List<String>, expression: String, sta
     while (pos < endPosition) {
         var splittingSubstring: String? = null
         for (substring in substrings) {
-            if (remainingExpressionStartsWith(substring, expression, pos)) {
-                splittingSubstring = substring
+            if (remainingExpressionStartsWith(substring.string, expression, pos) &&
+                    substring.keywordsWithStringAsPrefix.all { !remainingExpressionStartsWith(it, expression, pos) }) {
+                splittingSubstring = substring.string
                 break
             }
         }

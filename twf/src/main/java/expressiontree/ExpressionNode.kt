@@ -628,6 +628,20 @@ data class ExpressionNode(
         return result
     }
 
+    fun getNonZeroVariables(): Set<String> {
+        val result = mutableSetOf<String>()
+        if (value == "/" && children.size == 2 && children.last().nodeType == NodeType.VARIABLE &&
+                children.last().value != "" &&
+                children.last().value.toDoubleOrNull() == null &&
+                children.last().value != "sys_def_i_complex") {
+            result.add(children.last().value)
+        }
+        for (child in children) {
+            result.addAll(child.getNonZeroVariables())
+        }
+        return result
+    }
+
     fun containsFunctions(): Boolean {
         if (nodeType == NodeType.FUNCTION && value != "") {
             return false
@@ -1073,6 +1087,65 @@ data class ExpressionNode(
             }
         }
     }
+
+    fun checkAndDeleteIifExistsInMultiplicationContext(): Boolean {
+        if (value == "*") {
+            for (idx in 0..children.lastIndex) {
+                if (children[idx].value == "sys_def_i_complex") {
+                    if (children.size == 1) {
+                        children[0].value = "1"
+                    } else {
+                        children.removeAt(idx)
+                    }
+                    return true;
+                } else {
+                    if (children[idx].checkAndDeleteIifExistsInMultiplicationContext() == true) {
+                        return true
+                    }
+                }
+            }
+        } else if (value == "/") {
+            if (children[0].value == "sys_def_i_complex") {
+                children[0].value = "1"
+                return true;
+            } else {
+                if (children[0].checkAndDeleteIifExistsInMultiplicationContext() == true) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    fun normalizeMultiplicativeTreeWithI() {
+        for (i in 0..children.lastIndex) {
+            val containsI = children[i].checkAndDeleteIifExistsInMultiplicationContext()
+            if (containsI) {
+                if (children[i].value == "*") {
+                    children[i].addChild(ExpressionNode(NodeType.VARIABLE, "sys_def_i_complex"))
+                } else {
+                    val newChild = ExpressionNode(NodeType.FUNCTION, "*")
+                    newChild.addChild(children[i])
+                    newChild.addChild(ExpressionNode(NodeType.VARIABLE, "sys_def_i_complex"))
+                    this.setChildOnPosition(newChild, i)
+                }
+            }
+        }
+    }
+
+    fun iMultiplicativeNormForm(): ExpressionNode {//TODO: check usability of this function
+        for (child in children) {
+            if (child.value == "*" || child.value == "/") {
+                this.normalizeMultiplicativeTreeWithI()
+            } else {
+                child.iMultiplicativeNormForm()
+            }
+        }
+        return this
+    }
+
+    fun cloneWithIMultipleNorm() = clone()
+            .iMultiplicativeNormForm()
 }
 
 class ExpressionNodeConstructor(

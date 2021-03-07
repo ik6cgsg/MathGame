@@ -1,9 +1,6 @@
 package mainpoints
 
-import config.CompiledConfiguration
-import config.FunctionConfiguration
-import config.FunctionIdentifier
-import config.TreeTransformationRule
+import config.*
 import expressiontree.ExpressionNodeConstructor
 import expressiontree.ExpressionSubstitution
 import factstransformations.*
@@ -66,7 +63,7 @@ fun compiledConfigurationBySettings(
 
 
 fun combineSolutionRoot(targetFactIdentifier: String, transformationChainParser: TransformationChainParser, compiledConfiguration: CompiledConfiguration,
-                        startExpressionIdentifier: String = "", endExpressionIdentifier: String = ""): MainLineAndNode {
+                        startExpressionIdentifier: String = "", endExpressionIdentifier: String = "", comparisonSign: String = ""): MainLineAndNode {
     if (startExpressionIdentifier.isNotBlank() && transformationChainParser.root.factTransformationChains.isEmpty() &&
             transformationChainParser.root.expressionTransformationChains.size == 1) {
         val expressionNodeConstructor = ExpressionNodeConstructor(compiledConfiguration.functionConfiguration)
@@ -77,8 +74,12 @@ fun combineSolutionRoot(targetFactIdentifier: String, transformationChainParser:
             val endExpression = expressionNodeConstructor.construct(endExpressionIdentifier)
             transformationChainParser.root.expressionTransformationChains.first().chain.add(Expression(data = endExpression, parent = transformationChainParser.root))
         }
+
+        if (comparisonSign.isNotEmpty()) {
+            transformationChainParser.root.expressionTransformationChains.first().comparisonType = valueOfComparisonType(comparisonSign)
+        }
     }
-    return if (targetFactIdentifier.contains("}{=}{")) {
+    return if (targetFactIdentifier.contains("}{=}{") || targetFactIdentifier.contains("}{<}{") || targetFactIdentifier.contains("}{>}{") || targetFactIdentifier.contains("}{<=}{") || targetFactIdentifier.contains("}{>=}{")) {
         val taskTargetFact = log.factConstructorViewer.constructFactByIdentifier(targetFactIdentifier)
         val taskTargetRoot = if (taskTargetFact.type() == transformationChainParser.root.type()) taskTargetFact
         else MainLineAndNode(inFacts = mutableListOf(taskTargetFact))
