@@ -19,7 +19,7 @@
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -36,7 +36,7 @@
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -53,7 +53,7 @@
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -70,7 +70,7 @@
       "finalExpression": "2-CNF",
       "finalPattern": "and : (or : 2) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -87,7 +87,7 @@
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -104,7 +104,7 @@
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -121,7 +121,7 @@
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -138,7 +138,7 @@
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -155,7 +155,7 @@
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -172,7 +172,7 @@
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -189,7 +189,7 @@
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -206,7 +206,7 @@
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -223,7 +223,7 @@
       "finalExpression": "CNF",
       "finalPattern": "and : (or) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -240,7 +240,7 @@
       "finalExpression": "DNF",
       "finalPattern": "or : (and) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     }
@@ -258,7 +258,7 @@
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -275,7 +275,7 @@
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -292,7 +292,7 @@
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -309,7 +309,7 @@
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -326,7 +326,7 @@
       "finalExpression": "3-CNF",
       "finalPattern": "and : (or : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     },
@@ -343,7 +343,7 @@
       "finalExpression": "3-DNF",
       "finalPattern": "or : (and : 3) : : : not",
       "rules":[
-        {"rulePack": "LogicAndOrBase"},
+        {"rulePack": "LogicImplicationDifference"},
         {"rulePack": "LogicAbsorptionLaw"}
       ]
     }
