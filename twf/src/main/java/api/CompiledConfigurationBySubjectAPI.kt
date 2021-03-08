@@ -50,7 +50,7 @@ fun createConfigurationFromRulePacksAndDetailSolutionCheckingParams(
         wellKnownFunctions: List<FunctionIdentifier> = listOf(),
         unlimitedWellKnownFunctions: List<FunctionIdentifier> = wellKnownFunctions,
         expressionTransformationRules: List<ExpressionSubstitution> = listOf() //full list of expression transformations rules
-        ): CompiledConfiguration {
+): CompiledConfiguration {
     val compiledConfiguration = compiledConfigurationBySettings(
             wellKnownFunctionsString,
             expressionTransformationRulesString,
@@ -91,36 +91,36 @@ fun createConfigurationFromRulePacksAndDetailSolutionCheckingParams(
     return compiledConfiguration
 }
 
+val rulePacksMap = mapOf(
+        Pair("Algebra", getAllAlgebraSubstitutions()),
+        Pair("ArithmeticPositiveAddition", getArithmeticPositiveAdditionSubstitutions()),
+        Pair("ArithmeticAddition", getArithmeticAdditionSubstitutions()),
+        Pair("ArithmeticMultiplication", getArithmeticMultiplicationSubstitutions()),
+        Pair("ArithmeticDivision", getArithmeticDivisionSubstitutions()),
+        Pair("ArithmeticPow", getArithmeticPowSubstitutions()),
+        Pair("ArithmeticPowExtension", getArithmeticPowExtensionSubstitutions()),
+        Pair("ShortMultiplication", getShortMultiplicationSubstitutions()),
+        Pair("Logarithm", getLogarithmSubstitutions()),
+        Pair("FactorialRecurrent", getFactorialSubstitutions()),
+        Pair("Combinatorics", getCombinatoricsSubstitutions()),
+        Pair("Trigonometry", getTrigonometrySubstitutions()),
+        Pair("Complexes", getComplexesSubstitutions()),
+        Pair("TrigonometryZk", getTrigonometryZkSubstitutions()),
+        Pair("TrigonometryCompleteTgCtg", getTrigonometryCompleteTgCtgSubstitutions()),
+        Pair("Logic", getLogicBaseSubstitutions()),
+        Pair("LogicAbsorption", getLogicAbsorptionLawSubstitutions()),
+        Pair("LogicResolution", getLogicResolutionSubstitutions()),
+        Pair("PhysicsSimpleMoving", getPhysicsSimpleMovingSubstitutions()),
+        Pair("PhysicsCircleMoving", getPhysicsCircleMovingSubstitutions()),
+        Pair("PhysicsNuclear", getPhysicsNuclearSubstitutions()),
+        Pair("PhysicsMolecular", getPhysicsMolecularSubstitutions()),
+        Pair("PhysicsElectrodynamics", getPhysicsElectrodynamicsSubstitutions())
+)
 
 fun getSubstitutionsByRulePacks(rulePacks: Array<String>): List<ExpressionSubstitution> {
     val result = mutableListOf<ExpressionSubstitution>()
     for (rulePack in rulePacks) {
-        val newRules = when (rulePack) {
-            "Algebra" -> getAllAlgebraSubstitutions()
-            "ArithmeticPositiveAddition" -> getArithmeticPositiveAdditionSubstitutions()
-            "ArithmeticAddition" -> getArithmeticAdditionSubstitutions()
-            "ArithmeticMultiplication" -> getArithmeticMultiplicationSubstitutions()
-            "ArithmeticDivision" -> getArithmeticDivisionSubstitutions()
-            "ArithmeticPow" -> getArithmeticPowSubstitutions()
-            "ArithmeticPowExtension" -> getArithmeticPowExtensionSubstitutions()
-            "ShortMultiplication" -> getShortMultiplicationSubstitutions()
-            "Logarithm" -> getLogarithmSubstitutions()
-            "FactorialRecurrent" -> getFactorialSubstitutions()
-            "Combinatorics" -> getCombinatoricsSubstitutions()
-            "Trigonometry" -> getTrigonometrySubstitutions()
-            "Complexes" -> getComplexesSubstitutions()
-            "TrigonometryZk" -> getTrigonometryZkSubstitutions()
-            "TrigonometryCompleteTgCtg" -> getTrigonometryCompleteTgCtgSubstitutions()
-            "Logic" -> getLogicBaseSubstitutions()
-            "LogicAbsorption" -> getLogicAbsorptionLawSubstitutions()
-            "LogicResolution" -> getLogicResolutionSubstitutions()
-            "PhysicsSimpleMoving" -> getPhysicsSimpleMovingSubstitutions()
-            "PhysicsCircleMoving" -> getPhysicsCircleMovingSubstitutions()
-            "PhysicsNuclear" -> getPhysicsNuclearSubstitutions()
-            "PhysicsMolecular" -> getPhysicsMolecularSubstitutions()
-            "PhysicsElectrodynamics" -> getPhysicsElectrodynamicsSubstitutions()
-            else -> listOf<ExpressionSubstitution>()
-        }
+        val newRules = rulePacksMap[rulePack] ?: listOf<ExpressionSubstitution>()
         result += newRules
     }
     return result.distinctBy { it.code }
@@ -188,7 +188,7 @@ fun getArithmeticMultiplicationSubstitutions() = getArithmeticAdditionSubstituti
         expressionSubstitutionFromStructureStrings(leftStructureString = "(*(-(A);C))", rightStructureString = "(+(-(*(A;C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(-(*(A;C)))", rightStructureString = "(*(A;+(-(C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(*(A;-(C)))", rightStructureString = "(+(-(*(A;C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
-        expressionSubstitutionFromStructureStrings(leftStructureString = "(*(A;-(C)))", rightStructureString = "(*(+(-(A);C)))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
+        expressionSubstitutionFromStructureStrings(leftStructureString = "(*(A;-(C)))", rightStructureString = "(*(+(-(A));C))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(*(-(A);C))", rightStructureString = "(*(A;+(-(C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(+(-(*(A;C))))", rightStructureString = "(*(+(-(A));C))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(*(+(-(A));C))", rightStructureString = "(+(-(*(A;C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
@@ -214,13 +214,11 @@ fun getArithmeticDivisionSubstitutions() = getArithmeticMultiplicationSubstituti
         expressionSubstitutionFromStructureStrings(leftStructureString = "", rightStructureString = "", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 92, code = "MultiplicativeComplicatingExtension"),
         expressionSubstitutionFromStructureStrings(leftStructureString = "", rightStructureString = "", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 10, code = "ReduceFraction"),
         expressionSubstitutionFromStructureStrings(leftStructureString = "", rightStructureString = "", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 15, code = "DecimalToFraction"),
-        expressionSubstitutionFromStructureStrings(leftStructureString = "(/(*(a;n);a))", rightStructureString = "(*(a;+(n;-(1))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
-        expressionSubstitutionFromStructureStrings(leftStructureString = "(*(a;+(n;-(1))))", rightStructureString = "(/(*(a;n);a))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
-        expressionSubstitutionFromStructureStrings(leftStructureString = "(-(/(A;C)))", rightStructureString = "(/(+(-(A);C)))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
+        expressionSubstitutionFromStructureStrings(leftStructureString = "(-(/(A;C)))", rightStructureString = "(/(+(-(A));C))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(/(-(A);C))", rightStructureString = "(+(-(/(A;C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(-(/(A;C)))", rightStructureString = "(/(A;+(-(C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(/(A;-(C)))", rightStructureString = "(+(-(/(A;C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
-        expressionSubstitutionFromStructureStrings(leftStructureString = "(/(A;-(C)))", rightStructureString = "(/(+(-(A);C)))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
+        expressionSubstitutionFromStructureStrings(leftStructureString = "(/(A;-(C)))", rightStructureString = "(/(+(-(A));C))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(/(-(A);C))", rightStructureString = "(/(A;+(-(C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(+(-(/(A;C))))", rightStructureString = "(/(+(-(A));C))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(/(+(-(A));C))", rightStructureString = "(+(-(/(A;C))))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 35, code = ""),
@@ -550,7 +548,7 @@ fun getComplexesSubstitutions() = mutableListOf(
         expressionSubstitutionFromStructureStrings(leftStructureString = "(exp(ln(a)))", rightStructureString = "(a)", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 30, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(cos(z))", rightStructureString = "(/(+(exp(*(sys_def_i_complex;z));exp(+(-(*(sys_def_i_complex;z)))));2))", basedOnTaskContext = false, matchJumbledAndNested = true, simpleAdditional = false, isExtending = false, priority = 30, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(sin(z))", rightStructureString = "(/(+(exp(*(sys_def_i_complex;z));-(exp(+(-(*(sys_def_i_complex;z))))));*(2;sys_def_i_complex)))", basedOnTaskContext = false, matchJumbledAndNested = true, simpleAdditional = false, isExtending = false, priority = 30, code = ""),
-        expressionSubstitutionFromStructureStrings(leftStructureString = "(^(e;ln(a))", rightStructureString = "(a)", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 30, code = "")
+        expressionSubstitutionFromStructureStrings(leftStructureString = "(^(e;ln(a)))", rightStructureString = "(a)", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 30, code = "")
 ) + getTrigonometryZkSubstitutions() + getArithmeticMultiplicationSubstitutions()
 
 
@@ -645,7 +643,7 @@ fun getLogicBaseSubstitutions() = mutableListOf(
         expressionSubstitutionFromStructureStrings(leftStructureString = "(A)", rightStructureString = "(alleq(1;A))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = true, priority = 91, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(not(A))", rightStructureString = "(xor(A;1))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = true, priority = 91, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(not(A))", rightStructureString = "(alleq(0;A))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = true, priority = 91, code = "")
-        )
+)
 
 fun getLogicAbsorptionLawSubstitutions() = getLogicBaseSubstitutions() + mutableListOf(
         expressionSubstitutionFromStructureStrings(leftStructureString = "(and(A;or(A;B)))", rightStructureString = "(A)", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 6, code = ""),
@@ -658,7 +656,7 @@ fun getLogicAbsorptionLawSubstitutions() = getLogicBaseSubstitutions() + mutable
         expressionSubstitutionFromStructureStrings(leftStructureString = "(or(and(B;A);A))", rightStructureString = "(A)", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 6, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(A)", rightStructureString = "(and(A;or(A;B)))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = true, priority = 90, code = ""),
         expressionSubstitutionFromStructureStrings(leftStructureString = "(A)", rightStructureString = "(or(A;and(A;B)))", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = true, priority = 90, code = ""),
-                expressionSubstitutionFromStructureStrings(leftStructureString = "", rightStructureString = "", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 92, code = "SetComplicatingExtension")
+        expressionSubstitutionFromStructureStrings(leftStructureString = "", rightStructureString = "", basedOnTaskContext = false, matchJumbledAndNested = false, simpleAdditional = false, isExtending = false, priority = 92, code = "SetComplicatingExtension")
 )
 
 fun getLogicResolutionSubstitutions() = getLogicBaseSubstitutions() + mutableListOf(

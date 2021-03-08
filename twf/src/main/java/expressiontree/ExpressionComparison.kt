@@ -94,7 +94,9 @@ class ExpressionComporator(
                 ComparisonType.LEFT_LESS -> if (l >= r || baseOperationsDefinitions.additivelyEqual(l, r)) {
                     return false
                 }
-                else -> if (!baseOperationsDefinitions.additivelyEqual(l, r)) return false
+                else -> if (!baseOperationsDefinitions.additivelyEqual(l, r)) {
+                    return false
+                }
             }
         } else {
             variableValues[variables[currentIndex]] = "0"
@@ -145,27 +147,23 @@ class ExpressionComporator(
             }
             while (numberOfRemainingTests-- > 0) {
                 val pointI = domain.generateNewPoint()
+                val leftInPoint = left.cloneWithNormalization(pointI, sorted = false)
+                val rightInPoint = right.cloneWithNormalization(pointI, sorted = false)
                 if (isHaveComplexNode) {
-                    val lComplex = baseOperationsComputationComplex.compute(
-                            left.cloneWithNormalization(pointI, sorted = false)) as Complex
-                    val rComplex = baseOperationsComputationComplex.compute(
-                            right.cloneWithNormalization(pointI, sorted = false)) as Complex
+                    val lComplex = baseOperationsComputationComplex.compute(leftInPoint) as Complex
+                    val rComplex = baseOperationsComputationComplex.compute(rightInPoint) as Complex
                     if (lComplex.equals(rComplex)) {
                         passedTests++
                     }
                 } else {
-                    val lDouble = baseOperationsComputationDouble.compute(
-                            left.cloneWithNormalization(pointI, sorted = false)) as Double
-                    val rDouble = baseOperationsComputationDouble.compute(
-                            right.cloneWithNormalization(pointI, sorted = false)) as Double
+                    val lDouble = baseOperationsComputationDouble.compute(leftInPoint) as Double
+                    val rDouble = baseOperationsComputationDouble.compute(rightInPoint) as Double
                     if (lDouble.isNaN() || rDouble.isNaN()) {
                         if ((lDouble.isNaN() != rDouble.isNaN()) && justInDomainsIntersection) {
                             return false
                         }
-                        val lComplex = baseOperationsComputationComplex.compute(
-                                left.cloneWithNormalization(pointI, sorted = false)) as Complex
-                        val rComplex = baseOperationsComputationComplex.compute(
-                                right.cloneWithNormalization(pointI, sorted = false)) as Complex
+                        val lComplex = baseOperationsComputationComplex.compute(leftInPoint) as Complex
+                        val rComplex = baseOperationsComputationComplex.compute(rightInPoint) as Complex
                         if (lComplex.equals(rComplex)) {
                             passedTests++
                         }
@@ -174,7 +172,9 @@ class ExpressionComporator(
                             numberOfRemainingTests += testWithUndefinedResultIncreasingCoef
                         } else if (baseOperationsDefinitions.additivelyEqual(lDouble, rDouble)) {
                             passedTests++
-                        } else return false
+                        } else {
+                            return false
+                        }
                     }
                 }
                 if (passedTests >= minNumberOfPointsForEquality) {

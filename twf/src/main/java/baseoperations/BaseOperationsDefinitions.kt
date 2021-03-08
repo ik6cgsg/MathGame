@@ -229,7 +229,7 @@ class BaseOperationsDefinitions(val epsilon: Double = 11.9e-6) {
             if (argNode.children.isNotEmpty()) continue
             val argValue = argNode.value.toDoubleOrNull()
             if (argValue != null) {
-                result.addMod2(argValue)
+                result = result.addMod2(argValue)
                 argNode.nodeType = NodeType.EMPTY
             }
         }
@@ -237,7 +237,9 @@ class BaseOperationsDefinitions(val epsilon: Double = 11.9e-6) {
         if (argsParentNode.children.size == 0) argsParentNode.setVariable(result.toString())
         else if (result.additivelyEqualToZero()) {
             if (argsParentNode.children.size == 1) argsParentNode.setNode(argsParentNode.children[0])
-        } else if (startSize > argsParentNode.children.size) argsParentNode.addChild(ExpressionNode(NodeType.VARIABLE, result.toString()))
+        } else {
+            argsParentNode.addChild(ExpressionNode(NodeType.VARIABLE, result.toString()))
+        }
         return argsParentNode
     }
 
@@ -258,10 +260,10 @@ class BaseOperationsDefinitions(val epsilon: Double = 11.9e-6) {
             }
         }
         argsParentNode.children.removeAll({ it.nodeType == NodeType.EMPTY })
-        if (argsParentNode.children.size == 0) argsParentNode.setVariable(result.toString())
-        else if (result.additivelyEqualToZero()) {
-            if (argsParentNode.children.size == 1) argsParentNode.setNode(argsParentNode.children[0])
-        } else if (startSize > argsParentNode.children.size) argsParentNode.addChild(ExpressionNode(NodeType.VARIABLE, result.toString()))
+        if (argsParentNode.children.size == 0) argsParentNode.setVariable("1.0")
+        else if (result != 0.5) {
+            argsParentNode.addChild(ExpressionNode(NodeType.VARIABLE, result.toString()))
+        }
         return argsParentNode
     }
 
