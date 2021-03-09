@@ -15,7 +15,7 @@
       "type": "algebra",
       "stepsNum": 5,
       "time": 150,
-      "originalExpression": "(/(*(18;sin(a);cos(a));sin(*(2;a)))))",
+      "originalExpression": "(/(*(18;sin(a);cos(a));sin(*(2;a))))",
       "finalExpression": "Упростить",
       "finalPattern": "?:0:?:?N",
       "rules":[

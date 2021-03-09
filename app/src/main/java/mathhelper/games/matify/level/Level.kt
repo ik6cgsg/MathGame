@@ -154,7 +154,7 @@ class Level {
         startExpression = structureStringToExpression(startExpressionStr)
         endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
         endExpression = structureStringToExpression(endExpressionStr)
-        Log.d("task", "${startExpression.toTexView()} -> ${endExpression.toTexView()}")
+        Log.d("task", "'${startExpression} -> ${endExpression}' parsed from '${startExpressionStr} -> ${endExpressionStr}'")
         endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         endPattern = when (type) {
             Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
