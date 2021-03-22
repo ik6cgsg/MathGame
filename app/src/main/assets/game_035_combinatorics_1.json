@@ -482,7 +482,7 @@
       "name": "FactorialRecurrent",
       "type": "algebra",
       "rules":[
-        {"rulePack": "ArithmeticPow"},
+        {"rulePack": "Logarithm"},
         {"left": "(factorial(+(n;1)))","right": "(*(factorial(n);+(n;1)))"},
         {"left": "(*(factorial(n);+(n;1)))","right": "(factorial(+(n;1)))", "matchJumbledAndNested": true},
         {"left": "(/(factorial(+(n;1));+(n;1)))","right": "(factorial(n))"},
@@ -503,7 +503,7 @@
       "name": "CombinatoricBase",
       "type": "algebra",
       "rules":[
-        {"rulePack": "Logarithm"},
+        {"rulePack": "FactorialRecurrent"},
         {"left": "(U(m;n))","right": "(^(m;n))"},
         {"left": "(^(m;n))","right": "(U(m;n))"},
 
