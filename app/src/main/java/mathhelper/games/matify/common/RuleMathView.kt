@@ -8,8 +8,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.TextView
-import com.twf.api.expressionSubstitutionFromStructureStrings
-import com.twf.expressiontree.ExpressionSubstitution
+import api.expressionSubstitutionFromStructureStrings
+import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.level.Type
@@ -28,7 +28,7 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
-        setDefaults()
+        setDefaults(context)
     }
 
     constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
@@ -36,16 +36,17 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
         val substFrom = params.getString(R.styleable.RuleMathView_substFrom)
         val substTo = params.getString(R.styleable.RuleMathView_substTo)
         subst = expressionSubstitutionFromStructureStrings(substFrom!!, substTo!!)
-        setDefaults()
+        setDefaults(context)
     }
 
-    private fun setDefaults() {
+    private fun setDefaults(context: Context) {
         textSize = Constants.ruleDefaultSize
         setHorizontallyScrolling(true)
         isHorizontalScrollBarEnabled = true
         isScrollbarFadingEnabled = true
         movementMethod = ScrollingMovementMethod()
-        setTextColor(Color.LTGRAY)
+        val themeName = Storage.shared.theme(context)
+        setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
         typeface = Typeface.MONOSPACE
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(
@@ -88,12 +89,13 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
                 Log.d(TAG, "ACTION_DOWN")
                 needClick = true
                 moveCnt = 0
-                setBackgroundColor(Constants.lightGrey)
+                val themeName = Storage.shared.theme(context)
+                setBackgroundColor(ThemeController.shared.getColorByTheme(themeName, ColorName.ON_TOUCH_BACKGROUND_COLOR))
             }
             event.action == MotionEvent.ACTION_UP -> {
                 Log.d(TAG, "ACTION_UP")
                 if (needClick && AndroidUtil.touchUpInsideView(this, event)) {
-                    PlayScene.shared.currentRuleView = this
+                    PlayScene.shared.setCurrentRuleView(context, this)
                     needClick = false
                 } else {
                     setBackgroundColor(Color.TRANSPARENT)

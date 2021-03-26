@@ -4,8 +4,8 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.text.style.ScaleXSpan
 import android.util.Log
-import com.twf.expressiontree.ExpressionNode
-import com.twf.expressiontree.NodeType
+import expressiontree.ExpressionNode
+import expressiontree.NodeType
 import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.mathResolver.mathResolverNodes.*
 import java.lang.Exception

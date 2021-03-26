@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Matify</string>
-    <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆</string>
+    <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆\n⬆ Длинное нажатие позволит выделить >1 места ⬆</string>
     <string name="end_expression_closed">Цель  🔼</string>
     <string name="end_expression_opened">Цель  🔽</string>
     <string name="previous" translatable="false">↶</string>
@@ -47,6 +47,8 @@
     <string name="games_from_cloud">☁ игры из глобального поиска ☁</string>
     <string name="search_for_a_game">Найти игру!</string>
     <string name="edit_account">✏ Редактировать профиль</string>
+    <string name="change_theme">🌗 Сменить тему</string>
+    <string name="change_theme_to">Сменить тему на</string>
     <string name="change_password">🔑 Сменить пароль</string>
     <string name="change_language">🌍 Сменить язык</string>
     <string name="change_language_to">Сменить язык на</string>
@@ -75,6 +77,16 @@
     <string name="wanna_say_something">Обратная связь</string>
     <string name="tell_about_your_problem">Описание проблемы</string>
     <string name="i">i</string>
+    <string name="start_multiselect">⤵️</string>
+    <string name="end_multiselect">⤴️</string>
+    <string name="msg_on_start_multiselect">Режим мультивыбора. Для отмены нажмите ⤴️</string>
+    <string name="start_multiselect_info">Войти в режим мультивыбора</string>
+    <string name="end_multiselect_info">Выйти из режима мультивыбора</string>
+    <string name="previous_info">Предыдущий шаг</string>
+    <string name="previous_multiselect_info">Отмена последнего выделения</string>
+    <string name="restart_info">Начать сначала</string>
+    <string name="i_info">Информация об уровне</string>
+    <string name="back_info">Вернуться к списку уровней</string>
     <string name="save_your_current_state">Сохранить текущее состояние?</string>
     <string name="welkome_back">С возвращением!</string>
     <string name="continue_from_where_you_stopped">Продолжить с сохраненного состояния?</string>

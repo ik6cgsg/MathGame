@@ -1,7 +1,9 @@
 package mathhelper.games.matify.common
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.*
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Editable
@@ -38,15 +40,22 @@ class AndroidUtil {
             return false
         }
 
-        fun setOnTouchUpInside(view: View, func: (v: View?) -> Unit) {
+        @SuppressLint("ClickableViewAccessibility")
+        fun setOnTouchUpInside(context: Context, view: View, func: (v: View?) -> Unit) {
             view.setOnTouchListener { v, event ->
                 val tv = v as TextView
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        tv.setTextColor(Constants.primaryColor)
+                        val themeName = Storage.shared.theme(context)
+                        tv.setTextColor(
+                            ThemeController.shared.getColorByTheme(themeName, ColorName.PRIMARY_COLOR)
+                        )
                     }
                     MotionEvent.ACTION_UP -> {
-                        tv.setTextColor(Constants.textColor)
+                        val themeName = Storage.shared.theme(context)
+                        tv.setTextColor(
+                            ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR)
+                        )
                         if (touchUpInsideView(v, event)) {
                             func(v)
                         }
@@ -56,11 +65,15 @@ class AndroidUtil {
             }
         }
 
-        fun setOnTouchUpInsideWithCancel(view: View, func: (v: View?) -> Unit) {
+        @SuppressLint("ClickableViewAccessibility")
+        fun setOnTouchUpInsideWithCancel(context: Context, view: View, func: (v: View?) -> Unit) {
             view.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        v.setBackgroundColor(Constants.lightGrey)
+                        val themeName = Storage.shared.theme(context)
+                        v.setBackgroundColor(
+                            ThemeController.shared.getColorByTheme(themeName, ColorName.ON_TOUCH_BACKGROUND_COLOR)
+                        )
                     }
                     MotionEvent.ACTION_UP -> {
                         v.setBackgroundColor(Color.TRANSPARENT)
@@ -102,7 +115,9 @@ class AndroidUtil {
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
             view.layoutParams = layoutParams
-            view.setTextColor(Constants.textColor)
+
+            val themeName = Storage.shared.theme(context)
+            view.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
             return view
         }
     }

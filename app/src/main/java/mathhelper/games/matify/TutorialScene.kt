@@ -11,19 +11,22 @@ import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.util.Log
-import com.twf.expressiontree.SimpleComputationRuleParams
-import com.twf.expressiontree.ExpressionSubstitution
+import expressiontree.SimpleComputationRuleParams
+import expressiontree.ExpressionSubstitution
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.tutorial.TutorialPlayActivity
 import mathhelper.games.matify.common.RuleMathView
+import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
+import mathhelper.games.matify.statistics.Statistics
 import mathhelper.games.matify.tutorial.TutorialGamesActivity
 import mathhelper.games.matify.tutorial.TutorialLevelsActivity
 
@@ -208,7 +211,7 @@ class TutorialScene {
         Log.d(TAG, "onRuleClicked")
         val activity = tutorialPlayActivity!!
         if (ruleView.subst != null) {
-            val res = activity.globalMathView.performSubstitution(ruleView.subst!!)
+            val res = activity.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
             if (res != null) {
                 if (wantedRule) {
                     activity.ruleClickSucceeded()
@@ -224,17 +227,28 @@ class TutorialScene {
         }
     }
 
-    fun onExpressionClicked() {
-        Log.d(TAG, "onExpressionClicked")
+    fun onAtomClicked() {
+        Log.d(TAG, "onAtomClicked")
         if (wantedZoom) {
             return
         }
         val activity = tutorialPlayActivity!!
-        if (activity.globalMathView.currentAtom != null) {
-            val rules = tutorialLevel.getRulesFor(activity.globalMathView.currentAtom!!,
-                activity.globalMathView.expression!!, SimpleComputationRuleParams(false)
+        if (activity.globalMathView.currentAtoms.isNotEmpty()) {
+            val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
+                activity.globalMathView.currentAtoms,
+                activity.globalMathView.expression!!
             )
-            if (rules != null) {
+
+            if (substitutionApplication == null) {
+                showMessage(activity.getString(R.string.no_rules_try_another))
+                clearRules()
+                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
+            } else {
+                val rules =
+                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
+                activity.globalMathView.currentRulesToResult =
+                    LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
+
                 activity.noRules.visibility = View.GONE
                 activity.rulesScrollView.visibility = View.VISIBLE
                 if (wantedClick) {
@@ -243,13 +257,10 @@ class TutorialScene {
                     showMessage(activity.resources.getString(R.string.a_good_choice))
                 }
                 redrawRules(rules)
-            } else {
-                showMessage(activity.resources.getString(R.string.no_rules_try_another))
-                clearRules()
-                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
             }
         }
     }
+
 
     fun clearRules() {
         val activity = tutorialPlayActivity!!
@@ -339,7 +350,9 @@ class TutorialScene {
     }
 
     fun createTutorialDialog(context: Context): AlertDialog {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(context))
+        )
         builder
             .setTitle("")
             .setMessage(R.string.got_it)
@@ -376,7 +389,9 @@ class TutorialScene {
 
     fun createLeaveDialog(context: Context): AlertDialog {
         Log.d(TAG, "createLeaveDialog")
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(context))
+            )
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.wanna_leave)

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background" >
+    android:background="?attr/backgroundColor"
+    tools:context=".activities.SettingsActivity">
 
     <TextView
         android:id="@+id/back"
@@ -14,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:onClick="back"
         android:text="@string/back"
-        android:textColor="@color/textColor"
+        android:textColor="?attr/textColor"
         android:textSize="30sp"
         android:textStyle="bold"
         android:typeface="monospace"
@@ -30,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/settings"
-        android:textColor="@color/textColor"
+        android:textColor="?attr/textColor"
         android:textSize="22sp"
         android:textStyle="bold"
         android:typeface="monospace"
@@ -45,7 +46,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="48dp"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -66,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/version_view"
-        android:textColor="@color/lightGray"
+        android:textColor="?attr/colorHint"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +99,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/edit_account"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
 
@@ -109,7 +110,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/change_password"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
 
@@ -120,7 +121,18 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/change_language"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/textColor"
+            android:textSize="21sp"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/change_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/change_theme"
+            android:textColor="?attr/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
 
@@ -131,7 +143,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/report_bug"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
 
@@ -142,7 +154,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/start_tutorial"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/textColor"
             android:textSize="21sp"
             android:typeface="monospace" />
 
@@ -167,7 +179,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings" />
@@ -182,7 +194,7 @@
         android:isScrollContainer="false"
         android:scrollHorizontally="false"
         android:singleLine="true"
-        android:textColor="@color/textColor"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"

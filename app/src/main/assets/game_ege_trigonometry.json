@@ -9,11 +9,13 @@
     {
       "levelCode": "ege_trigonometry__Hello_World_Level",
       "name": "Начнем с простого",
+      "ru": "Начнем с простого",
+      "en": "Let's start simple",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
       "time": 150,
-      "originalExpression": "(/(*(18;sin(a);cos(a));sin(*(2;a)))))",
+      "originalExpression": "(/(*(18;sin(a);cos(a));sin(*(2;a))))",
       "finalExpression": "Упростить",
       "finalPattern": "?:0:?:?N",
       "rules":[
@@ -24,6 +26,8 @@
     {
       "levelCode": "ege_trigonometry__Level_01_Compute",
       "name": "Уровень 1 Вычисление",
+      "ru": "Уровень 1 Вычисление",
+      "en": "Level 1 Calculation",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -41,6 +45,8 @@
     {
       "levelCode": "ege_trigonometry__Level_02_Compute",
       "name": "Уровень 2 Вычисление",
+      "ru": "Уровень 2 Вычисление",
+      "en": "Level 2 Calculation",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -56,6 +62,8 @@
     {
       "levelCode": "ege_trigonometry__Level_03_Compute",
       "name": "Уровень 3 Упрощение",
+      "ru": "Уровень 3 Упрощение",
+      "en": "Level 3 Simplification",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 11,
@@ -73,6 +81,8 @@
     {
       "levelCode": "ege_trigonometry__Level_04_Compute",
       "name": "Уровень 4 Вычисление",
+      "ru": "Уровень 4 Вычисление",
+      "en": "Level 4 Calculation",
       "difficulty": 7.0,
       "type": "algebra",
       "stepsNum": 41,
@@ -95,6 +105,8 @@
     {
       "levelCode": "ege_trigonometry__Level_05_Compute",
       "name": "Уровень 5 Упрощение",
+      "ru": "Уровень 5 Упрощение",
+      "en": "Level 5 Simplification",
       "difficulty": 8.0,
       "type": "algebra",
       "stepsNum": 41,
@@ -116,6 +128,8 @@
     {
       "levelCode": "ege_trigonometry__Level_06_Compute",
       "name": "Уровень 6 Вычисление",
+      "ru": "Уровень 6 Вычисление",
+      "en": "Level 6 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 8,
@@ -136,6 +150,8 @@
     {
       "levelCode": "ege_trigonometry__Level_07_Simplify",
       "name": "Уровень 7 Упрощение",
+      "ru": "Уровень 7 Упрощение",
+      "en": "Level 7 Simplification",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 3,
@@ -150,6 +166,8 @@
     {
       "levelCode": "ege_trigonometry__Level_08_Compute",
       "name": "Уровень 8 Вычисление",
+      "ru": "Уровень 8 Вычисление",
+      "en": "Level 8 Calculation",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 13,
@@ -177,6 +195,8 @@
     {
       "levelCode": "ege_trigonometry__Level_09_Prove",
       "name": "Уровень 9 Доказательство",
+      "ru": "Уровень 9 Доказательство",
+      "en": "Level 9 Proof",
       "difficulty": 9.0,
       "type": "algebra",
       "stepsNum": 66,
@@ -191,6 +211,8 @@
     {
       "levelCode": "ege_trigonometry__Level_10_Prove",
       "name": "Уровень 10 Доказательство",
+      "ru": "Уровень 10 Доказательство",
+      "en": "Level 10 Proof",
       "difficulty": 10.0,
       "type": "algebra",
       "stepsNum": 66,
@@ -231,7 +253,14 @@
         {"rulePack": "TrigonometryZk"},
         {"rulePack": "TrigonometryCompleteTgCtg"},
 
-        {"rulePack": "ArithmeticPlusSelections"}
+        {"rulePack": "ArithmeticPlusSelections"},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "NumberPlusMinus1", "priority": 20},
+        {"code": "MultiplicationFactorization", "priority": 15},
+        {"code": "DecimalToFraction", "priority": 15},
+        {"code": "PowFactorization", "priority": 15}
       ]
     },
     {
@@ -492,10 +521,7 @@
         {"left": "(+(a;*(a;n)))","right": "(*(a;+(n;1)))"},
         {"left": "(*(a;+(n;1)))","right": "(+(a;*(a;n)))"},
         {"left": "(+(*(a;n);a))","right": "(*(a;+(1;n)))"},
-        {"left": "(*(a;+(1;n)))","right": "(+(*(a;n);a))"},
-
-        {"left": "(/(*(a;n);a))","right": "(*(a;+(n;-(1))))"},
-        {"left": "(*(a;+(n;-(1))))","right": "(/(*(a;n);a))"}
+        {"left": "(*(a;+(1;n)))","right": "(+(*(a;n);a))"}
       ]
     },
     {
@@ -570,7 +596,6 @@
 
         {"left": "(*(A;/(B;C)))","right": "(/(*(A;B);C))"},
         {"left": "(*(/(B;C);A))","right": "(/(*(A;B);C))"},
-        {"left": "(*(/(B;C);A))","right": "(*(/(B;A);C))"},
         {"left": "(/(A;B))","right": "(/(1;/(B;A)))"},
         {"left": "(/(1;/(B;A)))","right": "(/(A;B))"},
         {"left": "(/(*(A;B);C))","right": "(*(A;/(B;C)))"},
@@ -754,7 +779,7 @@
         {"left": "(cos(+(π;-(a))))","right": "(+(-(cos(a))))"},
         {"left": "(+(-(cos(a))))","right": "(cos(+(π;-(a))))"},
         {"left": "(-(cos(a)))","right": "(cos(+(π;-(a))))"},
-        {"left": "(sin(+(π;a)))","right": "(sin(-(a)))"},
+        {"left": "(sin(+(π;a)))","right": "(sin(+(-(a))))"},
         {"left": "(sin(+(π;-(a))))","right": "(sin(a))"},
         {"left": "(sin(a))","right": "(sin(+(π;-(a))))"},
 
@@ -807,11 +832,11 @@
         {"left": "(tg(/(π;4)))","right": "(1)"},
         {"left": "(1)","right": "(tg(/(π;4)))"},
         {"left": "(ctg(/(π;4)))","right": "(1)"},
-        {"left": "(1)","right": "(сtg(/(π;4)))"},
+        {"left": "(1)","right": "(ctg(/(π;4)))"},
         {"left": "(tg(0))","right": "(0)"},
         {"left": "(0)","right": "(tg(0))"},
         {"left": "(ctg(/(π;2)))","right": "(0)"},
-        {"left": "(0)","right": "(сtg(/(π;2)))"},
+        {"left": "(0)","right": "(ctg(/(π;2)))"},
 
         {"left": "(sin(a))","right": "(+(-(sin(+(a;π)))))"},
         {"left": "(sin(a))","right": "(+(-(sin(+(a;-(π))))))"},

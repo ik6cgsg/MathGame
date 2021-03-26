@@ -22,5 +22,5 @@ cd "${TWF_DIR}/src"
 # Change package names
 files=$(find . -type f -name "*.kt")
 sed -i "s/package /package com.twf./g" ${files}
-sed -i "s/import /import com.twf./g" ${files}
-sed -i "s/import com.twf.kotlin/import kotlin/g" ${files}
+sed -i "s/import /import /g" ${files}
+sed -i "s/import kotlin/import kotlin/g" ${files}

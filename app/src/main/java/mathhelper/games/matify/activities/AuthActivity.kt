@@ -38,6 +38,7 @@ class AuthActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.activity_auth)
         loginView = findViewById(R.id.loginText)
         loginView.doAfterTextChanged { checkInput() }

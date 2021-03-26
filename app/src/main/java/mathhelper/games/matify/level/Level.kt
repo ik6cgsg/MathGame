@@ -2,14 +2,12 @@ package mathhelper.games.matify.level
 
 import android.content.Context
 import android.util.Log
-import com.twf.expressiontree.ExpressionNode
-import com.twf.expressiontree.ExpressionSubstitution
 import org.json.JSONObject
 import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
-import com.twf.api.*
-import com.twf.expressiontree.ExpressionStructureConditionNode
-import com.twf.expressiontree.SimpleComputationRuleParams
+import api.*
+import config.CompiledConfiguration
+import expressiontree.*
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.game.PackageField
@@ -43,7 +41,16 @@ enum class LevelField(val str: String) {
     ORIGINAL_EXPRESSION("originalExpression"),
     FINAL_EXPRESSION("finalExpression"),
     FINAL_PATTERN("finalPattern"),
-    RULES("rules")
+    RULES("rules"),
+    MAX_CALC_COMPLEXITY("simpleComputationRuleParamsMaxCalcComplexity"),
+    MAX_TEN_POW_ITERATIONS("simpleComputationRuleParamsMaxTenPowIterations"),
+    MAX_PLUS_ARG_ROUNDED("simpleComputationRuleParamsMaxPlusArgRounded"),
+    MAX_MUL_ARG_ROUNDED("simpleComputationRuleParamsMaxMulArgRounded"),
+    MAX_DIV_BASE_ROUNDED("simpleComputationRuleParamsMaxDivBaseRounded"),
+    MAX_POW_BASE_ROUNDED("simpleComputationRuleParamsMaxPowBaseRounded"),
+    MAX_POW_DEG_ROUNDED("simpleComputationRuleParamsMaxPowDegRounded"),
+    MAX_LOG_BASE_ROUNDED("simpleComputationRuleParamsMaxLogBaseRounded"),
+    MAX_RES_ROUNDED("simpleComputationRuleParamsMaxResRounded")
 }
 
 class Level {
@@ -61,6 +68,16 @@ class Level {
     lateinit var name: String
     lateinit var nameRu: String
     lateinit var nameEn: String
+    lateinit var maxCalcComplexityStr: String
+    lateinit var maxTenPowIterations: String
+    lateinit var maxPlusArgRounded: String
+    lateinit var maxMulArgRounded: String
+    lateinit var maxDivBaseRounded: String
+    lateinit var maxPowBaseRounded: String
+    lateinit var maxPowDegRounded: String
+    lateinit var maxLogBaseRounded: String
+    lateinit var maxResRounded: String
+    var additionalParamsMap = mutableMapOf<String, String>()
     var awardCoeffs = "0.95 0.9 0.8"
     var awardMultCoeff = 1f
     var showWrongRules = false
@@ -73,6 +90,7 @@ class Level {
     var time: Long = 180
     var timeMultCoeff = 1f
     var endless = true
+    private var compiledConfiguration: CompiledConfiguration? = null
 
     fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
         nameRu
@@ -136,6 +154,7 @@ class Level {
         startExpression = structureStringToExpression(startExpressionStr)
         endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
         endExpression = structureStringToExpression(endExpressionStr)
+        Log.d("task", "'${startExpression} -> ${endExpression}' parsed from '${startExpressionStr} -> ${endExpressionStr}'")
         endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
         endPattern = when (type) {
             Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
@@ -150,12 +169,62 @@ class Level {
                     packages.add(rule.getString(PackageField.RULE_PACK.str))
                 }
                 /** SUBSTITUTION */
-                rule.has(PackageField.RULE_LEFT.str) && rule.has(PackageField.RULE_RIGHT.str) -> {
+                (rule.has(PackageField.RULE_LEFT.str) && rule.has(PackageField.RULE_RIGHT.str)) || rule.has(PackageField.CODE.str) -> {
                     rules.add(RulePackage.parseRule(rule, type))
                 }
                 else -> return false
             }
         }
+
+        var allRules : ArrayList<ExpressionSubstitution> = rules
+        for (pckgName in packages) {
+            val rulesFromPack = game.rulePacks[pckgName]?.getAllRules()
+            if (rulesFromPack != null) {
+                allRules = (allRules + rulesFromPack) as ArrayList<ExpressionSubstitution>
+            }
+        }
+
+        maxCalcComplexityStr = levelJson.optString(LevelField.MAX_CALC_COMPLEXITY.str, "")
+        if (maxCalcComplexityStr.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxCalcComplexity", maxCalcComplexityStr)
+        }
+        maxTenPowIterations = levelJson.optString(LevelField.MAX_TEN_POW_ITERATIONS.str, "")
+        if (maxTenPowIterations.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxTenPowIterations", maxTenPowIterations)
+        }
+        maxPlusArgRounded = levelJson.optString(LevelField.MAX_PLUS_ARG_ROUNDED.str, "")
+        if (maxPlusArgRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPlusArgRounded", maxPlusArgRounded)
+        }
+        maxMulArgRounded = levelJson.optString(LevelField.MAX_MUL_ARG_ROUNDED.str, "")
+        if (maxMulArgRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxMulArgRounded", maxMulArgRounded)
+        }
+        maxDivBaseRounded = levelJson.optString(LevelField.MAX_DIV_BASE_ROUNDED.str, "")
+        if (maxDivBaseRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxDivBaseRounded", maxDivBaseRounded)
+        }
+        maxPowBaseRounded = levelJson.optString(LevelField.MAX_POW_BASE_ROUNDED.str, "")
+        if (maxPowBaseRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPowBaseRounded", maxPowBaseRounded)
+        }
+        maxPowDegRounded = levelJson.optString(LevelField.MAX_POW_DEG_ROUNDED.str, "")
+        if (maxPowDegRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPowDegRounded", maxPowDegRounded)
+        }
+        maxLogBaseRounded = levelJson.optString(LevelField.MAX_LOG_BASE_ROUNDED.str, "")
+        if (maxLogBaseRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxPowResRounded", maxLogBaseRounded)
+        }
+        maxResRounded = levelJson.optString(LevelField.MAX_RES_ROUNDED.str, "")
+        if (maxResRounded.isNotEmpty()) {
+            additionalParamsMap.put("simpleComputationRuleParamsMaxResRounded", maxResRounded)
+        }
+
+        compiledConfiguration = createCompiledConfigurationFromExpressionSubstitutionsAndParams(
+            allRules.toTypedArray(),
+            additionalParamsMap
+        )
         return true
     }
 
@@ -182,7 +251,7 @@ class Level {
         }
     }
 
-    fun getAward(resultTime: Long, resultStepsNum: Float): Award {
+    fun getAward(context:Context, resultTime: Long, resultStepsNum: Float): Award {
         Log.d(TAG, "getAward")
         val mark = when {
             resultStepsNum < stepsNum -> 1.0
@@ -192,7 +261,7 @@ class Level {
                 3 * stepsNum.toDouble() / resultStepsNum
                 ) / (1 + 3)
         }
-        return Award(getAwardByCoeff(mark), mark)
+        return Award(context, getAwardByCoeff(mark), mark)
     }
 
     private fun getAwardByCoeff(mark: Double): AwardType {
@@ -207,37 +276,105 @@ class Level {
         }
     }
 
-    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode, simpleComputationRules: SimpleComputationRuleParams): List<ExpressionSubstitution>? {
-        Log.d(TAG, "getRulesFor")
-        // TODO: smek with showWrongRules flag
+//    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode, simpleComputationRules: SimpleComputationRuleParams): List<ExpressionSubstitution>? {
+//        Log.d(TAG, "getRulesFor")
+//        // TODO: smek with showWrongRules flag
+//
+//        var rulesRes: ArrayList<ExpressionSubstitution> = rules
+//            .filter {
+//                val list = findSubstitutionPlacesInExpression(expression, it)
+//                if (list.isEmpty()) {
+//                    false
+//                } else {
+//                    val substPlace = list.find { sp ->
+//                        sp.originalValue.nodeId == node.nodeId
+//                    }
+//                    substPlace != null
+//                }
+//            } as ArrayList<ExpressionSubstitution>
+//        var res = optGenerateSimpleComputationRule(node, simpleComputationRules)
+//        res = (res + rulesRes) as ArrayList<ExpressionSubstitution>
+//        for (pckgName in packages) {
+//            val rulesFromPack = game.rulePacks[pckgName]?.getRulesFor(node, expression)
+//            if (rulesFromPack != null) {
+//                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
+//            }
+//        }
+//        if (res.isEmpty()) {
+//            return null
+//        }
+//        res = res.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
+//        res.sortByDescending { it.left.identifier.length }
+//        return res
+//    }
 
-        var rulesRes: ArrayList<ExpressionSubstitution> = rules
-            .filter {
-                val list = findSubstitutionPlacesInExpression(expression, it)
-                if (list.isEmpty()) {
-                    false
-                } else {
-                    val substPlace = list.find { sp ->
-                        sp.originalValue.nodeId == node.nodeId
-                    }
-                    substPlace != null
-                }
-            } as ArrayList<ExpressionSubstitution>
-        var res = optGenerateSimpleComputationRule(node, simpleComputationRules)
-        res = (res + rulesRes) as ArrayList<ExpressionSubstitution>
-        for (pckgName in packages) {
-            val rulesFromPack = game.rulePacks[pckgName]?.getRulesFor(node, expression)
-            if (rulesFromPack != null) {
-                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
-            }
-        }
-        if (res.isEmpty()) {
+    fun getSubstitutionApplication(
+        nodes: List<ExpressionNode>,
+        expression: ExpressionNode):
+        List<SubstitutionApplication>? {
+        val nodeIds = nodes.map{it.nodeId}
+        Log.d(TAG, "getSubstitutionApplication of '${expression.toString()}' in '(${nodeIds.joinToString()})'; detail: '${expression.toStringsWithNodeIds()}'")
+
+        val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds.toTypedArray(), compiledConfiguration!!, withReadyApplicationResult = true)
+        if (list.isEmpty()) {
             return null
         }
-        res = res.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
-        res.sortByDescending { it.left.identifier.length }
-        return res
+
+        return list
     }
+
+    fun getRulesFromSubstitutionApplication(substitutionApplication: List<SubstitutionApplication>): List<ExpressionSubstitution> {
+        Log.d(TAG, "getRulesFromSubstitutionApplication")
+
+        var rules = substitutionApplication.map {
+            Log.d(TAG, "expressionSubstitution code: '${it.expressionSubstitution.code}'; priority: '${it.expressionSubstitution.priority}'")
+            it.expressionSubstitution
+        }
+        rules = rules.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
+        rules.sortByDescending { it.left.toString().length }
+        rules.sortBy { it.priority }
+        return rules
+    }
+
+    fun getResultFromSubstitutionApplication(substitutionApplication: List<SubstitutionApplication>):
+        Map<ExpressionSubstitution, ExpressionNode> {
+        Log.d(TAG, "getResultFromSubstitutionApplication")
+        return substitutionApplication.map { it.expressionSubstitution to it.resultExpression }.toMap()
+    }
+
+//    fun getRulesFor(
+//        nodes: List<ExpressionNode>,
+//        expression: ExpressionNode,
+//        rulesToResult: MutableMap<ExpressionSubstitution, ExpressionNode>,
+//        simpleComputationRules: SimpleComputationRuleParams):
+//        List<ExpressionSubstitution>? {
+//        Log.d(TAG, "getRulesFor")
+//
+//        var simpleRules : ArrayList<ExpressionSubstitution> = arrayListOf()
+//        for (node in nodes) {
+//            val res = optGenerateSimpleComputationRule(node, simpleComputationRules)
+//            simpleRules = (res + simpleRules) as ArrayList<ExpressionSubstitution>
+//        }
+//
+//        compiledConfiguration?.apply {
+//            compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
+//            compiledExpressionSimpleAdditionalTreeTransformationRules.addAll(simpleRules)
+//        }
+//
+//        val nodeIds = nodes.map{it.nodeId}
+//
+//        val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds, compiledConfiguration!!, withReadyApplicationResult = true)
+//        if (list.isEmpty()) {
+//            return null
+//        }
+//
+//        var rules = list.map { it.expressionSubstitution }
+//        rules = rules.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
+//        rules.sortByDescending { it.left.identifier.length }
+//        rulesToResult.putAll(list.map { it.expressionSubstitution to it.resultExpression }.toMap())
+//
+//        return rules
+//    }
 
     fun save(context: Context) {
         val prefs = context.getSharedPreferences(game.gameCode, MODE_PRIVATE)
@@ -256,7 +393,7 @@ class Level {
         if (!resultStr.isNullOrEmpty()) {
             val resultVals = resultStr.split(" ", limit = 4)
             lastResult = Result(resultVals[0].toFloat(), resultVals[1].toLong(),
-                Award(getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
+                Award(context, getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
             if (resultVals.size == 4) {
                 lastResult!!.expression = resultVals[3]
             }

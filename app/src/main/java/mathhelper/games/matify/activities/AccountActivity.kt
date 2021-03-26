@@ -30,6 +30,7 @@ class AccountActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.activity_account)
         loginView = findViewById(R.id.login)
         additionalSwitch = findViewById(R.id.show_add)

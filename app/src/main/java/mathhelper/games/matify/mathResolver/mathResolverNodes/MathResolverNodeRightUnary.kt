@@ -1,6 +1,6 @@
 package mathhelper.games.matify.mathResolver.mathResolverNodes
 
-import com.twf.expressiontree.ExpressionNode
+import expressiontree.ExpressionNode
 import mathhelper.games.matify.mathResolver.*
 
 class MathResolverNodeRightUnary(
@@ -34,13 +34,13 @@ class MathResolverNodeRightUnary(
 
     override fun setCoordinates(leftTop: Point) {
         super.setCoordinates(leftTop)
-        children.first().setCoordinates(Point(leftTop.x, leftTop.y + baseLineOffset - children.first().baseLineOffset))
+        children.firstOrNull()?.setCoordinates(Point(leftTop.x, leftTop.y + baseLineOffset - children.first().baseLineOffset))
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
         val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
-        children.first().getPlainNode(stringMatrix, spannableArray)
+        children.firstOrNull()?.getPlainNode(stringMatrix, spannableArray) ?: return
         curInd += children.first().length
         stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, op!!.name)
         curInd += op!!.name.length + 1

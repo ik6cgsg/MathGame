@@ -1,7 +1,10 @@
 package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -12,7 +15,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.*
 import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity() {
@@ -26,14 +29,17 @@ class LevelsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
+
         progress.visibility = View.VISIBLE
         loading = true
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27"
         }
+
         levelViews = ArrayList()
         levelsList = findViewById(R.id.levels_list)
         LevelScene.shared.levelsActivity = this
@@ -86,6 +92,8 @@ class LevelsActivity: AppCompatActivity() {
             if (level.lastResult != null) {
                 levelView.text = "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
             }
+            val themeName = Storage.shared.theme(this)
+            levelView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
             levelView.background = getBackgroundByDif(level.difficulty)
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)

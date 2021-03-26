@@ -31,6 +31,7 @@ class PasswordActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.activity_change_pass)
         oldPassView = findViewById(R.id.old_password)
         oldPassInputLayout = findViewById(R.id.oldInputLayout)

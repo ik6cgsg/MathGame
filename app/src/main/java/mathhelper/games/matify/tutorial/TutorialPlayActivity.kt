@@ -7,11 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
-import mathhelper.games.matify.common.GlobalMathView
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
-import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.common.Constants
+import mathhelper.games.matify.common.*
 import kotlin.math.max
 import kotlin.math.min
 
@@ -81,6 +79,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.tutorial_activity_play)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
@@ -123,7 +122,9 @@ class TutorialPlayActivity: AppCompatActivity() {
 
     private fun createRestartDialog(): AlertDialog {
         Log.d(TAG, "createRestartDialog")
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.restart_tutorial)
@@ -225,7 +226,9 @@ class TutorialPlayActivity: AppCompatActivity() {
         Log.d(TAG, "levelPassed")
         TutorialScene.shared.showMessage(resources.getString(R.string.congratulations))
         TutorialScene.shared.animateLeftUp(pointerCentralView)
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepsSize} / ${TutorialScene.shared.stepsSize}")
             .setMessage(resources.getString(R.string.tutorial_on_level_seems))

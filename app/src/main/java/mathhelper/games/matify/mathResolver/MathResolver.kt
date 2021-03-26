@@ -3,9 +3,9 @@ package mathhelper.games.matify.mathResolver
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.util.Log
-import com.twf.api.stringToExpression
-import com.twf.api.structureStringToExpression
-import com.twf.expressiontree.ExpressionNode
+import api.stringToExpression
+import api.structureStringToExpression
+import expressiontree.ExpressionNode
 
 fun String.replaceByIndex(i: Int, replacement: String): String {
     return this.substring(0, i) + replacement + this.substring(i + replacement.length)

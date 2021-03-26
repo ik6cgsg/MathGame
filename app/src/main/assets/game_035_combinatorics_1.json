@@ -1,0 +1,567 @@
+{
+  "gameSpace": "",
+  "gameCode": "game_035_combinatorics_1",
+  "name": "Combinatorics-1",
+  "en": "Combinatorics-1",
+  "ru": "Комбинаторика-1",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "game_035_combinatorics_1__Level_01_Prove",
+      "name": "Level 1",
+      "ru": "Уровень 1",
+      "en": "Level 1",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(A(n;n))",
+      "finalExpression": "(factorial(n))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_02_Prove",
+      "name": "Level 2",
+      "ru": "Уровень 2",
+      "en": "Level 2",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(*(V(+(m;1);n);*(P(m);P(n))))",
+      "finalExpression": "(*(P(m);A(+(m;n);n)))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_03_Prove",
+      "name": "Level 3",
+      "ru": "Уровень 3",
+      "en": "Level 3",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 90,
+      "originalExpression": "(S2(/(P(+(m;1));P(m));+(n;S2(m;m))))",
+      "finalExpression": "(+(S2(m;n);*(n;S2(m;+(n;1)))))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_04_Prove",
+      "name": "Level 4",
+      "ru": "Уровень 4",
+      "en": "Level 4",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 3,
+      "time": 90,
+      "originalExpression": "(*(C(n);C(0);A(+(n;1);1)))",
+      "finalExpression": "(C(*(2;n);n))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_05_Prove",
+      "name": "Level 5",
+      "ru": "Уровень 5",
+      "en": "Level 5",
+      "difficulty": 2.0,
+      "type": "algebra",
+      "stepsNum": 15,
+      "time": 90,
+      "originalExpression": "(*(+(m;n;1);C(+(m;n);n)))",
+      "finalExpression": "(*(+(n;1);C(+(m;n;1);+(n;1))))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_06_Prove",
+      "name": "Level 6",
+      "ru": "Уровень 6",
+      "en": "Level 6",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 9,
+      "time": 90,
+      "originalExpression": "(/(*(S1(n;m);A(+(m;n);n));*(V(+(m;1);n);factorial(m);factorial(n))))",
+      "finalExpression": "(S2(n;m))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_07_Prove",
+      "name": "Level 7",
+      "ru": "Уровень 7",
+      "en": "Level 7",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 30,
+      "time": 200,
+      "originalExpression": "(+(C(+(*(2;n);1);n);C(+(*(2;n);1);+(n;1))))",
+      "finalExpression": "(C(*(2;+(n;1));+(n;1)))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_08_Prove",
+      "name": "Level 8",
+      "ru": "Уровень 8",
+      "en": "Level 8",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 26,
+      "time": 200,
+      "originalExpression": "(*(/(A(+(n;m;1);m);+(m;n;1));/(+(n;1);P(m))))",
+      "finalExpression": "(V(+(n;1);m))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_09_Prove",
+      "name": "Level 9",
+      "ru": "Уровень 9",
+      "en": "Level 9",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 33,
+      "time": 200,
+      "originalExpression": "(*(C(+(n;k;m);+(k;m));C(+(k;m);m)))",
+      "finalExpression": "(*(C(+(n;k;m);m);C(+(n;k);k)))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_10_Prove",
+      "name": "Level 10",
+      "ru": "Уровень 10",
+      "en": "Level 10",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 41,
+      "time": 200,
+      "originalExpression": "(/(V(+(m;1);+(n;k;1));A(+(k;m;1);+(k;1))))",
+      "finalExpression": "(/(A(+(m;n;k;1);n);P(+(n;k;1))))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    },
+    {
+      "levelCode": "game_035_combinatorics_1__Level_11_Prove",
+      "name": "Level 11",
+      "ru": "Уровень 11",
+      "en": "Level 11",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 23,
+      "time": 200,
+      "originalExpression": "(*(/(A(+(n;1;m);m);+(m;n;1));/(C(*(2;n);n);*(C(n);P(m)))))",
+      "finalExpression": "(V(+(m;1);n))",
+      "rules":[
+        {"rulePack": "CombinatoricBase"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "ArithmeticSimplePositiveAddition",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a))","right":"(a)", "priority": 30},
+        {"left":"(+(a;b))","right":"(+(b;a))", "priority": 20, "isExtending": true},
+        {"left":"(a)","right":"(+(a;0))", "isExtending": true},
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "PositiveNumberPlusMinus1", "priority": 20},
+        {"code": "ParentBracketsExpansion", "priority": 30},
+        {"code": "ArgumentsSwap", "priority": 40},
+        {"code": "ArgumentsPermutation", "priority": 40},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41}
+      ]
+    },
+    {
+      "name": "ArithmeticAddition",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a))","right":"(a)", "priority": 30},
+        {"left":"(+(a;b))","right":"(+(b;a))", "priority": 20, "isExtending": true},
+        {"left":"(a)","right":"(+(a;0))", "priority": 90, "isExtending": true},
+        {"left":"(+(-(+(-(a)))))","right":"(a)", "priority": 4},
+        {"left":"(-(+(-(a))))","right":"(a)", "priority": 4},
+        {"left":"(-(-(a)))","right":"(a)", "priority": 4},
+        {"left":"(a)","right":"(-(+(-(a))))", "priority": 95, "isExtending": true},
+
+        {"left":"(+(a;-(a)))","right":"(0)", "priority": 4},
+        {"left":"(+(-(a);a))","right":"(0)", "priority": 4},
+        {"left":"(+(a;+(-(a))))","right":"(0)", "priority": 4},
+        {"left":"(+(+(-(a));a))","right":"(0)", "priority": 4},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "NumberPlusMinus1", "priority": 20},
+        {"code": "MinusInOutBrackets", "priority": 31},
+        {"code": "ParentBracketsExpansion", "priority": 30},
+        {"code": "ArgumentsSwap", "priority": 40},
+        {"code": "ArgumentsPermutation", "priority": 40},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41},
+        {"code": "AdditiveComplicatingExtension", "priority": 92}
+      ]
+    },
+    {
+      "name": "ArithmeticMultiplication",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticAddition"},
+
+        {"left":"(*(a;0))","right":"(0)", "priority": 4},
+        {"left":"(*(0;a))","right":"(0)", "priority": 4},
+        {"left":"(0)","right":"(*(a;0))", "isExtending": true},
+        {"left":"(*(a;1))","right":"(a)", "priority": 4},
+        {"left":"(*(1;a))","right":"(a)", "priority": 4},
+        {"left":"(a)","right":"(*(a;1))", "isExtending": true},
+        {"left":"(*(a;b))","right":"(*(b;a))", "priority": 20, "isExtending": true},
+        {"code": "OpeningBrackets", "priority": 30},
+        {"code": "ReduceArithmetic", "priority": 10},
+        {"code": "TwoSidesArithmeticReduce", "priority": 10},
+        {"code": "MultiplicationFactorization", "priority": 15},
+
+        {"left":"(+(a;a))","right":"(*(2;a))"},
+        {"left":"(+(a;+(a)))","right":"(*(2;a))"},
+        {"left":"(+(+(a);a))","right":"(*(2;a))"},
+        {"left":"(*(2;a))","right":"(+(a;a))"},
+
+        {"left": "(+(a;*(a;n)))","right": "(*(a;+(n;1)))"},
+        {"left": "(*(a;+(n;1)))","right": "(+(a;*(a;n)))"},
+        {"left": "(+(*(a;n);a))","right": "(*(a;+(1;n)))"},
+        {"left": "(*(a;+(1;n)))","right": "(+(*(a;n);a))"},
+
+        {"left": "(-(*(A;C)))","right": "(*(+(-(A));C))"},
+        {"left": "(*(-(A);C))","right": "(+(-(*(A;C))))"},
+        {"left": "(-(*(A;C)))","right": "(*(A;+(-(C))))"},
+        {"left": "(*(A;-(C)))","right": "(+(-(*(A;C))))"},
+        {"left": "(*(A;-(C)))","right": "(*(+(-(A));C))"},
+        {"left": "(*(-(A);C))","right": "(*(A;+(-(C))))"},
+
+        {"left": "(+(-(*(A;C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(+(-(*(A;C))))"},
+        {"left": "(+(-(*(A;C))))","right": "(*(A;+(-(C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(+(-(*(A;C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(*(A;+(-(C))))"},
+
+        {"left": "(*(-(A);-(B)))","right": "(*(A;B))"},
+        {"left": "(*(A;B))","right": "(*(+(-(A));+(-(B))))", "priority": 80, "isExtending": true},
+        {"left": "(*(+(-(A));+(-(B))))","right": "(*(A;B))"}
+      ]
+    },
+    {
+      "name": "ArithmeticDivision",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticMultiplication"},
+
+        {"left":"(/(0;a))","right":"(0)", "priority": 4},
+        {"left":"(/(a;1))","right":"(a)", "priority": 4},
+        {"left":"(/(a;a))","right":"(1)", "priority": 4},
+        {"left":"(*(/(1;a);a))","right":"(1)", "priority": 4},
+        {"left":"(/(1;/(1;a)))","right":"(a)", "priority": 4, "matchJumbledAndNested": true},
+        {"left":"(a)","right":"(/(1;/(1;a)))", "priority": 90, "isExtending": true},
+        {"left": "(0.5)","right": "(/(1;2))", "priority": 15, "simpleAdditional": true},
+        {"left": "(/(1;2))","right": "(0.5)", "priority": 5, "simpleAdditional": true},
+        {"left":"(/(a;b))","right":"(/(*(a;b);*(b;b)))", "priority": 90, "isExtending": true},
+
+        {"code": "MultiplicativeComplicatingExtension", "priority": 92},
+        {"code": "ReduceFraction", "priority": 10},
+        {"code": "DecimalToFraction", "priority": 15},
+
+        {"left": "(-(/(A;C)))","right": "(/(+(-(A));C))"},
+        {"left": "(/(-(A);C))","right": "(+(-(/(A;C))))"},
+        {"left": "(-(/(A;C)))","right": "(/(A;+(-(C))))"},
+        {"left": "(/(A;-(C)))","right": "(+(-(/(A;C))))"},
+        {"left": "(/(A;-(C)))","right": "(/(+(-(A));C))"},
+        {"left": "(/(-(A);C))","right": "(/(A;+(-(C))))"},
+
+        {"left": "(+(-(/(A;C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(+(-(/(A;C))))"},
+        {"left": "(+(-(/(A;C))))","right": "(/(A;+(-(C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(+(-(/(A;C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(/(A;+(-(C))))"},
+
+        {"left": "(/(-(A);-(B)))","right": "(/(A;B))"},
+        {"left": "(/(A;B))","right": "(/(+(-(A));+(-(B))))", "priority": 80, "isExtending": true},
+        {"left": "(/(+(-(A));+(-(B))))","right": "(/(A;B))"},
+
+        {"left": "(+(/(B;C);/(A;D)))","right": "(/(+(*(B;D);*(C;A));*(C;D)))"},
+        {"left": "(+(/(B;C);-(/(A;D))))","right": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"},
+
+        {"left": "(*(A;/(B;A)))","right": "(B)"},
+        {"left": "(*(/(B;A);A))","right": "(B)"},
+
+        {"left": "(*(A;/(B;C)))","right": "(/(*(A;B);C))"},
+        {"left": "(*(/(B;C);A))","right": "(/(*(A;B);C))"},
+        {"left": "(/(A;B))","right": "(/(1;/(B;A)))"},
+        {"left": "(/(1;/(B;A)))","right": "(/(A;B))"},
+        {"left": "(/(*(A;B);C))","right": "(*(A;/(B;C)))"},
+
+        {"left": "(/(/(B;C);A))","right": "(/(B;*(A;C)))"},
+        {"left": "(/(B;*(A;C)))","right": "(/(/(B;C);A))"},
+
+        {"left": "(/(A;/(B;C)))","right": "(/(*(A;C);B))"},
+        {"left": "(/(*(A;C);B))","right": "(/(A;/(B;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(A;B);/(1;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(1;B);/(A;C)))"},
+        {"left": "(*(/(A;B);/(1;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(1;B);/(A;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(D;B);/(A;C)))","right": "(/(*(D;A);*(B;C)))"},
+        {"left": "(/(*(D;A);*(B;C)))","right": "(*(/(D;B);/(A;C)))"},
+        {"left": "(/(*(D;A);*(B;A)))","right": "(/(D;B))"},
+
+        {"left": "(/(*(D;A);*(D;C)))","right": "(/(A;C))"},
+        {"left": "(/(*(D;A);D))","right": "(A)"},
+        {"left": "(/(*(A;D);D))","right": "(A)"}
+      ]
+    },
+    {
+      "name": "ArithmeticPow",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticDivision"},
+
+        {"left":"(a)","right":"(^(a;1))", "priority": 95, "simpleAdditional": true, "isExtending": true},
+        {"left":"(1)","right":"(^(1;2))", "priority": 95, "simpleAdditional": true, "isExtending": true},
+        {"left":"(1)","right":"(^(1;3))", "priority": 95, "simpleAdditional": true, "isExtending": true},
+        {"left": "(/(1;a))","right": "(^(a;+(-(1))))", "priority": 80},
+        {"left": "(^(a;+(-(1))))","right": "(/(1;a))", "priority": 40},
+        {"code": "PowFactorization", "priority": 15},
+
+        {"left": "(^(a;+(b;-(c))))","right": "(/(^(a;b);^(a;c)))"},
+        {"left": "(/(^(a;b);^(a;c)))","right": "(^(a;+(b;-(c))))"},
+
+        {"left": "(/(B;^(A;C)))","right": "(*(B;^(A;+(-(C)))))"},
+        {"left": "(*(B;^(A;+(-(C)))))","right": "(/(B;^(A;C)))"},
+        {"left": "(/(1;^(A;C)))","right": "(^(A;+(-(C))))"},
+        {"left": "(^(A;+(-(C))))","right": "(/(1;^(A;C)))"},
+        {"left": "(/(A;B))","right": "(^(/(B;A);+(-(1))))"},
+        {"left": "(^(/(B;A);+(-(1))))","right": "(/(A;B))"},
+
+        {"left": "(^(A;0))","right": "(1)", "priority": 5},
+        {"left": "(^(1;A))","right": "(1)", "priority": 5},
+        {"left": "(^(A;1))","right": "(A)", "priority": 5},
+        {"left": "(^(0;A))","right": "(0)", "priority": 5},
+
+        {"left": "(*(a;a))","right": "(^(a;2))", "priority": 40, "simpleAdditional": true},
+        {"left": "(^(a;2))","right": "(*(a;a))", "priority": 40, "simpleAdditional": true},
+
+        {"left": "(*(a;^(a;n)))","right": "(^(a;+(n;1)))"},
+        {"left": "(^(a;+(n;1)))","right": "(*(a;^(a;n)))"},
+        {"left": "(*(^(a;n);a))","right": "(^(a;+(1;n)))"},
+        {"left": "(^(a;+(1;n)))","right": "(*(^(a;n);a))"},
+
+        {"left": "(/(^(a;n);a))","right": "(^(a;+(n;-(1))))"},
+        {"left": "(^(a;+(n;-(1))))","right": "(/(^(a;n);a))"},
+
+        {"left": "(^(A;*(B;C)))","right": "(^(^(A;B);C))"},
+        {"left": "(^(^(A;B);C))","right": "(^(A;*(B;C)))"},
+
+        {"left": "(^(/(B;C);A))","right": "(/(^(B;A);^(C;A)))"},
+        {"left": "(/(^(B;A);^(C;A)))","right": "(^(/(B;C);A))"},
+
+        {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"},
+        {"left": "(^(-(A);2))","right": "(^(A;2))"},
+        {"left": "(^(+(-(A));*(2;n)))","right": "(^(A;*(2;n)))"},
+        {"left": "(^(+(-(A));2))","right": "(^(A;2))"},
+        {"left": "(^(a;*(2;n)))","right": "(^(+(-(a));*(2;n)))"},
+        {"left": "(^(a;2))","right": "(^(+(-(a));2))"},
+
+        {"left": "(^(^(a;b);/(1;b)))","right": "(a)", "priority": 5}
+      ]
+    },
+    {
+      "name": "ArithmeticPowExtensions",
+      "type": "algebra",
+      "rules": [
+        {"rulePack": "ArithmeticPow"},
+
+        {"left": "(a)","right": "(^(^(a;2);/(1;2)))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;/(1;2));2))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;3);/(1;3)))", "priority": 96, "isExtending": true},
+        {"left": "(a)","right": "(^(^(a;/(1;3));3))", "priority": 96, "isExtending": true}
+      ]
+    },
+    {
+      "name": "ShortMultiplication",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticPow"},
+
+        {"left": "(+(^(a;2);-(^(b;2))))","right": "(*(+(a;-(b));+(a;b)))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(*(+(a;-(b));+(a;b)))","right": "(+(^(a;2);-(^(b;2))))", "matchJumbledAndNested": true, "priority": 25},
+
+        {"left": "(^(+(a;b);2))","right": "(+(^(a;2);*(2;a;b);^(b;2)))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;2);*(2;a;b);^(b;2)))","right": "(^(+(a;b);2))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;2);*(2;a);1))","right": "(^(+(a;1);2))", "matchJumbledAndNested": true, "priority": 25},
+
+        {"left": "(^(+(a;-(b));2))","right": "(+(^(a;2);-(*(2;a;b));^(b;2)))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;2);-(*(2;a;b));^(b;2)))","right": "(^(+(a;-(b));2))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;2);-(*(2;a));1))","right": "(^(+(a;-(1));2))", "matchJumbledAndNested": true, "priority": 25},
+
+        {"left": "(^(+(a;b);3))","right": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))","right": "(^(+(a;b);3))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;3);*(3;^(a;2));*(3;a);1))","right": "(^(+(a;1);3))", "matchJumbledAndNested": true, "priority": 25},
+
+        {"left": "(^(+(a;-(b));3))","right": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))","right": "(^(+(a;-(b));3))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(+(^(a;3);-(*(3;^(a;2)));*(3;a);-(1)))","right": "(^(+(a;-(1));3))", "matchJumbledAndNested": true, "priority": 25},
+
+        {"left": "(+(^(a;3);-(^(b;3))))","right": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))","right": "(+(^(a;3);-(^(b;3))))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(*(+(a;-(1));+(^(a;2);a;1)))","right": "(+(^(a;3);-(^(1;3))))", "matchJumbledAndNested": true, "priority": 25},
+
+        {"left": "(+(^(a;3);^(b;3)))","right": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))","right": "(+(^(a;3);^(b;3)))", "matchJumbledAndNested": true, "priority": 25},
+        {"left": "(*(+(a;1);+(^(a;2);-(a);1)))","right": "(+(^(a;3);^(1;3)))", "matchJumbledAndNested": true, "priority": 25}
+      ]
+    },
+
+    {
+      "name": "Logarithm",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ShortMultiplication"},
+
+        {"left": "(^(a;log(b;a)))","right": "(b)", "priority": 5},
+
+        {"left": "(log(1;A))","right": "(0)", "priority": 5},
+        {"left": "(log(A;A))","right": "(1)", "priority": 5},
+
+        {"left": "(log(*(b;c);a))","right": "(+(log(b;a);log(c;a)))", "priority": 25},
+        {"left": "(+(log(b;a);log(c;a)))","right": "(log(*(b;c);a))", "priority": 25},
+        {"left": "(log(*(b;c;d);a))","right": "(+(log(b;a);log(c;a);log(d;a)))", "priority": 25},
+        {"left": "(+(log(b;a);log(c;a);log(d;a)))","right": "(log(*(b;c;d);a))", "priority": 25},
+        {"left": "(log(*(b;c;d;e);a))","right": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))", "priority": 25},
+        {"left": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))","right": "(log(*(b;c;d;e);a))", "priority": 25},
+
+        {"left": "(log(/(b;c);a))","right": "(+(log(b;a);-(log(c;a))))", "priority": 25},
+        {"left": "(+(log(b;a);-(log(c;a))))","right": "(log(/(b;c);a))", "priority": 25},
+
+        {"left": "(log(^(b;c);a))","right": "(*(c;log(b;a)))", "priority": 25},
+        {"left": "(*(c;log(b;a)))","right": "(log(^(b;c);a))", "priority": 25},
+        {"left": "(*(log(b;a);c))","right": "(log(^(b;c);a))", "priority": 25},
+
+        {"left": "(log(b;^(a;k)))","right": "(/(log(b;a);k))", "priority": 25},
+        {"left": "(/(log(b;a);k))","right": "(log(b;^(a;k)))", "priority": 25},
+
+        {"left": "(/(1;log(b;a)))","right": "(log(a;b))", "priority": 25},
+        {"left": "(log(a;b))","right": "(/(1;log(b;a)))", "priority": 25},
+
+        {"left": "(/(log(c;a);log(b;a)))","right": "(log(c;b))", "priority": 25},
+
+        {"left": "(log(/(b;c);a))","right": "(+(-(log(/(c;b);a))))", "priority": 25},
+        {"left": "(+(-(log(/(c;b);a))))","right": "(log(/(b;c);a))", "priority": 25},
+
+        {"left": "(log(b;a))","right": "(+(-(log(/(1;b);a))))", "priority": 25},
+        {"left": "(+(-(log(/(1;b);a))))","right": "(log(b;a))", "priority": 25},
+
+        {"left": "(log(/(1;b);a))","right": "(+(-(log(b;a))))", "priority": 25},
+        {"left": "(+(-(log(b;a))))","right": "(log(/(1;b);a))", "priority": 25}
+      ]
+    },
+
+    {
+      "name": "FactorialRecurrent",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "Logarithm"},
+        {"left": "(factorial(+(n;1)))","right": "(*(factorial(n);+(n;1)))"},
+        {"left": "(*(factorial(n);+(n;1)))","right": "(factorial(+(n;1)))", "matchJumbledAndNested": true},
+        {"left": "(/(factorial(+(n;1));+(n;1)))","right": "(factorial(n))"},
+        {"left": "(factorial(n))","right": "(/(factorial(+(n;1));+(n;1)))"},
+        {"left": "(/(factorial(+(n;1));factorial(n)))","right": "(+(n;1))"},
+        {"left": "(+(n;1))","right": "(/(factorial(+(n;1));factorial(n)))", "priority": 80, "isExtending": true},
+
+        {"left": "(factorial(n))","right": "(*(factorial(+(n;-(1)));n))"},
+        {"left": "(*(factorial(+(n;-(1)));n))","right": "(factorial(n))", "matchJumbledAndNested": true},
+        {"left": "(/(factorial(n);n))","right": "(factorial(+(n;-(1))))"},
+        {"left": "(factorial(+(n;-(1))))","right": "(/(factorial(n);n))"},
+        {"left": "(/(factorial(n);factorial(+(n;-(1)))))","right": "(n)"},
+        {"left": "(n)","right": "(/(factorial(n);factorial(+(n;-(1)))))", "priority": 85, "isExtending": true}
+      ]
+    },
+
+    {
+      "name": "CombinatoricBase",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "FactorialRecurrent"},
+        {"left": "(U(m;n))","right": "(^(m;n))"},
+        {"left": "(^(m;n))","right": "(U(m;n))"},
+
+        {"left": "(P(n))","right": "(factorial(n))"},
+        {"left": "(factorial(n))","right": "(P(n))"},
+        {"left": "(A(n;n))","right": "(P(n))"},
+        {"left": "(P(n))","right": "(A(n;n))", "priority": 70, "isExtending": true},
+
+        {"left": "(*(C(m;n);P(n)))","right": "(A(m;n))"},
+        {"left": "(A(m;n))","right": "(*(C(m;n);P(n)))", "priority": 80, "isExtending": true},
+        {"left": "(/(A(m;n);P(n)))","right": "(C(m;n))"},
+        {"left": "(C(m;n))","right": "(/(A(m;n);P(n)))", "priority": 80, "isExtending": true},
+        {"left": "(/(A(m;n);C(m;n)))","right": "(P(n))"},
+        {"left": "(P(n))","right": "(/(A(m;n);C(m;n)))", "priority": 80, "isExtending": true},
+
+        {"left": "(V(+(m;1);n))","right": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))"},
+        {"left": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))","right": "(V(+(m;1);n))"},
+        {"left": "(factorial(+(m;n)))","right": "(*(V(+(m;1);n);*(factorial(m);factorial(n))))"},
+        {"left": "(*(V(+(m;1);n);*(factorial(m);factorial(n))))","right": "(factorial(+(m;n)))"},
+        {"left": "(*(factorial(m);factorial(n)))","right": "(/(factorial(+(m;n));V(+(m;1);n)))"},
+        {"left": "(/(factorial(+(m;n));V(+(m;1);n)))","right": "(*(factorial(m);factorial(n)))"},
+
+        {"left": "(C(+(m;n);n))","right": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))"},
+        {"left": "(C(+(m;n);n))","right": "(V(+(m;1);n))"},
+        {"left": "(V(+(m;1);n))","right": "(C(+(m;n);n))"},
+
+        {"left": "(A(+(m;n);n))","right": "(/(factorial(+(m;n));factorial(m)))"},
+        {"left": "(/(factorial(+(m;n));factorial(m)))","right": "(A(+(m;n);n))"},
+        {"left": "(factorial(+(m;n)))","right": "(*(A(+(m;n);n);factorial(m)))", "priority": 80, "isExtending": true},
+        {"left": "(*(A(+(m;n);n);factorial(m)))","right": "(factorial(+(m;n)))"},
+        {"left": "(*(factorial(m);A(+(m;n);n)))","right": "(factorial(+(m;n)))"},
+        {"left": "(factorial(m))","right": "(/(factorial(+(m;n));A(+(m;n);n)))", "priority": 80, "isExtending": true},
+        {"left": "(/(factorial(+(m;n));A(+(m;n);n)))","right": "(factorial(m))"},
+
+
+        {"left": "(S1(m;n))","right": "(*(factorial(n);S2(m;n)))"},
+        {"left": "(*(factorial(n);S2(m;n)))","right": "(S1(m;n))", "matchJumbledAndNested": true},
+        {"left": "(factorial(n))","right": "(/(S1(m;n);S2(m;n)))", "priority": 80, "isExtending": true},
+        {"left": "(/(S1(m;n);S2(m;n)))","right": "(factorial(n))"},
+        {"left": "(S2(m;n))","right": "(/(S1(m;n);factorial(n)))", "priority": 80, "isExtending": true},
+        {"left": "(/(S1(m;n);factorial(n)))","right": "(S2(m;n))"},
+
+        {"left": "(S2(+(m;1);+(n;1)))","right": "(+(S2(m;n);*(n;S2(m;+(n;1)))))"},
+        {"left": "(+(S2(m;n);*(n;S2(m;+(n;1)))))","right": "(S2(+(m;1);+(n;1)))"},
+        {"left": "(S2(m;m))","right": "(1)"},
+        {"left": "(1)","right": "(S2(m;n))", "priority": 90, "isExtending": true},
+
+
+        {"left": "(C(*(2;n);n))","right": "(*(C(n);+(n;1)))"},
+        {"left": "(*(C(n);+(n;1)))","right": "(C(*(2;n);n))", "matchJumbledAndNested": true},
+        {"left": "(C(n))","right": "(/(C(*(2;n);n);+(n;1)))", "priority": 80, "isExtending": true},
+        {"left": "(/(C(*(2;n);n);+(n;1)))","right": "(C(n))"},
+        {"left": "(+(n;1))","right": "(/(C(*(2;n);n);C(n)))", "priority": 80, "isExtending": true},
+        {"left": "(/(C(*(2;n);n);C(n)))","right": "(+(n;1))"},
+
+        {"left": "(C(0))","right": "(1)", "priority": 5},
+        {"left": "(1)","right": "(C(0))", "priority": 90, "isExtending":  true}
+      ]
+    }
+  ]
+}

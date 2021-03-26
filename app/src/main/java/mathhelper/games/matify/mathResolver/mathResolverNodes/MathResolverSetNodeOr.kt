@@ -1,7 +1,7 @@
 package mathhelper.games.matify.mathResolver.mathResolverNodes
 
 import android.text.style.ScaleXSpan
-import com.twf.expressiontree.ExpressionNode
+import expressiontree.ExpressionNode
 import mathhelper.games.matify.mathResolver.*
 
 class MathResolverSetNodeOr(

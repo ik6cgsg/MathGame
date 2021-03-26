@@ -1,10 +1,11 @@
 package mathhelper.games.matify.game
 
 import android.util.Log
-import com.twf.api.expressionSubstitutionFromStructureStrings
-import com.twf.api.findSubstitutionPlacesInExpression
-import com.twf.expressiontree.ExpressionNode
-import com.twf.expressiontree.ExpressionSubstitution
+import api.expressionSubstitutionFromStructureStrings
+import api.findSubstitutionPlacesInExpression
+import expressiontree.ExpressionNode
+import expressiontree.ExpressionSubstitution
+import mathhelper.games.matify.common.Constants.Companion.defaultRulePriority
 import org.json.JSONObject
 import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.level.Type.*
@@ -15,6 +16,13 @@ enum class PackageField(val str: String) {
     RULE_RIGHT("right"),
     BASED_ON_TASK_CONTEXT("basedOnTaskContext"),
     MATCH_JUMBLED_AND_NESTED("matchJumbledAndNested"),
+    SIMPLE_ADDITIONAL("simpleAdditional"),
+    IS_EXTENDING("isExtending"),
+    PRIORITY("priority"),
+    NAME_EN("nameEn"),
+    NAME_RU("nameRu"),
+    CODE("code"),
+
     TYPE("type"),
     NAME("name"),
     RULES("rules")
@@ -64,8 +72,7 @@ private constructor(
                         }
                     }
                     /** SUBSTITUTION */
-                    type != null &&
-                            ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str) -> {
+                    (type != null && (ruleInfo.has(PackageField.RULE_LEFT.str) && ruleInfo.has(PackageField.RULE_RIGHT.str)) || ruleInfo.has(PackageField.CODE.str)) -> {
                         resPckg.rules.add(parseRule(ruleInfo, type))
                     }
                     else -> return null
@@ -74,30 +81,25 @@ private constructor(
             return resPckg
         }
 
-        fun parseRule(ruleInfo: JSONObject, type: Type): ExpressionSubstitution {
-            val from = ruleInfo.getString(PackageField.RULE_LEFT.str)
-            val to = ruleInfo.getString(PackageField.RULE_RIGHT.str)
+        fun parseRule(ruleInfo: JSONObject, type: Type?): ExpressionSubstitution {
+            val from = ruleInfo.optString(PackageField.RULE_LEFT.str, "")
+            val to = ruleInfo.optString(PackageField.RULE_RIGHT.str, "")
             val basedOnTaskContext = ruleInfo.optBoolean(PackageField.BASED_ON_TASK_CONTEXT.str, false)
             val matchJumbledAndNested = ruleInfo.optBoolean(PackageField.MATCH_JUMBLED_AND_NESTED.str, false)
-            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested)
+            val simpleAdditional = ruleInfo.optBoolean(PackageField.SIMPLE_ADDITIONAL.str, false)
+            val isExtending = ruleInfo.optBoolean(PackageField.IS_EXTENDING.str, false)
+            val priority = ruleInfo.optInt(PackageField.PRIORITY.str, defaultRulePriority)
+            val nameEn = ruleInfo.optString(PackageField.NAME_EN.str, "")
+            val nameRu = ruleInfo.optString(PackageField.NAME_RU.str, "")
+            val code = ruleInfo.optString(PackageField.CODE.str, "")
+            return expressionSubstitutionFromStructureStrings(from, to, basedOnTaskContext, matchJumbledAndNested, simpleAdditional, isExtending, priority, code, nameEn, nameRu)
         }
     }
 
-    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode): List<ExpressionSubstitution>? {
-        var res = rules
-            .filter {
-                val list = findSubstitutionPlacesInExpression(expression, it)
-                if (list.isEmpty()) {
-                    false
-                } else {
-                    val substPlace = list.find { sp ->
-                        sp.originalValue.nodeId == node.nodeId
-                    }
-                    substPlace != null
-                }
-            }
+    fun getAllRules(): List<ExpressionSubstitution>? {
+        var res : ArrayList<ExpressionSubstitution> = rules
         for (pckg in children) {
-            val rulesFromPack = pckg.getRulesFor(node, expression)
+            val rulesFromPack = pckg.getAllRules()
             if (rulesFromPack != null) {
                 res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
             }

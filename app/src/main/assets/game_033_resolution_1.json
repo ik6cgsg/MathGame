@@ -1,0 +1,218 @@
+{
+  "gameSpace": "",
+  "gameCode": "game_033_resolution_1",
+  "name": "Resolution-1",
+  "en": "Resolution-1",
+  "ru": "Метод Резолюций-1",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "game_033_resolution_1__Level_01_Prove",
+      "name": "Level 1 Resolution",
+      "ru": "Уровень 1 Резолюции",
+      "en": "Level 1 Resolution",
+      "difficulty": 1.0,
+      "type": "set",
+      "stepsNum": 6,
+      "time": 120,
+      "originalExpression": "(and(A;B;implic(A;C);not(C)))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "LogicResolution"}
+      ]
+    },
+    {
+      "levelCode": "game_033_resolution_1__Level_02_Prove",
+      "name": "Level 2 Resolution",
+      "ru": "Уровень 2 Резолюции",
+      "en": "Level 2 Resolution",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 250,
+      "originalExpression": "(and(not(A);implic(not(A);B);implic(B;C);not(C)))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "LogicResolution"}
+      ]
+    },
+    {
+      "levelCode": "game_033_resolution_1__Level_03_Prove",
+      "name": "Level 3 Resolution",
+      "ru": "Уровень 3 Резолюции",
+      "en": "Level 3 Resolution",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 9,
+      "time": 200,
+      "originalExpression": "(and(or(A;C);implic(D;C);implic(A;D);not(C)))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "LogicResolution"}
+      ]
+    },
+    {
+      "levelCode": "game_033_resolution_1__Level_04_Prove",
+      "name": "Level 4 Resolution",
+      "ru": "Уровень 4 Резолюции",
+      "en": "Level 4 Resolution",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 16,
+      "time": 350,
+      "originalExpression": "(and(or(A;B;C);implic(A;or(C;D));implic(C;or(B;D));not(B);not(D)))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "LogicResolution"}
+      ]
+    },
+    {
+      "levelCode": "game_033_resolution_1__Level_05_Prove",
+      "name": "Level 5 Resolution",
+      "ru": "Уровень 5 Резолюции",
+      "en": "Level 5 Resolution",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 11,
+      "time": 300,
+      "originalExpression": "(and(or(A;B);implic(not(C);not(A));implic(not(D);not(B));not(or(C;D));not(or(not(C);not(D)))))",
+      "finalExpression": "(0)",
+      "finalPattern": "",
+      "rules":[
+        {"rulePack": "LogicResolution"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "SetDeMorgan",
+      "type": "set",
+      "rules":[
+        {"left": "(not(and(A;B)))","right": "(or(not(A);not(B)))", "priority": 15},
+        {"left": "(or(not(A);not(B)))","right": "(not(and(A;B)))", "priority": 10},
+        {"left": "(not(or(A;B)))","right": "(and(not(A);not(B)))", "priority": 15},
+        {"left": "(and(not(A);not(B)))","right": "(not(or(A;B)))", "priority": 10}
+      ]
+    },
+    {
+      "name": "LogicAndOrBase",
+      "type": "set",
+      "rules":[
+        {"rulePack": "SetDeMorgan"},
+
+        {"left": "(not(not(a)))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(not(not(a)))", "isExtending": true, "priority": 89},
+
+        {"left": "(or(a;a))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(or(a;a))", "isExtending": true, "priority": 90},
+        {"left": "(and(a;a))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(and(a;a))", "isExtending": true, "priority": 90},
+
+        {"left":"(and(a;b))","right":"(and(b;a))", "priority": 40, "isExtending": true},
+        {"left":"(or(a;b))","right":"(or(b;a))", "priority": 40, "isExtending": true},
+
+        {"left":"(a)","right":"(and(a;1))", "priority": 90, "isExtending": true},
+        {"left":"(a)","right":"(or(a;0))", "priority": 90, "isExtending": true},
+
+        {"left": "(or(A;not(A)))","right": "(1)", "priority": 5},
+        {"left": "(or(not(A);A))","right": "(1)", "priority": 5},
+        {"left": "(and(A;not(A)))","right": "(0)", "priority": 5},
+        {"left": "(and(not(A);A))","right": "(0)", "priority": 5},
+        {"left": "(or(A;1))","right": "(1)", "priority": 5},
+        {"left": "(or(1;A))","right": "(1)", "priority": 5},
+        {"left": "(and(A;1))","right": "(A)", "priority": 5},
+        {"left": "(and(1;A))","right": "(A)", "priority": 5},
+        {"left": "(or(A;0))","right": "(A)", "priority": 5},
+        {"left": "(or(0;A))","right": "(A)", "priority": 5},
+        {"left": "(and(A;0))","right": "(0)", "priority": 5},
+        {"left": "(and(0;A))","right": "(0)", "priority": 5},
+
+        {"left": "(not(0))","right": "(1)", "priority": 5},
+        {"left": "(not(1))","right": "(0)", "priority": 5},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "SetComplicatingExtension", "priority": 92},
+        {"code": "ParentBracketsExpansion", "priority": 30},
+        {"code": "ArgumentsSwap", "priority": 40},
+        {"code": "ArgumentsPermutation", "priority": 40},
+        {"code": "OpeningBrackets", "priority": 30},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41},
+        {"code": "ReduceArithmetic", "priority": 10},
+        {"code": "TwoSidesArithmeticReduce", "priority": 10}
+      ]
+    },
+    {
+      "name": "LogicImplicationDifference",
+      "type": "set",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+
+        {"left": "(or(not(A);B))","right": "(implic(A;B))"},
+        {"left": "(or(B;not(A)))","right": "(implic(A;B))"},
+        {"left": "(implic(A;B))","right": "(or(not(A);B))"},
+
+        {"left": "(and(A;not(B)))","right": "(set-(A;B))"},
+        {"left": "(and(not(B);A))","right": "(set-(A;B))"},
+        {"left": "(set-(A;B))","right": "(and(A;not(B)))"},
+
+        {"left": "(set-(A;B))","right": "(not(implic(A;B)))"},
+        {"left": "(not(implic(A;B)))","right": "(set-(A;B))"},
+        {"left": "(implic(A;B))","right": "(not(set-(A;B)))"},
+        {"left": "(not(set-(A;B)))","right": "(implic(A;B))"},
+
+        {"left": "(set-(A;0))","right": "(A)", "priority": 5},
+        {"left": "(set-(A;1))","right": "(0)", "priority": 5},
+        {"left": "(set-(0;A))","right": "(0)", "priority": 5},
+        {"left": "(set-(1;A))","right": "(not(A))", "priority": 5},
+
+        {"left": "(implic(0;A))","right": "(1)", "priority": 5},
+        {"left": "(implic(A;1))","right": "(1)", "priority": 5},
+        {"left": "(implic(A;0))","right": "(not(A))", "priority": 5},
+        {"left": "(implic(1;A))","right": "(A)", "priority": 5},
+
+        {"left": "(A)","right": "(set-(A;0))", "priority": 91, "isExtending": true},
+        {"left": "(A)","right": "(implic(1;A))", "priority": 91, "isExtending": true}
+      ]
+    },
+    {
+      "name": "LogicAbsorptionLaw",
+      "type": "set",
+      "rules":[
+        {"left": "(and(A;or(A;B)))","right": "(A)", "priority": 6},
+        {"left": "(or(A;and(A;B)))","right": "(A)", "priority": 6},
+        {"left": "(and(A;or(B;A)))","right": "(A)", "priority": 6},
+        {"left": "(or(A;and(B;A)))","right": "(A)", "priority": 6},
+        {"left": "(and(or(A;B);A))","right": "(A)", "priority": 6},
+        {"left": "(or(and(A;B);A))","right": "(A)", "priority": 6},
+        {"left": "(and(or(B;A);A))","right": "(A)", "priority": 6},
+        {"left": "(or(and(B;A);A))","right": "(A)", "priority": 6},
+
+        {"left": "(A)","right": "(and(A;or(A;B)))", "priority": 90, "isExtending": true},
+        {"left": "(A)","right": "(or(A;and(A;B)))", "priority": 90, "isExtending": true}
+      ]
+    },
+    {
+      "name": "LogicResolution",
+      "type": "set",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+
+        {"left": "(and(not(A);A))","right": "(and(0;not(A);A))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(A;not(A)))","right": "(and(0;A;not(A)))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(or(A;X);not(A)))","right": "(and(X;or(A;X);not(A)))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(or(X;A);not(A)))","right": "(and(X;or(X;A);not(A)))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(or(not(A);X);A))","right": "(and(X;or(not(A);X);A))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(A;or(X;not(A))))","right": "(and(X;A;or(X;not(A))))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(or(A;X);or(not(A);Y)))","right": "(and(or(X;Y);or(A;X);or(not(A);Y)))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(or(A;X);or(Y;not(A))))","right": "(and(or(X;Y);or(A;X);or(Y;not(A))))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(or(not(A);X);or(A;Y)))","right": "(and(or(X;Y);or(not(A);X);or(A;Y)))", "priority": 4, "matchJumbledAndNested": true},
+        {"left": "(and(or(X;not(A));or(A;Y)))","right": "(and(or(X;Y);or(X;not(A));or(A;Y)))", "priority": 4, "matchJumbledAndNested": true}
+      ]
+    }
+  ]
+}

@@ -9,6 +9,8 @@
     {
       "levelCode": "simple_combinatorics__Hello_World_Level_Prove",
       "name": "Hello World Level Prove",
+      "ru": "Уровень Привет мир",
+      "en": "Hello World Level",
       "difficulty": 1.0,
       "type": "algebra",
       "stepsNum": 2,
@@ -22,6 +24,8 @@
     {
       "levelCode": "simple_combinatorics__Level_01_Prove",
       "name": "Level 1 Prove",
+      "ru": "Уровень 1 Доказательство",
+      "en": "Level 1 Prove",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -35,6 +39,8 @@
     {
       "levelCode": "simple_combinatorics__Level_02_Prove",
       "name": "Level 2 Prove Stirling-II",
+      "ru": "Уровень 2 Доказательство Стирлинг-II",
+      "en": "Level 2 Prove Stirling-II",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 5,
@@ -48,11 +54,13 @@
     {
       "levelCode": "simple_combinatorics__Level_03_Prove",
       "name": "Level 3 Prove Catalan",
+      "ru": "Уровень 3 Доказательство",
+      "en": "Level 3 Prove Catalan",
       "difficulty": 2.0,
       "type": "algebra",
       "stepsNum": 3,
       "time": 90,
-      "originalExpression": "(*(C(n)*C(0);A(+(n;1);1)))",
+      "originalExpression": "(*(C(n);C(0);A(+(n;1);1)))",
       "finalExpression": "(C(*(2;n);n))",
       "rules":[
         {"rulePack": "CombinatoricBase"}
@@ -61,6 +69,8 @@
     {
       "levelCode": "simple_combinatorics__Level_04_Prove",
       "name": "Level 4 Prove",
+      "ru": "Уровень 4 Доказательство",
+      "en": "Level 4 Prove",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 15,
@@ -74,6 +84,8 @@
     {
       "levelCode": "simple_combinatorics__Level_05_Prove",
       "name": "Level 5 Prove",
+      "ru": "Уровень 5 Доказательство",
+      "en": "Level 5 Prove",
       "difficulty": 3.0,
       "type": "algebra",
       "stepsNum": 9,
@@ -89,6 +101,8 @@
     {
       "levelCode": "simple_combinatorics__Level_06_Prove",
       "name": "Level 6 Prove",
+      "ru": "Уровень 6 Доказательство",
+      "en": "Level 6 Prove",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 30,
@@ -104,6 +118,8 @@
     {
       "levelCode": "simple_combinatorics__Level_07_Prove",
       "name": "Level 7 Prove",
+      "ru": "Уровень 7 Доказательство",
+      "en": "Level 7 Prove",
       "difficulty": 4.0,
       "type": "algebra",
       "stepsNum": 26,
@@ -119,6 +135,8 @@
     {
       "levelCode": "simple_combinatorics__Level_08_Prove",
       "name": "Level 8 Prove",
+      "ru": "Уровень 8 Доказательство",
+      "en": "Level 8 Prove",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 33,
@@ -134,6 +152,8 @@
     {
       "levelCode": "simple_combinatorics__Level_09_Prove",
       "name": "Level 9 Prove",
+      "ru": "Уровень 9 Доказательство",
+      "en": "Level 9 Prove",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 41,
@@ -149,6 +169,8 @@
     {
       "levelCode": "simple_combinatorics__Level_10_Prove",
       "name": "Level 10 Prove",
+      "ru": "Уровень 10 Доказательство",
+      "en": "Level 10 Prove",
       "difficulty": 5.0,
       "type": "algebra",
       "stepsNum": 23,
@@ -172,15 +194,22 @@
         {"rulePack": "FactorialRecurrent"},
 
         {"rulePack": "BaseStirling"},
-        {"rulePack": "BaseCatalan"}
+        {"rulePack": "BaseCatalan"},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "NumberPlusMinus1", "priority": 20},
+        {"code": "MultiplicationFactorization", "priority": 15},
+        {"code": "DecimalToFraction", "priority": 15},
+        {"code": "PowFactorization", "priority": 15}
       ]
     },
     {
       "name": "BaseUAPCV",
       "type": "algebra",
       "rules":[
-        {"left": "(U(m;n))","right": "(^(m,n))"},
-        {"left": "(^(m,n))","right": "(U(m;n))"},
+        {"left": "(U(m;n))","right": "(^(m;n))"},
+        {"left": "(^(m;n))","right": "(U(m;n))"},
 
         {"left": "(P(n))","right": "(factorial(n))"},
         {"left": "(factorial(n))","right": "(P(n))"},
@@ -310,7 +339,6 @@
 
         {"left": "(*(A;/(B;C)))","right": "(/(*(A;B);C))"},
         {"left": "(*(/(B;C);A))","right": "(/(*(A;B);C))"},
-        {"left": "(*(/(B;C);A))","right": "(*(/(B;A);C))"},
         {"left": "(/(A;B))","right": "(/(1;/(B;A)))"},
         {"left": "(/(*(A;B);C))","right": "(*(A;/(B;C)))"},
 

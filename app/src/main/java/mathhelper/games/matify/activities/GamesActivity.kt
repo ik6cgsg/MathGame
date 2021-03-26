@@ -5,7 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -19,9 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import mathhelper.games.matify.*
-import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.common.Constants
-import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,7 +37,7 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var serverScroll: ScrollView
     private var askForTutorial = false
 
-    fun setLanguage() {
+    private fun setLanguage() {
         val locale = Locale("en")
         Locale.setDefault(locale)
         val config = Configuration(resources.configuration)
@@ -47,6 +47,7 @@ class GamesActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         setLanguage()
+        setTheme(Storage.shared.themeInt(this))
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -138,7 +139,10 @@ class GamesActivity: AppCompatActivity() {
                 }
             }
             val gameView = AndroidUtil.createButtonView(this)
+
             gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
+            val themeName = Storage.shared.theme(this)
+            gameView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
             /*
             if (game.lastResult != null) {
                 gameView.text = "${game.name}\n${game.lastResult!!}"
@@ -200,7 +204,9 @@ class GamesActivity: AppCompatActivity() {
     }
 
     private fun askForTutorialDialog() {
-        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
         builder
             .setTitle(R.string.welcome)
             .setMessage(R.string.wanna_see_tutorial)
