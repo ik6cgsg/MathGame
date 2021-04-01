@@ -7,7 +7,13 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.text.getSpans
+import androidx.core.text.set
 import expressiontree.ExpressionNode
+import mathhelper.games.matify.PlayScene
+import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.ColorName
+import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.ThemeController
 
 class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStringBuilder) {
     private fun insideBox(x: Int, y: Int, lt: Point, rb: Point): Boolean {
@@ -42,26 +48,47 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         return res
     }
 
-    fun clearColorSpans (start: Int, end: Int) {
+    private fun clearColorSpans (start: Int, end: Int, multiSelect: Boolean = false) {
         val colorSpans = matrix.getSpans<ForegroundColorSpan>(start, end)
-        for (cs in colorSpans) {
-            matrix.removeSpan(cs)
+        if (multiSelect) {
+            for (cs in colorSpans.sortedBy { matrix.getSpanStart(it) }) {
+                val spanStart = matrix.getSpanStart(cs)
+                val spanEnd = matrix.getSpanEnd(cs)
+                if (spanStart >= start && spanEnd <= end) {
+                    matrix.removeSpan(cs)
+                    val defColor = ThemeController.shared.getColorByTheme(Storage.shared.theme(PlayScene.shared.playActivity!!), ColorName.MULTISELECTION_COLOR)
+                    val color = AndroidUtil.lighterColor(cs.foregroundColor, defColor)
+                    matrix.setSpan(ForegroundColorSpan(color ?: continue), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                }
+            }
+        } else {
+            for (cs in colorSpans) {
+                matrix.removeSpan(cs)
+            }
         }
     }
 
-    fun clearBoldSpans (start: Int, end: Int) {
+    private fun clearBoldSpans (start: Int, end: Int, multiSelect: Boolean = false) {
         val boldSpans = matrix.getSpans<StyleSpan>(start, end)
-        for (bs in boldSpans) {
-            matrix.removeSpan(bs)
+        if (multiSelect) {
+            for (cs in boldSpans) {
+                if (matrix.getSpanStart(cs) == start && matrix.getSpanEnd(cs) == end) {
+                    matrix.removeSpan(cs)
+                }
+            }
+        } else {
+            for (bs in boldSpans) {
+                matrix.removeSpan(bs)
+            }
         }
     }
 
-    fun clearAllSpans (start: Int, end: Int) {
-        clearColorSpans(start, end)
-        clearBoldSpans(start, end)
+    private fun clearAllSpans (start: Int, end: Int, multiSelect: Boolean = false) {
+        clearColorSpans(start, end, multiSelect)
+        clearBoldSpans(start, end, multiSelect)
     }
 
-    fun applyStyleToMathNode (mathNode: MathResolverNodeBase, styleLambda: (start: Int, end: Int) -> Unit) {
+    private fun applyStyleToMathNode (mathNode: MathResolverNodeBase, styleLambda: (start: Int, end: Int) -> Unit) {
         if (tree != null) {
             for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
                 val start = i * (tree.length + 1) + mathNode.leftTop.x
@@ -73,9 +100,7 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
 
     fun deleteSpanForAtom(atom: ExpressionNode) {
         val mathNode = findNodeByExpression(tree, atom)
-        applyStyleToMathNode(mathNode ?: return,
-            { start, end -> clearAllSpans(start, end)}
-        )
+        applyStyleToMathNode(mathNode ?: return) { start, end -> clearAllSpans(start, end, true) }
     }
 
     fun getColoredAtom(offset: Int, multiSelectionMode: Boolean = false, color: Int = Color.RED): ExpressionNode? {
@@ -90,38 +115,35 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
                 resNode = mathNode.origin
                 if (!multiSelectionMode) {
                     clearAllSpans(0, matrix.length)
-                    applyStyleToMathNode(mathNode,
-                        { start, end -> run {
-                            matrix.setSpan(ForegroundColorSpan(color), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                            matrix.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                        }}
-                    )
+                    applyStyleToMathNode(mathNode) { start, end ->
+                        matrix.setSpan(ForegroundColorSpan(color), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                        matrix.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    }
                 }
             }
         }
         return resNode
     }
 
-    fun recolorExpressionInMultiSelectionMode (selectedItems: List<ExpressionNode>, topItem: ExpressionNode?, color: Int = Color.RED, otherColor: Int = Color.YELLOW) {
+    fun recolorExpressionInMultiSelectionMode(
+        selectedItems: List<ExpressionNode>,
+        topItem: ExpressionNode?,
+        color: Int = Color.YELLOW
+        //otherColor: Int = Color.YELLOW
+    ) {
         clearAllSpans(0, matrix.length)
-        if (topItem != null) {
-            applyStyleToMathNode(findNodeByExpression(tree, topItem) ?: return, { start, end -> matrix.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE) })
+        if (topItem != null) { // TODO: was ist das
+            applyStyleToMathNode(findNodeByExpression(tree, topItem) ?: return) { start, end ->
+                matrix.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            }
         }
         val selectedItemsSorted = selectedItems.sortedBy { it.nodeId }
         for (node in selectedItemsSorted) {
-            applyStyleToMathNode(
-                findNodeByExpression(tree, node) ?: return, { start, end -> run {
-                    val colorSpans = matrix.getSpans<ForegroundColorSpan>(start, end)
-                    val firstColorSpansCount = colorSpans.count { it.foregroundColor == color }
-                    val otherColorSpansCount = colorSpans.count { it.foregroundColor == otherColor }
-                    val selectionColor = if (firstColorSpansCount > otherColorSpansCount) {
-                        // internal selection
-                        otherColor
-                    } else {
-                        color
-                    }
-                    matrix.setSpan(ForegroundColorSpan(selectionColor), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                }})
+            applyStyleToMathNode(findNodeByExpression(tree, node) ?: return) { start, end ->
+                val colorSpans = matrix.getSpans<ForegroundColorSpan>(start, end)
+                val selectionColor = AndroidUtil.darkenColor(color, colorSpans.size)
+                matrix.setSpan(ForegroundColorSpan(selectionColor), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            }
         }
     }
 }

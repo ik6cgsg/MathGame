@@ -3,10 +3,13 @@ package mathhelper.games.matify.common
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.HorizontalScrollView
+import android.widget.ScrollView
 import android.widget.TextView
 import api.expressionSubstitutionFromStructureStrings
 import expressiontree.ExpressionSubstitution
@@ -18,11 +21,12 @@ import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.mathResolver.VariableStyle
 import java.lang.Exception
 
-class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
+class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "RuleMathView"
     private val moveTreshold = 10
     var subst: ExpressionSubstitution? = null
         private set
+    lateinit var ruleView: TextView
     private var needClick = false
     private var moveCnt = 0
 
@@ -40,18 +44,27 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     private fun setDefaults(context: Context) {
-        textSize = Constants.ruleDefaultSize
-        setHorizontallyScrolling(true)
-        isHorizontalScrollBarEnabled = true
-        isScrollbarFadingEnabled = true
-        movementMethod = ScrollingMovementMethod()
+        //isHorizontalScrollBarEnabled = true
+        scrollBarSize = 20
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            horizontalScrollbarThumbDrawable = context.getDrawable(R.drawable.alert_shape)
+        }
+        isScrollbarFadingEnabled = false
+        scrollBarStyle = SCROLLBARS_INSIDE_INSET
         val themeName = Storage.shared.theme(context)
-        setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
-        typeface = Typeface.MONOSPACE
-        setLineSpacing(0f, Constants.mathLineSpacing)
+        ruleView = TextView(context)
+        ruleView.textSize = Constants.ruleDefaultSize
+        ruleView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
+        ruleView.typeface = Typeface.MONOSPACE
+        //ruleView.ellipsize = TextUtils.TruncateAt.
+        ruleView.setLineSpacing(0f, Constants.mathLineSpacing)
+        /*ruleView.setPadding(
+            Constants.defaultPadding, Constants.defaultPadding,
+            Constants.defaultPadding, Constants.defaultPadding)*/
         setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
+        addView(ruleView)
         if (subst != null) {
             setSubst(subst!!, Type.OTHER)
         }
@@ -69,13 +82,15 @@ class RuleMathView: androidx.appcompat.widget.AppCompatTextView {
             else -> MathResolver.resolveToPlain(subst.right, style)
         }
         if (from.tree == null || to.tree == null) {
-            text = context.getString(R.string.parsing_error)
+            ruleView.text = context.getString(R.string.parsing_error)
             return
         }
         try {
-            text = MathResolver.getRule(from, to)
+            val ruleStr = MathResolver.getRule(from, to)
+            ruleView.text = ruleStr
+            //ruleView.maxLines = ruleStr.lines().size+1
         } catch (e: Exception) {
-            text = context.getString(R.string.parsing_error)
+            ruleView.text = context.getString(R.string.parsing_error)
             Log.e(TAG, "Error during substitution render")
         }
     }

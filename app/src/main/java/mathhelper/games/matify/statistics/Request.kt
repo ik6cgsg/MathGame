@@ -165,7 +165,7 @@ class Request {
                 return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
             }
             Log.d("Request", "Request body: ${req.body}")
-            reqQueue.addFirst(req)
+            // TODO: reqQueue.addFirst(req)
             isConnected = true
         }
 

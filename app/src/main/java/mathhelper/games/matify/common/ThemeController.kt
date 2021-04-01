@@ -6,6 +6,7 @@ import mathhelper.games.matify.R
 enum class ColorName(val str: String) {
     PRIMARY_COLOR("primaryColor"),
     TEXT_COLOR("textColor"),
+    MULTISELECTION_COLOR("multiselectionColor"),
     ON_TOUCH_BACKGROUND_COLOR("onTouchBackgroundColor"),
     TEXT_HIGHLIGHT_COLOR("textHighlightColor"),
     TEXT_SECOND_HIGHLIGHT_COLOR("textSecondHighlightColor"),
@@ -34,6 +35,7 @@ class ThemeController {
     private val dark = mapOf(
         ColorName.PRIMARY_COLOR to "#008577",
         ColorName.TEXT_COLOR to "#C5C5C5",
+        ColorName.MULTISELECTION_COLOR to "#FFC300",
         ColorName.ON_TOUCH_BACKGROUND_COLOR to "#8B8484",
         ColorName.TEXT_HIGHLIGHT_COLOR to "#00FFFF",
         ColorName.TEXT_SECOND_HIGHLIGHT_COLOR to "#0088AA",
@@ -44,6 +46,7 @@ class ThemeController {
     private val light = mapOf(
         ColorName.PRIMARY_COLOR to "#4A266A",
         ColorName.TEXT_COLOR to "#171717",
+        ColorName.MULTISELECTION_COLOR to "#FFC300",
         ColorName.ON_TOUCH_BACKGROUND_COLOR to "#B9BBDF",
         ColorName.TEXT_HIGHLIGHT_COLOR to "#6639A6",
         ColorName.TEXT_SECOND_HIGHLIGHT_COLOR to "#331853",

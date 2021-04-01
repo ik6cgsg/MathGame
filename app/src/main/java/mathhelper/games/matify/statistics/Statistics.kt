@@ -11,7 +11,9 @@ import mathhelper.games.matify.BuildConfig
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.game.PackageField
 import mathhelper.games.matify.level.Award
+import java.sql.Timestamp
 
 class Statistics {
     companion object {
@@ -30,35 +32,36 @@ class Statistics {
         }
 
         fun logRule(
-            currSteps: Float, nextSteps: Float, currExpr: ExpressionNode, nextExpr: ExpressionNode,
+            currSteps: Double, nextSteps: Double, currExpr: ExpressionNode, nextExpr: ExpressionNode,
             currRule: ExpressionSubstitution?, places: List<ExpressionNode>
         ) {
             val activity = PlayScene.shared.playActivity!!
-            val rule = if (currRule == null) {
-                ""
-            } else {
-                expressionToStructureString(currRule.left) + " : " + expressionToStructureString(currRule.right)
+            val rule: MutableMap<String, String>? = if (currRule == null) { null } else {
+                mutableMapOf(
+                    PackageField.RULE_LEFT.str to expressionToStructureString(currRule.left),
+                    PackageField.RULE_RIGHT.str to expressionToStructureString(currRule.right)
+                )
             }
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = nextSteps,
-                currentExpression = expressionToStructureString(currExpr),
+                currExpression = expressionToStructureString(currExpr),
                 nextExpression = expressionToStructureString(nextExpr),
                 appliedRule = rule,
-                selectedPlaces = places.map { expressionToStructureString(it) }
+                selectedPlace = (places.map { expressionToStructureString(it) }).toString()
             )
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RULE)
             sendLog(activityLog, activity)
         }
 
-        fun logPlace(currSteps: Float, currExpr: ExpressionNode, places: List<ExpressionNode>) {
+        fun logPlace(currSteps: Double, currExpr: ExpressionNode, places: List<ExpressionNode>) {
             val currExprStr = expressionToStructureString(currExpr)
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
-                currentExpression = currExprStr,
+                currExpression = currExprStr,
                 nextExpression = currExprStr,
-                selectedPlaces = places.map { expressionToStructureString(it) }
+                selectedPlace = (places.map { expressionToStructureString(it) }).toString()
             )
             val activity = PlayScene.shared.playActivity!!
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.PLACE)
@@ -68,9 +71,9 @@ class Statistics {
         fun logStart() {
             val exprStr = expressionToStructureString(LevelScene.shared.currentLevel!!.startExpression)
             val activityLog = ActivityLog(
-                currStepsNumber = 0f,
-                nextStepsNumber = 0f,
-                currentExpression = exprStr,
+                currStepsNumber = 0.0,
+                nextStepsNumber = 0.0,
+                currExpression = exprStr,
                 nextExpression = exprStr
             )
             val activity = PlayScene.shared.playActivity!!
@@ -79,7 +82,7 @@ class Statistics {
         }
 
         fun logUndo(
-            currSteps: Float, nextSteps: Float, currExpr: ExpressionNode,
+            currSteps: Double, nextSteps: Double, currExpr: ExpressionNode,
             nextExpr: ExpressionNode, currPlaces: List<ExpressionNode>
         ) {
             val curr = expressionToStructureString(currExpr)
@@ -92,16 +95,16 @@ class Statistics {
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = nextSteps,
-                currentExpression = curr,
+                currExpression = curr,
                 nextExpression = next,
-                selectedPlaces = places
+                selectedPlace = places.toString()
             )
             val activity = PlayScene.shared.playActivity!!
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.UNDO)
             sendLog(activityLog, activity)
         }
 
-        fun logRestart(currSteps: Float, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
+        fun logRestart(currSteps: Double, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
             val activity = PlayScene.shared.playActivity!!
             val curr = expressionToStructureString(currExpr)
             val next = expressionToStructureString(LevelScene.shared.currentLevel!!.startExpression)
@@ -112,17 +115,17 @@ class Statistics {
             }
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
-                nextStepsNumber = 0f,
-                currentExpression = curr,
+                nextStepsNumber = 0.0,
+                currExpression = curr,
                 nextExpression = next,
-                selectedPlaces = places
+                selectedPlace = places.toString()
             )
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RESTART)
             sendLog(activityLog, activity)
             startTime = 0
         }
 
-        fun logMenu(currSteps: Float, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
+        fun logMenu(currSteps: Double, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
             val activity = PlayScene.shared.playActivity!!
             val curr = expressionToStructureString(currExpr)
             val places = if (currPlaces.isEmpty()) {
@@ -133,22 +136,22 @@ class Statistics {
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
-                currentExpression = curr,
+                currExpression = curr,
                 nextExpression = curr,
-                selectedPlaces = places
+                selectedPlace = places.toString()
             )
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.MENU)
             sendLog(activityLog, activity)
             startTime = 0
         }
 
-        fun logWin(currSteps: Float, award: Award) {
+        fun logWin(currSteps: Double, award: Award) {
             val exprStr = expressionToStructureString(LevelScene.shared.currentLevel!!.endExpression)
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
-                currAwardCoef = award.coeff.toFloat(),
-                currentExpression = exprStr,
+                baseAward = award.coeff, // TODO: base_award?? quality_data???
+                currExpression = exprStr,
                 nextExpression = exprStr
             )
             val activity = PlayScene.shared.playActivity!!
@@ -157,7 +160,7 @@ class Statistics {
             startTime = 0
         }
 
-        fun logLoose(currSteps: Float, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
+        fun logLoose(currSteps: Double, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
             val exprStr = expressionToStructureString(currExpr)
             val places = if (currPlaces.isEmpty()) {
                 listOf("")
@@ -167,9 +170,9 @@ class Statistics {
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
-                currentExpression = exprStr,
+                currExpression = exprStr,
                 nextExpression = exprStr,
-                selectedPlaces = places
+                selectedPlace = places.toString()
             )
             val activity = PlayScene.shared.playActivity!!
             activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.LOOSE)
@@ -222,17 +225,20 @@ class Statistics {
         private fun setDefault(log: ActivityLog, context: Context) {
             val fullInfo = Storage.shared.getFullUserInfo(context)
             val time = System.currentTimeMillis()
-            log.clientActionTime = time
-            log.additionalData.put("hardwareDeviceId", Storage.shared.deviceId(context))
-            log.additionalData.put("totalTimeMultCoef", fullInfo.coeffs.timeCoeff ?: log.totalTimeMultCoef)
-            log.additionalData.put("totalAwardMultCoef", fullInfo.coeffs.awardCoeff ?: log.totalAwardMultCoef)
-            log.applicationVersion = BuildConfig.VERSION_NAME
-            log.timeFromLastActionMS = time - lastActionTime
+            log.appCode = "MATIFY_ANDROID"
+            log.clientActionTs = Timestamp(time)
+            val otherData = mutableMapOf<String, Any?>()
+            otherData["hardwareDeviceId"] = Storage.shared.deviceId(context)
+            otherData["totalTimeMultCoef"] = fullInfo.coeffs.timeCoeff
+            otherData["totalAwardMultCoef"] = fullInfo.coeffs.awardCoeff
+            otherData["applicationVersion"] = BuildConfig.VERSION_NAME
+            log.timeFromLastActionMs = time - lastActionTime
             lastActionTime = time
             if (startTime > 0) { // Level was created and set
-                log.currTimeMS = time - startTime
-                log.additionalData.put("leftTimeMS", log.totalTimeMS - log.currTimeMS)
+                log.currTimeMs = time - startTime
+                // TODO: ?? otherData["leftTimeMS"] = log.totalTimeMS - log.currTimeMs
             }
+            log.otherData = otherData
         }
     }
 }

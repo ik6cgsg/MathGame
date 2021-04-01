@@ -68,7 +68,7 @@ class MathUpTimer(val interval: Long) {
                 val sec = "${PlayScene.shared.currentTime % 60}".padStart(2, '0')
                 val text = SpannableString(start + PlayScene.shared.currentTime / 60 + ":" + sec)
                 val steps = if (PlayScene.shared.stepsCount < LevelScene.shared.currentLevel!!.stepsNum) {
-                    LevelScene.shared.currentLevel!!.stepsNum.toFloat()
+                    LevelScene.shared.currentLevel!!.stepsNum.toDouble()
                 } else {
                     PlayScene.shared.stepsCount
                 }

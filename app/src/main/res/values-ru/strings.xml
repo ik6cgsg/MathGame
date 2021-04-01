@@ -3,26 +3,17 @@
     <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆\n⬆ Длинное нажатие позволит выделить >1 места ⬆</string>
     <string name="end_expression_closed">Цель  🔼</string>
     <string name="end_expression_opened">Цель  🔽</string>
-    <string name="previous" translatable="false">↶</string>
-    <string name="restart" translatable="false">↺</string>
-    <string name="back" translatable="false">←</string>
     <string name="wrong_subs">❌ Это нельзя сделать ❌</string>
     <string name="time_out">😢Время вышло!😢</string>
     <string name="no_rules">🙅 Не нашлось подходящих правил 🙅</string>
     <string name="levels">УРОВНИ</string>
     <string name="reset">сбросить все</string>
-    <string name="gear" translatable="false">⚙</string>
     <string name="settings">⚙ НАСТРОЙКИ ⚙</string>
     <string name="send_statistics">Отправлять статистику 📈</string>
     <string name="report_bug">🐛 Сообщить об ошибке</string>
-    <string name="version_view" translatable="false">Matify v</string>
-    <string name="pointer" translatable="false">☝</string>
     <string name="continue_as_guest">Зайти как гость</string>
     <string name="continue_with_github">Войти через GitHub аккаунт</string>
     <string name="continue_with_google">Войти через Google аккаут</string>
-    <string name="logo" translatable="false">Logo</string>
-    <string name="googlelogo" translatable="false">googleLogo</string>
-    <string name="githublogo" translatable="false">githubLogo</string>
     <string name="saved">Сохранено!</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
@@ -76,10 +67,7 @@
     <string name="this_action_will_reset_all_your_achievements">Это действие сбросит все Ваши достижения</string>
     <string name="wanna_say_something">Обратная связь</string>
     <string name="tell_about_your_problem">Описание проблемы</string>
-    <string name="i">i</string>
-    <string name="start_multiselect">⤵️</string>
-    <string name="end_multiselect">⤴️</string>
-    <string name="msg_on_start_multiselect">Режим мультивыбора. Для отмены нажмите ⤴️</string>
+    <string name="msg_on_start_multiselect">Режим мультивыбора. Для отмены нажмите ≢</string>
     <string name="start_multiselect_info">Войти в режим мультивыбора</string>
     <string name="end_multiselect_info">Выйти из режима мультивыбора</string>
     <string name="previous_info">Предыдущий шаг</string>
@@ -138,4 +126,7 @@
     <string name="self_phone_mode">Ваши результаты сохраняются только локально</string>
     <string name="google_sign_in_error">Ошибка в ходе Google-авторизации…</string>
     <string name="coming_soon">Скоро реализуем…</string>
+    <string name="steps_count">"Количество шагов: "</string>
+    <string name="multiselection_mode_is_on">⚠️ ВКЛЮЧЕН режим мультивыделения ⚠️</string>
+    <string name="multiselection_mode_is_off">✅ Обычный режим ✅</string>
 </resources>

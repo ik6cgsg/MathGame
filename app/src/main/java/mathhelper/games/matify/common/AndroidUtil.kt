@@ -6,6 +6,9 @@ import android.content.Context
 import android.content.*
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
@@ -13,7 +16,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import mathhelper.games.matify.R
+import kotlin.math.pow
 
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
@@ -119,6 +124,32 @@ class AndroidUtil {
             val themeName = Storage.shared.theme(context)
             view.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
             return view
+        }
+
+        fun vibrate(context: Context) {
+            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK))
+            } else {
+                vibrator.vibrate(200)
+            }
+        }
+
+        @ColorInt fun darkenColor(@ColorInt color: Int, grade: Int): Int {
+            return if (grade == 0) color else Color.HSVToColor(FloatArray(3).apply {
+                Color.colorToHSV(color, this)
+                this[2] *= (0.6f).pow(grade)
+            })
+        }
+
+        @ColorInt fun lighterColor(@ColorInt color: Int, @ColorInt default: Int): Int? {
+            val res = FloatArray(3).apply {
+                Color.colorToHSV(color, this)
+                this[2] /= (0.6f)
+            }
+            val def = FloatArray(3)
+            Color.colorToHSV(default, def)
+            return if (def[2] >= res[2]) Color.HSVToColor(res) else null
         }
     }
 }

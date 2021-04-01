@@ -1,22 +1,28 @@
 package mathhelper.games.matify.activities
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.TransitionDrawable
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import kotlinx.android.synthetic.main.activity_play.*
 import mathhelper.games.matify.level.Award
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
+import standartlibextensions.selectPlacesForColoringByFragment
 import java.lang.Exception
 import kotlin.math.max
 import kotlin.math.min
@@ -34,6 +40,7 @@ class PlayActivity: AppCompatActivity() {
     private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
 
+    lateinit var mainView: ConstraintLayout
     lateinit var globalMathView: GlobalMathView
     lateinit var endExpressionView: TextView
     lateinit var endExpressionViewLabel: TextView
@@ -75,6 +82,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun setViews() {
+        mainView = findViewById(R.id.activity_play)
         globalMathView = findViewById(R.id.global_expression)
         endExpressionView = findViewById(R.id.end_expression_view)
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
@@ -92,7 +100,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun setLongClick() {
-        startStopMultiselectionMode.setOnLongClickListener{
+        startStopMultiselectionMode.setOnLongClickListener {
             showMessage(
                 getString(R.string.end_multiselect_info),
                 globalMathView.multiselectionMode,
@@ -100,13 +108,11 @@ class PlayActivity: AppCompatActivity() {
             )
             true
         }
-
-        back.setOnLongClickListener{
+        back.setOnLongClickListener {
             showMessage(getString(R.string.back_info))
             true
         }
-
-        previous.setOnLongClickListener{
+        previous.setOnLongClickListener {
             showMessage(
                 getString(R.string.previous_multiselect_info),
                 globalMathView.multiselectionMode,
@@ -114,21 +120,19 @@ class PlayActivity: AppCompatActivity() {
             )
             true
         }
-
-        restart.setOnLongClickListener{
+        restart.setOnLongClickListener {
             showMessage(getString(R.string.restart_info))
             true
         }
-
-        info.setOnLongClickListener{
+        info.setOnLongClickListener {
             showMessage(getString(R.string.i_info))
             true
         }
-
-        globalMathView.setOnLongClickListener{
+        globalMathView.setOnLongClickListener {
             if (!globalMathView.multiselectionMode) {
                 startStopMultiselectionMode(it)
             }
+            AndroidUtil.vibrate(this)
             true
         }
     }
@@ -206,15 +210,22 @@ class PlayActivity: AppCompatActivity() {
 
     fun startStopMultiselectionMode(v: View?) {
         val startStopView: TextView = findViewById(R.id.start_stop_multiselection_mode)
+        val anim = mainView.background as TransitionDrawable
         globalMathView.multiselectionMode = !globalMathView.multiselectionMode
         if (!globalMathView.multiselectionMode) {
             startStopView.text = getText(R.string.start_multiselect)
+            startStopView.setTextColor(ThemeController.shared.getColorByTheme(Storage.shared.theme(this), ColorName.PRIMARY_COLOR))
             globalMathView.clearExpression()
             PlayScene.shared.clearRules()
+            AndroidUtil.vibrate(this)
+            anim.reverseTransition(300)
         }
         else {
             startStopView.text = getText(R.string.end_multiselect)
+            startStopView.setTextColor(Color.RED)
             showMessage(getString(R.string.msg_on_start_multiselect))
+            AndroidUtil.vibrate(this)
+            anim.startTransition(300)
         }
     }
 
@@ -262,7 +273,7 @@ class PlayActivity: AppCompatActivity() {
         return endExpressionView.visibility != View.VISIBLE
     }
 
-    fun onWin(stepsCount: Float, currentTime: Long, award: Award) {
+    fun onWin(stepsCount: Double, currentTime: Long, award: Award) {
         Log.d(TAG, "onWin")
         val msgTitle = resources.getString(R.string.you_finished_level_with)
         val steps = "\n\t${resources.getString(R.string.steps)}: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {

@@ -121,7 +121,7 @@ class LevelsActivity: AppCompatActivity() {
         }
     }
 
-    private fun getBackgroundByDif(dif: Float): Drawable? {
+    private fun getBackgroundByDif(dif: Double): Drawable? {
         return when {
             dif < 3 -> getDrawable(R.drawable.level_easy)
             dif < 5 -> getDrawable(R.drawable.level_medium)

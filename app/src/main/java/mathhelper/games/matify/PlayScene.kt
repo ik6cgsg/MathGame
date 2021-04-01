@@ -51,7 +51,7 @@ class PlayScene() {
             }, 100)
         }
     }
-    var stepsCount: Float = 0f
+    var stepsCount: Double = 0.0
     var currentTime: Long = 0
     private lateinit var history: History
     /** TIMERS */
@@ -168,7 +168,7 @@ class PlayScene() {
     private fun loadFinite() {
         val currentLevel = LevelScene.shared.currentLevel!!
         playActivity!!.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.type)
-        stepsCount = 0f
+        stepsCount = 0.0
         currentTime = 0
         downTimer = MathDownTimer(currentLevel.time, 1)
         downTimer!!.start()
@@ -184,7 +184,7 @@ class PlayScene() {
             activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.type)
         } else {
             activity.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.type)
-            stepsCount = 0f
+            stepsCount = 0.0
             currentTime = 0
         }
         upTimer = MathUpTimer(1)
@@ -235,8 +235,13 @@ class PlayScene() {
 
     fun info(languageCode: String) {
         val currentLevel = LevelScene.shared.currentLevel!!
-        showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40\n" +
-            "\uD83D\uDC63 Steps: ${"%.1f".format(stepsCount)} \uD83D\uDC63")
+        val multi = playActivity!!.globalMathView.multiselectionMode
+        showMessage(
+            "\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40\n" +
+            "\uD83D\uDC63 ${playActivity!!.getString(R.string.steps_count)} ${"%.1f".format(stepsCount)} \uD83D\uDC63\n" +
+            if (multi) playActivity!!.getString(R.string.multiselection_mode_is_on)
+            else playActivity!!.getString(R.string.multiselection_mode_is_off)
+        )
     }
 
     fun clearRules() {

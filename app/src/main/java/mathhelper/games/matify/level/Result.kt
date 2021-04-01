@@ -1,6 +1,6 @@
 package mathhelper.games.matify.level
 
-class Result(val steps: Float, val time: Long, val award: Award, var expression: String = "") {
+class Result(val steps: Double, val time: Long, val award: Award, var expression: String = "") {
     fun isBetter(other: Result?): Boolean {
         if (other == null) {
             return true

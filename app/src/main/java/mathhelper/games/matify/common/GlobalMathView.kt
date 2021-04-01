@@ -145,11 +145,9 @@ class GlobalMathView: TextView {
         val y = event.y - textSize / 4
         if (layout != null) {
             val offset = getOffsetForPosition(x, y)
-
             val themeName = Storage.shared.theme(context)
             val atomColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_HIGHLIGHT_COLOR)
-            val atomSecondColor = ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_SECOND_HIGHLIGHT_COLOR)
-
+            val atomMultiColor = ThemeController.shared.getColorByTheme(themeName, ColorName.MULTISELECTION_COLOR)
             val atom = mathPair!!.getColoredAtom(offset, multiselectionMode, atomColor)
             if (atom != null) {
                 if (multiselectionMode) {
@@ -159,7 +157,7 @@ class GlobalMathView: TextView {
                         currentAtoms.add(atom)
                     }
                     val topNode = findLowestSubtreeTopOfSelectedNodesInExpression(expression!!, currentAtoms)
-                    mathPair!!.recolorExpressionInMultiSelectionMode(currentAtoms, topNode, atomColor, atomSecondColor)
+                    mathPair!!.recolorExpressionInMultiSelectionMode(currentAtoms, topNode, atomMultiColor)//, atomSecondColor)
                 } else {
                     currentAtoms.clear()
                     currentAtoms.add(atom)
