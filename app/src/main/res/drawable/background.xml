@@ -8,10 +8,11 @@
     <item>
         <shape>
             <gradient
-                android:type="radial"
-                android:gradientRadius="4500"
                 android:startColor="?attr/colorPrimary"
-                android:endColor="?attr/backgroundColor" />
+                android:centerColor="?attr/colorPrimaryDark"
+                android:endColor="?attr/backgroundColor"
+                android:type="linear"
+                android:angle="315" />
         </shape>
     </item>
 </transition>

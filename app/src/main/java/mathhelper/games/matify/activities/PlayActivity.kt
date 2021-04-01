@@ -214,7 +214,7 @@ class PlayActivity: AppCompatActivity() {
         globalMathView.multiselectionMode = !globalMathView.multiselectionMode
         if (!globalMathView.multiselectionMode) {
             startStopView.text = getText(R.string.start_multiselect)
-            startStopView.setTextColor(ThemeController.shared.getColorByTheme(Storage.shared.theme(this), ColorName.PRIMARY_COLOR))
+            startStopView.setTextColor(ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR))
             globalMathView.clearExpression()
             PlayScene.shared.clearRules()
             AndroidUtil.vibrate(this)
@@ -226,6 +226,7 @@ class PlayActivity: AppCompatActivity() {
             showMessage(getString(R.string.msg_on_start_multiselect))
             AndroidUtil.vibrate(this)
             anim.startTransition(300)
+            globalMathView.recolorCurrentAtom(ThemeController.shared.getColor(this, ColorName.MULTISELECTION_COLOR))
         }
     }
 
@@ -284,10 +285,7 @@ class PlayActivity: AppCompatActivity() {
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
         val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $award")
-
-        val themeName = Storage.shared.theme(this)
-        val spanColor = ThemeController.shared.getColorByTheme(themeName, ColorName.PRIMARY_COLOR)
-
+        val spanColor = ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR)
         spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(BulletSpan(5, spanColor),

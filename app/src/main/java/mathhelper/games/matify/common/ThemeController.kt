@@ -1,5 +1,6 @@
 package mathhelper.games.matify.common
 
+import android.content.Context
 import android.graphics.Color
 import mathhelper.games.matify.R
 
@@ -64,6 +65,10 @@ class ThemeController {
         ThemeName.LIGHT to R.style.AlertDialogCustomLight,
         ThemeName.DARK to R.style.AlertDialogCustomDark
     )
+
+    fun getColor(context: Context, colorName: ColorName): Int {
+        return getColorByTheme(Storage.shared.theme(context), colorName)
+    }
 
     fun getColorByTheme(themeName: ThemeName, colorName: ColorName): Int {
         var themesMap = themes[themeName]
