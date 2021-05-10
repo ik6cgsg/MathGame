@@ -33,8 +33,7 @@ enum class SettingInfo(val str: String) {
 
 data class AuthInfoObjectFull(
     val base: AuthInfoObjectBase = AuthInfoObjectBase(),
-    val uuid: String? = null,
-    val coeffs: AuthInfoCoeffs = AuthInfoCoeffs()
+    val uuid: String? = null
 )
 
 data class AuthInfoObjectBase(
@@ -46,12 +45,6 @@ data class AuthInfoObjectBase(
     val authorized: Boolean? = null,
     val authStatus: AuthStatus? = null,
     val serverToken: String? = null
-)
-
-data class AuthInfoCoeffs(
-    val timeCoeff: Float? = null,
-    val awardCoeff: Float? = null,
-    val undoCoeff: Int? = null
 )
 
 class Storage {
@@ -155,7 +148,6 @@ class Storage {
         }
         prefEdit.commit()
         setUserInfo(context, info)
-        GlobalScene.shared.generateGamesMultCoeffs()
     }
 
     @SuppressLint("ApplySharedPref")
@@ -220,33 +212,7 @@ class Storage {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         return AuthInfoObjectFull(
             base = getUserInfoBase(context),
-            coeffs = getUserCoeffs(context),
             uuid = prefs.getString(AuthInfo.UUID.str, "")
-        )
-    }
-
-    @SuppressLint("ApplySharedPref")
-    fun setUserCoeffs(context: Context, coeffs: AuthInfoCoeffs) {
-        val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        if (coeffs.awardCoeff != null) {
-            prefEdit.putFloat(AuthInfo.AWARD_COEFF.str, coeffs.awardCoeff)
-        }
-        if (coeffs.undoCoeff != null) {
-            prefEdit.putInt(AuthInfo.UNDO_COEFF.str, coeffs.undoCoeff)
-        }
-        if (coeffs.timeCoeff != null) {
-            prefEdit.putFloat(AuthInfo.TIME_COEFF.str, coeffs.timeCoeff)
-        }
-        prefEdit.commit()
-    }
-
-    fun getUserCoeffs(context: Context): AuthInfoCoeffs {
-        val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
-        return AuthInfoCoeffs(
-            awardCoeff = prefs.getFloat(AuthInfo.AWARD_COEFF.str, 1f),
-            undoCoeff = prefs.getInt(AuthInfo.UNDO_COEFF.str, 1),
-            timeCoeff = prefs.getFloat(AuthInfo.TIME_COEFF.str, 1f)
         )
     }
 

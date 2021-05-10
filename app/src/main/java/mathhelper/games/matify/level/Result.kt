@@ -1,11 +1,11 @@
 package mathhelper.games.matify.level
 
-class Result(val steps: Double, val time: Long, val award: Award, var expression: String = "") {
+class Result(val steps: Double, val time: Long, val state: StateType, var expression: String = "") {
     fun isBetter(other: Result?): Boolean {
         if (other == null) {
             return true
         }
-        return award.coeff - other.award.coeff > 0
+        return steps < other.steps || time < other.time
     }
 
     override fun toString(): String {
@@ -16,11 +16,11 @@ class Result(val steps: Double, val time: Long, val award: Award, var expression
             "%.1f".format(steps)
         }
 
-        return "$award \uD83D\uDC63: $stepsStr ⏰: ${time / 60}:$sec"
+        return "${state.str} \uD83D\uDC63: $stepsStr ⏰: ${time / 60}:$sec"
     }
 
     fun saveString(): String {
-        var str = "$steps $time ${award.coeff}"
+        var str = "$steps $time ${state.name}"
         if (expression.isNotBlank()) {
             str += " $expression"
         }

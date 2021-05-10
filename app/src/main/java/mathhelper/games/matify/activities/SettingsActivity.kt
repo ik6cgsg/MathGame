@@ -2,11 +2,11 @@ package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
+import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.play.core.review.ReviewManagerFactory
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.statistics.Statistics
@@ -23,9 +24,6 @@ import java.util.*
 
 class SettingsActivity: AppCompatActivity() {
     private val TAG = "SettingsActivity"
-    private lateinit var reportProblem: TextView
-    private lateinit var ratingBar: RatingBar
-    private lateinit var reportDialog: AlertDialog
     private lateinit var resetDialog: AlertDialog
     private lateinit var changeLanguageDialog: AlertDialog
     private lateinit var changeThemeDialog: AlertDialog
@@ -44,24 +42,14 @@ class SettingsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         val backView = findViewById<TextView>(R.id.back)
         AndroidUtil.setOnTouchUpInside(this, backView, ::back)
-        ratingBar = findViewById(R.id.rating)
-        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            val ratingDialog = createRatingDialog(rating)
-            AndroidUtil.showDialog(ratingDialog)
-        }
-        ratingBar.setOnClickListener { v: View ->
-            val ratingDialog = createRatingDialog(ratingBar.rating)
-            AndroidUtil.showDialog(ratingDialog)
+        val rateUs = findViewById<TextView>(R.id.rate_us)
+        AndroidUtil.setOnTouchUpInsideWithCancel(this, rateUs) {
+            rateOnMarket()
         }
         editAccount = findViewById(R.id.edit_account)
         AndroidUtil.setOnTouchUpInsideWithCancel(this, editAccount) {
             finish()
             startActivity(Intent(this, AccountActivity::class.java))
-        }
-        reportDialog = createReportDialog()
-        reportProblem = findViewById(R.id.report)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, reportProblem) {
-            AndroidUtil.showDialog(reportDialog)
         }
         resetDialog = createResetAlert()
         reset = findViewById(R.id.reset)
@@ -109,52 +97,20 @@ class SettingsActivity: AppCompatActivity() {
         finish()
     }
 
-    private fun createRatingDialog(rating: Float): AlertDialog {
-        Log.d(TAG, "createRatingDialog")
-        val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
-        )
-        val view = layoutInflater.inflate(R.layout.dialog_rating, null)
-        val ratingBarDialog = view.findViewById<RatingBar>(R.id.rating_dialog)
-        ratingBarDialog.rating = rating
-        val msg = when {
-            rating < 2.5 -> R.string.tell_us_why_its_so_bad
-            rating > 4.5 -> R.string.tell_us_why_its_so_perfect
-            else -> R.string.tell_us_anything_you_are_worried_about
+    private fun rateOnMarket() {
+        val uri: Uri = Uri.parse("market://details?id=$packageName")
+        val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+            Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+        try {
+            startActivity(goToMarket)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://play.google.com/store/apps/details?id=$packageName")))
         }
-        val commentView = view.findViewById<EditText>(R.id.comment)
-        builder
-            .setView(view)
-            .setTitle(R.string.thanks_for_rating)
-            .setMessage(msg)
-            .setPositiveButton(R.string.send) { dialog: DialogInterface, id: Int ->
-                val mark = ratingBarDialog.rating
-                val comment = commentView.text.toString()
-                Statistics.logMark(this, mark, comment)
-            }
-            .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int -> }
-            .setCancelable(true)
-        return builder.create()
-    }
-
-    private fun createReportDialog(): AlertDialog {
-        Log.d(TAG, "createReportDialog")
-        val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
-        )
-        val view = layoutInflater.inflate(R.layout.dialog_reporting, null)
-        val commentView = view.findViewById<EditText>(R.id.problem)
-        builder
-            .setView(view)
-            .setTitle(R.string.report_bug)
-            .setMessage(R.string.please_tell_us_about_your_problem)
-            .setPositiveButton(R.string.send) { dialog: DialogInterface, id: Int ->
-                val comment = commentView.text.toString()
-                Statistics.logProblem(this, comment)
-            }
-            .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int -> }
-            .setCancelable(true)
-        return builder.create()
     }
 
     private fun createResetAlert(): AlertDialog {

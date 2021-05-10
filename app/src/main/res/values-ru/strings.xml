@@ -10,7 +10,7 @@
     <string name="reset">сбросить все</string>
     <string name="settings">⚙ НАСТРОЙКИ ⚙</string>
     <string name="send_statistics">Отправлять статистику 📈</string>
-    <string name="report_bug">🐛 Сообщить об ошибке</string>
+    <string name="rate_us">⭐ Оцените нас</string>
     <string name="continue_as_guest">Зайти как гость</string>
     <string name="continue_with_github">Войти через GitHub аккаунт</string>
     <string name="continue_with_google">Войти через Google аккаут</string>

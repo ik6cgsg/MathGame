@@ -14,7 +14,7 @@
     <string name="gear" translatable="false">⚙</string>
     <string name="settings">⚙ SETTINGS ⚙</string>
     <string name="send_statistics">Send statistics 📈</string>
-    <string name="report_bug">🐛 Report bug</string>
+    <string name="rate_us">⭐ Rate us</string>
     <string name="version_view" translatable="false">Matify v</string>
     <string name="pointer" translatable="false">☝</string>
     <string name="continue_as_guest">Continue as guest</string>

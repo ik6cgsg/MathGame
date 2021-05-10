@@ -21,7 +21,6 @@ import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
 import mathhelper.games.matify.mathResolver.TaskType
@@ -35,7 +34,7 @@ class GlobalMathView: TextView {
     var multiselectionMode = false
     var currentRulesToResult : Map<ExpressionSubstitution, ExpressionNode>? = null
     private var mathPair: MathResolverPair? = null
-    private var type: Type = Type.OTHER
+    private var type: String? = ""
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
@@ -60,7 +59,7 @@ class GlobalMathView: TextView {
             Constants.defaultPadding, Constants.defaultPadding)
     }
 
-    fun setExpression(expressionStr: String, type: Type) {
+    fun setExpression(expressionStr: String, type: String?) {
         Log.d(TAG, "setExpression from str")
         this.type = type
         if (expressionStr.isNotEmpty()) {
@@ -71,7 +70,7 @@ class GlobalMathView: TextView {
         }
     }
 
-    fun setExpression(expressionNode: ExpressionNode, type: Type, resetSize: Boolean = true) {
+    fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
         Log.d(TAG, "setExpression from node")
         this.type = type
         expression = expressionNode
@@ -187,7 +186,7 @@ class GlobalMathView: TextView {
     private fun setTextFromExpression() {
         Log.d(TAG, "setTextFromExpression")
         mathPair = when(type) {
-            Type.SET -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET)
+            TaskType.SET.str -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET)
             else -> MathResolver.resolveToPlain(expression!!)
         }
         text = mathPair!!.matrix

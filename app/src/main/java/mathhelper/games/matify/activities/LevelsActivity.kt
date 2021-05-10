@@ -94,7 +94,7 @@ class LevelsActivity: AppCompatActivity() {
             }
             val themeName = Storage.shared.theme(this)
             levelView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
-            levelView.background = getBackgroundByDif(level.difficulty)
+            levelView.background = getBackgroundByDif(level.difficulty!!)
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)
                 when {
@@ -103,14 +103,14 @@ class LevelsActivity: AppCompatActivity() {
                         v.background = getDrawable(R.drawable.rect_shape_clicked)
                     }
                     event.action == MotionEvent.ACTION_UP && levelTouched == v -> {
-                        v.background = getBackgroundByDif(level.difficulty)
+                        v.background = getBackgroundByDif(level.difficulty!!)
                         if (AndroidUtil.touchUpInsideView(v, event)) {
                             LevelScene.shared.currentLevelIndex = i
                         }
                         levelTouched = null
                     }
                     event.action == MotionEvent.ACTION_CANCEL && levelTouched == v -> {
-                        v.background = getBackgroundByDif(level.difficulty)
+                        v.background = getBackgroundByDif(level.difficulty!!)
                         levelTouched = null
                     }
                 }

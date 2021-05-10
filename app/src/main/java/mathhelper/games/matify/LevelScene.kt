@@ -65,7 +65,7 @@ class LevelScene {
         }
 
     fun wasLevelPaused(): Boolean {
-        return currentLevel?.endless == true && currentLevel?.lastResult?.award?.value == AwardType.PAUSED
+        return currentLevel?.endless == true && currentLevel?.lastResult?.state == StateType.PAUSED
     }
 
     fun nextLevel(): Boolean {

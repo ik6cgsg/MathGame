@@ -23,8 +23,8 @@ class MessageTimer: CountDownTimer(PlayScene.messageTime, PlayScene.messageTime)
     }
 }
 
-class MathDownTimer(time: Long, interval: Long):
-    CountDownTimer(time * 1000, interval * 1000) {
+class MathDownTimer(time: Int, interval: Long):
+    CountDownTimer(time.toLong() * 1000, interval * 1000) {
     private val TAG = "MathDownTimer"
     private val panicTime = 10
 
@@ -67,14 +67,14 @@ class MathUpTimer(val interval: Long) {
                 val start = "⏰ "
                 val sec = "${PlayScene.shared.currentTime % 60}".padStart(2, '0')
                 val text = SpannableString(start + PlayScene.shared.currentTime / 60 + ":" + sec)
-                val steps = if (PlayScene.shared.stepsCount < LevelScene.shared.currentLevel!!.stepsNum) {
-                    LevelScene.shared.currentLevel!!.stepsNum.toDouble()
+                val steps = if (PlayScene.shared.stepsCount < LevelScene.shared.currentLevel!!.currentStepNum) {
+                    LevelScene.shared.currentLevel!!.currentStepNum.toDouble()
                 } else {
                     PlayScene.shared.stepsCount
                 }
-                val award = LevelScene.shared.currentLevel!!.getAward(context, PlayScene.shared.currentTime, steps)
-                text.setSpan(ForegroundColorSpan(award.color), start.length,
-                    text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                //val award = LevelScene.shared.currentLevel!!.getAward(context, PlayScene.shared.currentTime, steps)
+                /*text.setSpan(ForegroundColorSpan(award.color), start.length,
+                    text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)*/
                 val activity = PlayScene.shared.playActivity!!
                 activity.runOnUiThread {
                     activity.timerView.text = text

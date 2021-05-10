@@ -23,7 +23,6 @@ import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
-import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.statistics.Statistics
@@ -193,18 +192,18 @@ class TutorialScene {
         Log.d(TAG, "loadLevel")
         val activity = tutorialPlayActivity!!
         clearRules()
-        activity.endExpressionView.text = if (tutorialLevel.endPatternStr.isBlank()) {
-            when (tutorialLevel.type) {
-                Type.SET -> MathResolver.resolveToPlain(tutorialLevel.endExpression, taskType = TaskType.SET).matrix
+        activity.endExpressionView.text = if (tutorialLevel.goalPattern.isNullOrBlank()) {
+            when (tutorialLevel.subjectType) {
+                TaskType.SET.str -> MathResolver.resolveToPlain(tutorialLevel.endExpression, taskType = TaskType.SET).matrix
                 else -> MathResolver.resolveToPlain(tutorialLevel.endExpression).matrix
             }
         } else {
-            tutorialLevel.endExpressionStr
+            tutorialLevel.goalPattern
         }
         if (activity.endExpressionView.visibility != View.VISIBLE) {
             activity.showEndExpression(null)
         }
-        tutorialPlayActivity!!.globalMathView.setExpression(tutorialLevel.startExpression.clone(), tutorialLevel.type)
+        tutorialPlayActivity!!.globalMathView.setExpression(tutorialLevel.startExpression.clone(), tutorialLevel.subjectType)
     }
 
     fun onRuleClicked(ruleView: RuleMathView) {
@@ -274,7 +273,7 @@ class TutorialScene {
         activity.rulesLinearLayout.removeAllViews()
         for (r in rules) {
             val rule = RuleMathView(activity)
-            rule.setSubst(r, tutorialLevel.type)
+            rule.setSubst(r, tutorialLevel.subjectType)
             activity.rulesLinearLayout.addView(rule)
         }
     }

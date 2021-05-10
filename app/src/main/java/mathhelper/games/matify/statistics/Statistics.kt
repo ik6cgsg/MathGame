@@ -1,17 +1,17 @@
-package mathhelper.games.matify.statistics
+ackage mathhelper.games.matify.statistics
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
 import api.expressionToStructureString
+import com.google.gson.Gson
 import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.BuildConfig
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.game.PackageField
 import mathhelper.games.matify.level.Award
 import java.sql.Timestamp
 
@@ -38,8 +38,8 @@ class Statistics {
             val activity = PlayScene.shared.playActivity!!
             val rule: MutableMap<String, String>? = if (currRule == null) { null } else {
                 mutableMapOf(
-                    PackageField.RULE_LEFT.str to expressionToStructureString(currRule.left),
-                    PackageField.RULE_RIGHT.str to expressionToStructureString(currRule.right)
+                    "left" to expressionToStructureString(currRule.left),
+                    "right" to expressionToStructureString(currRule.right)
                 )
             }
             val activityLog = ActivityLog(
@@ -145,12 +145,11 @@ class Statistics {
             startTime = 0
         }
 
-        fun logWin(currSteps: Double, award: Award) {
+        fun logWin(currSteps: Double/*, award: Award*/) {
             val exprStr = expressionToStructureString(LevelScene.shared.currentLevel!!.endExpression)
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
-                baseAward = award.coeff, // TODO: base_award?? quality_data???
                 currExpression = exprStr,
                 nextExpression = exprStr
             )
@@ -180,7 +179,7 @@ class Statistics {
             startTime = 0
         }
 
-        fun getHwInfo(): String {
+        private fun getHwInfo(): String {
             return "Model: ${Build.MODEL}; Id: ${Build.ID}; Manufacture: ${Build.MANUFACTURER}; " +
                 "Incremental: ${Build.VERSION.INCREMENTAL}; " +
                 "Sdk: ${Build.VERSION.SDK}; Board: ${Build.BOARD}; Brand: ${Build.BRAND}; " +
@@ -188,21 +187,14 @@ class Statistics {
         }
 
         fun logSign(context: Context) {
-//            val activityLog = ActivityLog(action = Action.SIGN.str, hardwareProperties = getHwInfo(),
-//                hardwareDeviceId = Storage.shared.deviceId(context))
-//            sendLog(activityLog, context)
-        }
-
-        fun logMark(context: Context, mark: Float, comment: String) {
-            //TODO: switch on '/api/comments/create'
-            //val activityLog = ActivityLog(action = Action.MARK.str, userMark = mark.toString(), userComment = comment)
-            //sendLog(activityLog, context, true)
-        }
-
-        fun logProblem(context: Context, comment: String) {
-            //TODO: switch on '/api/comments/create'
-//            val activityLog = ActivityLog(action = Action.PROBLEM.str, userComment = comment)
-//            sendLog(activityLog, context, true)
+            val activityLog = ActivityLog(
+                activityTypeCode = Action.SIGN.str,
+                otherData = mutableMapOf(
+                    "hardwareProperties" to getHwInfo(),
+                    "hardwareDeviceId" to Storage.shared.deviceId(context)
+                )
+            )
+            sendLog(activityLog, context)
         }
 
         private fun sendLog(log: ActivityLog, context: Context, forced: Boolean = false) {
@@ -225,18 +217,16 @@ class Statistics {
         private fun setDefault(log: ActivityLog, context: Context) {
             val fullInfo = Storage.shared.getFullUserInfo(context)
             val time = System.currentTimeMillis()
-            log.appCode = "MATIFY_ANDROID"
             log.clientActionTs = Timestamp(time)
             val otherData = mutableMapOf<String, Any?>()
             otherData["hardwareDeviceId"] = Storage.shared.deviceId(context)
-            otherData["totalTimeMultCoef"] = fullInfo.coeffs.timeCoeff
-            otherData["totalAwardMultCoef"] = fullInfo.coeffs.awardCoeff
             otherData["applicationVersion"] = BuildConfig.VERSION_NAME
+            otherData["userId"] = fullInfo.uuid
             log.timeFromLastActionMs = time - lastActionTime
             lastActionTime = time
             if (startTime > 0) { // Level was created and set
                 log.currTimeMs = time - startTime
-                // TODO: ?? otherData["leftTimeMS"] = log.totalTimeMS - log.currTimeMs
+                otherData["leftTimeMS"] = LevelScene.shared.currentLevel!!.time.toLong() * 1000 - log.currTimeMs!!
             }
             log.otherData = otherData
         }

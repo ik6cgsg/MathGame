@@ -84,12 +84,12 @@ class PlayScene() {
                     levelPassed = true
 
                     Statistics.logRule(
-                     oldSteps,
-                     stepsCount,
-                     prev,
-                     activity.globalMathView.expression!!,
-                     currentRuleView!!.subst,
-                     places
+                        oldSteps,
+                        stepsCount,
+                        prev,
+                        activity.globalMathView.expression!!,
+                        currentRuleView!!.subst,
+                        places
                     )
 
                     onWin(context)
@@ -133,7 +133,7 @@ class PlayScene() {
                 redrawRules(rules)
             }
         }
-        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms!!)
+        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
     fun loadLevel(context: Context, continueGame: Boolean, languageCode: String): Boolean {
@@ -142,13 +142,13 @@ class PlayScene() {
         val activity = playActivity!!
         clearRules()
         cancelTimers()
-        activity.endExpressionView.text = if (currentLevel.endPatternStr.isBlank()) {
-            when (currentLevel.type) {
-                Type.SET -> MathResolver.resolveToPlain(currentLevel.endExpression, taskType = TaskType.SET).matrix
+        activity.endExpressionView.text = if (currentLevel.goalPattern.isNullOrBlank()) {
+            when (currentLevel.subjectType) {
+                TaskType.SET.str -> MathResolver.resolveToPlain(currentLevel.endExpression, taskType = TaskType.SET).matrix
                 else -> MathResolver.resolveToPlain(currentLevel.endExpression).matrix
             }
         } else {
-            currentLevel.endExpressionStr
+            currentLevel.goalPattern
         }
         if (activity.endExpressionView.visibility != View.VISIBLE) {
             activity.showEndExpression(null)
@@ -167,7 +167,7 @@ class PlayScene() {
 
     private fun loadFinite() {
         val currentLevel = LevelScene.shared.currentLevel!!
-        playActivity!!.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.type)
+        playActivity!!.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
         stepsCount = 0.0
         currentTime = 0
         downTimer = MathDownTimer(currentLevel.time, 1)
@@ -178,12 +178,12 @@ class PlayScene() {
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
         if (continueGame && currentLevel.lastResult != null &&
-            currentLevel.lastResult!!.award.value == AwardType.PAUSED) {
+            currentLevel.lastResult!!.state == StateType.PAUSED) {
             stepsCount = currentLevel.lastResult!!.steps
             currentTime = currentLevel.lastResult!!.time
-            activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.type)
+            activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.subjectType)
         } else {
-            activity.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.type)
+            activity.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
             stepsCount = 0.0
             currentTime = 0
         }
@@ -200,9 +200,9 @@ class PlayScene() {
         if (state != null) {
             clearRules()
             val currentLevel = LevelScene.shared.currentLevel!!
-            activity.globalMathView.setExpression(state.expression, currentLevel.type, false)
-            val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
-            stepsCount = stepsCount - 1 + penalty
+            activity.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
+            //val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
+            //stepsCount = stepsCount - 1 + penalty
         }
         Statistics.logUndo(oldSteps, stepsCount, oldExpression,
             activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
@@ -220,7 +220,7 @@ class PlayScene() {
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
         if (save) {
-            val newRes = Result(stepsCount, currentTime, Award.getPaused(context),
+            val newRes = Result(stepsCount, currentTime, StateType.PAUSED,
                 expressionToStructureString(activity.globalMathView.expression!!))
             currentLevel.lastResult = newRes
             currentLevel.save(activity)
@@ -257,7 +257,7 @@ class PlayScene() {
         for (r in rules) {
             try {
                 val rule = RuleMathView(activity)
-                rule.setSubst(r, LevelScene.shared.currentLevel!!.type)
+                rule.setSubst(r, LevelScene.shared.currentLevel!!.subjectType)
                 activity.rulesLinearLayout.addView(rule)
             } catch (e: Exception) {
                 Log.e(TAG, "Rule draw Error", e)
@@ -269,15 +269,15 @@ class PlayScene() {
         Log.d(TAG, "onWin")
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
-        val award = currentLevel.getAward(context, currentTime, stepsCount)
-        val newRes = Result(stepsCount, currentTime, award)
+        //val award = currentLevel.getAward(context, currentTime, stepsCount)
+        val newRes = Result(stepsCount, currentTime, StateType.DONE)
         if (newRes.isBetter(currentLevel.lastResult)) {
             currentLevel.lastResult = newRes
             currentLevel.save(activity)
             LevelScene.shared.levelsActivity!!.updateResult()
         }
-        activity.onWin(stepsCount, currentTime, award)
-        Statistics.logWin(stepsCount, award)
+        activity.onWin(stepsCount, currentTime, StateType.DONE)
+        Statistics.logWin(stepsCount)
     }
 
     fun onLoose() {

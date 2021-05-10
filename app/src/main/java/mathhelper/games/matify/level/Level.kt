@@ -3,130 +3,89 @@ package mathhelper.games.matify.level
 import android.content.Context
 import android.util.Log
 import org.json.JSONObject
-import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
 import api.*
+import com.google.gson.JsonObject
+import com.google.gson.annotations.SerializedName
 import config.CompiledConfiguration
 import expressiontree.*
-import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.game.Game
-import mathhelper.games.matify.game.PackageField
-import mathhelper.games.matify.game.RulePackage
+import mathhelper.games.matify.game.*
+import mathhelper.games.matify.mathResolver.TaskType
+import mathhelper.games.matify.parser.GsonParser
+import mathhelper.games.matify.parser.Required
 
-data class RuleStr(val left: String, val right: String)
-
-enum class Type(val str: String) {
-    SET("setTheory"),
-    ALGEBRA("algebra"),
-    TRIGONOMETRY("trigonometry"),
-    OTHER("other")
+data class CompiledConfigurationParams(
+    var maxCalcComplexity: String? = null,
+    var maxTenPowIterations: String? = null,
+    var maxPlusArgRounded: String? = null,
+    var maxMulArgRounded: String? = null,
+    var maxDivBaseRounded: String? = null,
+    var maxPowBaseRounded: String? = null,
+    var maxPowDegRounded: String? = null,
+    var maxLogBaseRounded: String? = null,
+    var maxResRounded: String? = null
+) {
+    val paramsMap
+        get() = hashMapOf(
+            "simpleComputationRuleParamsMaxCalcComplexity" to maxCalcComplexity,
+            "simpleComputationRuleParamsMaxTenPowIterations" to maxTenPowIterations,
+            "simpleComputationRuleParamsMaxPlusArgRounded" to maxPlusArgRounded,
+            "simpleComputationRuleParamsMaxMulArgRounded" to maxMulArgRounded,
+            "simpleComputationRuleParamsMaxDivBaseRounded" to maxDivBaseRounded,
+            "simpleComputationRuleParamsMaxPowBaseRounded" to maxPowBaseRounded,
+            "simpleComputationRuleParamsMaxPowDegRounded" to maxPowDegRounded,
+            "simpleComputationRuleParamsMaxPowResRounded" to maxLogBaseRounded,
+            "simpleComputationRuleParamsMaxResRounded" to maxResRounded,
+        )
 }
 
-enum class LevelField(val str: String) {
-    IGNORE("ignore"),
-    LEVEL_CODE("levelCode"),
-    NAME("name"),
-    NAME_RU("ru"),
-    NAME_EN("en"),
-    DIFFICULTY("difficulty"),
-    TYPE("type"),
-    STEPS_NUM("stepsNum"),
-    TIME("time"),
-    ENDLESS("endless"),
-    AWARD_COEFFS("awardCoeffs"),
-    SHOW_WRONG_RULES("showWrongRules"),
-    SHOW_SUBST_RESULT("showSubstResult"),
-    UNDO_CONSIDERING_POLICY("undoConsideringPolicy"),
-    LONG_EXPRESSION_CROPPING_POLICY("longExpressionCroppingPolicy"),
-    ORIGINAL_EXPRESSION("originalExpression"),
-    FINAL_EXPRESSION("finalExpression"),
-    FINAL_PATTERN("finalPattern"),
-    RULES("rules"),
-    MAX_CALC_COMPLEXITY("simpleComputationRuleParamsMaxCalcComplexity"),
-    MAX_TEN_POW_ITERATIONS("simpleComputationRuleParamsMaxTenPowIterations"),
-    MAX_PLUS_ARG_ROUNDED("simpleComputationRuleParamsMaxPlusArgRounded"),
-    MAX_MUL_ARG_ROUNDED("simpleComputationRuleParamsMaxMulArgRounded"),
-    MAX_DIV_BASE_ROUNDED("simpleComputationRuleParamsMaxDivBaseRounded"),
-    MAX_POW_BASE_ROUNDED("simpleComputationRuleParamsMaxPowBaseRounded"),
-    MAX_POW_DEG_ROUNDED("simpleComputationRuleParamsMaxPowDegRounded"),
-    MAX_LOG_BASE_ROUNDED("simpleComputationRuleParamsMaxLogBaseRounded"),
-    MAX_RES_ROUNDED("simpleComputationRuleParamsMaxResRounded")
-}
-
-/*
-var namespaceCode: String,
-    var code: String? = null,
-    var nameEn: String? = null,
-    var nameRu: String? = null,
-    var subjectTypes: ArrayList<String> = arrayListOf(),
+data class Level(
+    /** Required values **/
+    @property:Required
+    var namespaceCode: String = "",
+    @property:Required
+    var code: String = "",
+    @property:Required
+    var version: Int = 0,
+    @property:Required
+    var nameEn: String = "",
+    @property:Required
     var originalExpressionStructureString: String = "",
-    var originalExpressionTex: String = "",
-    var originalExpressionPlainText: String = "",
-    var goalType: String = GoalType.CUSTOM.code,
+    @property:Required
+    var goalType: String = "",
+    @property:Required
     var goalExpressionStructureString: String = "",
-    var goalExpressionTex: String = "",
-    var goalExpressionPlainText: String = "",
-    var goalPattern: String = "",
-    var goalNumberProperty: Int = 0,
-    var rulePacks: ArrayList<RulePackLinkForm> = arrayListOf(),
+    /** Optional values **/
+    var nameRu: String = "",
+    var descriptionShortEn: String = "",
+    var descriptionShortRu: String = "",
+    var descriptionEn: String = "",
+    var descriptionRu: String = "",
+    var subjectType: String = "",
+    var goalPattern: String? = null,
+    var otherGoalData: JsonObject? = null,
+    var rulePacks: List<RulePackLink>? = null,
+    var rules: List<JsonObject>? = null,
     var stepsNumber: Int = 0,
-    var time: Int,
-    var difficulty: Double,
-    var solution: String = "",
-    var countOfAutoGeneratedTasks: Int = 0,
-    var operations: String = "",
-    var stepsCountIntervals: String = "",
-    var implicitTransformationsCount: String = "",
-    var autoGeneratedRulePacks: ArrayList<RulePackLinkForm> = arrayListOf(),
-    var lightWeightOperations: String = "",
-    var nullWeightOperations: String = "",
-    var maxNumberOfAutogeneratedTasks: Int = 0,
-    var numberOfAutogeneratedTasksToSolve: Int = 0,
-    var otherGoalData: MutableMap<String, *>? = null,
-    var otherCheckSolutionData: MutableMap<String, *>? = null,
-    var otherAwardData: MutableMap<String, *>? = null,
-    var otherAutogenerationData: MutableMap<String, *>? = null,
-    var otherData: MutableMap<String, *>? = null
-* */
-
-class Level {
-    private var packages = ArrayList<String>()
-    private var rules = ArrayList<ExpressionSubstitution>()
-    lateinit var startExpressionStr: String
+    var time: Int = 0,
+    var difficulty: Double = 0.0,
+    var solutionsStepsTree: List<JsonObject>? = null,
+    var hints: List<JsonObject>? = null,
+    var interestingFacts: List<JsonObject>? = null,
+    var nextRecommendedTasks: List<JsonObject>? = null,
+    var otherCheckSolutionData: JsonObject? = null,
+    var otherAwardData: List<JsonObject>? = null,
+    var otherData: JsonObject? = null,
+) {
+    lateinit var game: Game
     lateinit var startExpression: ExpressionNode
     lateinit var endExpression: ExpressionNode
-    lateinit var endExpressionStr: String
-    lateinit var endPattern: ExpressionStructureConditionNode
-    lateinit var endPatternStr: String
-    lateinit var type: Type
-    lateinit var levelCode: String
-    lateinit var game: Game
-    lateinit var name: String
-    lateinit var nameRu: String
-    lateinit var nameEn: String
-    lateinit var maxCalcComplexityStr: String
-    lateinit var maxTenPowIterations: String
-    lateinit var maxPlusArgRounded: String
-    lateinit var maxMulArgRounded: String
-    lateinit var maxDivBaseRounded: String
-    lateinit var maxPowBaseRounded: String
-    lateinit var maxPowDegRounded: String
-    lateinit var maxLogBaseRounded: String
-    lateinit var maxResRounded: String
-    var additionalParamsMap = mutableMapOf<String, String>()
-    var awardCoeffs = "0.95 0.9 0.8"
-    var awardMultCoeff = 1f
-    var showWrongRules = false
-    var showSubstResult = false
-    var undoPolicy = UndoPolicy.NONE
-    var longExpressionCroppingPolicy = ""
-    var lastResult: Result? = null
-    var difficulty: Double = 0.0
-    var stepsNum = 1
-    var time: Long = 180
-    var timeMultCoeff = 1f
+    var goalPatternExpr: ExpressionStructureConditionNode? = null
+    var currentStepNum = 0
     var endless = true
-    private var compiledConfiguration: CompiledConfiguration? = null
+    var lastResult: Result? = null
+    var additionalParamsMap = mutableMapOf<String, String>()
+    var compiledConfiguration: CompiledConfiguration? = null
 
     fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
         nameRu
@@ -137,126 +96,53 @@ class Level {
     companion object {
         private val TAG = "Level"
 
-        fun parse(game: Game, levelJson: JSONObject, context: Context): Level? {
-//TODO            Log.d(TAG, "parse")
-            var res: Level? = Level()
-            res!!.game = game
-            if (res.load(levelJson)) {
-                res.setGlobalCoeffs(context)
+        fun parse(game: Game, levelJson: JsonObject, context: Context): Level? {
+            Log.d(TAG, "parse")
+            val res = GsonParser.parse<Level>(levelJson) ?: return null
+            res.game = game
+            if (res.load()) {
+                //res.setGlobalCoeffs(context)
                 res.loadResult(context)
-            } else {
-                res = null
             }
             return res
         }
     }
 
-    fun load(levelJson: JSONObject): Boolean {
-        if (!levelJson.has(LevelField.LEVEL_CODE.str) || !levelJson.has(LevelField.NAME.str) ||
-            !levelJson.has(LevelField.DIFFICULTY.str) || !levelJson.has(LevelField.TYPE.str) ||
-            !levelJson.has(LevelField.ORIGINAL_EXPRESSION.str) || !levelJson.has(LevelField.FINAL_EXPRESSION.str)) {
-            return false
+    fun load(): Boolean {
+        if (subjectType.isBlank()) {
+            subjectType = game.subjectType
         }
-        if (levelJson.optBoolean(LevelField.IGNORE.str, false)) {
-            return false
-        }
-        levelCode = levelJson.getString(LevelField.LEVEL_CODE.str)
-        name = levelJson.getString(LevelField.NAME.str)
-        nameRu = levelJson.optString(LevelField.NAME_RU.str, name)
-        nameEn = levelJson.optString(LevelField.NAME_EN.str, name)
-        difficulty = levelJson.getDouble(LevelField.DIFFICULTY.str)
-        val typeStr = levelJson.getString(LevelField.TYPE.str)
-        try {
-            type = Type.valueOf(typeStr.toUpperCase())
-        } catch (e: Exception) {
-            return false
-        }
-        stepsNum = levelJson.optInt(LevelField.STEPS_NUM.str, stepsNum)
-        time = levelJson.optLong(LevelField.TIME.str, time)
-        endless = levelJson.optBoolean(LevelField.ENDLESS.str, endless)
-        awardCoeffs = levelJson.optString(LevelField.AWARD_COEFFS.str, awardCoeffs)
-        showWrongRules = levelJson.optBoolean(LevelField.SHOW_WRONG_RULES.str, showWrongRules)
-        showSubstResult = levelJson.optBoolean(LevelField.SHOW_SUBST_RESULT.str, showSubstResult)
-        val undoPolicyStr = levelJson.optString(LevelField.UNDO_CONSIDERING_POLICY.str, UndoPolicy.NONE.str)
-        try {
-            undoPolicy = UndoPolicy.valueOf(undoPolicyStr.toUpperCase())
-        } catch (e: Exception) {
-            return false
-        }
-        longExpressionCroppingPolicy = levelJson.optString(LevelField.LONG_EXPRESSION_CROPPING_POLICY.str,
-            longExpressionCroppingPolicy)
-        /** EXPRESSIONS */
-        startExpressionStr = levelJson.getString(LevelField.ORIGINAL_EXPRESSION.str)
-        startExpression = structureStringToExpression(startExpressionStr)
-        endExpressionStr = levelJson.getString(LevelField.FINAL_EXPRESSION.str)
-        endExpression = structureStringToExpression(endExpressionStr)
-        Log.d("task", "'${startExpression} -> ${endExpression}' parsed from '${startExpressionStr} -> ${endExpressionStr}'")
-        endPatternStr = levelJson.optString(LevelField.FINAL_PATTERN.str, "")
-        endPattern = when (type) {
-            Type.SET -> stringToExpressionStructurePattern(endPatternStr, type.str)
-            else -> stringToExpressionStructurePattern(endPatternStr)
-        }
-        val rulesJson = levelJson.getJSONArray(LevelField.RULES.str)
-        for (i in 0 until rulesJson.length()) {
-            val rule = rulesJson.getJSONObject(i)
-            when {
-                /** PACKAGE */
-                rule.has(PackageField.RULE_PACK.str) -> {
-                    packages.add(rule.getString(PackageField.RULE_PACK.str))
-                }
-                /** SUBSTITUTION */
-                (rule.has(PackageField.RULE_LEFT.str) && rule.has(PackageField.RULE_RIGHT.str)) || rule.has(PackageField.CODE.str) -> {
-                    rules.add(RulePackage.parseRule(rule, type))
-                }
-                else -> return false
+        startExpression = structureStringToExpression(originalExpressionStructureString)
+        endExpression = structureStringToExpression(goalExpressionStructureString)
+        Log.d("task", "'${startExpression} -> ${endExpression}' parsed from " +
+            "'${originalExpressionStructureString} -> ${goalExpressionStructureString}'")
+        if (goalPattern != null) {
+            goalPatternExpr = when (subjectType) {
+                TaskType.SET.str -> stringToExpressionStructurePattern(goalPattern!!, TaskType.SET.str)
+                else -> stringToExpressionStructurePattern(goalPattern!!)
             }
         }
-
-        var allRules : ArrayList<ExpressionSubstitution> = rules
-        for (pckgName in packages) {
-            val rulesFromPack = game.rulePacks[pckgName]?.getAllRules()
-            if (rulesFromPack != null) {
-                allRules = (allRules + rulesFromPack) as ArrayList<ExpressionSubstitution>
+        var allRules = ArrayList<ExpressionSubstitution>()
+        if (rulePacks != null) {
+            for (pack in rulePacks!!) {
+                val rulesFromPack = game.rulePacks[pack.rulePackCode]?.getAllRules()
+                if (rulesFromPack != null) {
+                    allRules = (allRules + rulesFromPack) as ArrayList<ExpressionSubstitution>
+                }
             }
         }
-
-        maxCalcComplexityStr = levelJson.optString(LevelField.MAX_CALC_COMPLEXITY.str, "")
-        if (maxCalcComplexityStr.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxCalcComplexity", maxCalcComplexityStr)
+        if (rules != null) {
+            for (ruleJson in rules!!) {
+                val rule = RulePackage.parseRule(ruleJson) ?: continue
+                allRules.add(rule.substitution)
+            }
         }
-        maxTenPowIterations = levelJson.optString(LevelField.MAX_TEN_POW_ITERATIONS.str, "")
-        if (maxTenPowIterations.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxTenPowIterations", maxTenPowIterations)
+        if (otherCheckSolutionData != null) {
+            val params = GsonParser.parse<CompiledConfigurationParams>(otherCheckSolutionData!!)
+            if (params != null) {
+                additionalParamsMap = params.paramsMap.filter { !it.value.isNullOrBlank() } as MutableMap<String, String>
+            }
         }
-        maxPlusArgRounded = levelJson.optString(LevelField.MAX_PLUS_ARG_ROUNDED.str, "")
-        if (maxPlusArgRounded.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxPlusArgRounded", maxPlusArgRounded)
-        }
-        maxMulArgRounded = levelJson.optString(LevelField.MAX_MUL_ARG_ROUNDED.str, "")
-        if (maxMulArgRounded.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxMulArgRounded", maxMulArgRounded)
-        }
-        maxDivBaseRounded = levelJson.optString(LevelField.MAX_DIV_BASE_ROUNDED.str, "")
-        if (maxDivBaseRounded.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxDivBaseRounded", maxDivBaseRounded)
-        }
-        maxPowBaseRounded = levelJson.optString(LevelField.MAX_POW_BASE_ROUNDED.str, "")
-        if (maxPowBaseRounded.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxPowBaseRounded", maxPowBaseRounded)
-        }
-        maxPowDegRounded = levelJson.optString(LevelField.MAX_POW_DEG_ROUNDED.str, "")
-        if (maxPowDegRounded.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxPowDegRounded", maxPowDegRounded)
-        }
-        maxLogBaseRounded = levelJson.optString(LevelField.MAX_LOG_BASE_ROUNDED.str, "")
-        if (maxLogBaseRounded.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxPowResRounded", maxLogBaseRounded)
-        }
-        maxResRounded = levelJson.optString(LevelField.MAX_RES_ROUNDED.str, "")
-        if (maxResRounded.isNotEmpty()) {
-            additionalParamsMap.put("simpleComputationRuleParamsMaxResRounded", maxResRounded)
-        }
-
         compiledConfiguration = createCompiledConfigurationFromExpressionSubstitutionsAndParams(
             allRules.toTypedArray(),
             additionalParamsMap
@@ -264,6 +150,7 @@ class Level {
         return true
     }
 
+    /*
     private fun setGlobalCoeffs(context: Context) {
         if (Storage.shared.isUserAuthorized(context)) {
             val coeffs = Storage.shared.getUserCoeffs(context)
@@ -272,22 +159,22 @@ class Level {
             time = (time * timeMultCoeff).toLong()
             awardMultCoeff = coeffs.awardCoeff ?: awardMultCoeff
         }
-    }
+    }*/
 
     fun checkEnd(expression: ExpressionNode): Boolean {
         Log.d(TAG, "checkEnd")
-        return if (endPatternStr.isBlank()) {
+        return if (goalPattern.isNullOrBlank()) {
             val currStr = expressionToStructureString(expression)
-            Log.d(TAG, "current: $currStr | end: $endExpressionStr")
-            currStr == endExpressionStr
+            Log.d(TAG, "current: $currStr | end: $goalExpressionStructureString")
+            currStr == goalExpressionStructureString
         } else {
             val currStr = expressionToStructureString(expression)
-            Log.d(TAG, "current: $currStr | pattern: $endPatternStr")
-            compareByPattern(expression, endPattern)
+            Log.d(TAG, "current: $currStr | pattern: $goalPatternExpr")
+            compareByPattern(expression, goalPatternExpr!!)
         }
     }
 
-    fun getAward(context:Context, resultTime: Long, resultStepsNum: Double): Award {
+    /*fun getAward(context:Context, resultTime: Long, resultStepsNum: Double): Award {
         Log.d(TAG, "getAward")
         val mark = when {
             resultStepsNum < stepsNum -> 1.0
@@ -310,44 +197,12 @@ class Level {
             mark.equals(-1.0) -> AwardType.PAUSED
             else -> AwardType.NONE
         }
-    }
-
-//    fun getRulesFor(node: ExpressionNode, expression: ExpressionNode, simpleComputationRules: SimpleComputationRuleParams): List<ExpressionSubstitution>? {
-//        Log.d(TAG, "getRulesFor")
-//        // TODO: smek with showWrongRules flag
-//
-//        var rulesRes: ArrayList<ExpressionSubstitution> = rules
-//            .filter {
-//                val list = findSubstitutionPlacesInExpression(expression, it)
-//                if (list.isEmpty()) {
-//                    false
-//                } else {
-//                    val substPlace = list.find { sp ->
-//                        sp.originalValue.nodeId == node.nodeId
-//                    }
-//                    substPlace != null
-//                }
-//            } as ArrayList<ExpressionSubstitution>
-//        var res = optGenerateSimpleComputationRule(node, simpleComputationRules)
-//        res = (res + rulesRes) as ArrayList<ExpressionSubstitution>
-//        for (pckgName in packages) {
-//            val rulesFromPack = game.rulePacks[pckgName]?.getRulesFor(node, expression)
-//            if (rulesFromPack != null) {
-//                res = (res + rulesFromPack) as ArrayList<ExpressionSubstitution>
-//            }
-//        }
-//        if (res.isEmpty()) {
-//            return null
-//        }
-//        res = res.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
-//        res.sortByDescending { it.left.identifier.length }
-//        return res
-//    }
+    }*/
 
     fun getSubstitutionApplication(
         nodes: List<ExpressionNode>,
-        expression: ExpressionNode):
-        List<SubstitutionApplication>? {
+        expression: ExpressionNode
+    ): List<SubstitutionApplication>? {
         val nodeIds = nodes.map{it.nodeId}
         Log.d(TAG, "getSubstitutionApplication of '${expression.toString()}' in '(${nodeIds.joinToString()})'; detail: '${expression.toStringsWithNodeIds()}'")
 
@@ -378,58 +233,25 @@ class Level {
         return substitutionApplication.map { it.expressionSubstitution to it.resultExpression }.toMap()
     }
 
-//    fun getRulesFor(
-//        nodes: List<ExpressionNode>,
-//        expression: ExpressionNode,
-//        rulesToResult: MutableMap<ExpressionSubstitution, ExpressionNode>,
-//        simpleComputationRules: SimpleComputationRuleParams):
-//        List<ExpressionSubstitution>? {
-//        Log.d(TAG, "getRulesFor")
-//
-//        var simpleRules : ArrayList<ExpressionSubstitution> = arrayListOf()
-//        for (node in nodes) {
-//            val res = optGenerateSimpleComputationRule(node, simpleComputationRules)
-//            simpleRules = (res + simpleRules) as ArrayList<ExpressionSubstitution>
-//        }
-//
-//        compiledConfiguration?.apply {
-//            compiledExpressionSimpleAdditionalTreeTransformationRules.clear()
-//            compiledExpressionSimpleAdditionalTreeTransformationRules.addAll(simpleRules)
-//        }
-//
-//        val nodeIds = nodes.map{it.nodeId}
-//
-//        val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds, compiledConfiguration!!, withReadyApplicationResult = true)
-//        if (list.isEmpty()) {
-//            return null
-//        }
-//
-//        var rules = list.map { it.expressionSubstitution }
-//        rules = rules.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
-//        rules.sortByDescending { it.left.identifier.length }
-//        rulesToResult.putAll(list.map { it.expressionSubstitution to it.resultExpression }.toMap())
-//
-//        return rules
-//    }
-
     fun save(context: Context) {
-        val prefs = context.getSharedPreferences(game.gameCode, MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(game.code, MODE_PRIVATE)
         val prefEdit = prefs.edit()
         if (lastResult == null) {
-            prefEdit.remove(levelCode)
+            prefEdit.remove(code)
         } else {
-            prefEdit.putString(levelCode, lastResult!!.saveString())
+            prefEdit.putString(code, lastResult!!.saveString())
         }
         prefEdit.commit()
     }
 
     private fun loadResult(context: Context) {
-        val prefs = context.getSharedPreferences(game.gameCode, MODE_PRIVATE)
-        val resultStr = prefs.getString(levelCode, "")
+        val prefs = context.getSharedPreferences(game.code, MODE_PRIVATE)
+        val resultStr = prefs.getString(code, "")
         if (!resultStr.isNullOrEmpty()) {
             val resultVals = resultStr.split(" ", limit = 4)
             lastResult = Result(resultVals[0].toDouble(), resultVals[1].toLong(),
-                Award(context, getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
+                //Award(context, getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
+                StateType.valueOf(resultVals[2].toString()))
             if (resultVals.size == 4) {
                 lastResult!!.expression = resultVals[3]
             }

@@ -26,6 +26,7 @@ import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
+import mathhelper.games.matify.statistics.Statistics
 
 class AuthActivity: AppCompatActivity() {
     private val TAG = "AuthActivity"
@@ -80,6 +81,7 @@ class AuthActivity: AppCompatActivity() {
             val response = Request.signRequest(req)
             Storage.shared.setServerToken(this, response.getString("token"))
         }, foreground = {
+            Statistics.logSign(this)
             finish()
         }, errorground = {
             this.runOnUiThread {
@@ -109,6 +111,7 @@ class AuthActivity: AppCompatActivity() {
                 serverToken = response.getString("token")
             ))
         }, foreground = {
+            Statistics.logSign(this)
             finish()
         }, errorground = {
             Storage.shared.invalidateUser(this)
@@ -143,7 +146,7 @@ class AuthActivity: AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             Log.d("GoogleToken", account!!.idToken)
             // Signed in successfully, show authenticated UI.
-            val idTokenString = account!!.idToken
+            val idTokenString = account.idToken
             val requestRoot = JSONObject()
             requestRoot.put("idTokenString", idTokenString)
             val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
@@ -158,6 +161,7 @@ class AuthActivity: AppCompatActivity() {
                     serverToken = response.getString("token")
                 ))
             }, foreground = {
+                Statistics.logSign(this)
                 finish()
             }, errorground = {
                 Storage.shared.invalidateUser(this)

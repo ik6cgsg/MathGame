@@ -1,6 +1,7 @@
 package mathhelper.games.matify.statistics
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.level.Level
@@ -22,7 +23,7 @@ enum class Action(val str: String) {
 }
 
 data class ActivityLog (
-    var appCode: String = "",
+    var appCode: String = "MATIFY_ANDROID",
     var activityTypeCode: String = "",
     var clientActionTs: Timestamp? = null,
     var tasksetCode: String? = null,
@@ -54,31 +55,20 @@ data class ActivityLog (
 ) {
     fun additionalFrom(activity: PlayActivity, level: Level, action: Action) {
         this.activityTypeCode = action.str
-        // Level consts
-        this.taskCode = level.levelCode
-        // TODO: this.taskVersion
-        this.tasksetCode = level.game.gameCode
-        // TODO: this.tasksetVersion
-
-        this.originalExpression = level.startExpressionStr
-        this.goalExpression = level.endExpressionStr
-        this.goalPattern = level.endPatternStr
-
-        // TODO: this.taskType = level.type.str
-        // TODO: this.totalTimeMS = level.time * 1000
-
+        this.taskCode = level.code
+        this.taskVersion = level.version
+        this.tasksetCode = level.game.code
+        this.tasksetVersion = level.game.version
+        this.originalExpression = level.originalExpressionStructureString
+        this.goalExpression = level.goalExpressionStructureString
+        this.goalPattern = level.goalPattern
         this.difficulty = level.difficulty
-        // TODO: do we need this? this.minSteps = level.stepsNum
-        // TODO: convert? this.awardCoefs = level.awardCoeffs
-        // TODO: remove?? this.showWrongRules = level.showWrongRules
-        // TODO: remove?? this.showSubstResult = level.showSubstResult
-        // TODO: remove?? this.undoConsideringPolicy = level.undoPolicy.str
-        // TODO: remove?? this.longExpressionCroppingPolicy = level.longExpressionCroppingPolicy
     }
 
     override fun toString(): String {
-        var gson = Gson()
-        return gson.toJson(this)
+        var gson = GsonBuilder().serializeNulls().create()
+        val res =  gson.toJson(this)
+        return res
     }
 }
 

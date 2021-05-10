@@ -15,7 +15,6 @@ import api.expressionSubstitutionFromStructureStrings
 import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.level.Type
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.mathResolver.VariableStyle
@@ -66,19 +65,19 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
             Constants.defaultPadding, Constants.defaultPadding)
         addView(ruleView)
         if (subst != null) {
-            setSubst(subst!!, Type.OTHER)
+            setSubst(subst!!, "")
         }
     }
 
-    fun setSubst(subst: ExpressionSubstitution, type: Type) {
+    fun setSubst(subst: ExpressionSubstitution, type: String?) {
         this.subst = subst
         val style = if (subst.basedOnTaskContext) VariableStyle.DEFAULT else VariableStyle.GREEK
         val from = when (type) {
-            Type.SET -> MathResolver.resolveToPlain(subst.left, style, TaskType.SET)
+            TaskType.SET.str -> MathResolver.resolveToPlain(subst.left, style, TaskType.SET)
             else -> MathResolver.resolveToPlain(subst.left, style)
         }
         val to = when (type) {
-            Type.SET -> MathResolver.resolveToPlain(subst.right, style, TaskType.SET)
+            TaskType.SET.str -> MathResolver.resolveToPlain(subst.right, style, TaskType.SET)
             else -> MathResolver.resolveToPlain(subst.right, style)
         }
         if (from.tree == null || to.tree == null) {

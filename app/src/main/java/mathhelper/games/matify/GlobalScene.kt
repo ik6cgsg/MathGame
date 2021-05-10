@@ -11,15 +11,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
-import mathhelper.games.matify.common.AuthInfoCoeffs
 import mathhelper.games.matify.common.AuthInfoObjectBase
-import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.Game
-import mathhelper.games.matify.level.UndoPolicy
 import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
+import mathhelper.games.matify.statistics.Statistics
 import org.json.JSONObject
 import java.lang.Exception
 import java.util.*
@@ -47,17 +45,18 @@ class GlobalScene {
     var googleSignInClient: GoogleSignInClient? = null
     var tutorialProcessing = false
     var games: ArrayList<Game> = ArrayList()
+    var jsonPath = "active"
     var gamesActivity: GamesActivity? = null
         set(value) {
             field = value
             if (value != null) {
                 Request.startWorkCycle()
                 tutorialProcessing = false
-                val gameNames = value.assets.list("")!!
-                    .filter { """game.*.json""".toRegex(RegexOption.DOT_MATCHES_ALL).matches(it) }
+                val gameNames = value.assets.list(jsonPath)!!
+                    //.filter { """game.*.json""".toRegex(RegexOption.DOT_MATCHES_ALL).matches(it) }
                 games = ArrayList()
                 for (name in gameNames) {
-                    val loadedGame = Game.create(name, value)
+                    val loadedGame = Game.create("$jsonPath/$name", value)
                     if (loadedGame != null) {
                         games.add(loadedGame)
                     }
@@ -82,7 +81,7 @@ class GlobalScene {
         if (LevelScene.shared.levelsActivity != null) {
             LevelScene.shared.back()
         }
-        games.map { Storage.shared.resetGame(gamesActivity!!, it.gameCode) }
+        games.map { Storage.shared.resetGame(gamesActivity!!, it.code) }
     }
 
     fun logout() {
@@ -93,16 +92,6 @@ class GlobalScene {
         }
         Request.stopWorkCycle()
         gamesActivity!!.recreate()
-    }
-
-    fun generateGamesMultCoeffs() {
-        Storage.shared.setUserCoeffs(
-            gamesActivity!!, AuthInfoCoeffs(
-                undoCoeff = Random().nextInt(UndoPolicy.values().size),
-                timeCoeff = getByNormDist(1f, Constants.timeDeviation),
-                awardCoeff = getByNormDist(1f, Constants.awardDeviation)
-            )
-        )
     }
 
     private fun getByNormDist(mean: Float, sigma: Float): Float {
@@ -127,6 +116,7 @@ class GlobalScene {
             val response = Request.signRequest(req)
             Storage.shared.setServerToken(context, response.getString("token"))
         }, foreground = {
+            Statistics.logSign(context)
             context.finish()
         }, errorground = {
             Storage.shared.invalidateUser(context)

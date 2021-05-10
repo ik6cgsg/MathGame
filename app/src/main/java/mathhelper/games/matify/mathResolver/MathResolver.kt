@@ -18,7 +18,7 @@ enum class VariableStyle {
 
 enum class TaskType(val str: String) {
     DEFAULT(""),
-    SET("setTheory")
+    SET("SET")
 }
 
 class MathResolver {

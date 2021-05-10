@@ -134,7 +134,7 @@ class GamesActivity: AppCompatActivity() {
     private fun generateList(search: CharSequence? = null) {
         GlobalScene.shared.games.forEachIndexed { i, game ->
             if (search != null) {
-                if (!game.getNameByLanguage(resources.configuration.locale.language).contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(resources.configuration.locale.language)!!.contains(search, ignoreCase = true)) {
                     return
                 }
             }
@@ -178,7 +178,7 @@ class GamesActivity: AppCompatActivity() {
     private fun filterList(search: CharSequence? = null) {
         if (search != null && search.isNotBlank()) {
             GlobalScene.shared.games.forEachIndexed { i, game ->
-                if (!game.getNameByLanguage(resources.configuration.locale.language).contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(resources.configuration.locale.language)!!.contains(search, ignoreCase = true)) {
                     gamesViews[i].visibility = View.GONE
                 } else {
                     gamesViews[i].visibility = View.VISIBLE

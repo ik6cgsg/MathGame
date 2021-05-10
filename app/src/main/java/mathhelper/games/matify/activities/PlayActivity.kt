@@ -22,6 +22,7 @@ import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
+import mathhelper.games.matify.level.StateType
 import standartlibextensions.selectPlacesForColoringByFragment
 import java.lang.Exception
 import kotlin.math.max
@@ -274,7 +275,7 @@ class PlayActivity: AppCompatActivity() {
         return endExpressionView.visibility != View.VISIBLE
     }
 
-    fun onWin(stepsCount: Double, currentTime: Long, award: Award) {
+    fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
         Log.d(TAG, "onWin")
         val msgTitle = resources.getString(R.string.you_finished_level_with)
         val steps = "\n\t${resources.getString(R.string.steps)}: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {
@@ -284,7 +285,7 @@ class PlayActivity: AppCompatActivity() {
         }
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
-        val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $award")
+        val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $state")
         val spanColor = ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR)
         spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

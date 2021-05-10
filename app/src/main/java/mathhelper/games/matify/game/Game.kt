@@ -2,31 +2,45 @@ package mathhelper.games.matify.game
 
 import android.content.Context
 import android.util.Log
+import com.google.gson.JsonObject
 import org.json.JSONObject
 import mathhelper.games.matify.level.*
+import mathhelper.games.matify.parser.GsonParser
+import mathhelper.games.matify.parser.Required
+import org.json.JSONArray
 
-enum class GameField(val str: String) {
-    GAMESPACE("gameSpace"),
-    GAME_CODE("gameCode"),
-    NAME("name"),
-    NAME_RU("ru"),
-    NAME_EN("en"),
-    VERSION("version"),
-    LEVELS("levels"),
-    RULE_PACKS("rulePacks")
-}
+data class FullTaskset(
+    @property:Required
+    var taskset: JsonObject,
+    @property:Required
+    var rulePacks: List<JsonObject>
+)
 
-class Game(var fileName: String) {
+data class Game(
+    /** Required values **/
+    @property:Required
+    var namespaceCode: String = "",
+    @property:Required
+    var code: String = "",
+    @property:Required
+    var version: Int = 0,
+    @property:Required
+    var nameEn: String = "",
+    @property:Required
+    var tasks: List<JsonObject> = listOf(),
+    /** Optional values **/
+    var nameRu: String = "",
+    var descriptionShortEn: String = "",
+    var descriptionShortRu: String = "",
+    var descriptionEn: String = "",
+    var descriptionRu: String = "",
+    var subjectType: String = "",
+    var recommendedByCommunity: Boolean = false,
+    var otherData: JsonObject? = null,
+) {
     lateinit var levels: ArrayList<Level>
-    lateinit var levelsJsons: ArrayList<JSONObject>
     lateinit var rulePacks: HashMap<String, RulePackage>
-    lateinit var rulePacksJsons: HashMap<String, JSONObject>
-    lateinit var gameSpace: String
-    lateinit var gameCode: String
-    lateinit var name: String
-    lateinit var nameRu: String
-    lateinit var nameEn: String
-    var version: Long = 0
+    lateinit var rulePacksJsons: HashMap<String, JsonObject>
     var loaded = false
 
     fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
@@ -40,62 +54,44 @@ class Game(var fileName: String) {
 
         fun create(fileName: String, context: Context): Game? {
             Log.d(TAG, "create")
-            var res: Game? = Game(fileName)
-            if (res!!.preload(context)) {
-                res.loadResult(context)
-            } else {
-                res = null
+            val res = preload(fileName, context)
+            res?.loadResult(context)
+            return res
+        }
+
+        private fun preload(fileName: String, context: Context): Game? {
+            Log.d(TAG, "preload")
+            var res: Game? = null
+            when {
+                context.assets != null -> {
+                    val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
+                    val full = GsonParser.parse<FullTaskset>(json) ?: return null
+                    res = GsonParser.parse(full.taskset)
+                    if (res?.preparseRulePacks(full.rulePacks) != true) {
+                        res = null
+                    }
+                }
+                else -> res = null
             }
             return res
         }
     }
 
-    fun preload(context: Context): Boolean {
-        Log.d(TAG, "preload")
-        return when {
-            context.assets != null -> {
-                val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
-                val gameJson = JSONObject(json)
-                preparse(gameJson)
+    private fun preparseRulePacks(packsJson: List<JsonObject>): Boolean {
+        rulePacks = HashMap()
+        rulePacksJsons = HashMap()
+        for (pack in packsJson) {
+            val code = pack.get("code").asString
+            if (!rulePacksJsons.containsKey(code)) {
+                rulePacksJsons[code] = pack
             }
-            else -> false
         }
+        return true
     }
 
     fun load(context: Context): Boolean {
         Log.d(TAG, "load")
         return loaded || parse(context)
-    }
-
-    private fun preparse(gameJson: JSONObject): Boolean {
-        if (!gameJson.has(GameField.GAMESPACE.str) || !gameJson.has(GameField.GAME_CODE.str) ||
-            !gameJson.has(GameField.NAME.str) || !gameJson.has(GameField.VERSION.str) ||
-            !gameJson.has(GameField.LEVELS.str)) {
-            return false
-        }
-        gameSpace = gameJson.getString(GameField.GAMESPACE.str)
-        gameCode = gameJson.getString(GameField.GAME_CODE.str)
-        name = gameJson.getString(GameField.NAME.str)
-        nameRu = gameJson.optString(GameField.NAME_RU.str, name)
-        nameEn = gameJson.optString(GameField.NAME_EN.str, name)
-        version = gameJson.getLong(GameField.VERSION.str)
-        rulePacks = HashMap()
-        rulePacksJsons = HashMap()
-        val packsJson = gameJson.getJSONArray(GameField.RULE_PACKS.str)
-        for (i in 0 until packsJson.length()) {
-            val packInfo = packsJson.getJSONObject(i)
-            val name = packInfo.getString(PackageField.NAME.str)
-            if (!rulePacksJsons.containsKey(name)) {
-                rulePacksJsons[name] = packInfo
-            }
-        }
-        levels = ArrayList()
-        levelsJsons = ArrayList()
-        val levelsJson = gameJson.getJSONArray(GameField.LEVELS.str)
-        for (i in 0 until levelsJson.length()) {
-            levelsJsons.add(levelsJson.getJSONObject(i))
-        }
-        return true
     }
 
     private fun parse(context: Context): Boolean {
@@ -107,7 +103,8 @@ class Game(var fileName: String) {
                 }
             }
         }
-        for (json in levelsJsons) {
+        levels = arrayListOf()
+        for (json in tasks) {
             val level = Level.parse(this, json, context)
             if (level != null) {
                 levels.add(level)
