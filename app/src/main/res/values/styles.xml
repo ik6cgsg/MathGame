@@ -8,7 +8,9 @@
         <item name="colorPrimaryDark">#00574B</item>
         <item name="colorAccent">#017A6E</item>
         <item name="textColor">#C5C5C5</item>
+        <item name="textColorDark">#5C5A5959</item>
         <item name="shapeBackground">#2C2C2C</item>
+        <item name="shapeBackgroundLight">#404040</item>
         <item name="colorHint">#8B8484</item>
         <item name="dividerColor">#8B8484</item>
         <item name="backgroundColor">#1F1F1F</item>
@@ -31,6 +33,7 @@
         <item name="colorAccent">#27296D</item>
         <item name="textColor">#171717</item>
         <item name="shapeBackground">#DCD6F7</item>
+        <item name="shapeBackgroundLight">#E1E0E0</item>
         <item name="colorHint">#8B8484</item>
         <item name="dividerColor">#8B8484</item>
         <item name="backgroundColor">#F4EEFF</item>

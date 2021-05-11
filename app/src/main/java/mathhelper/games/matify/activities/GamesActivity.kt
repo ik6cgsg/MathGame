@@ -5,9 +5,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -20,7 +19,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import mathhelper.games.matify.*
+import mathhelper.games.matify.GlobalScene
+import mathhelper.games.matify.R
+import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -139,8 +140,12 @@ class GamesActivity: AppCompatActivity() {
                 }
             }
             val gameView = AndroidUtil.createButtonView(this)
-
             gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
+            if (game.recommendedByCommunity) {
+                val d = getDrawable(R.drawable.tick)
+                d!!.setBounds(0, 0, 64, 64)
+                gameView.setCompoundDrawables(null, null, d, null)
+            }
             val themeName = Storage.shared.theme(this)
             gameView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
             /*

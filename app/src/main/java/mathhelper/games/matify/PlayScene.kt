@@ -1,10 +1,13 @@
 package mathhelper.games.matify
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import api.expressionToStructureString
@@ -12,10 +15,7 @@ import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import expressiontree.SimpleComputationRuleParams
 import mathhelper.games.matify.activities.PlayActivity
-import mathhelper.games.matify.common.MathDownTimer
-import mathhelper.games.matify.common.MathUpTimer
-import mathhelper.games.matify.common.MessageTimer
-import mathhelper.games.matify.common.RuleMathView
+import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.*
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
@@ -236,12 +236,20 @@ class PlayScene() {
     fun info(languageCode: String) {
         val currentLevel = LevelScene.shared.currentLevel!!
         val multi = playActivity!!.globalMathView.multiselectionMode
-        showMessage(
-            "\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40\n" +
-            "\uD83D\uDC63 ${playActivity!!.getString(R.string.steps_count)} ${"%.1f".format(stepsCount)} \uD83D\uDC63\n" +
-            if (multi) playActivity!!.getString(R.string.multiselection_mode_is_on)
-            else playActivity!!.getString(R.string.multiselection_mode_is_off)
+        val builder = AlertDialog.Builder(
+            playActivity, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(playActivity!!))
         )
+        val v = playActivity!!.layoutInflater.inflate(R.layout.level_info, null)
+        v.findViewById<TextView>(R.id.game)?.text = currentLevel.game.getNameByLanguage(languageCode)
+        v.findViewById<TextView>(R.id.name)?.text = currentLevel.getNameByLanguage(languageCode)
+        v.findViewById<TextView>(R.id.description)?.text = currentLevel.getDescriptionByLanguage(languageCode)
+        v.findViewById<TextView>(R.id.steps)?.text = stepsCount.toInt().toString()
+        v.findViewById<TextView>(R.id.mode)?.text = if (multi) playActivity!!.getString(R.string.multiselection_mode_is_on)
+            else playActivity!!.getString(R.string.multiselection_mode_is_off)
+        builder.setView(v)
+        val alert = builder.create()
+        AndroidUtil.showDialog(alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
+            blurView = playActivity!!.blurView, activity = playActivity!!)
     }
 
     fun clearRules() {

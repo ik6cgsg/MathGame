@@ -1,4 +1,4 @@
-ackage mathhelper.games.matify.statistics
+package mathhelper.games.matify.statistics
 
 import android.content.Context
 import android.net.ConnectivityManager

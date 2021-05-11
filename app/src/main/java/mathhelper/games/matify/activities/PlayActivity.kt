@@ -1,32 +1,34 @@
 package mathhelper.games.matify.activities
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
-import android.os.*
-import androidx.appcompat.app.AppCompatActivity
+import android.opengl.Visibility
+import android.os.Bundle
+import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
 import android.util.Log
-import android.view.*
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.activity_play.*
-import mathhelper.games.matify.level.Award
+import eightbitlab.com.blurview.BlurView
+import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.StateType
-import standartlibextensions.selectPlacesForColoringByFragment
-import java.lang.Exception
 import kotlin.math.max
 import kotlin.math.min
+
 
 class PlayActivity: AppCompatActivity() {
     private val TAG = "PlayActivity"
@@ -50,6 +52,7 @@ class PlayActivity: AppCompatActivity() {
     lateinit var rulesScrollView: ScrollView
     lateinit var noRules: TextView
     lateinit var timerView: TextView
+    lateinit var blurView: BlurView
 
     private lateinit var startStopMultiselectionMode: TextView
     private lateinit var restart: TextView
@@ -98,6 +101,7 @@ class PlayActivity: AppCompatActivity() {
         info = findViewById(R.id.info)
         startStopMultiselectionMode = findViewById(R.id.start_stop_multiselection_mode)
         progress = findViewById(R.id.progress)
+        blurView = findViewById(R.id.blurView)
     }
 
     private fun setLongClick() {
@@ -235,7 +239,6 @@ class PlayActivity: AppCompatActivity() {
         PlayScene.shared.info(resources.configuration.locale.language)
     }
 
-
     fun back(v: View?) {
         if (!loading) {
             if (LevelScene.shared.currentLevel!!.endless && PlayScene.shared.stepsCount > 0) {
@@ -278,14 +281,10 @@ class PlayActivity: AppCompatActivity() {
     fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
         Log.d(TAG, "onWin")
         val msgTitle = resources.getString(R.string.you_finished_level_with)
-        val steps = "\n\t${resources.getString(R.string.steps)}: " + if (stepsCount.equals(stepsCount.toInt().toFloat())) {
-            "${stepsCount.toInt()}"
-        } else {
-            "%.1f".format(stepsCount)
-        }
+        val steps = "\n\t${resources.getString(R.string.steps)}: ${stepsCount.toInt()}"
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
-        val spannable = SpannableString("$msgTitle$steps$time\n\n${resources.getString(R.string.award)}: $state")
+        val spannable = SpannableString("$msgTitle$steps$time\n")
         val spanColor = ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR)
         spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -293,11 +292,11 @@ class PlayActivity: AppCompatActivity() {
             msgTitle.length + steps.length + 1, msgTitle.length + steps.length + time.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         winDialog.setMessage(spannable)
-        AndroidUtil.showDialog(winDialog)
+        AndroidUtil.showDialog(winDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
     }
 
     fun onLoose() {
-        AndroidUtil.showDialog(looseDialog)
+        AndroidUtil.showDialog(looseDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
     }
 
     private fun createWinDialog(): AlertDialog {

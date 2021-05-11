@@ -56,7 +56,6 @@ class AccountActivity: AppCompatActivity() {
     }
 
     fun back(v: View?) {
-        startActivity(Intent(this, SettingsActivity::class.java))
         finish()
     }
 

@@ -16,9 +16,9 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.review.ReviewManagerFactory
+import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
-import mathhelper.games.matify.statistics.Statistics
 import java.util.*
 
 
@@ -28,52 +28,21 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var changeLanguageDialog: AlertDialog
     private lateinit var changeThemeDialog: AlertDialog
     private lateinit var greetings: TextView
-    private lateinit var reset: TextView
-    private lateinit var editAccount: TextView
-    private lateinit var changePassword: TextView
-    private lateinit var changeLanguage: TextView
-    private lateinit var changeTheme: TextView
+    private lateinit var changePassword: View
+    lateinit var blurView: BlurView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(Storage.shared.themeInt(this))
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_settings_new)
         val backView = findViewById<TextView>(R.id.back)
         AndroidUtil.setOnTouchUpInside(this, backView, ::back)
-        val rateUs = findViewById<TextView>(R.id.rate_us)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, rateUs) {
-            rateOnMarket()
-        }
-        editAccount = findViewById(R.id.edit_account)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, editAccount) {
-            finish()
-            startActivity(Intent(this, AccountActivity::class.java))
-        }
         resetDialog = createResetAlert()
-        reset = findViewById(R.id.reset)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, reset) {
-            AndroidUtil.showDialog(resetDialog)
-        }
-        changePassword = findViewById(R.id.change_password)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, changePassword) {
-            startActivity(Intent(this, PasswordActivity::class.java))
-        }
         changeThemeDialog = createChangeThemeAlert()
-        changeTheme = findViewById(R.id.change_theme)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, changeTheme) {
-            AndroidUtil.showDialog(changeThemeDialog)
-        }
         changeLanguageDialog = createChangeLanguageAlert()
-        changeLanguage = findViewById(R.id.change_language)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, changeLanguage) {
-            AndroidUtil.showDialog(changeLanguageDialog)
-        }
-        val tutorial = findViewById<TextView>(R.id.tutorial)
-        AndroidUtil.setOnTouchUpInsideWithCancel(this, tutorial) {
-            TutorialScene.shared.start(this)
-        }
+        changePassword = findViewById(R.id.pass_change)
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = resources.getString(R.string.settings)
@@ -81,16 +50,44 @@ class SettingsActivity: AppCompatActivity() {
         val versionView = findViewById<TextView>(R.id.version)
         versionView.text = versionView.text.toString() + BuildConfig.VERSION_NAME
         greetings = findViewById(R.id.greetings)
+        blurView = findViewById(R.id.blurView)
     }
 
     override fun onResume() {
         super.onResume()
         greetings.text = "\uD83D\uDC4B ${resources.getString(R.string.hi)}, ${Storage.shared.login(this)}! \uD83D\uDC4B"
         when (GlobalScene.shared.authStatus) {
-            AuthStatus.MATH_HELPER, AuthStatus.GUEST -> changePassword.visibility = View.VISIBLE
-            else -> changePassword.visibility = View.GONE
+            AuthStatus.MATH_HELPER, AuthStatus.GUEST -> changePassword.isEnabled = true
+            else -> changePassword.isEnabled = false
         }
-        //statisticSwitch.isChecked = prefs.getBoolean(AuthInfo.STATISTICS.str, false)
+    }
+
+    fun editClick(v: View?) {
+        startActivity(Intent(this, AccountActivity::class.java))
+    }
+
+    fun rateClick(v: View?) {
+        rateOnMarket()
+    }
+
+    fun resetClick(v: View?) {
+        AndroidUtil.showDialog(resetDialog)
+    }
+
+    fun changePassClicked(v: View?) {
+        startActivity(Intent(this, PasswordActivity::class.java))
+    }
+
+    fun changeThemeClicked(v: View?) {
+        AndroidUtil.showDialog(changeThemeDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
+    }
+
+    fun changeLanguageClicked(v: View?) {
+        AndroidUtil.showDialog(changeLanguageDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
+    }
+
+    fun startTutorialClick(v: View?) {
+        TutorialScene.shared.start(this)
     }
 
     fun back(v: View?) {
@@ -134,18 +131,14 @@ class SettingsActivity: AppCompatActivity() {
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
         )
-
-        val config = Configuration(resources.configuration)
-
-        val themeToChoose = when (Storage.shared.theme(this)) {
-                ThemeName.DARK -> ThemeName.LIGHT
-                else -> ThemeName.DARK
-            }
-
         builder
             .setTitle(R.string.change_theme)
-            .setMessage("${resources.getString(R.string.change_theme_to)} '${themeToChoose.toString().toUpperCase(config.locale)}'?")
-            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
+            .setItems(R.array.themes_array) { dialog, which ->
+                val themeToChoose = when (which) {
+                    0 -> ThemeName.LIGHT
+                    1 -> ThemeName.DARK
+                    else -> ThemeName.DARK
+                }
                 Storage.shared.setTheme(this, themeToChoose)
                 finishAffinity()
                 startActivity(Intent(this, GamesActivity::class.java))
@@ -160,18 +153,16 @@ class SettingsActivity: AppCompatActivity() {
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
         )
-
-        val config = Configuration(resources.configuration)
-        val languageToChoose = if (config.locale.language == "ru") {
-            "en"
-        } else {
-            "ru"
-        }
-
         builder
             .setTitle(R.string.change_language)
-            .setMessage("${resources.getString(R.string.change_language_to)} '${languageToChoose.toUpperCase(config.locale)}'?")
-            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
+            .setItems(R.array.languages_array) {
+                    dialog, which ->
+                val languageToChoose = when (which) {
+                    0 -> "ru"
+                    1 -> "en"
+                    else -> "en"
+                }
+                val config = Configuration(resources.configuration)
                 config.locale = Locale(languageToChoose); //locale
                 resources.updateConfiguration(config, resources.displayMetrics)
                 finishAffinity()

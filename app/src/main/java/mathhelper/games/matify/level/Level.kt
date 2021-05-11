@@ -87,10 +87,11 @@ data class Level(
     var additionalParamsMap = mutableMapOf<String, String>()
     var compiledConfiguration: CompiledConfiguration? = null
 
-    fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
-        nameRu
+    fun getNameByLanguage(languageCode: String) = if (languageCode.equals("ru", true)) nameRu else nameEn
+    fun getDescriptionByLanguage(languageCode: String, full: Boolean = false) = if (languageCode.equals("ru", true)) {
+        if (full) descriptionRu else descriptionShortRu
     } else {
-        nameEn
+        if (full) descriptionEn else descriptionShortEn
     }
 
     companion object {

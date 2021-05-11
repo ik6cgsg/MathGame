@@ -141,7 +141,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_info))
         pointerMsgView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerMsgView)
-        AndroidUtil.showDialog(tutorialDialog, false)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun backTutorial() {
@@ -150,7 +150,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         pointerBackView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerBackView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, false)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun infoTutorial() {
@@ -159,7 +159,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         pointerInfoView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerInfoView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, false)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun restartTutorial() {
@@ -168,7 +168,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         pointerRestartView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerRestartView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, false)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun undoTutorial() {
@@ -177,7 +177,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         pointerUndoView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerUndoView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, false)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun endExpressionTutorial() {
@@ -187,7 +187,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.animateLeftUp(pointerEndView)
         tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_goal_explanation) +
             resources.getString(R.string.tutorial_on_level_goal_toggle))
-        AndroidUtil.showDialog(tutorialDialog, false)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun centralExpressionTutorial() {
@@ -202,7 +202,7 @@ class TutorialPlayActivity: AppCompatActivity() {
             resources.getString(R.string.tutorial_on_level_main_element_make_subst) +
             resources.getString(R.string.tutorial_on_level_main_element_repeat) +
             resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, false)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun startDynamicTutorial() {
@@ -241,7 +241,7 @@ class TutorialPlayActivity: AppCompatActivity() {
             }
             .setCancelable(false)
         val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, false)
+        AndroidUtil.showDialog(dialog, backMode = BackgroundMode.NONE)
     }
 
     inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {

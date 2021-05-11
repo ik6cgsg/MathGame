@@ -34,6 +34,7 @@ class GsonParser {
                 val required = req.map { it.name }
                 for (reqField in required) {
                     if (json.get(reqField) == null) {
+                        Log.e("[GsonParser]", "ERROR: No required field for class ${T::class.java}: '$reqField'")
                         return null
                     }
                 }

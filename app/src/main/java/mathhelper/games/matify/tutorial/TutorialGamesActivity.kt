@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.BackgroundMode
 import mathhelper.games.matify.common.Storage
 
 class TutorialGamesActivity: AppCompatActivity() {
@@ -45,7 +46,7 @@ class TutorialGamesActivity: AppCompatActivity() {
     fun tellAboutGameLayout() {
         Log.d(TAG, "tellAboutGameLayout")
         dialog.setMessage(resources.getString(R.string.games_activity_tutorial))
-        AndroidUtil.showDialog(dialog, false)
+        AndroidUtil.showDialog(dialog, backMode = BackgroundMode.NONE)
     }
 
     fun waitForGameClick() {

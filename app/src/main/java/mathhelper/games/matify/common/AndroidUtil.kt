@@ -3,12 +3,16 @@ package mathhelper.games.matify.common
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.renderscript.Allocation
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
@@ -17,6 +21,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
+import eightbitlab.com.blurview.BlurView
+import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.R
 import kotlin.math.pow
 
@@ -32,6 +39,10 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
             afterTextChanged.invoke(editable.toString())
         }
     })
+}
+
+enum class BackgroundMode {
+    SHADOW, BLUR, NONE
 }
 
 class AndroidUtil {
@@ -70,37 +81,48 @@ class AndroidUtil {
             }
         }
 
-        @SuppressLint("ClickableViewAccessibility")
-        fun setOnTouchUpInsideWithCancel(context: Context, view: View, func: (v: View?) -> Unit) {
-            view.setOnTouchListener { v, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        val themeName = Storage.shared.theme(context)
-                        v.setBackgroundColor(
-                            ThemeController.shared.getColorByTheme(themeName, ColorName.ON_TOUCH_BACKGROUND_COLOR)
-                        )
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        v.setBackgroundColor(Color.TRANSPARENT)
-                        if (touchUpInsideView(v, event)) {
-                            func(v)
-                        }
-                    }
-                    MotionEvent.ACTION_CANCEL -> {
-                        v.setBackgroundColor(Color.TRANSPARENT)
-                    }
-                }
-                true
-            }
+        fun blur(blurView: BlurView, activity: AppCompatActivity) {
+            blurView.setBlurEnabled(true)
+            blurView.visibility = View.VISIBLE
+            val radius = 3f
+            val decorView = activity.window.decorView
+            val rootView = decorView.findViewById(android.R.id.content) as ViewGroup
+            val windowBackground: Drawable = decorView.background
+            blurView.setupWith(rootView)
+                .setFrameClearDrawable(windowBackground)
+                .setBlurAlgorithm(RenderScriptBlur(activity))
+                .setBlurRadius(radius)
+                .setBlurAutoUpdate(true)
         }
 
-        fun showDialog(dialog: AlertDialog, shadowBack: Boolean = true) {
-            dialog.window!!.setGravity(Gravity.BOTTOM)
+        fun unblur(blurView: BlurView) {
+            blurView.setBlurEnabled(false)
+            blurView.visibility = View.GONE
+        }
+
+        fun showDialog(
+            dialog: AlertDialog,
+            backMode: BackgroundMode = BackgroundMode.SHADOW,
+            bottomGravity: Boolean = true,
+            blurView: BlurView? = null,
+            activity: AppCompatActivity? = null
+        ) {
+            if (backMode == BackgroundMode.BLUR) {
+                blur(blurView!!, activity!!)
+                dialog.setOnCancelListener { unblur(blurView) }
+            }
+            if (bottomGravity) {
+                dialog.window!!.setGravity(Gravity.BOTTOM)
+            }
             dialog.window!!.attributes.verticalMargin = 0.05f
             dialog.show()
             dialog.window!!.setBackgroundDrawableResource(R.drawable.alert_shape)
-            dialog.window!!.findViewById<TextView>(android.R.id.message).typeface = Typeface.MONOSPACE
-            if (!shadowBack) {
+            dialog.window!!.findViewById<TextView>(android.R.id.message)?.typeface = Typeface.MONOSPACE
+            if (dialog.listView != null) {
+                dialog.listView.divider = ColorDrawable(ThemeController.shared.getColorByTheme(ThemeName.DARK, ColorName.PRIMARY_COLOR))
+                dialog.listView.dividerHeight = 1
+            }
+            if (backMode == BackgroundMode.NONE) {
                 dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             }
         }

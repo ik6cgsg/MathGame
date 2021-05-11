@@ -7,7 +7,9 @@
     <attr name="colorPrimaryDark" format="color"/>
     <attr name="colorAccent" format="color"/>
     <attr name="textColor" format="color"/>
+    <attr name="textColorDark" format="color"/>
     <attr name="shapeBackground" format="color"/>
+    <attr name="shapeBackgroundLight" format="color"/>
     <attr name="colorHint" format="color"/>
     <attr name="dividerColor" format="color"/>
     <attr name="backgroundColor" format="color"/>

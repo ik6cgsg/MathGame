@@ -127,6 +127,23 @@
     <string name="google_sign_in_error">Ошибка в ходе Google-авторизации…</string>
     <string name="coming_soon">Скоро реализуем…</string>
     <string name="steps_count">"Количество шагов: "</string>
-    <string name="multiselection_mode_is_on">⚠️ ВКЛЮЧЕН режим мультивыделения ⚠️</string>
-    <string name="multiselection_mode_is_off">✅ Обычный режим ✅</string>
+    <string name="multiselection_mode_is_on">Мультивыделение</string>
+    <string name="multiselection_mode_is_off">Обычный</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="level_info_name">Название:</string>
+    <string name="level_info_description">Описание:</string>
+    <string name="level_info_steps">Шаги:</string>
+    <string name="level_info_select_mode">Режим выбора:</string>
+    <string name="level_info_level_info">ℹ️ Информация об уровне ℹ️</string>
+    <string name="settings_account">Профиль</string>
+    <string name="settings_change_password">Изменить пароль</string>
+    <string name="settings_application">Приложение</string>
+    <string name="settings_edit_account">Редактировать</string>
+    <string name="settings_change_language">Язык</string>
+    <string name="settings_change_theme">Тема</string>
+    <string name="settings_rate_app">Оценить приложение</string>
+    <string name="settings_start_tutorial">Пройти обучение</string>
+    <string name="settings_reset">СБРОС</string>
+    <string name="level_info_game">Игра:</string>
 </resources>

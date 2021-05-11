@@ -50,19 +50,25 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         }
         isScrollbarFadingEnabled = false
         scrollBarStyle = SCROLLBARS_INSIDE_INSET
+        isFillViewport = true
         val themeName = Storage.shared.theme(context)
         ruleView = TextView(context)
         ruleView.textSize = Constants.ruleDefaultSize
         ruleView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
         ruleView.typeface = Typeface.MONOSPACE
-        //ruleView.ellipsize = TextUtils.TruncateAt.
+        ruleView.background = context.getDrawable(R.color.row_clickable)
+        ruleView.isClickable = true
+        ruleView.isFocusable = true
+        ruleView.setOnClickListener {
+            PlayScene.shared.setCurrentRuleView(context, this)
+        }
         ruleView.setLineSpacing(0f, Constants.mathLineSpacing)
-        /*ruleView.setPadding(
-            Constants.defaultPadding, Constants.defaultPadding,
-            Constants.defaultPadding, Constants.defaultPadding)*/
-        setPadding(
+        ruleView.setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
+        /*setPadding(
+            Constants.defaultPadding, Constants.defaultPadding,
+            Constants.defaultPadding, Constants.defaultPadding)*/
         addView(ruleView)
         if (subst != null) {
             setSubst(subst!!, "")
@@ -95,10 +101,10 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     }
 
     /** TextView OVERRIDES **/
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    /*override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
         super.onTouchEvent(event)
-        when {
+        /*when {
             event.action == MotionEvent.ACTION_DOWN -> {
                 Log.d(TAG, "ACTION_DOWN")
                 needClick = true
@@ -132,9 +138,9 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
                 needClick = false
                 setBackgroundColor(Color.TRANSPARENT)
             }
-        }
+        }*/
         return true
-    }
+    }*/
 
     /** UTILS **/
 }
