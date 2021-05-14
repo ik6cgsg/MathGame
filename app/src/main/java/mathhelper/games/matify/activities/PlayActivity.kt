@@ -19,8 +19,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
+import mathhelper.games.matify.InstrumentScene
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
@@ -44,17 +46,18 @@ class PlayActivity: AppCompatActivity() {
     private lateinit var progress: ProgressBar
 
     lateinit var mainView: ConstraintLayout
+    lateinit var mainViewAnim: TransitionDrawable
     lateinit var globalMathView: GlobalMathView
     lateinit var endExpressionView: TextView
     lateinit var endExpressionViewLabel: TextView
     lateinit var messageView: TextView
     lateinit var rulesLinearLayout: LinearLayout
     lateinit var rulesScrollView: ScrollView
-    lateinit var noRules: TextView
     lateinit var timerView: TextView
     lateinit var blurView: BlurView
+    lateinit var bottomSheet: LinearLayout
+    lateinit var rulesMsg: TextView
 
-    private lateinit var startStopMultiselectionMode: TextView
     private lateinit var restart: TextView
     private lateinit var back: TextView
     private lateinit var info: Button
@@ -87,32 +90,28 @@ class PlayActivity: AppCompatActivity() {
 
     private fun setViews() {
         mainView = findViewById(R.id.activity_play)
+        mainViewAnim = mainView.background as TransitionDrawable
+        bottomSheet = findViewById(R.id.bottom_sheet)
         globalMathView = findViewById(R.id.global_expression)
         endExpressionView = findViewById(R.id.end_expression_view)
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
         messageView = findViewById(R.id.message_view)
-        rulesLinearLayout = findViewById(R.id.rules_linear_layout)
-        rulesScrollView = findViewById(R.id.rules_scroll_view)
-        noRules = findViewById(R.id.no_rules)
         timerView = findViewById(R.id.timer_view)
         back = findViewById(R.id.back)
         restart = findViewById(R.id.restart)
         previous = findViewById(R.id.previous)
         info = findViewById(R.id.info)
-        startStopMultiselectionMode = findViewById(R.id.start_stop_multiselection_mode)
         progress = findViewById(R.id.progress)
         blurView = findViewById(R.id.blurView)
+
+        rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
+        rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
+        rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
+
+        InstrumentScene.shared.init(bottomSheet, this)
     }
 
     private fun setLongClick() {
-        startStopMultiselectionMode.setOnLongClickListener {
-            showMessage(
-                getString(R.string.end_multiselect_info),
-                globalMathView.multiselectionMode,
-                getString(R.string.start_multiselect_info)
-            )
-            true
-        }
         back.setOnLongClickListener {
             showMessage(getString(R.string.back_info))
             true
@@ -135,7 +134,7 @@ class PlayActivity: AppCompatActivity() {
         }
         globalMathView.setOnLongClickListener {
             if (!globalMathView.multiselectionMode) {
-                startStopMultiselectionMode(it)
+                InstrumentScene.shared.clickInstrument("multi", this)
             }
             AndroidUtil.vibrate(this)
             true
@@ -146,9 +145,10 @@ class PlayActivity: AppCompatActivity() {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(Storage.shared.themeInt(this))
-        setContentView(R.layout.activity_play)
+        setContentView(R.layout.activity_play_new)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
+        messageView.visibility = View.GONE
         looseDialog = createLooseDialog()
         winDialog = createWinDialog()
         backDialog = createBackDialog()
@@ -213,26 +213,16 @@ class PlayActivity: AppCompatActivity() {
         }
     }
 
-    fun startStopMultiselectionMode(v: View?) {
-        val startStopView: TextView = findViewById(R.id.start_stop_multiselection_mode)
-        val anim = mainView.background as TransitionDrawable
-        globalMathView.multiselectionMode = !globalMathView.multiselectionMode
-        if (!globalMathView.multiselectionMode) {
-            startStopView.text = getText(R.string.start_multiselect)
-            startStopView.setTextColor(ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR))
-            globalMathView.clearExpression()
-            PlayScene.shared.clearRules()
-            AndroidUtil.vibrate(this)
-            anim.reverseTransition(300)
-        }
-        else {
-            startStopView.text = getText(R.string.end_multiselect)
-            startStopView.setTextColor(Color.RED)
-            showMessage(getString(R.string.msg_on_start_multiselect))
-            AndroidUtil.vibrate(this)
-            anim.startTransition(300)
-            globalMathView.recolorCurrentAtom(ThemeController.shared.getColor(this, ColorName.MULTISELECTION_COLOR))
-        }
+    fun instrumentClick(v: View) {
+        InstrumentScene.shared.clickInstrument(v.tag.toString(), this)
+    }
+
+    fun detailClick(v: View) {
+        InstrumentScene.shared.clickDetail(v as Button)
+    }
+
+    fun keyboardClick(v: View) {
+        InstrumentScene.shared.clickKeyboard(v as Button)
     }
 
     fun info(v: View?) {
@@ -249,7 +239,7 @@ class PlayActivity: AppCompatActivity() {
         }
     }
 
-    private fun showMessage(msg: String, flag: Boolean = true, ifFlagFalseMsg: String? = null) {
+    fun showMessage(msg: String, flag: Boolean = true, ifFlagFalseMsg: String? = null) {
         if (flag)
             messageView.text = msg
         else
@@ -297,6 +287,14 @@ class PlayActivity: AppCompatActivity() {
 
     fun onLoose() {
         AndroidUtil.showDialog(looseDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
+    }
+
+    fun collapseBottomSheet() {
+        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    fun halfExpandBottomSheet() {
+        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
 
     private fun createWinDialog(): AlertDialog {

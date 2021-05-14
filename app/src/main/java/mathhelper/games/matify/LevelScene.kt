@@ -9,6 +9,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.PlayActivity
+import mathhelper.games.matify.game.GameResult
 import mathhelper.games.matify.level.*
 import java.util.*
 
@@ -29,6 +30,8 @@ class LevelScene {
                         value.runOnUiThread {
                             if (loaded) {
                                 levels = GlobalScene.shared.currentGame!!.levels
+                                levelsPassed = GlobalScene.shared.currentGame!!.lastResult?.levelsPassed ?: 0
+                                levelsPaused = GlobalScene.shared.currentGame!!.lastResult?.levelsPaused ?: 0
                                 value.onLevelsLoaded()
                             } else {
                                 value.loading = false
@@ -63,6 +66,8 @@ class LevelScene {
                 }
             }
         }
+    var levelsPassed: Int = 0
+    var levelsPaused: Int = 0
 
     fun wasLevelPaused(): Boolean {
         return currentLevel?.endless == true && currentLevel?.lastResult?.state == StateType.PAUSED
@@ -74,6 +79,13 @@ class LevelScene {
         }
         currentLevelIndex++
         return true
+    }
+
+    fun updateGameResult() {
+        val newRes = GameResult(levelsPassed, levelsPaused)
+        if (GlobalScene.shared.currentGame?.lastResult != newRes) {
+            GlobalScene.shared.gamesActivity?.updateResult(newRes)
+        }
     }
 
     fun back() {

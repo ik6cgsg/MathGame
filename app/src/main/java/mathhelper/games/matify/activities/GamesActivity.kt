@@ -19,10 +19,15 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.GlobalScene
+import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
+import mathhelper.games.matify.game.Game
+import mathhelper.games.matify.game.GameResult
+import mathhelper.games.matify.level.StateType
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,12 +36,12 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var gamesViews: ArrayList<TextView>
     private lateinit var gamesList: LinearLayout
     private lateinit var searchView: EditText
-    private var gameTouched: View? = null
     private lateinit var serverDivider: View
     private lateinit var serverLabel: TextView
     private lateinit var serverList: LinearLayout
     private lateinit var serverScroll: ScrollView
     private var askForTutorial = false
+    lateinit var blurView: BlurView
 
     private fun setLanguage() {
         val locale = Locale("en")
@@ -70,6 +75,7 @@ class GamesActivity: AppCompatActivity() {
         serverLabel = findViewById(R.id.server_games_label)
         serverList = findViewById(R.id.server_games_list)
         serverScroll = findViewById(R.id.server_scroll)
+        blurView = findViewById(R.id.blurView)
         setSearchEngine()
         generateList()
         if (Build.VERSION.SDK_INT < 24) {
@@ -131,6 +137,18 @@ class GamesActivity: AppCompatActivity() {
         })
     }
 
+    fun updateResult(newRes: GameResult?) {
+        val i = GlobalScene.shared.currentGameIndex
+        gamesViews[i].text = "${GlobalScene.shared.currentGame?.getNameByLanguage(resources.configuration.locale.language)}" +
+            if (newRes != null) {
+                "\n${newRes.toString().format(GlobalScene.shared.currentGame?.tasks?.size)}"
+            } else {
+                ""
+            }
+        GlobalScene.shared.currentGame?.lastResult = newRes
+        GlobalScene.shared.currentGame?.save(this)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun generateList(search: CharSequence? = null) {
         GlobalScene.shared.games.forEachIndexed { i, game ->
@@ -143,41 +161,37 @@ class GamesActivity: AppCompatActivity() {
             gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
             if (game.recommendedByCommunity) {
                 val d = getDrawable(R.drawable.tick)
-                d!!.setBounds(0, 0, 64, 64)
+                d!!.setBounds(0, 0, 70, 70)
                 gameView.setCompoundDrawables(null, null, d, null)
             }
             val themeName = Storage.shared.theme(this)
             gameView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
-            /*
             if (game.lastResult != null) {
-                gameView.text = "${game.name}\n${game.lastResult!!}"
+                gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
             }
-            */
-            gameView.background = getDrawable(R.drawable.rect_shape)
-            gameView.setOnTouchListener { v, event ->
-                super.onTouchEvent(event)
-                when {
-                    event.action == MotionEvent.ACTION_DOWN && gameTouched == null -> {
-                        gameTouched = v
-                        v.background = getDrawable(R.drawable.rect_shape_clicked)
-                    }
-                    event.action == MotionEvent.ACTION_UP && gameTouched == v -> {
-                        v.background = getDrawable(R.drawable.rect_shape)
-                        if (AndroidUtil.touchUpInsideView(v, event)) {
-                            GlobalScene.shared.currentGame = game
-                        }
-                        gameTouched = null
-                    }
-                    event.action == MotionEvent.ACTION_CANCEL && gameTouched == v -> {
-                        v.background = getDrawable(R.drawable.rect_shape)
-                        gameTouched = null
-                    }
-                }
-                true
+            gameView.background = getDrawable(R.drawable.button_rect)
+            gameView.setOnClickListener {
+                GlobalScene.shared.currentGameIndex = i
+                GlobalScene.shared.currentGame = game
             }
+            gameView.isLongClickable = true
+            gameView.setOnLongClickListener { showInfo(game) }
             gamesList.addView(gameView)
             gamesViews.add(gameView)
         }
+    }
+
+    private fun showInfo(game: Game): Boolean {
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+        )
+        builder
+            .setTitle("Game Info")
+            .setMessage("Name: ${game.nameEn}\nRecommended by society: ${if (game.recommendedByCommunity) "yes" else "no"}")
+            .setCancelable(true)
+        val alert = builder.create()
+        AndroidUtil.showDialog(alert, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
+        return true
     }
 
     private fun filterList(search: CharSequence? = null) {

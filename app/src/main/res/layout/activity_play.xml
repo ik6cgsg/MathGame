@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:clipChildren="false"
-    android:clipToPadding="false"
-    tools:context=".activities.PlayActivity">
+    android:clipToPadding="false">
 
     <HorizontalScrollView
         android:id="@+id/global_expression_view"
@@ -42,20 +41,6 @@
             android:layout_marginBottom="0dp"
             android:includeFontPadding="false" />
     </HorizontalScrollView>
-
-    <TextView
-        android:id="@+id/no_rules"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/tap_on_some_place_in_expression"
-        android:textAlignment="center"
-        android:textColor="?attr/textColor"
-        android:typeface="monospace"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/global_expression_view"
-        tools:layout_editor_absoluteX="8dp" />
 
     <ScrollView
         android:id="@+id/rules_scroll_view"
@@ -165,7 +150,7 @@
             android:background="@android:color/transparent"
             android:onClick="info"
             android:text="@string/i"
-            android:textAlignment="viewStart"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/light_click"
             android:textSize="25sp"
@@ -228,26 +213,9 @@
             android:textStyle="bold"
             android:typeface="monospace"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/start_stop_multiselection_mode"
+            app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/start_stop_multiselection_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="0.08"
-            android:longClickable="true"
-            android:onClick="startStopMultiselectionMode"
-            android:text="@string/start_multiselect"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/colorPrimary"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:typeface="monospace"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
     <TextView
@@ -258,9 +226,8 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/button_rect"
-        android:elevation="8dp"
-        android:clipToPadding="false"
+        android:background="@drawable/rect_shape_non_required"
+        android:elevation="7dp"
         android:gravity="center_horizontal"
         android:lineSpacingMultiplier="1.3"
         android:singleLine="false"
@@ -286,18 +253,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <eightbitlab.com.blurview.BlurView
-        android:id="@+id/blurView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="10dp"
-        android:visibility="gone"
-        app:blurOverlayColor="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </eightbitlab.com.blurview.BlurView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

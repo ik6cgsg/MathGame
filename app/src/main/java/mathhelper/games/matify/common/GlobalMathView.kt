@@ -25,7 +25,7 @@ import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
 import mathhelper.games.matify.mathResolver.TaskType
 
-class GlobalMathView: TextView {
+class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "GlobalMathView"
     var expression: ExpressionNode? = null
         private set

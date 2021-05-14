@@ -64,6 +64,7 @@ class GlobalScene {
                 authStatus = Storage.shared.authStatus(value)
             }
         }
+    var currentGameIndex: Int = 0
     var currentGame: Game? = null
         set(value) {
             field = value
@@ -82,6 +83,7 @@ class GlobalScene {
             LevelScene.shared.back()
         }
         games.map { Storage.shared.resetGame(gamesActivity!!, it.code) }
+        gamesActivity!!.recreate()
     }
 
     fun logout() {

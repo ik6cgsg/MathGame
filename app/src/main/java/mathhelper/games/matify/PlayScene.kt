@@ -2,18 +2,15 @@ package mathhelper.games.matify
 
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import api.expressionToStructureString
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
-import expressiontree.SimpleComputationRuleParams
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.*
@@ -37,6 +34,7 @@ class PlayScene() {
             }
         }
     /** GAME STATE */
+    var instrumetProcessing: Boolean = false
     var currentRuleView: RuleMathView? = null
     fun setCurrentRuleView(context: Context, value: RuleMathView?) {
         currentRuleView = value
@@ -114,21 +112,21 @@ class PlayScene() {
             return
         }
         val activity = playActivity!!
-        if (activity.globalMathView.currentAtoms.isNotEmpty()) {
+        if (instrumetProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
+            InstrumentScene.shared.choosenAtom(activity.globalMathView.currentAtoms)
+        } else if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
                 activity.globalMathView.currentAtoms,
                 activity.globalMathView.expression!!
             )
-
             if (substitutionApplication == null) {
                 showMessage(activity.getString(R.string.no_rules))
                 clearRules()
             } else {
-                val rules = LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
+                val rules =
+                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
                 activity.globalMathView.currentRulesToResult =
                     LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
-
-                activity.noRules.visibility = View.GONE
                 activity.rulesScrollView.visibility = View.VISIBLE
                 redrawRules(rules)
             }
@@ -193,19 +191,25 @@ class PlayScene() {
 
     fun previousStep() {
         Log.d(TAG, "previousStep")
-        val state = history.getPreviousStep()
-        val activity = playActivity!!
-        val oldExpression = activity.globalMathView.expression!!
-        val oldSteps = stepsCount
-        if (state != null) {
-            clearRules()
-            val currentLevel = LevelScene.shared.currentLevel!!
-            activity.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
-            //val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
-            //stepsCount = stepsCount - 1 + penalty
+        if (instrumetProcessing) {
+            InstrumentScene.shared.turnOffCurrentInstrument(playActivity!!)
+        } else {
+            val state = history.getPreviousStep()
+            val activity = playActivity!!
+            val oldExpression = activity.globalMathView.expression!!
+            val oldSteps = stepsCount
+            if (state != null) {
+                clearRules()
+                val currentLevel = LevelScene.shared.currentLevel!!
+                activity.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
+                //val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
+                //stepsCount = stepsCount - 1 + penalty
+            }
+            Statistics.logUndo(
+                oldSteps, stepsCount, oldExpression,
+                activity.globalMathView.expression!!, activity.globalMathView.currentAtoms
+            )
         }
-        Statistics.logUndo(oldSteps, stepsCount, oldExpression,
-            activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
     fun restart(context: Context, languageCode: String) {
@@ -220,15 +224,11 @@ class PlayScene() {
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
         if (save) {
-            val newRes = Result(stepsCount, currentTime, StateType.PAUSED,
+            val newRes = LevelResult(stepsCount, currentTime, StateType.PAUSED,
                 expressionToStructureString(activity.globalMathView.expression!!))
-            currentLevel.lastResult = newRes
-            currentLevel.save(activity)
-            LevelScene.shared.levelsActivity!!.updateResult()
-        } else if (LevelScene.shared.wasLevelPaused()) {
-            currentLevel.lastResult = null
-            currentLevel.save(activity)
-            LevelScene.shared.levelsActivity!!.updateResult()
+            LevelScene.shared.levelsActivity!!.updateResult(newRes)
+        } else if (LevelScene.shared.wasLevelPaused() && currentLevel.lastResult?.state != StateType.DONE) {
+            LevelScene.shared.levelsActivity!!.updateResult(null)
         }
         Statistics.logMenu(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
@@ -254,8 +254,9 @@ class PlayScene() {
 
     fun clearRules() {
         val activity = playActivity!!
-        activity.rulesScrollView.visibility = View.INVISIBLE
-        activity.noRules.visibility = View.VISIBLE
+        activity.rulesScrollView.visibility = View.GONE
+        activity.collapseBottomSheet()
+        activity.rulesMsg.text = "No rules. Click somewhere!"
     }
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
@@ -271,6 +272,8 @@ class PlayScene() {
                 Log.e(TAG, "Rule draw Error", e)
             }
         }
+        activity.halfExpandBottomSheet()
+        activity.rulesMsg.text = if (rules.isEmpty()) "No rules. Click somewhere!" else "☟ Rules found: ☟"
     }
 
     fun onWin(context: Context) {
@@ -278,11 +281,9 @@ class PlayScene() {
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
         //val award = currentLevel.getAward(context, currentTime, stepsCount)
-        val newRes = Result(stepsCount, currentTime, StateType.DONE)
+        val newRes = LevelResult(stepsCount, currentTime, StateType.DONE)
         if (newRes.isBetter(currentLevel.lastResult)) {
-            currentLevel.lastResult = newRes
-            currentLevel.save(activity)
-            LevelScene.shared.levelsActivity!!.updateResult()
+            LevelScene.shared.levelsActivity!!.updateResult(newRes)
         }
         activity.onWin(stepsCount, currentTime, StateType.DONE)
         Statistics.logWin(stepsCount)

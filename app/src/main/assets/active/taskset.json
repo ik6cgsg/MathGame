@@ -122,6 +122,141 @@
                     "simpleAdditional": true
                 },
                 {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(0;4))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(4;0))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(2;2))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(-(6;2))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(-(7;3))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(-(8;4))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(-(5;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1;1;1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
+                    "nameEn": "test",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1;1;1;1))",
+                    "basedOnTaskContext": true,
+                    "matchJumbledAndNested": true,
+                    "isExtending": true,
+                    "simpleAdditional": true
+                },
+                {
                     "nameEn": "test2",
                     "leftStructureString": "(+(1;3))",
                     "rightStructureString": "(4)",

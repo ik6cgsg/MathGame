@@ -7,6 +7,7 @@ class Constants {
         const val centralExpressionDefaultSize = 28f
         const val centralExpressionMaxSize = 48f
         const val ruleDefaultSize = 23f
+        const val simpleMathViewSize = 18f
         const val buttonDefaultSize = 21f
         const val mathLineSpacing = 0.5f
         const val levelLineSpacing = 1.2f

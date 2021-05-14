@@ -2,11 +2,9 @@ package mathhelper.games.matify.level
 
 import android.content.Context
 import android.util.Log
-import org.json.JSONObject
 import android.content.Context.MODE_PRIVATE
 import api.*
 import com.google.gson.JsonObject
-import com.google.gson.annotations.SerializedName
 import config.CompiledConfiguration
 import expressiontree.*
 import mathhelper.games.matify.game.*
@@ -83,7 +81,7 @@ data class Level(
     var goalPatternExpr: ExpressionStructureConditionNode? = null
     var currentStepNum = 0
     var endless = true
-    var lastResult: Result? = null
+    var lastResult: LevelResult? = null
     var additionalParamsMap = mutableMapOf<String, String>()
     var compiledConfiguration: CompiledConfiguration? = null
 
@@ -250,7 +248,7 @@ data class Level(
         val resultStr = prefs.getString(code, "")
         if (!resultStr.isNullOrEmpty()) {
             val resultVals = resultStr.split(" ", limit = 4)
-            lastResult = Result(resultVals[0].toDouble(), resultVals[1].toLong(),
+            lastResult = LevelResult(resultVals[0].toDouble(), resultVals[1].toLong(),
                 //Award(context, getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))
                 StateType.valueOf(resultVals[2].toString()))
             if (resultVals.size == 4) {

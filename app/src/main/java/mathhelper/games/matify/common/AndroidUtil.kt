@@ -109,7 +109,7 @@ class AndroidUtil {
         ) {
             if (backMode == BackgroundMode.BLUR) {
                 blur(blurView!!, activity!!)
-                dialog.setOnCancelListener { unblur(blurView) }
+                dialog.setOnDismissListener { unblur(blurView) }
             }
             if (bottomGravity) {
                 dialog.window!!.setGravity(Gravity.BOTTOM)
@@ -157,6 +157,15 @@ class AndroidUtil {
             }
         }
 
+        fun vibrateLight(context: Context) {
+            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+            } else {
+                vibrator.vibrate(50)
+            }
+        }
+
         @ColorInt fun darkenColor(@ColorInt color: Int, grade: Int): Int {
             return if (grade == 0) color else Color.HSVToColor(FloatArray(3).apply {
                 Color.colorToHSV(color, this)
@@ -172,6 +181,22 @@ class AndroidUtil {
             val def = FloatArray(3)
             Color.colorToHSV(default, def)
             return if (def[2] >= res[2]) Color.HSVToColor(res) else null
+        }
+
+        fun toggleColor(v: TextView, color1: Int, color2: Int) {
+            when (v.currentTextColor) {
+                color1 -> v.setTextColor(color2)
+                color2 -> v.setTextColor(color1)
+                else -> return
+            }
+        }
+
+        fun toggleVisibility(v: View) {
+            v.visibility = when (v.visibility) {
+                View.VISIBLE -> View.GONE
+                View.GONE -> View.VISIBLE
+                else -> View.GONE
+            }
         }
     }
 }

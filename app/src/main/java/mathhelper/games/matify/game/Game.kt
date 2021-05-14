@@ -42,6 +42,7 @@ data class Game(
     lateinit var rulePacks: HashMap<String, RulePackage>
     lateinit var rulePacksJsons: HashMap<String, JsonObject>
     var loaded = false
+    var lastResult: GameResult? = null
 
     fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
         nameRu
@@ -114,8 +115,23 @@ data class Game(
         return true
     }
 
-    private fun save(context: Context) {}
+    fun save(context: Context) {
+        val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        if (lastResult == null) {
+            prefEdit.remove(code)
+        } else {
+            prefEdit.putString(code, lastResult!!.saveString())
+        }
+        prefEdit.commit()
+    }
+
     private fun loadResult(context: Context) {
-        // TODO: read from storage levels passed percentage
+        val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
+        val resultStr = prefs.getString(code, "")
+        if (!resultStr.isNullOrEmpty()) {
+            val resultVals = resultStr.split(" ", limit = 2)
+            lastResult = GameResult(resultVals[0].toInt(), resultVals[1].toInt())
+        }
     }
 }
