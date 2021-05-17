@@ -11,7 +11,7 @@ import org.json.JSONArray
 
 data class FullTaskset(
     @property:Required
-    var taskset: JsonObject,
+    var taskSet: JsonObject,
     @property:Required
     var rulePacks: List<JsonObject>
 )
@@ -67,7 +67,7 @@ data class Game(
                 context.assets != null -> {
                     val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
                     val full = GsonParser.parse<FullTaskset>(json) ?: return null
-                    res = GsonParser.parse(full.taskset)
+                    res = GsonParser.parse(full.taskSet)
                     if (res?.preparseRulePacks(full.rulePacks) != true) {
                         res = null
                     }

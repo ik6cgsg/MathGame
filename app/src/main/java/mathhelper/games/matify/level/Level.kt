@@ -49,9 +49,7 @@ data class Level(
     var nameEn: String = "",
     @property:Required
     var originalExpressionStructureString: String = "",
-    @property:Required
     var goalType: String = "",
-    @property:Required
     var goalExpressionStructureString: String = "",
     /** Optional values **/
     var nameRu: String = "",

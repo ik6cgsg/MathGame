@@ -26,8 +26,8 @@ data class ActivityLog (
     var appCode: String = "MATIFY_ANDROID",
     var activityTypeCode: String = "",
     var clientActionTs: Timestamp? = null,
-    var tasksetCode: String? = null,
-    var tasksetVersion: Int? = null,
+    var taskSetCode: String? = null,
+    var taskSetVersion: Int? = null,
     var taskCode: String? = null,
     var taskVersion: Int? = null,
     var autoSubTaskCode: String? = null,
@@ -57,8 +57,8 @@ data class ActivityLog (
         this.activityTypeCode = action.str
         this.taskCode = level.code
         this.taskVersion = level.version
-        this.tasksetCode = level.game.code
-        this.tasksetVersion = level.game.version
+        this.taskSetCode = level.game.code
+        this.taskSetVersion = level.game.version
         this.originalExpression = level.originalExpressionStructureString
         this.goalExpression = level.goalExpressionStructureString
         this.goalPattern = level.goalPattern

@@ -1,0 +1,1588 @@
+{
+  "taskSet": {
+    "code": "game_035_combinatorics_1",
+    "version": 0,
+    "namespaceCode": "",
+    "nameEn": "Combinatorics-1",
+    "nameRu": "Комбинаторика-1",
+    "subjectType": "standard_math",
+    "tasks": [
+      {
+        "code": "game_035_combinatorics_1__Level_01_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 1",
+        "nameRu": "Уровень 1",
+        "descriptionShortEn": "(factorial(n))",
+        "descriptionShortRu": "(factorial(n))",
+        "originalExpressionStructureString": "(A(n;n))",
+        "goalExpressionStructureString": "(factorial(n))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 2,
+        "time": 50,
+        "difficulty": 1.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_02_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 2",
+        "nameRu": "Уровень 2",
+        "descriptionShortEn": "(*(P(m);A(+(m;n);n)))",
+        "descriptionShortRu": "(*(P(m);A(+(m;n);n)))",
+        "originalExpressionStructureString": "(*(V(+(m;1);n);*(P(m);P(n))))",
+        "goalExpressionStructureString": "(*(P(m);A(+(m;n);n)))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 5,
+        "time": 90,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_03_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 3",
+        "nameRu": "Уровень 3",
+        "descriptionShortEn": "(+(S2(m;n);*(n;S2(m;+(n;1)))))",
+        "descriptionShortRu": "(+(S2(m;n);*(n;S2(m;+(n;1)))))",
+        "originalExpressionStructureString": "(S2(/(P(+(m;1));P(m));+(n;S2(m;m))))",
+        "goalExpressionStructureString": "(+(S2(m;n);*(n;S2(m;+(n;1)))))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 5,
+        "time": 90,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_04_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 4",
+        "nameRu": "Уровень 4",
+        "descriptionShortEn": "(C(*(2;n);n))",
+        "descriptionShortRu": "(C(*(2;n);n))",
+        "originalExpressionStructureString": "(*(C(n);C(0);A(+(n;1);1)))",
+        "goalExpressionStructureString": "(C(*(2;n);n))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 3,
+        "time": 90,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_05_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 5",
+        "nameRu": "Уровень 5",
+        "descriptionShortEn": "(*(+(n;1);C(+(m;n;1);+(n;1))))",
+        "descriptionShortRu": "(*(+(n;1);C(+(m;n;1);+(n;1))))",
+        "originalExpressionStructureString": "(*(+(m;n;1);C(+(m;n);n)))",
+        "goalExpressionStructureString": "(*(+(n;1);C(+(m;n;1);+(n;1))))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 15,
+        "time": 90,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_06_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 6",
+        "nameRu": "Уровень 6",
+        "descriptionShortEn": "(S2(n;m))",
+        "descriptionShortRu": "(S2(n;m))",
+        "originalExpressionStructureString": "(/(*(S1(n;m);A(+(m;n);n));*(V(+(m;1);n);factorial(m);factorial(n))))",
+        "goalExpressionStructureString": "(S2(n;m))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 9,
+        "time": 90,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_07_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 7",
+        "nameRu": "Уровень 7",
+        "descriptionShortEn": "(C(*(2;+(n;1));+(n;1)))",
+        "descriptionShortRu": "(C(*(2;+(n;1));+(n;1)))",
+        "originalExpressionStructureString": "(+(C(+(*(2;n);1);n);C(+(*(2;n);1);+(n;1))))",
+        "goalExpressionStructureString": "(C(*(2;+(n;1));+(n;1)))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 30,
+        "time": 200,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_08_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 8",
+        "nameRu": "Уровень 8",
+        "descriptionShortEn": "(V(+(n;1);m))",
+        "descriptionShortRu": "(V(+(n;1);m))",
+        "originalExpressionStructureString": "(*(/(A(+(n;m;1);m);+(m;n;1));/(+(n;1);P(m))))",
+        "goalExpressionStructureString": "(V(+(n;1);m))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 26,
+        "time": 200,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_09_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 9",
+        "nameRu": "Уровень 9",
+        "descriptionShortEn": "(*(C(+(n;k;m);m);C(+(n;k);k)))",
+        "descriptionShortRu": "(*(C(+(n;k;m);m);C(+(n;k);k)))",
+        "originalExpressionStructureString": "(*(C(+(n;k;m);+(k;m));C(+(k;m);m)))",
+        "goalExpressionStructureString": "(*(C(+(n;k;m);m);C(+(n;k);k)))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 33,
+        "time": 200,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_10_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 10",
+        "nameRu": "Уровень 10",
+        "descriptionShortEn": "(/(A(+(m;n;k;1);n);P(+(n;k;1))))",
+        "descriptionShortRu": "(/(A(+(m;n;k;1);n);P(+(n;k;1))))",
+        "originalExpressionStructureString": "(/(V(+(m;1);+(n;k;1));A(+(k;m;1);+(k;1))))",
+        "goalExpressionStructureString": "(/(A(+(m;n;k;1);n);P(+(n;k;1))))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 41,
+        "time": 200,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_035_combinatorics_1__Level_11_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 11",
+        "nameRu": "Уровень 11",
+        "descriptionShortEn": "(V(+(m;1);n))",
+        "descriptionShortRu": "(V(+(m;1);n))",
+        "originalExpressionStructureString": "(*(/(A(+(n;1;m);m);+(m;n;1));/(C(*(2;n);n);*(C(n);P(m)))))",
+        "goalExpressionStructureString": "(V(+(m;1);n))",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "CombinatoricBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 23,
+        "time": 200,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      }
+    ]
+  },
+  "rulePacks": [
+    {
+      "code": "ArithmeticSimplePositiveAddition",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(a))",
+          "rightStructureString": "(a)",
+          "priority": 30
+        },
+        {
+          "leftStructureString": "(+(a;b))",
+          "rightStructureString": "(+(b;a))",
+          "priority": 20,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(+(a;0))",
+          "isExtending": true
+        },
+        {
+          "code": "SimpleComputation",
+          "priority": 5
+        },
+        {
+          "code": "ZeroComputation",
+          "priority": 5
+        },
+        {
+          "code": "PositiveNumberPlusMinus1",
+          "priority": 20
+        },
+        {
+          "code": "ParentBracketsExpansion",
+          "priority": 30
+        },
+        {
+          "code": "ArgumentsSwap",
+          "priority": 40
+        },
+        {
+          "code": "ArgumentsPermutation",
+          "priority": 40
+        },
+        {
+          "code": "ArgumentsPermutationInOriginalOrder",
+          "priority": 41
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticAddition",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(a))",
+          "rightStructureString": "(a)",
+          "priority": 30
+        },
+        {
+          "leftStructureString": "(+(a;b))",
+          "rightStructureString": "(+(b;a))",
+          "priority": 20,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(+(a;0))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(+(-(+(-(a)))))",
+          "rightStructureString": "(a)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(-(+(-(a))))",
+          "rightStructureString": "(a)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(-(-(a)))",
+          "rightStructureString": "(a)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(-(+(-(a))))",
+          "priority": 95,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(+(a;-(a)))",
+          "rightStructureString": "(0)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(+(-(a);a))",
+          "rightStructureString": "(0)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(+(a;+(-(a))))",
+          "rightStructureString": "(0)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(+(+(-(a));a))",
+          "rightStructureString": "(0)",
+          "priority": 4
+        },
+        {
+          "code": "SimpleComputation",
+          "priority": 5
+        },
+        {
+          "code": "ZeroComputation",
+          "priority": 5
+        },
+        {
+          "code": "NumberPlusMinus1",
+          "priority": 20
+        },
+        {
+          "code": "MinusInOutBrackets",
+          "priority": 31
+        },
+        {
+          "code": "ParentBracketsExpansion",
+          "priority": 30
+        },
+        {
+          "code": "ArgumentsSwap",
+          "priority": 40
+        },
+        {
+          "code": "ArgumentsPermutation",
+          "priority": 40
+        },
+        {
+          "code": "ArgumentsPermutationInOriginalOrder",
+          "priority": 41
+        },
+        {
+          "code": "AdditiveComplicatingExtension",
+          "priority": 92
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticMultiplication",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticAddition"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(*(a;0))",
+          "rightStructureString": "(0)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(*(0;a))",
+          "rightStructureString": "(0)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(0)",
+          "rightStructureString": "(*(a;0))",
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(*(a;1))",
+          "rightStructureString": "(a)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(*(1;a))",
+          "rightStructureString": "(a)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(*(a;1))",
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(*(a;b))",
+          "rightStructureString": "(*(b;a))",
+          "priority": 20,
+          "isExtending": true
+        },
+        {
+          "code": "OpeningBrackets",
+          "priority": 30
+        },
+        {
+          "code": "ReduceArithmetic",
+          "priority": 10
+        },
+        {
+          "code": "TwoSidesArithmeticReduce",
+          "priority": 10
+        },
+        {
+          "code": "MultiplicationFactorization",
+          "priority": 15
+        },
+        {
+          "leftStructureString": "(+(a;a))",
+          "rightStructureString": "(*(2;a))"
+        },
+        {
+          "leftStructureString": "(+(a;+(a)))",
+          "rightStructureString": "(*(2;a))"
+        },
+        {
+          "leftStructureString": "(+(+(a);a))",
+          "rightStructureString": "(*(2;a))"
+        },
+        {
+          "leftStructureString": "(*(2;a))",
+          "rightStructureString": "(+(a;a))"
+        },
+        {
+          "leftStructureString": "(+(a;*(a;n)))",
+          "rightStructureString": "(*(a;+(n;1)))"
+        },
+        {
+          "leftStructureString": "(*(a;+(n;1)))",
+          "rightStructureString": "(+(a;*(a;n)))"
+        },
+        {
+          "leftStructureString": "(+(*(a;n);a))",
+          "rightStructureString": "(*(a;+(1;n)))"
+        },
+        {
+          "leftStructureString": "(*(a;+(1;n)))",
+          "rightStructureString": "(+(*(a;n);a))"
+        },
+        {
+          "leftStructureString": "(-(*(A;C)))",
+          "rightStructureString": "(*(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(*(-(A);C))",
+          "rightStructureString": "(+(-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(-(*(A;C)))",
+          "rightStructureString": "(*(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(*(A;-(C)))",
+          "rightStructureString": "(+(-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(*(A;-(C)))",
+          "rightStructureString": "(*(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(*(-(A);C))",
+          "rightStructureString": "(*(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(+(-(*(A;C))))",
+          "rightStructureString": "(*(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(*(+(-(A));C))",
+          "rightStructureString": "(+(-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(+(-(*(A;C))))",
+          "rightStructureString": "(*(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(*(A;+(-(C))))",
+          "rightStructureString": "(+(-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(*(A;+(-(C))))",
+          "rightStructureString": "(*(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(*(+(-(A));C))",
+          "rightStructureString": "(*(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(*(-(A);-(B)))",
+          "rightStructureString": "(*(A;B))"
+        },
+        {
+          "leftStructureString": "(*(A;B))",
+          "rightStructureString": "(*(+(-(A));+(-(B))))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(*(+(-(A));+(-(B))))",
+          "rightStructureString": "(*(A;B))"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticDivision",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticMultiplication"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(/(0;a))",
+          "rightStructureString": "(0)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(/(a;1))",
+          "rightStructureString": "(a)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(/(a;a))",
+          "rightStructureString": "(1)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(*(/(1;a);a))",
+          "rightStructureString": "(1)",
+          "priority": 4
+        },
+        {
+          "leftStructureString": "(/(1;/(1;a)))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(/(1;/(1;a)))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(0.5)",
+          "rightStructureString": "(/(1;2))",
+          "priority": 15,
+          "simpleAdditional": true
+        },
+        {
+          "leftStructureString": "(/(1;2))",
+          "rightStructureString": "(0.5)",
+          "priority": 5,
+          "simpleAdditional": true
+        },
+        {
+          "leftStructureString": "(/(a;b))",
+          "rightStructureString": "(/(*(a;b);*(b;b)))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "code": "MultiplicativeComplicatingExtension",
+          "priority": 92
+        },
+        {
+          "code": "ReduceFraction",
+          "priority": 10
+        },
+        {
+          "code": "DecimalToFraction",
+          "priority": 15
+        },
+        {
+          "leftStructureString": "(-(/(A;C)))",
+          "rightStructureString": "(/(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(/(-(A);C))",
+          "rightStructureString": "(+(-(/(A;C))))"
+        },
+        {
+          "leftStructureString": "(-(/(A;C)))",
+          "rightStructureString": "(/(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(/(A;-(C)))",
+          "rightStructureString": "(+(-(/(A;C))))"
+        },
+        {
+          "leftStructureString": "(/(A;-(C)))",
+          "rightStructureString": "(/(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(/(-(A);C))",
+          "rightStructureString": "(/(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(+(-(/(A;C))))",
+          "rightStructureString": "(/(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(/(+(-(A));C))",
+          "rightStructureString": "(+(-(/(A;C))))"
+        },
+        {
+          "leftStructureString": "(+(-(/(A;C))))",
+          "rightStructureString": "(/(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(/(A;+(-(C))))",
+          "rightStructureString": "(+(-(/(A;C))))"
+        },
+        {
+          "leftStructureString": "(/(A;+(-(C))))",
+          "rightStructureString": "(/(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(/(+(-(A));C))",
+          "rightStructureString": "(/(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(/(-(A);-(B)))",
+          "rightStructureString": "(/(A;B))"
+        },
+        {
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(/(+(-(A));+(-(B))))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(+(-(A));+(-(B))))",
+          "rightStructureString": "(/(A;B))"
+        },
+        {
+          "leftStructureString": "(+(/(B;C);/(A;D)))",
+          "rightStructureString": "(/(+(*(B;D);*(C;A));*(C;D)))"
+        },
+        {
+          "leftStructureString": "(+(/(B;C);-(/(A;D))))",
+          "rightStructureString": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"
+        },
+        {
+          "leftStructureString": "(*(A;/(B;A)))",
+          "rightStructureString": "(B)"
+        },
+        {
+          "leftStructureString": "(*(/(B;A);A))",
+          "rightStructureString": "(B)"
+        },
+        {
+          "leftStructureString": "(*(A;/(B;C)))",
+          "rightStructureString": "(/(*(A;B);C))"
+        },
+        {
+          "leftStructureString": "(*(/(B;C);A))",
+          "rightStructureString": "(/(*(A;B);C))"
+        },
+        {
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(/(1;/(B;A)))"
+        },
+        {
+          "leftStructureString": "(/(1;/(B;A)))",
+          "rightStructureString": "(/(A;B))"
+        },
+        {
+          "leftStructureString": "(/(*(A;B);C))",
+          "rightStructureString": "(*(A;/(B;C)))"
+        },
+        {
+          "leftStructureString": "(/(/(B;C);A))",
+          "rightStructureString": "(/(B;*(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(B;*(A;C)))",
+          "rightStructureString": "(/(/(B;C);A))"
+        },
+        {
+          "leftStructureString": "(/(A;/(B;C)))",
+          "rightStructureString": "(/(*(A;C);B))"
+        },
+        {
+          "leftStructureString": "(/(*(A;C);B))",
+          "rightStructureString": "(/(A;/(B;C)))"
+        },
+        {
+          "leftStructureString": "(/(A;*(B;C)))",
+          "rightStructureString": "(*(/(A;B);/(1;C)))"
+        },
+        {
+          "leftStructureString": "(/(A;*(B;C)))",
+          "rightStructureString": "(*(/(1;B);/(A;C)))"
+        },
+        {
+          "leftStructureString": "(*(/(A;B);/(1;C)))",
+          "rightStructureString": "(/(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(*(/(1;B);/(A;C)))",
+          "rightStructureString": "(/(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(*(/(D;B);/(A;C)))",
+          "rightStructureString": "(/(*(D;A);*(B;C)))"
+        },
+        {
+          "leftStructureString": "(/(*(D;A);*(B;C)))",
+          "rightStructureString": "(*(/(D;B);/(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(*(D;A);*(B;A)))",
+          "rightStructureString": "(/(D;B))"
+        },
+        {
+          "leftStructureString": "(/(*(D;A);*(D;C)))",
+          "rightStructureString": "(/(A;C))"
+        },
+        {
+          "leftStructureString": "(/(*(D;A);D))",
+          "rightStructureString": "(A)"
+        },
+        {
+          "leftStructureString": "(/(*(A;D);D))",
+          "rightStructureString": "(A)"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticPow",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticDivision"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(a;1))",
+          "priority": 95,
+          "isExtending": true,
+          "simpleAdditional": true
+        },
+        {
+          "leftStructureString": "(1)",
+          "rightStructureString": "(^(1;2))",
+          "priority": 95,
+          "isExtending": true,
+          "simpleAdditional": true
+        },
+        {
+          "leftStructureString": "(1)",
+          "rightStructureString": "(^(1;3))",
+          "priority": 95,
+          "isExtending": true,
+          "simpleAdditional": true
+        },
+        {
+          "leftStructureString": "(/(1;a))",
+          "rightStructureString": "(^(a;+(-(1))))",
+          "priority": 80
+        },
+        {
+          "leftStructureString": "(^(a;+(-(1))))",
+          "rightStructureString": "(/(1;a))",
+          "priority": 40
+        },
+        {
+          "code": "PowFactorization",
+          "priority": 15
+        },
+        {
+          "leftStructureString": "(^(a;+(b;-(c))))",
+          "rightStructureString": "(/(^(a;b);^(a;c)))"
+        },
+        {
+          "leftStructureString": "(/(^(a;b);^(a;c)))",
+          "rightStructureString": "(^(a;+(b;-(c))))"
+        },
+        {
+          "leftStructureString": "(/(B;^(A;C)))",
+          "rightStructureString": "(*(B;^(A;+(-(C)))))"
+        },
+        {
+          "leftStructureString": "(*(B;^(A;+(-(C)))))",
+          "rightStructureString": "(/(B;^(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(1;^(A;C)))",
+          "rightStructureString": "(^(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(^(A;+(-(C))))",
+          "rightStructureString": "(/(1;^(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(^(/(B;A);+(-(1))))"
+        },
+        {
+          "leftStructureString": "(^(/(B;A);+(-(1))))",
+          "rightStructureString": "(/(A;B))"
+        },
+        {
+          "leftStructureString": "(^(A;0))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(^(1;A))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(^(A;1))",
+          "rightStructureString": "(A)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(^(0;A))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(*(a;a))",
+          "rightStructureString": "(^(a;2))",
+          "priority": 40,
+          "simpleAdditional": true
+        },
+        {
+          "leftStructureString": "(^(a;2))",
+          "rightStructureString": "(*(a;a))",
+          "priority": 40,
+          "simpleAdditional": true
+        },
+        {
+          "leftStructureString": "(*(a;^(a;n)))",
+          "rightStructureString": "(^(a;+(n;1)))"
+        },
+        {
+          "leftStructureString": "(^(a;+(n;1)))",
+          "rightStructureString": "(*(a;^(a;n)))"
+        },
+        {
+          "leftStructureString": "(*(^(a;n);a))",
+          "rightStructureString": "(^(a;+(1;n)))"
+        },
+        {
+          "leftStructureString": "(^(a;+(1;n)))",
+          "rightStructureString": "(*(^(a;n);a))"
+        },
+        {
+          "leftStructureString": "(/(^(a;n);a))",
+          "rightStructureString": "(^(a;+(n;-(1))))"
+        },
+        {
+          "leftStructureString": "(^(a;+(n;-(1))))",
+          "rightStructureString": "(/(^(a;n);a))"
+        },
+        {
+          "leftStructureString": "(^(A;*(B;C)))",
+          "rightStructureString": "(^(^(A;B);C))"
+        },
+        {
+          "leftStructureString": "(^(^(A;B);C))",
+          "rightStructureString": "(^(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(^(/(B;C);A))",
+          "rightStructureString": "(/(^(B;A);^(C;A)))"
+        },
+        {
+          "leftStructureString": "(/(^(B;A);^(C;A)))",
+          "rightStructureString": "(^(/(B;C);A))"
+        },
+        {
+          "leftStructureString": "(^(-(A);*(2;n)))",
+          "rightStructureString": "(^(A;*(2;n)))"
+        },
+        {
+          "leftStructureString": "(^(-(A);2))",
+          "rightStructureString": "(^(A;2))"
+        },
+        {
+          "leftStructureString": "(^(+(-(A));*(2;n)))",
+          "rightStructureString": "(^(A;*(2;n)))"
+        },
+        {
+          "leftStructureString": "(^(+(-(A));2))",
+          "rightStructureString": "(^(A;2))"
+        },
+        {
+          "leftStructureString": "(^(a;*(2;n)))",
+          "rightStructureString": "(^(+(-(a));*(2;n)))"
+        },
+        {
+          "leftStructureString": "(^(a;2))",
+          "rightStructureString": "(^(+(-(a));2))"
+        },
+        {
+          "leftStructureString": "(^(^(a;b);/(1;b)))",
+          "rightStructureString": "(a)",
+          "priority": 5
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticPowExtensions",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticPow"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(^(a;2);/(1;2)))",
+          "priority": 96,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(^(a;/(1;2));2))",
+          "priority": 96,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(^(a;3);/(1;3)))",
+          "priority": 96,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(^(a;/(1;3));3))",
+          "priority": 96,
+          "isExtending": true
+        }
+      ]
+    },
+    {
+      "code": "ShortMultiplication",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticPow"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(+(^(a;2);-(^(b;2))))",
+          "rightStructureString": "(*(+(a;-(b));+(a;b)))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;-(b));+(a;b)))",
+          "rightStructureString": "(+(^(a;2);-(^(b;2))))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;b);2))",
+          "rightStructureString": "(+(^(a;2);*(2;a;b);^(b;2)))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;2);*(2;a;b);^(b;2)))",
+          "rightStructureString": "(^(+(a;b);2))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;2);*(2;a);1))",
+          "rightStructureString": "(^(+(a;1);2))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;-(b));2))",
+          "rightStructureString": "(+(^(a;2);-(*(2;a;b));^(b;2)))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;2);-(*(2;a;b));^(b;2)))",
+          "rightStructureString": "(^(+(a;-(b));2))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;2);-(*(2;a));1))",
+          "rightStructureString": "(^(+(a;-(1));2))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;b);3))",
+          "rightStructureString": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))",
+          "rightStructureString": "(^(+(a;b);3))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);*(3;^(a;2));*(3;a);1))",
+          "rightStructureString": "(^(+(a;1);3))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;-(b));3))",
+          "rightStructureString": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))",
+          "rightStructureString": "(^(+(a;-(b));3))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);-(*(3;^(a;2)));*(3;a);-(1)))",
+          "rightStructureString": "(^(+(a;-(1));3))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);-(^(b;3))))",
+          "rightStructureString": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))",
+          "rightStructureString": "(+(^(a;3);-(^(b;3))))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;-(1));+(^(a;2);a;1)))",
+          "rightStructureString": "(+(^(a;3);-(^(1;3))))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);^(b;3)))",
+          "rightStructureString": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))",
+          "rightStructureString": "(+(^(a;3);^(b;3)))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;1);+(^(a;2);-(a);1)))",
+          "rightStructureString": "(+(^(a;3);^(1;3)))",
+          "priority": 25,
+          "matchJumbledAndNested": true
+        }
+      ]
+    },
+    {
+      "code": "Logarithm",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ShortMultiplication"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(^(a;log(b;a)))",
+          "rightStructureString": "(b)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(log(1;A))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(log(A;A))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(log(*(b;c);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a)))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(+(log(b;a);log(c;a)))",
+          "rightStructureString": "(log(*(b;c);a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(*(b;c;d);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a);log(d;a)))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(+(log(b;a);log(c;a);log(d;a)))",
+          "rightStructureString": "(log(*(b;c;d);a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(*(b;c;d;e);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))",
+          "rightStructureString": "(log(*(b;c;d;e);a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(/(b;c);a))",
+          "rightStructureString": "(+(log(b;a);-(log(c;a))))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(+(log(b;a);-(log(c;a))))",
+          "rightStructureString": "(log(/(b;c);a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(^(b;c);a))",
+          "rightStructureString": "(*(c;log(b;a)))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(*(c;log(b;a)))",
+          "rightStructureString": "(log(^(b;c);a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(*(log(b;a);c))",
+          "rightStructureString": "(log(^(b;c);a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(b;^(a;k)))",
+          "rightStructureString": "(/(log(b;a);k))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(/(log(b;a);k))",
+          "rightStructureString": "(log(b;^(a;k)))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(/(1;log(b;a)))",
+          "rightStructureString": "(log(a;b))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(a;b))",
+          "rightStructureString": "(/(1;log(b;a)))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(/(log(c;a);log(b;a)))",
+          "rightStructureString": "(log(c;b))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(/(b;c);a))",
+          "rightStructureString": "(+(-(log(/(c;b);a))))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(+(-(log(/(c;b);a))))",
+          "rightStructureString": "(log(/(b;c);a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(b;a))",
+          "rightStructureString": "(+(-(log(/(1;b);a))))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(+(-(log(/(1;b);a))))",
+          "rightStructureString": "(log(b;a))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(log(/(1;b);a))",
+          "rightStructureString": "(+(-(log(b;a))))",
+          "priority": 25
+        },
+        {
+          "leftStructureString": "(+(-(log(b;a))))",
+          "rightStructureString": "(log(/(1;b);a))",
+          "priority": 25
+        }
+      ]
+    },
+    {
+      "code": "FactorialRecurrent",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "Logarithm"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(factorial(+(n;1)))",
+          "rightStructureString": "(*(factorial(n);+(n;1)))"
+        },
+        {
+          "leftStructureString": "(*(factorial(n);+(n;1)))",
+          "rightStructureString": "(factorial(+(n;1)))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(/(factorial(+(n;1));+(n;1)))",
+          "rightStructureString": "(factorial(n))"
+        },
+        {
+          "leftStructureString": "(factorial(n))",
+          "rightStructureString": "(/(factorial(+(n;1));+(n;1)))"
+        },
+        {
+          "leftStructureString": "(/(factorial(+(n;1));factorial(n)))",
+          "rightStructureString": "(+(n;1))"
+        },
+        {
+          "leftStructureString": "(+(n;1))",
+          "rightStructureString": "(/(factorial(+(n;1));factorial(n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(factorial(n))",
+          "rightStructureString": "(*(factorial(+(n;-(1)));n))"
+        },
+        {
+          "leftStructureString": "(*(factorial(+(n;-(1)));n))",
+          "rightStructureString": "(factorial(n))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(/(factorial(n);n))",
+          "rightStructureString": "(factorial(+(n;-(1))))"
+        },
+        {
+          "leftStructureString": "(factorial(+(n;-(1))))",
+          "rightStructureString": "(/(factorial(n);n))"
+        },
+        {
+          "leftStructureString": "(/(factorial(n);factorial(+(n;-(1)))))",
+          "rightStructureString": "(n)"
+        },
+        {
+          "leftStructureString": "(n)",
+          "rightStructureString": "(/(factorial(n);factorial(+(n;-(1)))))",
+          "priority": 85,
+          "isExtending": true
+        }
+      ]
+    },
+    {
+      "code": "CombinatoricBase",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "FactorialRecurrent"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(U(m;n))",
+          "rightStructureString": "(^(m;n))"
+        },
+        {
+          "leftStructureString": "(^(m;n))",
+          "rightStructureString": "(U(m;n))"
+        },
+        {
+          "leftStructureString": "(P(n))",
+          "rightStructureString": "(factorial(n))"
+        },
+        {
+          "leftStructureString": "(factorial(n))",
+          "rightStructureString": "(P(n))"
+        },
+        {
+          "leftStructureString": "(A(n;n))",
+          "rightStructureString": "(P(n))"
+        },
+        {
+          "leftStructureString": "(P(n))",
+          "rightStructureString": "(A(n;n))",
+          "priority": 70,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(*(C(m;n);P(n)))",
+          "rightStructureString": "(A(m;n))"
+        },
+        {
+          "leftStructureString": "(A(m;n))",
+          "rightStructureString": "(*(C(m;n);P(n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(A(m;n);P(n)))",
+          "rightStructureString": "(C(m;n))"
+        },
+        {
+          "leftStructureString": "(C(m;n))",
+          "rightStructureString": "(/(A(m;n);P(n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(A(m;n);C(m;n)))",
+          "rightStructureString": "(P(n))"
+        },
+        {
+          "leftStructureString": "(P(n))",
+          "rightStructureString": "(/(A(m;n);C(m;n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(V(+(m;1);n))",
+          "rightStructureString": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))"
+        },
+        {
+          "leftStructureString": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))",
+          "rightStructureString": "(V(+(m;1);n))"
+        },
+        {
+          "leftStructureString": "(factorial(+(m;n)))",
+          "rightStructureString": "(*(V(+(m;1);n);*(factorial(m);factorial(n))))"
+        },
+        {
+          "leftStructureString": "(*(V(+(m;1);n);*(factorial(m);factorial(n))))",
+          "rightStructureString": "(factorial(+(m;n)))"
+        },
+        {
+          "leftStructureString": "(*(factorial(m);factorial(n)))",
+          "rightStructureString": "(/(factorial(+(m;n));V(+(m;1);n)))"
+        },
+        {
+          "leftStructureString": "(/(factorial(+(m;n));V(+(m;1);n)))",
+          "rightStructureString": "(*(factorial(m);factorial(n)))"
+        },
+        {
+          "leftStructureString": "(C(+(m;n);n))",
+          "rightStructureString": "(/(factorial(+(m;n));*(factorial(m);factorial(n))))"
+        },
+        {
+          "leftStructureString": "(C(+(m;n);n))",
+          "rightStructureString": "(V(+(m;1);n))"
+        },
+        {
+          "leftStructureString": "(V(+(m;1);n))",
+          "rightStructureString": "(C(+(m;n);n))"
+        },
+        {
+          "leftStructureString": "(A(+(m;n);n))",
+          "rightStructureString": "(/(factorial(+(m;n));factorial(m)))"
+        },
+        {
+          "leftStructureString": "(/(factorial(+(m;n));factorial(m)))",
+          "rightStructureString": "(A(+(m;n);n))"
+        },
+        {
+          "leftStructureString": "(factorial(+(m;n)))",
+          "rightStructureString": "(*(A(+(m;n);n);factorial(m)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(*(A(+(m;n);n);factorial(m)))",
+          "rightStructureString": "(factorial(+(m;n)))"
+        },
+        {
+          "leftStructureString": "(*(factorial(m);A(+(m;n);n)))",
+          "rightStructureString": "(factorial(+(m;n)))"
+        },
+        {
+          "leftStructureString": "(factorial(m))",
+          "rightStructureString": "(/(factorial(+(m;n));A(+(m;n);n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(factorial(+(m;n));A(+(m;n);n)))",
+          "rightStructureString": "(factorial(m))"
+        },
+        {
+          "leftStructureString": "(S1(m;n))",
+          "rightStructureString": "(*(factorial(n);S2(m;n)))"
+        },
+        {
+          "leftStructureString": "(*(factorial(n);S2(m;n)))",
+          "rightStructureString": "(S1(m;n))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(factorial(n))",
+          "rightStructureString": "(/(S1(m;n);S2(m;n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(S1(m;n);S2(m;n)))",
+          "rightStructureString": "(factorial(n))"
+        },
+        {
+          "leftStructureString": "(S2(m;n))",
+          "rightStructureString": "(/(S1(m;n);factorial(n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(S1(m;n);factorial(n)))",
+          "rightStructureString": "(S2(m;n))"
+        },
+        {
+          "leftStructureString": "(S2(+(m;1);+(n;1)))",
+          "rightStructureString": "(+(S2(m;n);*(n;S2(m;+(n;1)))))"
+        },
+        {
+          "leftStructureString": "(+(S2(m;n);*(n;S2(m;+(n;1)))))",
+          "rightStructureString": "(S2(+(m;1);+(n;1)))"
+        },
+        {
+          "leftStructureString": "(S2(m;m))",
+          "rightStructureString": "(1)"
+        },
+        {
+          "leftStructureString": "(1)",
+          "rightStructureString": "(S2(m;n))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(C(*(2;n);n))",
+          "rightStructureString": "(*(C(n);+(n;1)))"
+        },
+        {
+          "leftStructureString": "(*(C(n);+(n;1)))",
+          "rightStructureString": "(C(*(2;n);n))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(C(n))",
+          "rightStructureString": "(/(C(*(2;n);n);+(n;1)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(C(*(2;n);n);+(n;1)))",
+          "rightStructureString": "(C(n))"
+        },
+        {
+          "leftStructureString": "(+(n;1))",
+          "rightStructureString": "(/(C(*(2;n);n);C(n)))",
+          "priority": 80,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(/(C(*(2;n);n);C(n)))",
+          "rightStructureString": "(+(n;1))"
+        },
+        {
+          "leftStructureString": "(C(0))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(1)",
+          "rightStructureString": "(C(0))",
+          "priority": 90,
+          "isExtending": true
+        }
+      ]
+    }
+  ]
+}

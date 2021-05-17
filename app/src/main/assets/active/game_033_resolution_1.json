@@ -1,0 +1,580 @@
+{
+  "taskSet": {
+    "code": "game_033_resolution_1",
+    "version": 0,
+    "namespaceCode": "",
+    "nameEn": "Resolution-1",
+    "nameRu": "Метод Резолюций-1",
+    "subjectType": "standard_math",
+    "tasks": [
+      {
+        "code": "game_033_resolution_1__Level_01_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 1 Resolution",
+        "nameRu": "Уровень 1 Резолюции",
+        "descriptionShortEn": "(0)",
+        "descriptionShortRu": "(0)",
+        "originalExpressionStructureString": "(and(A;B;implic(A;C);not(C)))",
+        "goalExpressionStructureString": "(0)",
+        "goalPattern": "",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "LogicResolution"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 6,
+        "time": 120,
+        "difficulty": 1.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_033_resolution_1__Level_02_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 2 Resolution",
+        "nameRu": "Уровень 2 Резолюции",
+        "descriptionShortEn": "(0)",
+        "descriptionShortRu": "(0)",
+        "originalExpressionStructureString": "(and(not(A);implic(not(A);B);implic(B;C);not(C)))",
+        "goalExpressionStructureString": "(0)",
+        "goalPattern": "",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "LogicResolution"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 7,
+        "time": 250,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_033_resolution_1__Level_03_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 3 Resolution",
+        "nameRu": "Уровень 3 Резолюции",
+        "descriptionShortEn": "(0)",
+        "descriptionShortRu": "(0)",
+        "originalExpressionStructureString": "(and(or(A;C);implic(D;C);implic(A;D);not(C)))",
+        "goalExpressionStructureString": "(0)",
+        "goalPattern": "",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "LogicResolution"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 9,
+        "time": 200,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_033_resolution_1__Level_04_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 4 Resolution",
+        "nameRu": "Уровень 4 Резолюции",
+        "descriptionShortEn": "(0)",
+        "descriptionShortRu": "(0)",
+        "originalExpressionStructureString": "(and(or(A;B;C);implic(A;or(C;D));implic(C;or(B;D));not(B);not(D)))",
+        "goalExpressionStructureString": "(0)",
+        "goalPattern": "",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "LogicResolution"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 16,
+        "time": 350,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "game_033_resolution_1__Level_05_Prove",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Level 5 Resolution",
+        "nameRu": "Уровень 5 Резолюции",
+        "descriptionShortEn": "(0)",
+        "descriptionShortRu": "(0)",
+        "originalExpressionStructureString": "(and(or(A;B);implic(not(C);not(A));implic(not(D);not(B));not(or(C;D));not(or(not(C);not(D)))))",
+        "goalExpressionStructureString": "(0)",
+        "goalPattern": "",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "LogicResolution"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 11,
+        "time": 300,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      }
+    ]
+  },
+  "rulePacks": [
+    {
+      "code": "SetDeMorgan",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "set",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(not(and(A;B)))",
+          "rightStructureString": "(or(not(A);not(B)))",
+          "priority": 15
+        },
+        {
+          "leftStructureString": "(or(not(A);not(B)))",
+          "rightStructureString": "(not(and(A;B)))",
+          "priority": 10
+        },
+        {
+          "leftStructureString": "(not(or(A;B)))",
+          "rightStructureString": "(and(not(A);not(B)))",
+          "priority": 15
+        },
+        {
+          "leftStructureString": "(and(not(A);not(B)))",
+          "rightStructureString": "(not(or(A;B)))",
+          "priority": 10
+        }
+      ]
+    },
+    {
+      "code": "LogicAndOrBase",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "set",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "SetDeMorgan"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(not(not(a)))",
+          "rightStructureString": "(a)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(not(not(a)))",
+          "priority": 89,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(or(a;a))",
+          "rightStructureString": "(a)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(or(a;a))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(and(a;a))",
+          "rightStructureString": "(a)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(and(a;a))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(and(a;b))",
+          "rightStructureString": "(and(b;a))",
+          "priority": 40,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(or(a;b))",
+          "rightStructureString": "(or(b;a))",
+          "priority": 40,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(and(a;1))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(or(a;0))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(or(A;not(A)))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(or(not(A);A))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(and(A;not(A)))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(and(not(A);A))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(or(A;1))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(or(1;A))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(and(A;1))",
+          "rightStructureString": "(A)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(and(1;A))",
+          "rightStructureString": "(A)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(or(A;0))",
+          "rightStructureString": "(A)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(or(0;A))",
+          "rightStructureString": "(A)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(and(A;0))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(and(0;A))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(not(0))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(not(1))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "code": "SimpleComputation",
+          "priority": 5
+        },
+        {
+          "code": "ZeroComputation",
+          "priority": 5
+        },
+        {
+          "code": "SetComplicatingExtension",
+          "priority": 92
+        },
+        {
+          "code": "ParentBracketsExpansion",
+          "priority": 30
+        },
+        {
+          "code": "ArgumentsSwap",
+          "priority": 40
+        },
+        {
+          "code": "ArgumentsPermutation",
+          "priority": 40
+        },
+        {
+          "code": "OpeningBrackets",
+          "priority": 30
+        },
+        {
+          "code": "ArgumentsPermutationInOriginalOrder",
+          "priority": 41
+        },
+        {
+          "code": "ReduceArithmetic",
+          "priority": 10
+        },
+        {
+          "code": "TwoSidesArithmeticReduce",
+          "priority": 10
+        }
+      ]
+    },
+    {
+      "code": "LogicImplicationDifference",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "set",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "LogicAndOrBase"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(or(not(A);B))",
+          "rightStructureString": "(implic(A;B))"
+        },
+        {
+          "leftStructureString": "(or(B;not(A)))",
+          "rightStructureString": "(implic(A;B))"
+        },
+        {
+          "leftStructureString": "(implic(A;B))",
+          "rightStructureString": "(or(not(A);B))"
+        },
+        {
+          "leftStructureString": "(and(A;not(B)))",
+          "rightStructureString": "(set-(A;B))"
+        },
+        {
+          "leftStructureString": "(and(not(B);A))",
+          "rightStructureString": "(set-(A;B))"
+        },
+        {
+          "leftStructureString": "(set-(A;B))",
+          "rightStructureString": "(and(A;not(B)))"
+        },
+        {
+          "leftStructureString": "(set-(A;B))",
+          "rightStructureString": "(not(implic(A;B)))"
+        },
+        {
+          "leftStructureString": "(not(implic(A;B)))",
+          "rightStructureString": "(set-(A;B))"
+        },
+        {
+          "leftStructureString": "(implic(A;B))",
+          "rightStructureString": "(not(set-(A;B)))"
+        },
+        {
+          "leftStructureString": "(not(set-(A;B)))",
+          "rightStructureString": "(implic(A;B))"
+        },
+        {
+          "leftStructureString": "(set-(A;0))",
+          "rightStructureString": "(A)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(set-(A;1))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(set-(0;A))",
+          "rightStructureString": "(0)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(set-(1;A))",
+          "rightStructureString": "(not(A))",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(implic(0;A))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(implic(A;1))",
+          "rightStructureString": "(1)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(implic(A;0))",
+          "rightStructureString": "(not(A))",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(implic(1;A))",
+          "rightStructureString": "(A)",
+          "priority": 5
+        },
+        {
+          "leftStructureString": "(A)",
+          "rightStructureString": "(set-(A;0))",
+          "priority": 91,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(A)",
+          "rightStructureString": "(implic(1;A))",
+          "priority": 91,
+          "isExtending": true
+        }
+      ]
+    },
+    {
+      "code": "LogicAbsorptionLaw",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "set",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(and(A;or(A;B)))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(or(A;and(A;B)))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(and(A;or(B;A)))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(or(A;and(B;A)))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(and(or(A;B);A))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(or(and(A;B);A))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(and(or(B;A);A))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(or(and(B;A);A))",
+          "rightStructureString": "(A)",
+          "priority": 6
+        },
+        {
+          "leftStructureString": "(A)",
+          "rightStructureString": "(and(A;or(A;B)))",
+          "priority": 90,
+          "isExtending": true
+        },
+        {
+          "leftStructureString": "(A)",
+          "rightStructureString": "(or(A;and(A;B)))",
+          "priority": 90,
+          "isExtending": true
+        }
+      ]
+    },
+    {
+      "code": "LogicResolution",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "set",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "LogicImplicationDifference"
+        }
+      ],
+      "rules": [
+        {
+          "leftStructureString": "(and(not(A);A))",
+          "rightStructureString": "(and(0;not(A);A))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(A;not(A)))",
+          "rightStructureString": "(and(0;A;not(A)))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(or(A;X);not(A)))",
+          "rightStructureString": "(and(X;or(A;X);not(A)))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(or(X;A);not(A)))",
+          "rightStructureString": "(and(X;or(X;A);not(A)))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(or(not(A);X);A))",
+          "rightStructureString": "(and(X;or(not(A);X);A))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(A;or(X;not(A))))",
+          "rightStructureString": "(and(X;A;or(X;not(A))))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(or(A;X);or(not(A);Y)))",
+          "rightStructureString": "(and(or(X;Y);or(A;X);or(not(A);Y)))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(or(A;X);or(Y;not(A))))",
+          "rightStructureString": "(and(or(X;Y);or(A;X);or(Y;not(A))))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(or(not(A);X);or(A;Y)))",
+          "rightStructureString": "(and(or(X;Y);or(not(A);X);or(A;Y)))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(and(or(X;not(A));or(A;Y)))",
+          "rightStructureString": "(and(or(X;Y);or(X;not(A));or(A;Y)))",
+          "priority": 4,
+          "matchJumbledAndNested": true
+        }
+      ]
+    }
+  ]
+}

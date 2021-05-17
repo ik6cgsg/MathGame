@@ -1,0 +1,2027 @@
+{
+  "taskSet": {
+    "code": "begin_from_simple",
+    "version": 0,
+    "namespaceCode": "",
+    "nameEn": "Begin from simple",
+    "nameRu": "Начни с простого (Микс)",
+    "subjectType": "standard_math",
+    "tasks": [
+      {
+        "code": "begin_from_simple__Level_00_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Uncanceled fraction",
+        "nameRu": "Несокращенная дробь",
+        "descriptionShortEn": "Сократить дробь",
+        "descriptionShortRu": "Сократить дробь",
+        "originalExpressionStructureString": "(/(96;16))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 1,
+        "time": 70,
+        "difficulty": 1.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_01_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Uncalculated root",
+        "nameRu": "Невычисленный корень",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(^(27;/(1;3)))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 2,
+        "time": 100,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_02_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Difference of squares",
+        "nameRu": "Разность квадратов",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(^(64;2);-(^(36;2))))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 3,
+        "time": 120,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_03_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Square of difference",
+        "nameRu": "Квадрат разности",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(^(23;2);-(*(2;23;3));9))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 4,
+        "time": 120,
+        "difficulty": 2.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_04_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Guess 1",
+        "nameRu": "Догадайся 1",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(16;*(2;64);^(16;2)))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 5,
+        "time": 120,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_05_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Guess 2",
+        "nameRu": "Догадайся 2",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(^(+(^(65;2);-(^(56;2)));0.5))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 7,
+        "time": 120,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_06_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Sum of cubes",
+        "nameRu": "Сумма кубов",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(^(8;3);^(12;3)))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 6,
+        "time": 180,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_07_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Difference cubes",
+        "nameRu": "Разность кубов",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(^(8;3);-(^(6;3))))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 6,
+        "time": 180,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_08_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Sum cube",
+        "nameRu": "Куб суммы",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(8;*(3;32);*(3;2;64);^(8;3)))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 7,
+        "time": 200,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_09_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Guess 3",
+        "nameRu": "Догадайся 3",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(*(+(4;53);+(16;-(*(4;53));^(53;2)));*(+(4;-(53));+(^(4;2);*(4;53);^(53;2)))))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 9,
+        "time": 300,
+        "difficulty": 5.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_10_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Guess 4",
+        "nameRu": "Догадайся 4",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(^(+(^(26;3);1;*(27;+(-(+(^(26;2);-(26))))));/(1;3)))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 16,
+        "time": 500,
+        "difficulty": 6.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_11_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Logarithm",
+        "nameRu": "Логарифм",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(*(3;^(3;log(9;3))))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 2,
+        "time": 150,
+        "difficulty": 3.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_12_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Difference of logarithms",
+        "nameRu": "Разность логарифмов",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(+(log(72;3);-(log(8;3))))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 3,
+        "time": 180,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_13_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Quotient of logarithms",
+        "nameRu": "Частное логарифмов",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(/(log(81;27);log(9;27)))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 2,
+        "time": 150,
+        "difficulty": 4.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_14_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Guess 5",
+        "nameRu": "Догадайся 5",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(/(log(36;3);+(2;log(4;3))))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 5,
+        "time": 250,
+        "difficulty": 6.0,
+        "otherCheckSolutionData": {}
+      },
+      {
+        "code": "begin_from_simple__Level_15_Compute",
+        "version": 0,
+        "namespaceCode": "",
+        "nameEn": "Guess 6",
+        "nameRu": "Догадайся 6",
+        "descriptionShortEn": "Вычислить",
+        "descriptionShortRu": "Вычислить",
+        "originalExpressionStructureString": "(/(^(16;log(32;4));^(16;log(2;4))))",
+        "goalExpressionStructureString": "",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "",
+            "rulePackCode": "MathBase"
+          }
+        ],
+        "rules": [],
+        "stepsNumber": 5,
+        "time": 250,
+        "difficulty": 5.0,
+        "otherCheckSolutionData": {}
+      }
+    ]
+  },
+  "rulePacks": [
+    {
+      "code": "MathBase",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ComputationRules"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticСommutativity"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticMinus"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "BaseDigits"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticAssociativity"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "AdditiveToMultiplicative"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticDegree"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ShortMultiplication"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "Logarithm"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticPlusSelections"
+        }
+      ],
+      "rules": [
+        {
+          "code": "SimpleComputation",
+          "priority": 5
+        },
+        {
+          "code": "ZeroComputation",
+          "priority": 5
+        },
+        {
+          "code": "NumberPlusMinus1",
+          "priority": 20
+        },
+        {
+          "code": "MultiplicationFactorization",
+          "priority": 15
+        },
+        {
+          "code": "DecimalToFraction",
+          "priority": 15
+        },
+        {
+          "code": "PowFactorization",
+          "priority": 15
+        }
+      ]
+    },
+    {
+      "code": "BaseDigits",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(a))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(+(a;+(b)))",
+          "rightStructureString": "(+(a;b))"
+        },
+        {
+          "leftStructureString": "(+(+(a);b))",
+          "rightStructureString": "(+(a;b))"
+        },
+        {
+          "leftStructureString": "(+(a;a))",
+          "rightStructureString": "(*(2;a))"
+        },
+        {
+          "leftStructureString": "(+(a;+(a)))",
+          "rightStructureString": "(*(2;a))"
+        },
+        {
+          "leftStructureString": "(+(+(a);a))",
+          "rightStructureString": "(*(2;a))"
+        },
+        {
+          "leftStructureString": "(*(2;a))",
+          "rightStructureString": "(+(a;a))"
+        },
+        {
+          "leftStructureString": "(+(a;a;a))",
+          "rightStructureString": "(*(3;a))"
+        },
+        {
+          "leftStructureString": "(+(a;*(2;a)))",
+          "rightStructureString": "(*(3;a))"
+        },
+        {
+          "leftStructureString": "(+(*(2;a);a))",
+          "rightStructureString": "(*(3;a))"
+        },
+        {
+          "leftStructureString": "(*(3;a))",
+          "rightStructureString": "(+(a;*(2;a)))"
+        },
+        {
+          "leftStructureString": "(+(a;*(3;a)))",
+          "rightStructureString": "(*(4;a))"
+        },
+        {
+          "leftStructureString": "(+(*(3;a);a))",
+          "rightStructureString": "(*(4;a))"
+        },
+        {
+          "leftStructureString": "(+(*(2;a);*(2;a)))",
+          "rightStructureString": "(*(4;a))"
+        },
+        {
+          "leftStructureString": "(*(4;a))",
+          "rightStructureString": "(+(a;*(3;a)))"
+        },
+        {
+          "leftStructureString": "(+(a;0))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(+(0;a))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(+(a;0))"
+        },
+        {
+          "leftStructureString": "(*(a;0))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(*(0;a))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(/(0;a))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(*(a;1))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(*(1;a))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(/(a;1))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(/(a;a))",
+          "rightStructureString": "(1)"
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(*(a;1))"
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(/(1;/(1;a)))"
+        },
+        {
+          "leftStructureString": "(/(1;/(1;a)))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(+(-(+(-(a)))))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(-(+(-(a))))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(-(+(-(a))))"
+        },
+        {
+          "leftStructureString": "(+(1;1))",
+          "rightStructureString": "(2)"
+        },
+        {
+          "leftStructureString": "(2)",
+          "rightStructureString": "(+(1;1))"
+        },
+        {
+          "leftStructureString": "(+(1;2))",
+          "rightStructureString": "(3)"
+        },
+        {
+          "leftStructureString": "(3)",
+          "rightStructureString": "(+(1;2))"
+        },
+        {
+          "leftStructureString": "(*(1;1))",
+          "rightStructureString": "(1)"
+        },
+        {
+          "leftStructureString": "(1)",
+          "rightStructureString": "(*(1;1))"
+        },
+        {
+          "leftStructureString": "(0.5)",
+          "rightStructureString": "(/(1;2))"
+        },
+        {
+          "leftStructureString": "(/(1;2))",
+          "rightStructureString": "(0.5)"
+        }
+      ]
+    },
+    {
+      "code": "ComputationRules",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "PowRules"
+        }
+      ],
+      "rules": []
+    },
+    {
+      "code": "PowRules",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(1024)",
+          "rightStructureString": "(^(2;10))"
+        },
+        {
+          "leftStructureString": "(625)",
+          "rightStructureString": "(^(5;4))"
+        },
+        {
+          "leftStructureString": "(512)",
+          "rightStructureString": "(^(2;9))"
+        },
+        {
+          "leftStructureString": "(256)",
+          "rightStructureString": "(^(2;8))"
+        },
+        {
+          "leftStructureString": "(256)",
+          "rightStructureString": "(^(4;4))"
+        },
+        {
+          "leftStructureString": "(243)",
+          "rightStructureString": "(^(3;5))"
+        },
+        {
+          "leftStructureString": "(169)",
+          "rightStructureString": "(^(13;2))"
+        },
+        {
+          "leftStructureString": "(144)",
+          "rightStructureString": "(^(12;2))"
+        },
+        {
+          "leftStructureString": "(128)",
+          "rightStructureString": "(^(2;7))"
+        },
+        {
+          "leftStructureString": "(125)",
+          "rightStructureString": "(^(5;3))"
+        },
+        {
+          "leftStructureString": "(121)",
+          "rightStructureString": "(^(11;2))"
+        },
+        {
+          "leftStructureString": "(100)",
+          "rightStructureString": "(^(10;2))"
+        },
+        {
+          "leftStructureString": "(81)",
+          "rightStructureString": "(^(9;2))"
+        },
+        {
+          "leftStructureString": "(64)",
+          "rightStructureString": "(^(8;2))"
+        },
+        {
+          "leftStructureString": "(64)",
+          "rightStructureString": "(^(4;3))"
+        },
+        {
+          "leftStructureString": "(64)",
+          "rightStructureString": "(^(2;6))"
+        },
+        {
+          "leftStructureString": "(49)",
+          "rightStructureString": "(^(7;2))"
+        },
+        {
+          "leftStructureString": "(36)",
+          "rightStructureString": "(^(6;2))"
+        },
+        {
+          "leftStructureString": "(32)",
+          "rightStructureString": "(^(2;5))"
+        },
+        {
+          "leftStructureString": "(27)",
+          "rightStructureString": "(^(3;3))"
+        },
+        {
+          "leftStructureString": "(25)",
+          "rightStructureString": "(^(5;2))"
+        },
+        {
+          "leftStructureString": "(16)",
+          "rightStructureString": "(^(4;2))"
+        },
+        {
+          "leftStructureString": "(16)",
+          "rightStructureString": "(^(2;4))"
+        },
+        {
+          "leftStructureString": "(9)",
+          "rightStructureString": "(^(3;2))"
+        },
+        {
+          "leftStructureString": "(8)",
+          "rightStructureString": "(^(2;3))"
+        },
+        {
+          "leftStructureString": "(4)",
+          "rightStructureString": "(^(2;2))"
+        },
+        {
+          "leftStructureString": "(1)",
+          "rightStructureString": "(^(1;2))"
+        },
+        {
+          "leftStructureString": "(1)",
+          "rightStructureString": "(^(1;3))"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticСommutativity",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticAdditionalСommutativity"
+        },
+        {
+          "namespaceCode": "",
+          "rulePackCode": "ArithmeticMultiplicativeСommutativity"
+        }
+      ],
+      "rules": []
+    },
+    {
+      "code": "ArithmeticAdditionalСommutativity",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(a;b))",
+          "rightStructureString": "(+(b;a))"
+        },
+        {
+          "leftStructureString": "(+(A;+(B;C)))",
+          "rightStructureString": "(+(A;B;C))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C))",
+          "rightStructureString": "(+(A;+(B;C)))"
+        },
+        {
+          "leftStructureString": "(+(A;+(B;C)))",
+          "rightStructureString": "(+(+(A;B);C))"
+        },
+        {
+          "leftStructureString": "(+(+(A;B);C))",
+          "rightStructureString": "(+(A;+(B;C)))"
+        },
+        {
+          "leftStructureString": "(+(+(A;B);C))",
+          "rightStructureString": "(+(A;B;C))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C))",
+          "rightStructureString": "(+(+(A;B);C))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C))",
+          "rightStructureString": "(+(A;C;B))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C))",
+          "rightStructureString": "(+(B;A;C))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C))",
+          "rightStructureString": "(+(C;A;B))"
+        },
+        {
+          "leftStructureString": "(+(+(A;B);+(C;D)))",
+          "rightStructureString": "(+(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;+(B;C;D)))",
+          "rightStructureString": "(+(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(A;+(B;C;D)))"
+        },
+        {
+          "leftStructureString": "(+(+(A;B;C);D))",
+          "rightStructureString": "(+(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(+(A;B;C);D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;+(C;D)))",
+          "rightStructureString": "(+(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(A;B;+(C;D)))"
+        },
+        {
+          "leftStructureString": "(+(A;+(B;C);D))",
+          "rightStructureString": "(+(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(A;+(B;C);D))"
+        },
+        {
+          "leftStructureString": "(+(+(A;B);C;D))",
+          "rightStructureString": "(+(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(+(A;B);C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(B;A;C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(C;A;B;D))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D))",
+          "rightStructureString": "(+(D;A;B;C))"
+        },
+        {
+          "leftStructureString": "(+(A;+(B;C;D;E)))",
+          "rightStructureString": "(+(A;B;C;D;E))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D;E))",
+          "rightStructureString": "(+(A;+(B;C;D;E)))"
+        },
+        {
+          "leftStructureString": "(+(+(A;B;C;D);E))",
+          "rightStructureString": "(+(A;B;C;D;E))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D;E))",
+          "rightStructureString": "(+(+(A;B;C;D);E))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D;E))",
+          "rightStructureString": "(+(B;A;C;D;E))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D;E))",
+          "rightStructureString": "(+(C;A;B;D;E))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D;E))",
+          "rightStructureString": "(+(D;A;B;C;E))"
+        },
+        {
+          "leftStructureString": "(+(A;B;C;D;E))",
+          "rightStructureString": "(+(E;A;B;C;D))"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticPlusSelections",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(a;b))",
+          "rightStructureString": "(+(a;+(b)))"
+        },
+        {
+          "leftStructureString": "(+(a;b))",
+          "rightStructureString": "(+(+(a);b))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c))",
+          "rightStructureString": "(+(+(a);b;c))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c))",
+          "rightStructureString": "(+(a;+(b);c))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c))",
+          "rightStructureString": "(+(a;b;+(c)))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d))",
+          "rightStructureString": "(+(+(a);b;c;d))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d))",
+          "rightStructureString": "(+(a;+(b);c;d))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d))",
+          "rightStructureString": "(+(a;b;+(c);d))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d))",
+          "rightStructureString": "(+(a;b;c;+(d)))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d;e))",
+          "rightStructureString": "(+(+(a);b;c;d;e))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d;e))",
+          "rightStructureString": "(+(a;+(b);c;d;e))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d;e))",
+          "rightStructureString": "(+(a;b;+(c);d;e))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d;e))",
+          "rightStructureString": "(+(a;b;c;+(d);e))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d;e))",
+          "rightStructureString": "(+(a;b;c;d;+(e)))"
+        },
+        {
+          "leftStructureString": "(+(a;+(b)))",
+          "rightStructureString": "(+(a;b))"
+        },
+        {
+          "leftStructureString": "(+(+(a);b))",
+          "rightStructureString": "(+(a;b))"
+        },
+        {
+          "leftStructureString": "(+(+(a);b;c))",
+          "rightStructureString": "(+(a;b;c))"
+        },
+        {
+          "leftStructureString": "(+(a;+(b);c))",
+          "rightStructureString": "(+(a;b;c))"
+        },
+        {
+          "leftStructureString": "(+(a;b;+(c)))",
+          "rightStructureString": "(+(a;b;c))"
+        },
+        {
+          "leftStructureString": "(+(+(a);b;c;d))",
+          "rightStructureString": "(+(a;b;c;d))"
+        },
+        {
+          "leftStructureString": "(+(a;+(b);c;d))",
+          "rightStructureString": "(+(a;b;c;d))"
+        },
+        {
+          "leftStructureString": "(+(a;b;+(c);d))",
+          "rightStructureString": "(+(a;b;c;d))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;+(d)))",
+          "rightStructureString": "(+(a;b;c;d))"
+        },
+        {
+          "leftStructureString": "(+(+(a);b;c;d;e))",
+          "rightStructureString": "(+(a;b;c;d;e))"
+        },
+        {
+          "leftStructureString": "(+(a;+(b);c;d;e))",
+          "rightStructureString": "(+(a;b;c;d;e))"
+        },
+        {
+          "leftStructureString": "(+(a;b;+(c);d;e))",
+          "rightStructureString": "(+(a;b;c;d;e))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;+(d);e))",
+          "rightStructureString": "(+(a;b;c;d;e))"
+        },
+        {
+          "leftStructureString": "(+(a;b;c;d;+(e)))",
+          "rightStructureString": "(+(a;b;c;d;e))"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticMultiplicativeСommutativity",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(*(a;b))",
+          "rightStructureString": "(*(b;a))"
+        },
+        {
+          "leftStructureString": "(*(A;*(B;C)))",
+          "rightStructureString": "(*(A;B;C))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C))",
+          "rightStructureString": "(*(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(*(A;*(B;C)))",
+          "rightStructureString": "(*(*(A;B);C))"
+        },
+        {
+          "leftStructureString": "(*(*(A;B);C))",
+          "rightStructureString": "(*(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(*(*(A;B);C))",
+          "rightStructureString": "(*(A;B;C))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C))",
+          "rightStructureString": "(*(*(A;B);C))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C))",
+          "rightStructureString": "(*(A;C;B))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C))",
+          "rightStructureString": "(*(B;A;C))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C))",
+          "rightStructureString": "(*(C;A;B))"
+        },
+        {
+          "leftStructureString": "(*(*(A;B);*(C;D)))",
+          "rightStructureString": "(*(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;*(B;C;D)))",
+          "rightStructureString": "(*(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(A;*(B;C;D)))"
+        },
+        {
+          "leftStructureString": "(*(*(A;B;C);D))",
+          "rightStructureString": "(*(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(*(A;B;C);D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;*(C;D)))",
+          "rightStructureString": "(*(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(A;B;*(C;D)))"
+        },
+        {
+          "leftStructureString": "(*(A;*(B;C);D))",
+          "rightStructureString": "(*(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(A;*(B;C);D))"
+        },
+        {
+          "leftStructureString": "(*(*(A;B);C;D))",
+          "rightStructureString": "(*(A;B;C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(*(A;B);C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(B;A;C;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(C;A;B;D))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D))",
+          "rightStructureString": "(*(D;A;B;C))"
+        },
+        {
+          "leftStructureString": "(*(A;*(B;C;D;E)))",
+          "rightStructureString": "(*(A;B;C;D;E))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D;E))",
+          "rightStructureString": "(*(A;*(B;C;D;E)))"
+        },
+        {
+          "leftStructureString": "(*(*(A;B;C;D);E))",
+          "rightStructureString": "(*(A;B;C;D;E))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D;E))",
+          "rightStructureString": "(*(*(A;B;C;D);E))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D;E))",
+          "rightStructureString": "(*(B;A;C;D;E))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D;E))",
+          "rightStructureString": "(*(C;A;B;D;E))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D;E))",
+          "rightStructureString": "(*(D;A;B;C;E))"
+        },
+        {
+          "leftStructureString": "(*(A;B;C;D;E))",
+          "rightStructureString": "(*(E;A;B;C;D))"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticMinus",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(-(+(-(a)))))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(-(+(-(a))))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(-(-(a)))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(b)",
+          "rightStructureString": "(+(-(+(-(b)))))"
+        },
+        {
+          "leftStructureString": "(+(a;-(0)))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(+(-(0);a))",
+          "rightStructureString": "(a)"
+        },
+        {
+          "leftStructureString": "(+(0;-(a)))",
+          "rightStructureString": "(+(-(a)))"
+        },
+        {
+          "leftStructureString": "(+(-(a);0))",
+          "rightStructureString": "(+(-(a)))"
+        },
+        {
+          "leftStructureString": "(+(a;-(a)))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(+(-(a);a))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(+(a;+(-(a))))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(+(+(-(a));a))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(0)",
+          "rightStructureString": "(+(1;-(1)))"
+        },
+        {
+          "leftStructureString": "(-(+(B;C)))",
+          "rightStructureString": "(+(-(B);-(C)))"
+        },
+        {
+          "leftStructureString": "(+(-(B);-(C)))",
+          "rightStructureString": "(-(+(B;C)))"
+        },
+        {
+          "leftStructureString": "(-(+(B;C;D)))",
+          "rightStructureString": "(+(-(B);-(C);-(D)))"
+        },
+        {
+          "leftStructureString": "(+(-(B);-(C);-(D)))",
+          "rightStructureString": "(-(+(B;C;D)))"
+        },
+        {
+          "leftStructureString": "(-(+(B;C;D;E)))",
+          "rightStructureString": "(+(-(B);-(C);-(D);-(E)))"
+        },
+        {
+          "leftStructureString": "(+(-(B);-(C);-(D);-(E)))",
+          "rightStructureString": "(-(+(B;C;D;E)))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;-(C)))))",
+          "rightStructureString": "(+(A;-(B);C))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;C))))",
+          "rightStructureString": "(+(A;-(B);-(C)))"
+        },
+        {
+          "leftStructureString": "(+(A;-(B);-(C)))",
+          "rightStructureString": "(+(A;-(+(B;C))))"
+        },
+        {
+          "leftStructureString": "(+(A;-(B);C))",
+          "rightStructureString": "(+(A;-(+(B;-(C)))))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;-(C);D))))",
+          "rightStructureString": "(+(A;-(B);C;-(D)))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;-(C);-(D)))))",
+          "rightStructureString": "(+(A;-(B);C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;C;D))))",
+          "rightStructureString": "(+(A;-(B);-(C);-(D)))"
+        },
+        {
+          "leftStructureString": "(+(A;-(B);-(C);-(D)))",
+          "rightStructureString": "(+(A;-(+(B;C;D))))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;-(C)));D))",
+          "rightStructureString": "(+(A;-(B);C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;C));D))",
+          "rightStructureString": "(+(A;-(B);-(C);D))"
+        },
+        {
+          "leftStructureString": "(+(A;-(B);-(C);D))",
+          "rightStructureString": "(+(A;-(+(B;C));D))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;C;D;E))))",
+          "rightStructureString": "(+(A;-(B);-(C);-(D);-(E)))"
+        },
+        {
+          "leftStructureString": "(+(A;-(B);-(C);-(D);-(E)))",
+          "rightStructureString": "(+(A;-(+(B;C;D;E))))"
+        },
+        {
+          "leftStructureString": "(+(A;-(+(B;C;D));E))",
+          "rightStructureString": "(+(A;-(B);-(C);-(D);E))"
+        },
+        {
+          "leftStructureString": "(+(A;-(B);-(C);-(D);E))",
+          "rightStructureString": "(+(A;-(+(B;C;D));E))"
+        },
+        {
+          "leftStructureString": "(+(A;C;-(A)))",
+          "rightStructureString": "(+(C))"
+        },
+        {
+          "leftStructureString": "(+(A;-(A);C))",
+          "rightStructureString": "(+(C))"
+        },
+        {
+          "leftStructureString": "(+(A;C;D;-(A)))",
+          "rightStructureString": "(+(C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;C;-(A);D))",
+          "rightStructureString": "(+(C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;-(A);C;D))",
+          "rightStructureString": "(+(C;D))"
+        },
+        {
+          "leftStructureString": "(+(A;C;D;E;-(A)))",
+          "rightStructureString": "(+(C;D;E))"
+        },
+        {
+          "leftStructureString": "(+(A;C;D;-(A);E))",
+          "rightStructureString": "(+(C;D;E))"
+        },
+        {
+          "leftStructureString": "(+(A;C;-(A);D;E))",
+          "rightStructureString": "(+(C;D;E))"
+        },
+        {
+          "leftStructureString": "(+(A;-(A);C;D;E))",
+          "rightStructureString": "(+(C;D;E))"
+        }
+      ]
+    },
+    {
+      "code": "AdditiveToMultiplicative",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(a;*(a;n)))",
+          "rightStructureString": "(*(a;+(n;1)))"
+        },
+        {
+          "leftStructureString": "(*(a;+(n;1)))",
+          "rightStructureString": "(+(a;*(a;n)))"
+        },
+        {
+          "leftStructureString": "(+(*(a;n);a))",
+          "rightStructureString": "(*(a;+(1;n)))"
+        },
+        {
+          "leftStructureString": "(*(a;+(1;n)))",
+          "rightStructureString": "(+(*(a;n);a))"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticAssociativity",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(*(A;+(B;C)))",
+          "rightStructureString": "(+(*(A;B);*(A;C)))"
+        },
+        {
+          "leftStructureString": "(*(+(B;C);A))",
+          "rightStructureString": "(+(*(B;A);*(C;A)))"
+        },
+        {
+          "leftStructureString": "(+(*(A;B);*(A;C)))",
+          "rightStructureString": "(*(A;+(B;C)))"
+        },
+        {
+          "leftStructureString": "(+(*(B;C);*(A;C)))",
+          "rightStructureString": "(*(+(B;A);C))"
+        },
+        {
+          "leftStructureString": "(*(A;+(B;C;D)))",
+          "rightStructureString": "(+(*(A;B);*(A;C);*(A;D)))"
+        },
+        {
+          "leftStructureString": "(+(*(A;B);*(A;C);*(A;D)))",
+          "rightStructureString": "(*(A;+(B;C;D)))"
+        },
+        {
+          "leftStructureString": "(*(+(B;C;D);A))",
+          "rightStructureString": "(+(*(B;A);*(C;A);*(D;A)))"
+        },
+        {
+          "leftStructureString": "(+(*(B;A);*(C;A);*(D;A)))",
+          "rightStructureString": "(*(+(B;C;D);A))"
+        },
+        {
+          "leftStructureString": "(*(A;+(B;C;D;E)))",
+          "rightStructureString": "(+(*(A;B);*(A;C);*(A;D);*(A;E)))"
+        },
+        {
+          "leftStructureString": "(+(*(A;B);*(A;C);*(A;D);*(A;E)))",
+          "rightStructureString": "(*(A;+(B;C;D;E)))"
+        },
+        {
+          "leftStructureString": "(*(+(B;C;D;E);A))",
+          "rightStructureString": "(+(*(B;A);*(C;A);*(D;A);*(E;A)))"
+        },
+        {
+          "leftStructureString": "(+(*(B;A);*(C;A);*(D;A);*(E;A)))",
+          "rightStructureString": "(*(+(B;C;D;E);A))"
+        },
+        {
+          "leftStructureString": "(*(A;+(B;-(C))))",
+          "rightStructureString": "(+(*(A;B);-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(*(+(B;-(A));C))",
+          "rightStructureString": "(+(*(B;C);-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(+(*(A;B);-(*(A;C))))",
+          "rightStructureString": "(*(A;+(B;-(C))))"
+        },
+        {
+          "leftStructureString": "(+(*(B;C);-(*(A;C))))",
+          "rightStructureString": "(*(+(B;-(A));C))"
+        },
+        {
+          "leftStructureString": "(+(/(B;C);/(A;C)))",
+          "rightStructureString": "(/(+(B;A);C))"
+        },
+        {
+          "leftStructureString": "(/(+(B;A);C))",
+          "rightStructureString": "(+(/(B;C);/(A;C)))"
+        },
+        {
+          "leftStructureString": "(+(/(B;C);-(/(A;C))))",
+          "rightStructureString": "(/(+(B;-(A));C))"
+        },
+        {
+          "leftStructureString": "(/(+(B;-(A));C))",
+          "rightStructureString": "(+(/(B;C);-(/(A;C))))"
+        },
+        {
+          "leftStructureString": "(-(*(A;C)))",
+          "rightStructureString": "(*(-(A);C))"
+        },
+        {
+          "leftStructureString": "(*(-(A);C))",
+          "rightStructureString": "(-(*(A;C)))"
+        },
+        {
+          "leftStructureString": "(-(*(A;C)))",
+          "rightStructureString": "(*(A;-(C)))"
+        },
+        {
+          "leftStructureString": "(*(A;-(C)))",
+          "rightStructureString": "(-(*(A;C)))"
+        },
+        {
+          "leftStructureString": "(*(A;-(C)))",
+          "rightStructureString": "(*(-(A);C))"
+        },
+        {
+          "leftStructureString": "(*(-(A);C))",
+          "rightStructureString": "(*(A;-(C)))"
+        },
+        {
+          "leftStructureString": "(-(/(A;C)))",
+          "rightStructureString": "(/(-(A);C))"
+        },
+        {
+          "leftStructureString": "(/(-(A);C))",
+          "rightStructureString": "(-(/(A;C)))"
+        },
+        {
+          "leftStructureString": "(-(/(A;C)))",
+          "rightStructureString": "(/(A;-(C)))"
+        },
+        {
+          "leftStructureString": "(/(A;-(C)))",
+          "rightStructureString": "(-(/(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(A;-(C)))",
+          "rightStructureString": "(/(-(A);C))"
+        },
+        {
+          "leftStructureString": "(/(-(A);C))",
+          "rightStructureString": "(/(A;-(C)))"
+        },
+        {
+          "leftStructureString": "(+(-(*(A;C))))",
+          "rightStructureString": "(*(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(*(+(-(A));C))",
+          "rightStructureString": "(+(-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(+(-(*(A;C))))",
+          "rightStructureString": "(*(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(*(A;+(-(C))))",
+          "rightStructureString": "(+(-(*(A;C))))"
+        },
+        {
+          "leftStructureString": "(*(A;+(-(C))))",
+          "rightStructureString": "(*(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(*(+(-(A));C))",
+          "rightStructureString": "(*(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(+(-(/(A;C))))",
+          "rightStructureString": "(/(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(/(+(-(A));C))",
+          "rightStructureString": "(+(-(/(A;C))))"
+        },
+        {
+          "leftStructureString": "(+(-(/(A;C))))",
+          "rightStructureString": "(/(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(/(A;+(-(C))))",
+          "rightStructureString": "(+(-(/(A;C))))"
+        },
+        {
+          "leftStructureString": "(/(A;+(-(C))))",
+          "rightStructureString": "(/(+(-(A));C))"
+        },
+        {
+          "leftStructureString": "(/(+(-(A));C))",
+          "rightStructureString": "(/(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(*(-(A);-(B)))",
+          "rightStructureString": "(*(A;B))"
+        },
+        {
+          "leftStructureString": "(/(-(A);-(B)))",
+          "rightStructureString": "(/(A;B))"
+        },
+        {
+          "leftStructureString": "(*(A;B))",
+          "rightStructureString": "(*(+(-(A));+(-(B))))"
+        },
+        {
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(/(+(-(A));+(-(B))))"
+        },
+        {
+          "leftStructureString": "(*(+(-(A));+(-(B))))",
+          "rightStructureString": "(*(A;B))"
+        },
+        {
+          "leftStructureString": "(/(+(-(A));+(-(B))))",
+          "rightStructureString": "(/(A;B))"
+        },
+        {
+          "leftStructureString": "(+(/(B;C);/(A;D)))",
+          "rightStructureString": "(/(+(*(B;D);*(C;A));*(C;D)))"
+        },
+        {
+          "leftStructureString": "(+(/(B;C);-(/(A;D))))",
+          "rightStructureString": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"
+        },
+        {
+          "leftStructureString": "(*(A;/(B;A)))",
+          "rightStructureString": "(B)"
+        },
+        {
+          "leftStructureString": "(*(/(B;A);A))",
+          "rightStructureString": "(B)"
+        },
+        {
+          "leftStructureString": "(*(A;/(B;C)))",
+          "rightStructureString": "(/(*(A;B);C))"
+        },
+        {
+          "leftStructureString": "(*(/(B;C);A))",
+          "rightStructureString": "(/(*(A;B);C))"
+        },
+        {
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(/(1;/(B;A)))"
+        },
+        {
+          "leftStructureString": "(/(*(A;B);C))",
+          "rightStructureString": "(*(A;/(B;C)))"
+        },
+        {
+          "leftStructureString": "(/(/(B;C);A))",
+          "rightStructureString": "(/(B;*(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(B;*(A;C)))",
+          "rightStructureString": "(/(/(B;C);A))"
+        },
+        {
+          "leftStructureString": "(/(A;/(B;C)))",
+          "rightStructureString": "(/(*(A;C);B))"
+        },
+        {
+          "leftStructureString": "(/(*(A;C);B))",
+          "rightStructureString": "(/(A;/(B;C)))"
+        },
+        {
+          "leftStructureString": "(/(A;*(B;C)))",
+          "rightStructureString": "(*(/(A;B);/(1;C)))"
+        },
+        {
+          "leftStructureString": "(/(A;*(B;C)))",
+          "rightStructureString": "(*(/(1;B);/(A;C)))"
+        },
+        {
+          "leftStructureString": "(*(/(A;B);/(1;C)))",
+          "rightStructureString": "(/(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(*(/(1;B);/(A;C)))",
+          "rightStructureString": "(/(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(*(/(D;B);/(A;C)))",
+          "rightStructureString": "(/(*(D;A);*(B;C)))"
+        },
+        {
+          "leftStructureString": "(/(*(D;A);*(B;C)))",
+          "rightStructureString": "(*(/(D;B);/(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(*(D;A);*(D;C)))",
+          "rightStructureString": "(/(A;C))"
+        },
+        {
+          "leftStructureString": "(/(*(D;A);D))",
+          "rightStructureString": "(A)"
+        },
+        {
+          "leftStructureString": "(/(*(A;D);D))",
+          "rightStructureString": "(A)"
+        }
+      ]
+    },
+    {
+      "code": "ArithmeticDegree",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(/(1;A))",
+          "rightStructureString": "(^(A;+(-(1))))"
+        },
+        {
+          "leftStructureString": "(^(A;+(-(1))))",
+          "rightStructureString": "(/(1;A))"
+        },
+        {
+          "leftStructureString": "(^(A;+(B;C)))",
+          "rightStructureString": "(*(^(A;B);^(A;C)))"
+        },
+        {
+          "leftStructureString": "(*(^(A;B);^(A;C)))",
+          "rightStructureString": "(^(A;+(B;C)))"
+        },
+        {
+          "leftStructureString": "(^(A;+(B;C;D)))",
+          "rightStructureString": "(*(^(A;B);^(A;C);^(A;D)))"
+        },
+        {
+          "leftStructureString": "(*(^(A;B);^(A;C);^(A;D)))",
+          "rightStructureString": "(^(A;+(B;C;D)))"
+        },
+        {
+          "leftStructureString": "(^(A;+(B;-(C))))",
+          "rightStructureString": "(/(^(A;B);^(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(^(A;B);^(A;C)))",
+          "rightStructureString": "(^(A;+(B;-(C))))"
+        },
+        {
+          "leftStructureString": "(/(B;^(A;C)))",
+          "rightStructureString": "(*(B;^(A;+(-(C)))))"
+        },
+        {
+          "leftStructureString": "(*(B;^(A;+(-(C)))))",
+          "rightStructureString": "(/(B;^(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(1;^(A;C)))",
+          "rightStructureString": "(^(A;+(-(C))))"
+        },
+        {
+          "leftStructureString": "(^(A;+(-(C))))",
+          "rightStructureString": "(/(1;^(A;C)))"
+        },
+        {
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(^(/(B;A);+(-(1))))"
+        },
+        {
+          "leftStructureString": "(^(/(B;A);+(-(1))))",
+          "rightStructureString": "(/(A;B))"
+        },
+        {
+          "leftStructureString": "(^(A;0))",
+          "rightStructureString": "(1)"
+        },
+        {
+          "leftStructureString": "(^(1;A))",
+          "rightStructureString": "(1)"
+        },
+        {
+          "leftStructureString": "(^(A;1))",
+          "rightStructureString": "(A)"
+        },
+        {
+          "leftStructureString": "(^(0;A))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(*(A;A))",
+          "rightStructureString": "(^(A;2))"
+        },
+        {
+          "leftStructureString": "(^(A;2))",
+          "rightStructureString": "(*(A;A))"
+        },
+        {
+          "leftStructureString": "(*(a;^(a;n)))",
+          "rightStructureString": "(^(a;+(n;1)))"
+        },
+        {
+          "leftStructureString": "(^(a;+(n;1)))",
+          "rightStructureString": "(*(a;^(a;n)))"
+        },
+        {
+          "leftStructureString": "(*(^(a;n);a))",
+          "rightStructureString": "(^(a;+(1;n)))"
+        },
+        {
+          "leftStructureString": "(^(a;+(1;n)))",
+          "rightStructureString": "(*(^(a;n);a))"
+        },
+        {
+          "leftStructureString": "(/(^(a;n);a))",
+          "rightStructureString": "(^(a;+(n;-(1))))"
+        },
+        {
+          "leftStructureString": "(^(a;+(n;-(1))))",
+          "rightStructureString": "(/(^(a;n);a))"
+        },
+        {
+          "leftStructureString": "(^(A;*(B;C)))",
+          "rightStructureString": "(^(^(A;B);C))"
+        },
+        {
+          "leftStructureString": "(^(^(A;B);C))",
+          "rightStructureString": "(^(A;*(B;C)))"
+        },
+        {
+          "leftStructureString": "(^(*(B;C);A))",
+          "rightStructureString": "(*(^(B;A);^(C;A)))"
+        },
+        {
+          "leftStructureString": "(*(^(B;A);^(C;A)))",
+          "rightStructureString": "(^(*(B;C);A))"
+        },
+        {
+          "leftStructureString": "(^(/(B;C);A))",
+          "rightStructureString": "(/(^(B;A);^(C;A)))"
+        },
+        {
+          "leftStructureString": "(/(^(B;A);^(C;A)))",
+          "rightStructureString": "(^(/(B;C);A))"
+        },
+        {
+          "leftStructureString": "(^(A;*(2;n)))",
+          "rightStructureString": "(^(-(A);*(2;n)))"
+        },
+        {
+          "leftStructureString": "(^(-(A);*(2;n)))",
+          "rightStructureString": "(^(A;*(2;n)))"
+        },
+        {
+          "leftStructureString": "(^(-(A);2))",
+          "rightStructureString": "(^(A;2))"
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(^(a;2);/(1;2)))"
+        },
+        {
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(^(a;3);/(1;3)))"
+        },
+        {
+          "leftStructureString": "(^(^(a;b);/(1;b)))",
+          "rightStructureString": "(a)"
+        }
+      ]
+    },
+    {
+      "code": "ShortMultiplication",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(+(^(a;2);-(^(b;2))))",
+          "rightStructureString": "(*(+(a;-(b));+(a;b)))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;-(b));+(a;b)))",
+          "rightStructureString": "(+(^(a;2);-(^(b;2))))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;b);2))",
+          "rightStructureString": "(+(^(a;2);*(2;a;b);^(b;2)))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;2);*(2;a;b);^(b;2)))",
+          "rightStructureString": "(^(+(a;b);2))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;-(b));2))",
+          "rightStructureString": "(+(^(a;2);-(*(2;a;b));^(b;2)))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;2);-(*(2;a;b));^(b;2)))",
+          "rightStructureString": "(^(+(a;-(b));2))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;b);3))",
+          "rightStructureString": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))",
+          "rightStructureString": "(^(+(a;b);3))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(^(+(a;-(b));3))",
+          "rightStructureString": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))",
+          "rightStructureString": "(^(+(a;-(b));3))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);-(^(b;3))))",
+          "rightStructureString": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))",
+          "rightStructureString": "(+(^(a;3);-(^(b;3))))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(+(^(a;3);^(b;3)))",
+          "rightStructureString": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))",
+          "matchJumbledAndNested": true
+        },
+        {
+          "leftStructureString": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))",
+          "rightStructureString": "(+(^(a;3);^(b;3)))",
+          "matchJumbledAndNested": true
+        }
+      ]
+    },
+    {
+      "code": "Logarithm",
+      "version": 0,
+      "namespaceCode": "",
+      "subjectType": "standard_math",
+      "rulePacks": [],
+      "rules": [
+        {
+          "leftStructureString": "(^(a;log(b;a)))",
+          "rightStructureString": "(b)"
+        },
+        {
+          "leftStructureString": "(log(1;A))",
+          "rightStructureString": "(0)"
+        },
+        {
+          "leftStructureString": "(log(A;A))",
+          "rightStructureString": "(1)"
+        },
+        {
+          "leftStructureString": "(log(*(b;c);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a)))"
+        },
+        {
+          "leftStructureString": "(+(log(b;a);log(c;a)))",
+          "rightStructureString": "(log(*(b;c);a))"
+        },
+        {
+          "leftStructureString": "(log(*(b;c;d);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a);log(d;a)))"
+        },
+        {
+          "leftStructureString": "(+(log(b;a);log(c;a);log(d;a)))",
+          "rightStructureString": "(log(*(b;c;d);a))"
+        },
+        {
+          "leftStructureString": "(log(*(b;c;d;e);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))"
+        },
+        {
+          "leftStructureString": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))",
+          "rightStructureString": "(log(*(b;c;d;e);a))"
+        },
+        {
+          "leftStructureString": "(log(/(b;c);a))",
+          "rightStructureString": "(+(log(b;a);-(log(c;a))))"
+        },
+        {
+          "leftStructureString": "(+(log(b;a);-(log(c;a))))",
+          "rightStructureString": "(log(/(b;c);a))"
+        },
+        {
+          "leftStructureString": "(log(^(b;c);a))",
+          "rightStructureString": "(*(c;log(b;a)))"
+        },
+        {
+          "leftStructureString": "(*(c;log(b;a)))",
+          "rightStructureString": "(log(^(b;c);a))"
+        },
+        {
+          "leftStructureString": "(*(log(b;a);c))",
+          "rightStructureString": "(log(^(b;c);a))"
+        },
+        {
+          "leftStructureString": "(log(b;^(a;k)))",
+          "rightStructureString": "(/(log(b;a);k))"
+        },
+        {
+          "leftStructureString": "(/(log(b;a);k))",
+          "rightStructureString": "(log(b;^(a;k)))"
+        },
+        {
+          "leftStructureString": "(/(1;log(b;a)))",
+          "rightStructureString": "(log(a;b))"
+        },
+        {
+          "leftStructureString": "(log(a;b))",
+          "rightStructureString": "(/(1;log(b;a)))"
+        },
+        {
+          "leftStructureString": "(/(log(c;a);log(b;a)))",
+          "rightStructureString": "(log(c;b))"
+        },
+        {
+          "leftStructureString": "(log(/(b;c);a))",
+          "rightStructureString": "(-(log(/(c;b);a)))"
+        },
+        {
+          "leftStructureString": "(-(log(/(c;b);a)))",
+          "rightStructureString": "(log(/(b;c);a))"
+        },
+        {
+          "leftStructureString": "(+(-(log(/(c;b);a))))",
+          "rightStructureString": "(log(/(b;c);a))"
+        },
+        {
+          "leftStructureString": "(log(b;a))",
+          "rightStructureString": "(-(log(/(1;b);a)))"
+        },
+        {
+          "leftStructureString": "(-(log(/(1;b);a)))",
+          "rightStructureString": "(log(b;a))"
+        },
+        {
+          "leftStructureString": "(+(-(log(/(1;b);a))))",
+          "rightStructureString": "(log(b;a))"
+        },
+        {
+          "leftStructureString": "(log(/(1;b);a))",
+          "rightStructureString": "(-(log(b;a)))"
+        },
+        {
+          "leftStructureString": "(-(log(b;a)))",
+          "rightStructureString": "(log(/(1;b);a))"
+        },
+        {
+          "leftStructureString": "(+(-(log(b;a))))",
+          "rightStructureString": "(log(/(1;b);a))"
+        }
+      ]
+    }
+  ]
+}
