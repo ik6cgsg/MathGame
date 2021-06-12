@@ -6,12 +6,8 @@
         </shape>
     </item>
     <item>
-        <shape>
-            <gradient
-                android:startColor="?attr/colorPrimaryDark"
-                android:endColor="?attr/backgroundColor"
-                android:type="radial"
-                android:gradientRadius="500dp"/>
+        <shape android:layout_width="match_parent">
+            <solid android:color="?attr/instBackgroundColor" />
         </shape>
     </item>
 </transition>

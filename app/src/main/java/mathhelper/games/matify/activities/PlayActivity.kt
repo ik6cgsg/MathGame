@@ -2,6 +2,7 @@ package mathhelper.games.matify.activities
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
@@ -19,13 +20,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
-import mathhelper.games.matify.InstrumentScene
-import mathhelper.games.matify.LevelScene
-import mathhelper.games.matify.PlayScene
-import mathhelper.games.matify.R
+import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.StateType
 import kotlin.math.max
@@ -34,11 +33,8 @@ import kotlin.math.min
 
 class PlayActivity: AppCompatActivity() {
     private val TAG = "PlayActivity"
-    private var scale = 1.0f
     private var needClear = false
     private var loading = false
-    private var scaleListener = MathScaleListener()
-    private lateinit var scaleDetector: ScaleGestureDetector
     private lateinit var looseDialog: AlertDialog
     private lateinit var winDialog: AlertDialog
     private lateinit var backDialog: AlertDialog
@@ -48,7 +44,6 @@ class PlayActivity: AppCompatActivity() {
     lateinit var mainView: ConstraintLayout
     lateinit var mainViewAnim: TransitionDrawable
     lateinit var globalMathView: GlobalMathView
-    lateinit var endExpressionView: TextView
     lateinit var endExpressionViewLabel: TextView
     lateinit var messageView: TextView
     lateinit var rulesLinearLayout: LinearLayout
@@ -67,7 +62,10 @@ class PlayActivity: AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Log.d(TAG, "onTouchEvent")
-        scaleDetector.onTouchEvent(event)
+        if (globalMathView.onTouchEvent(event)) {
+            needClear = false
+            return true
+        }
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 if (!globalMathView.multiselectionMode)
@@ -93,13 +91,16 @@ class PlayActivity: AppCompatActivity() {
         mainViewAnim = mainView.background as TransitionDrawable
         bottomSheet = findViewById(R.id.bottom_sheet)
         globalMathView = findViewById(R.id.global_expression)
-        endExpressionView = findViewById(R.id.end_expression_view)
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
+        val d = ContextCompat.getDrawable(this, R.drawable.expand)
+        d!!.setBounds(0, 0, 70, 70)
+        endExpressionViewLabel.setCompoundDrawables(null, null, d, null)
         messageView = findViewById(R.id.message_view)
         timerView = findViewById(R.id.timer_view)
         back = findViewById(R.id.back)
         restart = findViewById(R.id.restart)
         previous = findViewById(R.id.previous)
+        previous.isEnabled = false
         info = findViewById(R.id.info)
         progress = findViewById(R.id.progress)
         blurView = findViewById(R.id.blurView)
@@ -144,9 +145,8 @@ class PlayActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme(Storage.shared.themeInt(this))
+        setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_play_new)
-        scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
         messageView.visibility = View.GONE
         looseDialog = createLooseDialog()
@@ -158,6 +158,14 @@ class PlayActivity: AppCompatActivity() {
             startCreatingLevelUI()
         }, 100)
         setLongClick()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (GlobalScene.shared.currentGame == null || LevelScene.shared.currentLevel == null) {
+            finishAffinity()
+            startActivity(Intent(this, GamesActivity::class.java))
+        }
     }
 
     override fun onBackPressed() {
@@ -184,7 +192,7 @@ class PlayActivity: AppCompatActivity() {
         loading = true
         timerView.text = ""
         globalMathView.text = ""
-        endExpressionView.text = ""
+        endExpressionViewLabel.text = ""
         progress.visibility = View.VISIBLE
         try {
             PlayScene.shared.loadLevel(this, continueGame, resources.configuration.locale.language)
@@ -194,6 +202,11 @@ class PlayActivity: AppCompatActivity() {
         }
         progress.visibility = View.GONE
         loading = false
+    }
+
+    fun clear(v: View?) {
+        globalMathView.clearExpression()
+        PlayScene.shared.clearRules()
     }
 
     fun previous(v: View?) {
@@ -208,7 +221,7 @@ class PlayActivity: AppCompatActivity() {
 
     fun restart(v: View?) {
         if (!loading) {
-            scale = 1f
+            globalMathView.scale = 1f
             PlayScene.shared.restart(this, resources.configuration.locale.language)
         }
     }
@@ -255,17 +268,15 @@ class PlayActivity: AppCompatActivity() {
     }
 
     fun showEndExpression(v: View?) {
-        if (endExpressionView.visibility == View.GONE) {
-            endExpressionViewLabel.text = getString(R.string.end_expression_opened)
-            endExpressionView.visibility = View.VISIBLE
-        } else {
-            endExpressionViewLabel.text = getString(R.string.end_expression_closed)
-            endExpressionView.visibility = View.GONE
-        }
-    }
-
-    fun endExpressionHide(): Boolean {
-        return endExpressionView.visibility != View.VISIBLE
+        val builder = AlertDialog.Builder(this, ThemeController.shared.alertDialogTheme)
+        builder
+            .setTitle(getString(R.string.goal_description))
+            .setMessage(LevelScene.shared.currentLevel!!.getDescriptionByLanguage(resources.configuration.locale.language, true))
+            .setOnCancelListener {  }
+            .setCancelable(true)
+        val alert = builder.create()
+        AndroidUtil.showDialog(alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
+            blurView = blurView, activity = this)
     }
 
     fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
@@ -275,7 +286,7 @@ class PlayActivity: AppCompatActivity() {
         val sec = "${currentTime % 60}".padStart(2, '0')
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
         val spannable = SpannableString("$msgTitle$steps$time\n")
-        val spanColor = ThemeController.shared.getColor(this, ColorName.PRIMARY_COLOR)
+        val spanColor = ThemeController.shared.color(ColorName.PRIMARY_COLOR)
         spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
             msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(BulletSpan(5, spanColor),
@@ -300,7 +311,7 @@ class PlayActivity: AppCompatActivity() {
     private fun createWinDialog(): AlertDialog {
         Log.d(TAG, "createWinDialog")
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.congratulations)
@@ -311,7 +322,7 @@ class PlayActivity: AppCompatActivity() {
                 finish()
             }
             .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
-                scale = 1f
+                globalMathView.scale = 1f
                 PlayScene.shared.restart(this, resources.configuration.locale.language)
             }
             .setCancelable(false)
@@ -319,7 +330,7 @@ class PlayActivity: AppCompatActivity() {
         dialog.setOnShowListener {
             val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
             okButton.setOnClickListener {
-                scale = 1f
+                globalMathView.scale = 1f
                 if (!LevelScene.shared.nextLevel()) {
                     Toast.makeText(this, R.string.next_after_last_level_label, Toast.LENGTH_SHORT).show()
                 } else {
@@ -333,7 +344,7 @@ class PlayActivity: AppCompatActivity() {
     private fun createLooseDialog(): AlertDialog {
         Log.d(TAG, "createLooseDialog")
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.time_out)
@@ -350,7 +361,7 @@ class PlayActivity: AppCompatActivity() {
     private fun createBackDialog(): AlertDialog {
         Log.d(TAG, "createBackDialog")
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.attention)
@@ -369,7 +380,7 @@ class PlayActivity: AppCompatActivity() {
     private fun createContinueDialog(): AlertDialog {
         Log.d(TAG, "createContinueDialog")
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.welkome_back)
@@ -382,17 +393,5 @@ class PlayActivity: AppCompatActivity() {
             }
             .setCancelable(false)
         return builder.create()
-    }
-
-    inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            needClear = false
-            scale *= detector.scaleFactor
-            scale = max(
-                Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
-                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize))
-            globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
-            return true
-        }
     }
 }

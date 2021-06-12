@@ -3,14 +3,18 @@ package mathhelper.games.matify
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Handler
+import android.text.Html
+import android.text.SpannedString
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import api.expressionToStructureString
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
+import kotlinx.android.synthetic.main.activity_play.*
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.*
@@ -78,6 +82,7 @@ class PlayScene() {
             if (res != null) {
                 stepsCount++
                 history.saveState(State(prev))
+                activity.previous.isEnabled = true
                 if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
                     levelPassed = true
 
@@ -115,6 +120,9 @@ class PlayScene() {
         if (instrumetProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
             InstrumentScene.shared.choosenAtom(activity.globalMathView.currentAtoms)
         } else if (activity.globalMathView.currentAtoms.isNotEmpty()) {
+            if (activity.globalMathView.multiselectionMode) {
+                activity.previous.isEnabled = true
+            }
             val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
                 activity.globalMathView.currentAtoms,
                 activity.globalMathView.expression!!
@@ -122,6 +130,9 @@ class PlayScene() {
             if (substitutionApplication == null) {
                 showMessage(activity.getString(R.string.no_rules))
                 clearRules()
+                if (!activity.globalMathView.multiselectionMode) {
+                    activity.globalMathView.clearExpression()
+                }
             } else {
                 val rules =
                     LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
@@ -130,6 +141,8 @@ class PlayScene() {
                 activity.rulesScrollView.visibility = View.VISIBLE
                 redrawRules(rules)
             }
+        } else {
+            activity.previous.isEnabled = !history.empty
         }
         Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
@@ -140,17 +153,13 @@ class PlayScene() {
         val activity = playActivity!!
         clearRules()
         cancelTimers()
-        activity.endExpressionView.text = if (currentLevel.goalPattern.isNullOrBlank()) {
-            when (currentLevel.subjectType) {
-                TaskType.SET.str -> MathResolver.resolveToPlain(currentLevel.endExpression, taskType = TaskType.SET).matrix
-                else -> MathResolver.resolveToPlain(currentLevel.endExpression).matrix
-            }
-        } else {
-            currentLevel.goalPattern
-        }
-        if (activity.endExpressionView.visibility != View.VISIBLE) {
-            activity.showEndExpression(null)
-        }
+        val text = activity.getString(R.string.end_expression_opened, currentLevel.getDescriptionByLanguage(languageCode))
+        activity.endExpressionViewLabel.text = Html.fromHtml(
+            String.format(
+                Html.toHtml(SpannedString(activity.getText(R.string.end_expression_opened))),
+                currentLevel.getDescriptionByLanguage(languageCode)
+            )
+        )
         if (currentLevel.endless) {
             loadEndless(context, continueGame)
         } else {
@@ -166,6 +175,7 @@ class PlayScene() {
     private fun loadFinite() {
         val currentLevel = LevelScene.shared.currentLevel!!
         playActivity!!.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
+        playActivity!!.globalMathView.center()
         stepsCount = 0.0
         currentTime = 0
         downTimer = MathDownTimer(currentLevel.time, 1)
@@ -180,8 +190,10 @@ class PlayScene() {
             stepsCount = currentLevel.lastResult!!.steps
             currentTime = currentLevel.lastResult!!.time
             activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.subjectType)
+            activity.globalMathView.center()
         } else {
             activity.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
+            activity.globalMathView.center()
             stepsCount = 0.0
             currentTime = 0
         }
@@ -204,11 +216,26 @@ class PlayScene() {
                 activity.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
                 //val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
                 //stepsCount = stepsCount - 1 + penalty
+                if (history.empty) {
+                    activity.previous.isEnabled = false
+                }
             }
             Statistics.logUndo(
                 oldSteps, stepsCount, oldExpression,
                 activity.globalMathView.expression!!, activity.globalMathView.currentAtoms
             )
+        }
+    }
+
+    fun setMultiselectionMode(multi: Boolean) {
+        playActivity?.previous?.isEnabled = !history.empty
+        if (multi) {
+            playActivity?.globalMathView?.multiselectionMode = true
+            playActivity?.globalMathView?.recolorCurrentAtom(ThemeController.shared.color(ColorName.MULTISELECTION_COLOR))
+        } else {
+            clearRules()
+            playActivity?.globalMathView?.clearExpression()
+            playActivity?.globalMathView?.multiselectionMode = false
         }
     }
 
@@ -222,6 +249,7 @@ class PlayScene() {
     fun menu(context: Context, save: Boolean = true) {
         Log.d(TAG, "menu")
         val activity = playActivity!!
+        setMultiselectionMode(false)
         val currentLevel = LevelScene.shared.currentLevel!!
         if (save) {
             val newRes = LevelResult(stepsCount, currentTime, StateType.PAUSED,
@@ -237,7 +265,7 @@ class PlayScene() {
         val currentLevel = LevelScene.shared.currentLevel!!
         val multi = playActivity!!.globalMathView.multiselectionMode
         val builder = AlertDialog.Builder(
-            playActivity, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(playActivity!!))
+            playActivity, ThemeController.shared.alertDialogTheme
         )
         val v = playActivity!!.layoutInflater.inflate(R.layout.level_info, null)
         v.findViewById<TextView>(R.id.game)?.text = currentLevel.game.getNameByLanguage(languageCode)
@@ -255,8 +283,10 @@ class PlayScene() {
     fun clearRules() {
         val activity = playActivity!!
         activity.rulesScrollView.visibility = View.GONE
-        activity.collapseBottomSheet()
-        activity.rulesMsg.text = "No rules. Click somewhere!"
+        activity.rulesMsg.text = activity.getString(R.string.no_rules_msg)
+        if (!instrumetProcessing) {
+            activity.collapseBottomSheet()
+        }
     }
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
@@ -273,7 +303,8 @@ class PlayScene() {
             }
         }
         activity.halfExpandBottomSheet()
-        activity.rulesMsg.text = if (rules.isEmpty()) "No rules. Click somewhere!" else "☟ Rules found: ☟"
+        activity.rulesMsg.text = if (rules.isEmpty()) activity.getString(R.string.no_rules_msg)
+            else activity.getString(R.string.rules_found_msg)
     }
 
     fun onWin(context: Context) {

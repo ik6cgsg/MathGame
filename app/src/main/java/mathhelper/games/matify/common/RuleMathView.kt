@@ -49,14 +49,14 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
             horizontalScrollbarThumbDrawable = context.getDrawable(R.drawable.alert_shape)
         }
         isScrollbarFadingEnabled = false
-        scrollBarStyle = SCROLLBARS_INSIDE_INSET
+        //scrollBarStyle = SCROLLBARS_INSIDE_INSET
         isFillViewport = true
         val themeName = Storage.shared.theme(context)
         ruleView = TextView(context)
         ruleView.textSize = Constants.ruleDefaultSize
-        ruleView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
+        ruleView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         ruleView.typeface = Typeface.MONOSPACE
-        ruleView.background = context.getDrawable(R.color.row_clickable)
+        ruleView.background = context.getDrawable(R.drawable.row_clickable)
         ruleView.isClickable = true
         ruleView.isFocusable = true
         ruleView.setOnClickListener {

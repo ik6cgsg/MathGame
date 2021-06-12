@@ -191,7 +191,7 @@ class Storage {
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.putString(SettingInfo.THEME.str, theme.toString())
-        prefEdit.apply()
+        prefEdit.commit()
     }
 
     fun getUserInfoBase(context: Context): AuthInfoObjectBase {

@@ -12,12 +12,14 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import eightbitlab.com.blurview.BlurView
+import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.level.LevelResult
 import mathhelper.games.matify.level.StateType
+import org.w3c.dom.Text
 import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity() {
@@ -25,14 +27,13 @@ class LevelsActivity: AppCompatActivity() {
     var loading = false
     private lateinit var levelViews: ArrayList<TextView>
     private lateinit var levelsList: LinearLayout
-    private var levelTouched: View? = null
     private lateinit var progress: ProgressBar
     lateinit var blurView: BlurView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme(Storage.shared.themeInt(this))
+        setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
         progress.visibility = View.VISIBLE
@@ -44,7 +45,17 @@ class LevelsActivity: AppCompatActivity() {
         blurView = findViewById(R.id.blurView)
         levelViews = ArrayList()
         levelsList = findViewById(R.id.levels_list)
+        val title = findViewById<TextView>(R.id.levels)
+        title.text = GlobalScene.shared.currentGame?.getNameByLanguage(resources.configuration.locale.language) ?: title.text
         LevelScene.shared.levelsActivity = this
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (GlobalScene.shared.currentGame == null) {
+            finishAffinity()
+            startActivity(Intent(this, GamesActivity::class.java))
+        }
     }
 
     fun onLevelsLoaded() {
@@ -130,7 +141,7 @@ class LevelsActivity: AppCompatActivity() {
                 levelView.text = "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
             }
             val themeName = Storage.shared.theme(this)
-            levelView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
+            levelView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
             levelView.background = getDrawable(R.drawable.button_rect)
             levelView.setOnClickListener {
                 LevelScene.shared.currentLevelIndex = i
@@ -173,7 +184,7 @@ class LevelsActivity: AppCompatActivity() {
 
     private fun showInfo(lvl: Level): Boolean{
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle("Level Info")

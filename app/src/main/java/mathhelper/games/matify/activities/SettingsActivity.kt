@@ -35,7 +35,7 @@ class SettingsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme(Storage.shared.themeInt(this))
+        setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_settings_new)
         val backView = findViewById<TextView>(R.id.back)
         AndroidUtil.setOnTouchUpInside(this, backView, ::back)
@@ -112,7 +112,7 @@ class SettingsActivity: AppCompatActivity() {
 
     private fun createResetAlert(): AlertDialog {
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.are_you_sure)
@@ -129,7 +129,7 @@ class SettingsActivity: AppCompatActivity() {
 
     private fun createChangeThemeAlert(): AlertDialog {
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.change_theme)
@@ -139,7 +139,7 @@ class SettingsActivity: AppCompatActivity() {
                     1 -> ThemeName.DARK
                     else -> ThemeName.DARK
                 }
-                Storage.shared.setTheme(this, themeToChoose)
+                ThemeController.shared.setTheme(this, themeToChoose)
                 finishAffinity()
                 startActivity(Intent(this, GamesActivity::class.java))
             }
@@ -151,7 +151,7 @@ class SettingsActivity: AppCompatActivity() {
 
     private fun createChangeLanguageAlert(): AlertDialog {
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.change_language)

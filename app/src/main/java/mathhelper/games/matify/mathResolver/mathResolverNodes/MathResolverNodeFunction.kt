@@ -45,18 +45,16 @@ class MathResolverNodeFunction(
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
         val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
+        stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, op!!.name)
+        curInd += op!!.name.length
+        BracketHandler.setBrackets(stringMatrix, spannableArray, Point(curInd, leftTop.y), rightBottom)
+        curInd++
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
-            if (ind == 0) {
-                stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, op!!.name + "(")
-                curInd += op!!.name.length + 1
-            }
             child.getPlainNode(stringMatrix, spannableArray)
             curInd += child.length
             if (ind != children.size - 1) {
                 stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, delim)
                 curInd += delim.length
-            } else {
-                stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, ")")
             }
         }
     }

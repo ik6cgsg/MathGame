@@ -6,6 +6,7 @@
     "nameEn": "Start: game-tutorial",
     "nameRu": "Старт: игра-туториал",
     "subjectType": "standard_math",
+    "recommendedByCommunity": true,
     "tasks": [
       {
         "code": "start_tutorial__Level_01_Compute",
@@ -13,8 +14,10 @@
         "namespaceCode": "",
         "nameEn": "Add by tap on plus",
         "nameRu": "Сложи, нажав на плюс",
-        "descriptionShortEn": "Вычислить",
+        "descriptionShortEn": "Compute",
         "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Sum 2 and 3 by tapping on plus",
+        "descriptionRu": "Сложи 2 и 3, нажав на плюс",
         "originalExpressionStructureString": "(+(2;3))",
         "goalExpressionStructureString": "",
         "goalPattern": "?:0:?:?N",
@@ -36,8 +39,8 @@
         "namespaceCode": "",
         "nameEn": "Select 2 numbers with sum 10",
         "nameRu": "Выдели 2 числа с суммой 10",
-        "descriptionShortEn": "Вычислить",
-        "descriptionShortRu": "Вычислить",
+        "descriptionShortEn": "Select 2 numbers with sum 10",
+        "descriptionShortRu": "Выдели 2 числа с суммой 10",
         "originalExpressionStructureString": "(+(8;5;2))",
         "goalExpressionStructureString": "",
         "goalPattern": "?:0:?:?N",
@@ -63,8 +66,8 @@
         "namespaceCode": "",
         "nameEn": "Get 3y in brackets by tap 3 then y",
         "nameRu": "Взять 3y в скобки нажав 3, затем y",
-        "descriptionShortEn": "(*(*(3;y);x;z))",
-        "descriptionShortRu": "(*(*(3;y);x;z))",
+        "descriptionShortEn": "Get 3y in brackets",
+        "descriptionShortRu": "Взять 3y в скобки",
         "originalExpressionStructureString": "(*(x;y;3;z))",
         "goalExpressionStructureString": "(*(*(3;y);x;z))",
         "rulePacks": [
@@ -87,6 +90,8 @@
         "nameRu": "Получи x+y-y нажав x затем y",
         "descriptionShortEn": "(/(+(x;y;-(y));y))",
         "descriptionShortRu": "(/(+(x;y;-(y));y))",
+        "descriptionEn": "Get x+y-y by tap x then y\nGet x+y-y by tap x then y",
+        "descriptionRu": "Получи x+y-y нажав x затем y\nПолучи x+y-y нажав x затем y",
         "originalExpressionStructureString": "(/(x;y))",
         "goalExpressionStructureString": "(/(+(x;y;-(y));y))",
         "rulePacks": [
@@ -150,6 +155,7 @@
   "rulePacks": [
     {
       "code": "ArithmeticSimplePositiveAddition",
+      "nameEn": "ArithmeticSimplePositiveAddition",
       "version": 0,
       "namespaceCode": "",
       "subjectType": "standard_math",
@@ -203,6 +209,7 @@
     },
     {
       "code": "ArithmeticAddition",
+      "nameEn": "ArithmeticAddition",
       "version": 0,
       "namespaceCode": "",
       "subjectType": "standard_math",
@@ -306,6 +313,7 @@
     },
     {
       "code": "ArithmeticMultiplication",
+      "nameEn": "ArithmeticMultiplication",
       "version": 0,
       "namespaceCode": "",
       "subjectType": "standard_math",
@@ -388,6 +396,7 @@
     },
     {
       "code": "ArithmeticDivision",
+      "nameEn": "ArithmeticDivision",
       "version": 0,
       "namespaceCode": "",
       "subjectType": "standard_math",
@@ -464,6 +473,7 @@
     },
     {
       "code": "ArithmeticPow",
+      "nameEn": "ArithmeticPow",
       "version": 0,
       "namespaceCode": "",
       "subjectType": "standard_math",
@@ -627,6 +637,7 @@
     },
     {
       "code": "ShortMultiplication",
+      "nameEn": "ShortMultiplication",
       "version": 0,
       "namespaceCode": "",
       "subjectType": "standard_math",
@@ -741,6 +752,7 @@
     },
     {
       "code": "Logarithm",
+      "nameEn": "Logarithm",
       "version": 0,
       "namespaceCode": "",
       "subjectType": "standard_math",

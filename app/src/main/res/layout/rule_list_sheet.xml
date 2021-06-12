@@ -5,27 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    app:behavior_expandedOffset="50dp"
     app:behavior_fitToContents="false"
     app:behavior_halfExpandedRatio="0.5"
-    app:behavior_expandedOffset="50dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="155dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
+        android:layout_gravity="center"
         android:paddingHorizontal="140dp"
+        android:paddingVertical="10dp"
         android:src="@drawable/dash_res" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:background="@drawable/bottom_sheet_shape"
         android:clipToPadding="false"
-        android:background="@drawable/bottom_sheet_shape">
+        android:orientation="vertical">
 
         <TableLayout
             android:id="@+id/account_table"
@@ -34,126 +34,141 @@
             android:background="?attr/shapeBackground"
             android:elevation="7dp"
             android:stretchColumns="*">
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/row_clickable"
-            android:paddingVertical="8dp"
-            android:paddingHorizontal="8dp">
 
-            <Button
-                android:id="@+id/oppo_inst"
-                android:tag="oppo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/button_rect"
-                android:longClickable="true"
-                android:minWidth="20dp"
-                android:onClick="instrumentClick"
-                android:stateListAnimator="@animator/button_animator"
-                android:text="↹"
-                android:textAlignment="center"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="monospace" />
-            <Space/>
-            <Button
-                android:id="@+id/var_inst"
-                android:tag="var"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:text=":="
-                android:textAlignment="center"
-                android:layout_weight="1"
-                android:background="@drawable/button_rect"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                android:onClick="instrumentClick"
-                android:stateListAnimator="@animator/button_animator"
-                android:longClickable="true"/>
-            <Space/>
-            <Button
-                android:id="@+id/bracket_inst"
-                android:tag="bracket"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:text="()"
-                android:textAlignment="center"
-                android:layout_weight="1"
-                android:background="@drawable/button_rect"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                android:onClick="instrumentClick"
-                android:stateListAnimator="@animator/button_animator"
-                android:longClickable="true"/>
-            <Space/>
-            <Button
-                android:id="@+id/permute_inst"
-                android:tag="permute"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:text="⟳"
-                android:textAlignment="center"
-                android:layout_weight="1"
-                android:background="@drawable/button_rect"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                android:onClick="instrumentClick"
-                android:stateListAnimator="@animator/button_animator"
-                android:longClickable="true"/>
-            <Space/>
-            <Button
-                android:id="@+id/multi_inst"
-                android:tag="multi"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:text="≡"
-                android:textAlignment="center"
-                android:layout_weight="1"
-                android:background="@drawable/button_rect"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                android:onClick="instrumentClick"
-                android:stateListAnimator="@animator/button_animator"
-                android:longClickable="true"/>
-        </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/row_clickable"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp">
+
+                <Button
+                    android:id="@+id/oppo_inst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect"
+                    android:longClickable="true"
+                    android:minWidth="20dp"
+                    android:onClick="instrumentClick"
+                    android:stateListAnimator="@animator/button_animator"
+                    android:tag="oppo"
+                    android:text="↹"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+
+                <Space />
+
+                <Button
+                    android:id="@+id/var_inst"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect"
+                    android:longClickable="true"
+                    android:onClick="instrumentClick"
+                    android:stateListAnimator="@animator/button_animator"
+                    android:tag="var"
+                    android:text=":="
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+
+                <Space />
+
+                <Button
+                    android:id="@+id/bracket_inst"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect"
+                    android:longClickable="true"
+                    android:onClick="instrumentClick"
+                    android:stateListAnimator="@animator/button_animator"
+                    android:tag="bracket"
+                    android:text="()"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+
+                <Space />
+
+                <Button
+                    android:id="@+id/permute_inst"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect"
+                    android:longClickable="true"
+                    android:onClick="instrumentClick"
+                    android:stateListAnimator="@animator/button_animator"
+                    android:tag="permute"
+                    android:text="⟳"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+
+                <Space />
+
+                <Button
+                    android:id="@+id/multi_inst"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect"
+                    android:longClickable="true"
+                    android:onClick="instrumentClick"
+                    android:stateListAnimator="@animator/button_animator"
+                    android:tag="multi"
+                    android:text="≡"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+            </TableRow>
         </TableLayout>
 
-        <TextView
-            android:id="@+id/rules_msg"
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="No rules, click somewhere"
-            android:textAlignment="center"
+            android:layout_height="wrap_content"
             android:background="?attr/shapeBackground"
             android:elevation="7dp"
-            android:paddingVertical="8dp"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="16sp"
-            android:typeface="monospace" />
+            android:scrollbarSize="0dp">
+            <TextView
+                android:id="@+id/rules_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:paddingVertical="8dp"
+                android:text="@string/no_rules_msg"
+                android:maxLines="1"
+                android:textAlignment="center"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+        </HorizontalScrollView>
 
         <ScrollView
             android:id="@+id/rules_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:fadeScrollbars="false"
             android:nestedScrollingEnabled="true"
             android:overScrollMode="never"
-            android:layout_weight="1"
+            android:paddingHorizontal="5dp"
             android:scrollbarAlwaysDrawVerticalTrack="true"
             android:scrollbarSize="12dp"
             android:scrollbarStyle="outsideInset"
-            android:paddingHorizontal="5dp"
             android:scrollbarThumbVertical="@drawable/alert_shape"
             android:scrollbars="vertical"
             android:visibility="invisible">
@@ -171,671 +186,746 @@
             android:id="@+id/instrument_handle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:nestedScrollingEnabled="true"
             android:layout_weight="1"
-            android:scrollbarStyle="outsideInset"
+            android:nestedScrollingEnabled="true"
             android:paddingHorizontal="2dp"
+            android:scrollbarStyle="outsideInset"
             android:scrollbarThumbVertical="@drawable/alert_shape"
             android:scrollbars="vertical"
             android:visibility="visible">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:clipToPadding="false">
-            <TextView
-                android:id="@+id/inst_step_detail_msg"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/shapeBackground"
-                android:elevation="3dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="8dp"
-                android:text="1. Detail instrument"
-                android:textColor="@color/text_disableable"
-                android:textSize="14sp"
-                android:typeface="monospace" />
-
-        <HorizontalScrollView
-            android:id="@+id/inst_step_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/shapeBackground"
-            android:scrollbarThumbHorizontal="@drawable/alert_shape">
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/row_clickable"
-                android:paddingVertical="8dp"
-                android:paddingHorizontal="8dp"
-                android:stretchColumns="*">
-                <Button
-                    android:id="@+id/oppo_inst_plus_minus"
-                    android:tag="plus_minus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="+-"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space android:layout_width="10dp"/>
-                <Button
-                    android:id="@+id/oppo_inst_minus_plus"
-                    android:tag="minus_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="-+"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space android:layout_width="10dp"/>
-                <Button
-                    android:id="@+id/oppo_inst_mult_div"
-                    android:tag="mult_div"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="*/"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space android:layout_width="10dp"/>
-                <Button
-                    android:id="@+id/oppo_inst_div_mult"
-                    android:tag="div_mult"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="/*"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space android:layout_width="10dp"/>
-                <Button
-                    android:id="@+id/oppo_inst_pow_root"
-                    android:tag="pow_root"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="^√"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space android:layout_width="10dp"/>
-                <Button
-                    android:id="@+id/oppo_inst_root_pow"
-                    android:tag="root_pow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="√^"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space android:layout_width="10dp"/>
-                <Button
-                    android:id="@+id/oppo_inst_log_pow"
-                    android:tag="log_pow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:textAllCaps="false"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="log^"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space android:layout_width="10dp"/>
-                <Button
-                    android:id="@+id/oppo_inst_pow_log"
-                    android:tag="pow_log"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rect"
-                    android:longClickable="true"
-                    android:minWidth="50dp"
-                    android:textAllCaps="false"
-                    android:onClick="detailClick"
-                    android:stateListAnimator="@animator/button_animator"
-                    android:text="^log"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace" />
-                <Space/>
-            </TableRow>
-        </HorizontalScrollView>
-
-        <TextView
-            android:id="@+id/inst_step_place_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2. Choose place from expression"
-            android:background="?attr/shapeBackground"
-            android:elevation="3dp"
-            android:paddingVertical="8dp"
-            android:paddingHorizontal="8dp"
-            android:textColor="@color/text_disableable"
-            android:textSize="14sp"
-            android:typeface="monospace" />
-
-        <HorizontalScrollView
-            android:id="@+id/inst_step_place_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:duplicateParentState="false"
-            android:fillViewport="true"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="horizontal"
-            android:layout_gravity="center_horizontal">
-            <mathhelper.games.matify.common.SimpleMathView
-                android:id="@+id/inst_step_place"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginBottom="0dp"
-                android:includeFontPadding="false" />
-        </HorizontalScrollView>
-
-            <TextView
-                android:id="@+id/inst_step_param_msg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/shapeBackground"
-                android:elevation="3dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="8dp"
-                android:text="3. Enter param or choose from expression"
-                android:textColor="@color/text_disableable"
-                android:textSize="14sp"
-                android:typeface="monospace" />
-
-            <HorizontalScrollView
-                android:id="@+id/inst_step_param_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                android:clipChildren="false"
                 android:clipToPadding="false"
-                android:duplicateParentState="false"
-                android:fadeScrollbars="true"
-                android:fillViewport="true"
-                android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="horizontal"
-                android:layout_gravity="center_horizontal">
-                <mathhelper.games.matify.common.SimpleMathView
-                    android:id="@+id/inst_step_param"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:includeFontPadding="false" />
-            </HorizontalScrollView>
+                android:orientation="vertical">
 
-            <TableLayout
-                android:id="@+id/inst_step_param_keyboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="*">
-                <TableRow
+                <TextView
+                    android:id="@+id/inst_step_detail_msg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/row_clickable"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="5"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="6"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="7"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="8"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="9"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:tag="delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="⬅"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:typeface="monospace" />
-                </TableRow>
-                <TableRow
+                    android:layout_height="wrap_content"
+                    android:background="?attr/shapeBackground"
+                    android:elevation="3dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/step_detail_descr"
+                    android:textColor="@color/text_disableable"
+                    android:textSize="14sp"
+                    android:typeface="monospace" />
+
+                <HorizontalScrollView
+                    android:id="@+id/inst_step_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/row_clickable"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="0"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="1"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="2"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="3"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="4"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:tag="point"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="."
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:typeface="monospace" />
-                </TableRow>
-                <TableRow
-                    android:id="@+id/latin_row"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/shapeBackground"
+                    android:scrollbarThumbHorizontal="@drawable/alert_shape">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/row_clickable"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="8dp"
+                        android:stretchColumns="*">
+
+                        <Button
+                            android:id="@+id/oppo_inst_plus_minus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="plus_minus"
+                            android:text="+-"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space android:layout_width="10dp" />
+
+                        <Button
+                            android:id="@+id/oppo_inst_minus_plus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="minus_plus"
+                            android:text="-+"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space android:layout_width="10dp" />
+
+                        <Button
+                            android:id="@+id/oppo_inst_mult_div"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="mult_div"
+                            android:text="*/"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space android:layout_width="10dp" />
+
+                        <Button
+                            android:id="@+id/oppo_inst_div_mult"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="div_mult"
+                            android:text="/*"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space android:layout_width="10dp" />
+
+                        <Button
+                            android:id="@+id/oppo_inst_pow_root"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="pow_root"
+                            android:text="^√"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space android:layout_width="10dp" />
+
+                        <Button
+                            android:id="@+id/oppo_inst_root_pow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="root_pow"
+                            android:text="√^"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space android:layout_width="10dp" />
+
+                        <Button
+                            android:id="@+id/oppo_inst_log_pow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="log_pow"
+                            android:text="log^"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space android:layout_width="10dp" />
+
+                        <Button
+                            android:id="@+id/oppo_inst_pow_log"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:longClickable="true"
+                            android:minWidth="50dp"
+                            android:onClick="detailClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="pow_log"
+                            android:text="^log"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+
+                        <Space />
+                    </TableRow>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/inst_step_place_msg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/row_clickable"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp">
-                    <Button
+                    android:layout_height="wrap_content"
+                    android:background="?attr/shapeBackground"
+                    android:elevation="3dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/step_place_descr"
+                    android:textColor="@color/text_disableable"
+                    android:textSize="14sp"
+                    android:typeface="monospace" />
+
+                <HorizontalScrollView
+                    android:id="@+id/inst_step_place_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:animateLayoutChanges="true"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:duplicateParentState="false"
+                    android:fillViewport="true"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="horizontal">
+
+                    <mathhelper.games.matify.common.SimpleMathView
+                        android:id="@+id/inst_step_place"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:textAllCaps="false"
-                        android:text="a"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:textAllCaps="false"
-                        android:text="b"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:textAllCaps="false"
-                        android:text="c"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:textAllCaps="false"
-                        android:text="i"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:textAllCaps="false"
-                        android:text="j"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:textAllCaps="false"
-                        android:text="k"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                </TableRow>
-                <TableRow
-                    android:id="@+id/greek_row"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="0dp"
+                        android:includeFontPadding="false"
+                        android:text="  2\n⎧1⎫\n⎪—⎪\n⎩2⎭"/>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/inst_step_param_msg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/row_clickable"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="8dp">
-                    <Button
+                    android:layout_height="wrap_content"
+                    android:background="?attr/shapeBackground"
+                    android:elevation="3dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/inst_step_param"
+                    android:textColor="@color/text_disableable"
+                    android:textSize="14sp"
+                    android:typeface="monospace" />
+
+                <HorizontalScrollView
+                    android:id="@+id/inst_step_param_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:animateLayoutChanges="true"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:duplicateParentState="false"
+                    android:fadeScrollbars="true"
+                    android:fillViewport="true"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="horizontal">
+
+                    <mathhelper.games.matify.common.SimpleMathView
+                        android:id="@+id/inst_step_param"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:textAllCaps="false"
-                        android:text="α"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="β"
-                        android:textAllCaps="false"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="γ"
-                        android:textAllCaps="false"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="δ"
-                        android:textAllCaps="false"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="ε"
-                        android:textAllCaps="false"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                    <Space/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_rect"
-                        android:minWidth="50dp"
-                        android:onClick="keyboardClick"
-                        android:stateListAnimator="@animator/button_animator"
-                        android:text="ξ"
-                        android:textAllCaps="false"
-                        android:textAlignment="center"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="18sp"
-                        android:typeface="monospace" />
-                </TableRow>
-            </TableLayout>
-            <Space android:layout_height="20dp" android:layout_width="match_parent"/>
-            <Button
-                android:id="@+id/apply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/button_rect"
-                android:stateListAnimator="@animator/button_animator"
-                android:text="Apply"
-                android:textAllCaps="false"
-                android:textAlignment="center"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="monospace" />
-        </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="0dp"
+                        android:includeFontPadding="false" />
+                </HorizontalScrollView>
+
+                <TableLayout
+                    android:id="@+id/inst_step_param_keyboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/row_clickable"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="5"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="6"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="7"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="8"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="9"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="delete"
+                            android:text="⬅"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/row_clickable"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="1"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="2"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="3"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="4"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:tag="point"
+                            android:text="."
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:typeface="monospace" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/latin_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/row_clickable"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="a"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="b"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="c"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="i"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="j"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="k"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/greek_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/row_clickable"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="α"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="β"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="γ"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="δ"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="ε"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+
+                        <Space />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_rect"
+                            android:minWidth="50dp"
+                            android:onClick="keyboardClick"
+                            android:stateListAnimator="@animator/button_animator"
+                            android:text="ξ"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="18sp"
+                            android:typeface="monospace" />
+                    </TableRow>
+                </TableLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <Button
+                    android:id="@+id/apply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect"
+                    android:stateListAnimator="@animator/button_animator"
+                    android:text="@string/inst_apply"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+            </LinearLayout>
         </ScrollView>
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp" />
 
     </LinearLayout>
 </LinearLayout>

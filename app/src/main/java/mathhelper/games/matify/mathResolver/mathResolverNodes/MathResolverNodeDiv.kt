@@ -10,13 +10,17 @@ class MathResolverNodeDiv(
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
-    private var divSymbol = "—"
+    private var symbol = MatifySymbols.div
+    private var needExtend = false
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
         var maxLen = 0
         for (node in origin.children) {
             val elem = createNode(node, false, style, taskType)
+            if (elem is MathResolverNodeDiv) {
+                needExtend = true
+            }
             elem.setNodesFromExpression()
             children.add(elem)
             height += elem.height + 1
@@ -31,6 +35,9 @@ class MathResolverNodeDiv(
         }
         height--
         length += maxLen
+        if (needExtend) {
+            length += 2
+        }
     }
 
     override fun setCoordinates(leftTop: Point) {
@@ -47,19 +54,15 @@ class MathResolverNodeDiv(
         var curStr = leftTop.y
         var curInd = leftTop.x
         if (needBrackets) {
-            val brStr = (rightBottom.y + curStr) / 2
-            stringMatrix[brStr] = stringMatrix[brStr].replaceByIndex(curInd, "(")
-            //spannableArray.add(SpanInfo(RelativeSizeSpan(1.5f), brStr, curInd, curInd + 1))
             curInd++
-            stringMatrix[brStr] = stringMatrix[brStr].replaceByIndex(rightBottom.x, ")")
-            //spannableArray.add(SpanInfo(RelativeSizeSpan(1.5f), brStr, rightBottom.x, rightBottom.x + 1))
+            BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             child.getPlainNode(stringMatrix, spannableArray)
             curStr += child.height
             if (ind != children.size - 1) {
                 val len = if (needBrackets) length - 2 else length
-                val replacement = divSymbol.repeat(len)
+                val replacement = symbol.repeat(len)
                 stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, replacement)
                 curStr++
             }

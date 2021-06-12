@@ -22,9 +22,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.R
+import kotlin.math.abs
 import kotlin.math.pow
 
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
@@ -56,21 +58,30 @@ class AndroidUtil {
             return false
         }
 
+        fun exteriorClickInside(view: View, event: MotionEvent): Boolean {
+            val loc = IntArray(2)
+            view.getLocationOnScreen(loc)
+            if (event.action == MotionEvent.ACTION_UP &&
+                loc[0] <= event.rawX && event.rawX <= loc[0] + view.width * view.scaleX &&
+                loc[1] <= event.rawY && event.rawY <= loc[1] + view.height * view.scaleY) {
+                return true
+            }
+            return false
+        }
+
         @SuppressLint("ClickableViewAccessibility")
         fun setOnTouchUpInside(context: Context, view: View, func: (v: View?) -> Unit) {
             view.setOnTouchListener { v, event ->
                 val tv = v as TextView
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        val themeName = Storage.shared.theme(context)
                         tv.setTextColor(
-                            ThemeController.shared.getColorByTheme(themeName, ColorName.PRIMARY_COLOR)
+                            ThemeController.shared.color(ColorName.PRIMARY_COLOR)
                         )
                     }
                     MotionEvent.ACTION_UP -> {
-                        val themeName = Storage.shared.theme(context)
                         tv.setTextColor(
-                            ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR)
+                            ThemeController.shared.color(ColorName.TEXT_COLOR)
                         )
                         if (touchUpInsideView(v, event)) {
                             func(v)
@@ -119,7 +130,7 @@ class AndroidUtil {
             dialog.window!!.setBackgroundDrawableResource(R.drawable.alert_shape)
             dialog.window!!.findViewById<TextView>(android.R.id.message)?.typeface = Typeface.MONOSPACE
             if (dialog.listView != null) {
-                dialog.listView.divider = ColorDrawable(ThemeController.shared.getColorByTheme(ThemeName.DARK, ColorName.PRIMARY_COLOR))
+                dialog.listView.divider = ColorDrawable(ThemeController.shared.color(ColorName.PRIMARY_COLOR))
                 dialog.listView.dividerHeight = 1
             }
             if (backMode == BackgroundMode.NONE) {
@@ -142,9 +153,7 @@ class AndroidUtil {
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             layoutParams.setMargins(0, Constants.defaultPadding, 0, Constants.defaultPadding)
             view.layoutParams = layoutParams
-
-            val themeName = Storage.shared.theme(context)
-            view.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
+            view.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
             return view
         }
 
@@ -166,10 +175,11 @@ class AndroidUtil {
             }
         }
 
-        @ColorInt fun darkenColor(@ColorInt color: Int, grade: Int): Int {
-            return if (grade == 0) color else Color.HSVToColor(FloatArray(3).apply {
+        @ColorInt fun darkenColor(@ColorInt color: Int/*, grade: Int*/): Int {
+            //return if (grade == 0) color else
+            return Color.HSVToColor(FloatArray(3).apply {
                 Color.colorToHSV(color, this)
-                this[2] *= (0.6f).pow(grade)
+                this[2] *= (0.6f)//.pow(grade)
             })
         }
 
@@ -197,6 +207,19 @@ class AndroidUtil {
                 View.GONE -> View.VISIBLE
                 else -> View.GONE
             }
+        }
+
+        fun insideParentWithOffset(v: View, difX: Float = 0f, difY: Float = 0f): Boolean {
+            val loc = IntArray(2)
+            v.getLocationOnScreen(loc)
+            val p = v.parent as ConstraintLayout
+            val sw = v.width * v.scaleX
+            val sh = v.height * v.scaleY
+            if (loc[0] + difX < p.width - sw / 10f && loc[0] + difX + sw > sw / 10f &&
+                loc[1] + difY < p.height - sh / 2f && loc[1] + difY + sh > sh / 2f) {
+                return true
+            }
+            return false
         }
     }
 }

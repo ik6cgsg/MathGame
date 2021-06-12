@@ -111,19 +111,19 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun showEndExpression(v: View?) {
-        if (endExpressionView.visibility == View.GONE) {
+        /*if (endExpressionView.visibility == View.GONE) {
             endExpressionViewLabel.text = getString(R.string.end_expression_opened)
             endExpressionView.visibility = View.VISIBLE
         } else {
             endExpressionViewLabel.text = getString(R.string.end_expression_closed)
             endExpressionView.visibility = View.GONE
-        }
+        }*/
     }
 
     private fun createRestartDialog(): AlertDialog {
         Log.d(TAG, "createRestartDialog")
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.attention)
@@ -227,7 +227,7 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.showMessage(resources.getString(R.string.congratulations))
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepsSize} / ${TutorialScene.shared.stepsSize}")

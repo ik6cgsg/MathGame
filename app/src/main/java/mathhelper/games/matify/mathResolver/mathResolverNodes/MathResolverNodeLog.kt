@@ -37,14 +37,11 @@ class MathResolverNodeLog(
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
         val curStr = leftTop.y + baseLineOffset
-        var curInd = leftTop.x
-        stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, op!!.name)
-        curInd += op!!.name.length
+        stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(leftTop.x, op!!.name)
+        BracketHandler.setBrackets(stringMatrix, spannableArray,
+            Point(children[0].leftTop.x - 1, children[0].leftTop.y),
+            Point(children[0].rightBottom.x + 1, children[0].rightBottom.y))
         children[1].getPlainNode(stringMatrix, spannableArray)
-        curInd += children[1].length
-        stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, "(")
         children[0].getPlainNode(stringMatrix, spannableArray)
-        curInd += children[0].length + 1
-        stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, ")")
     }
 }

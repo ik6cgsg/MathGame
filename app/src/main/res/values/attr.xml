@@ -13,4 +13,5 @@
     <attr name="colorHint" format="color"/>
     <attr name="dividerColor" format="color"/>
     <attr name="backgroundColor" format="color"/>
+    <attr name="instBackgroundColor" format="color"/>
 </resources>

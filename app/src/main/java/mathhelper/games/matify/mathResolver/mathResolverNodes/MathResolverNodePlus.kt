@@ -11,16 +11,17 @@ class MathResolverNodePlus(
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
     private var operators: ArrayList<String> = ArrayList()
+    private val symbol = MatifySymbols.plus
 
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
         var maxH = 0
-        length += origin.children.size * op!!.name.length - 1
+        length += (origin.children.size - 1) * symbol.length
         origin.children.forEachIndexed { i, node ->
             lateinit var elem: MathResolverNodeBase
             if (node.nodeType == NodeType.FUNCTION &&
                     Operation(node.value).type == OperationType.MINUS && i != 0) {
-                operators.add(node.value)
+                operators.add(MatifySymbols.minus)
                 var brackets = false
                 if (node.children[0].nodeType == NodeType.FUNCTION &&
                     Operation(node.children[0].value).type == OperationType.PLUS) {
@@ -29,7 +30,7 @@ class MathResolverNodePlus(
                 elem = createNode(node.children[0], brackets, style, taskType)
             } else {
                 if (i != 0) {
-                    operators.add(op!!.name)
+                    operators.add(symbol)
                 }
                 elem = createNode(node, getNeedBrackets(node), style, taskType)
             }
@@ -58,7 +59,7 @@ class MathResolverNodePlus(
         var currLen = if (!needBrackets) leftTop.x else leftTop.x + 1
         for (child in children) {
             child.setCoordinates(Point(currLen, leftTop.y + baseLineOffset - child.baseLineOffset))
-            currLen += child.length + op!!.name.length
+            currLen += child.length + symbol.length
         }
     }
 
@@ -66,11 +67,8 @@ class MathResolverNodePlus(
         val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         if (needBrackets) {
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(curInd, "(")
             curInd++
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
+            BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {

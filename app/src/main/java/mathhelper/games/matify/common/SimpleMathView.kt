@@ -21,6 +21,7 @@ import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
+import mathhelper.games.matify.mathResolver.ExpressionType
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
 import mathhelper.games.matify.mathResolver.TaskType
@@ -46,7 +47,7 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
     private fun setDefaults() {
         Log.d(TAG, "setDefaults")
         val themeName = Storage.shared.theme(context)
-        setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
+        setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         typeface = Typeface.MONOSPACE
         textSize = Constants.simpleMathViewSize
         setLineSpacing(0f, Constants.mathLineSpacing)
@@ -54,7 +55,7 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
         // TODO: TEST
-        setExpression("(*(7;^(6;log(5;6))))", null)
+        //setExpression("(*(7;^(6;log(5;6))))", null)
     }
 
     fun setExpression(expressionStr: String, type: String?) {
@@ -82,8 +83,8 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
     private fun setTextFromExpression() {
         Log.d(TAG, "setTextFromExpression")
         mathPair = when(type) {
-            TaskType.SET.str -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET)
-            else -> MathResolver.resolveToPlain(expression!!)
+            TaskType.SET.str -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET, exprType = ExpressionType.SIMPLE)
+            else -> MathResolver.resolveToPlain(expression!!, exprType = ExpressionType.SIMPLE)
         }
         text = mathPair!!.matrix
     }

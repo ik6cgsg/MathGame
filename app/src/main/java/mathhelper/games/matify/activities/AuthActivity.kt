@@ -23,6 +23,7 @@ import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.statistics.Pages
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
@@ -39,7 +40,7 @@ class AuthActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme(Storage.shared.themeInt(this))
+        setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_auth)
         loginView = findViewById(R.id.loginText)
         loginView.doAfterTextChanged { checkInput() }

@@ -350,7 +350,7 @@ class TutorialScene {
 
     fun createTutorialDialog(context: Context): AlertDialog {
         val builder = AlertDialog.Builder(
-            context, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(context))
+            context, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle("")
@@ -389,7 +389,7 @@ class TutorialScene {
     fun createLeaveDialog(context: Context): AlertDialog {
         Log.d(TAG, "createLeaveDialog")
         val builder = AlertDialog.Builder(
-            context, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(context))
+            context, ThemeController.shared.alertDialogTheme
             )
         builder
             .setTitle(R.string.attention)

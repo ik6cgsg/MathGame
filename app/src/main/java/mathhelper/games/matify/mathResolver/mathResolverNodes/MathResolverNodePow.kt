@@ -34,12 +34,8 @@ class MathResolverNodePow(
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        val curStr = leftTop.y + baseLineOffset
         if (needBrackets) {
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(leftTop.x, "(")
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
+            BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
         children.forEach { it.getPlainNode(stringMatrix, spannableArray) }
     }

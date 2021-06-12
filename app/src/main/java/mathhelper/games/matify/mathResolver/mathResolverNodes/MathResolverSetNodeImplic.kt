@@ -10,17 +10,12 @@ class MathResolverSetNodeImplic(
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
-
-    companion object {
-        private var symbol = "→"
-        private val mult: Float =
-            fontPaint.measureText(checkSymbol) / fontPaint.measureText(symbol)
-    }
+    private val symbol = MatifySymbols.setImplic
 
     override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         var maxH = 0
-        length += origin.children.size * symbol.length - 1
+        length += (origin.children.size - 1) * symbol.length
         for (node in origin.children) {
             val elem = createNode(node, getNeedBrackets(node), style, taskType)
             elem.setNodesFromExpression()
@@ -47,16 +42,14 @@ class MathResolverSetNodeImplic(
         val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         if (needBrackets) {
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(curInd, "(")
             curInd++
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
+            BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
                 stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, symbol)
-                spannableArray.add(SpanInfo(ScaleXSpan(mult), curStr, curInd, curInd + symbol.length))
+                val off = (stringMatrix[0].length + 1) * curStr
+                //MatifySpan.setSizeMultifyer(off + curInd, off + curInd + symbol.length, 0.8f)
                 curInd += symbol.length
             }
             child.getPlainNode(stringMatrix, spannableArray)

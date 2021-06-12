@@ -11,6 +11,9 @@ class History {
     var states = ArrayList<State>()
     var undoDepth = 0
 
+    val empty
+        get() = states.isEmpty()
+
     fun saveState(state: State) {
         Log.d(TAG, "saveState")
         states.add(state)

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -76,23 +82,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings" />
 
-    <TextView
-        android:id="@+id/greetings"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:id="@+id/greetings_scroll"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_top"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:isScrollContainer="false"
-        android:scrollHorizontally="false"
-        android:singleLine="true"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        android:typeface="monospace"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_top" />
-
+        android:paddingVertical="8dp"
+        android:scrollbarSize="0dp">
+        <TextView
+            android:id="@+id/greetings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/textColor"
+            android:textSize="18sp"
+            android:maxLines="1"
+            android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"/>
+    </HorizontalScrollView>
 
     <TextView
         android:id="@+id/account_label"
@@ -110,7 +124,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/greetings" />
+        app:layout_constraintTop_toBottomOf="@+id/greetings_scroll" />
 
     <TableLayout
         android:id="@+id/account_table"
@@ -129,7 +143,7 @@
             android:layout_height="match_parent"
             android:clickable="true"
             android:focusable="true"
-            android:background="@color/row_clickable"
+            android:background="@drawable/row_clickable"
             android:onClick="editClick"
             android:paddingVertical="16dp"
             android:paddingHorizontal="24dp">
@@ -169,7 +183,7 @@
             android:id="@+id/pass_change"
             android:layout_width="10dp"
             android:clickable="true"
-            android:background="@color/row_clickable"
+            android:background="@drawable/row_clickable"
             android:onClick="changePassClicked"
             android:focusable="true"
             android:layout_height="match_parent"
@@ -230,7 +244,7 @@
         <TableRow
             android:layout_width="10dp"
             android:clickable="true"
-            android:background="@color/row_clickable"
+            android:background="@drawable/row_clickable"
             android:onClick="changeLanguageClicked"
             android:focusable="true"
             android:layout_height="match_parent"
@@ -270,7 +284,7 @@
         <TableRow
             android:layout_width="10dp"
             android:clickable="true"
-            android:background="@color/row_clickable"
+            android:background="@drawable/row_clickable"
             android:onClick="changeThemeClicked"
             android:focusable="true"
             android:layout_height="match_parent"
@@ -310,7 +324,7 @@
         <TableRow
             android:layout_width="10dp"
             android:clickable="true"
-            android:background="@color/row_clickable"
+            android:background="@drawable/row_clickable"
             android:onClick="rateClick"
             android:focusable="true"
             android:layout_height="match_parent"
@@ -350,7 +364,7 @@
         <TableRow
             android:layout_width="10dp"
             android:clickable="true"
-            android:background="@color/row_clickable"
+            android:background="@drawable/row_clickable"
             android:onClick="startTutorialClick"
             android:focusable="true"
             android:layout_height="match_parent"
@@ -408,3 +422,5 @@
     </eightbitlab.com.blurview.BlurView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

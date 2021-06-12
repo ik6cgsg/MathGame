@@ -225,6 +225,7 @@
         "namespaceCode": "",
         "nameEn": "Sets",
         "nameRu": "Множества",
+        "subjectType": "setTheory",
         "descriptionShortEn": "(implic(or(A;B);C))",
         "descriptionShortRu": "(implic(or(A;B);C))",
         "originalExpressionStructureString": "(or(set-(not(A);B);C))",

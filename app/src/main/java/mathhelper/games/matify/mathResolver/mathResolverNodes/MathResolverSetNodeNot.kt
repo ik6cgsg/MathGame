@@ -10,7 +10,7 @@ class MathResolverSetNodeNot(
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
-    private val symbol = "—"
+    private val symbol = MatifySymbols.setNot
 
     override fun setNodesFromExpression()  {
         needBrackets = origin.children[0].nodeType == NodeType.FUNCTION
@@ -31,12 +31,8 @@ class MathResolverSetNodeNot(
     }
 
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
-        var curStr = leftTop.y + baseLineOffset
         if (needBrackets) {
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(leftTop.x, "(")
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
+            BracketHandler.setBrackets(stringMatrix, spannableArray, Point(leftTop.x, leftTop.y + 1), rightBottom)
         }
         val child = children[0]
         val replacement = symbol.repeat(length)

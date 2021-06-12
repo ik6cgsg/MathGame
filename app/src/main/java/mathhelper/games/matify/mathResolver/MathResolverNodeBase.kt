@@ -27,13 +27,13 @@ open class MathResolverNodeBase(
 
     companion object {
         var checkSymbol = "A"
-        var fontPaint: Paint = {
+        var fontPaint: Paint = run {
             val fp = Paint(Paint.ANTI_ALIAS_FLAG)
             fp.textSize = Constants.centralExpressionDefaultSize
             fp.typeface = Typeface.MONOSPACE
             fp.style = Paint.Style.STROKE
             fp
-        }()
+        }
 
         fun createNode(expression: ExpressionNode, needBrackets: Boolean,
                        style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
@@ -111,11 +111,11 @@ open class MathResolverNodeBase(
 
     open fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
         stringMatrix[leftTop.y] = stringMatrix[leftTop.y].replaceByIndex(leftTop.x, outputValue)
-        if (customized) {
+        /*if (customized) {
             val checkStr = checkSymbol.repeat(outputValue.length)
             val numberMult = fontPaint.measureText(checkStr) / fontPaint.measureText(outputValue)
             spannableArray.add(SpanInfo(ScaleXSpan(numberMult), leftTop.y, leftTop.x, leftTop.x + outputValue.length))
-        }
+        }*/
     }
 
     fun getNeedBrackets(node: ExpressionNode): Boolean {

@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Matify</string>
     <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆\n⬆ Long tap allows to select >1 places ⬆</string>
-    <string name="end_expression_closed">Goal  🔼</string>
-    <string name="end_expression_opened">Goal  🔽</string>
+    <string name="end_expression_opened"><b><i>Goal:</i></b> %1$s</string>
     <string name="previous" translatable="false">↶</string>
     <string name="restart" translatable="false">↺</string>
     <string name="back" translatable="false">←</string>
@@ -169,10 +168,24 @@
 
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="inst_fill_req">Fill required fields!</string>
+    <string name="inst_enter">Enter instrument processing</string>
+    <string name="inst_rules_msg">☟ Instrument processing ☟</string>
+    <string name="no_rules_msg">No rules. Click somewhere in expression!</string>
+    <string name="rules_found_msg">☟ Rules found: ☟</string>
+    <string name="oppo_descr">Apply operator and inverse operator</string>
+    <string name="var_descr">Introduce a new variable</string>
+    <string name="bracket_descr">Group expression nodes</string>
+    <string name="permute_descr">Permute expression nodes</string>
+    <string name="step_detail_descr">1. Detail instrument</string>
+    <string name="step_place_descr">2. Choose place from expression</string>
+    <string name="inst_apply">Apply</string>
+    <string name="inst_step_param">3. Enter param or choose from expression</string>
     <string-array
         name="themes_array">
         <item>@string/theme_light</item>
         <item>@string/theme_dark</item>
         <item>@string/coming_soon</item>
     </string-array>
+    <string name="goal_description">Goal. Details</string>
 </resources>

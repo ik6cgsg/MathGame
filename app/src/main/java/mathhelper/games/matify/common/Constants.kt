@@ -5,7 +5,7 @@ import android.graphics.Color
 class Constants {
     companion object {
         const val centralExpressionDefaultSize = 28f
-        const val centralExpressionMaxSize = 48f
+        const val centralExpressionMaxSize = 68f
         const val ruleDefaultSize = 23f
         const val simpleMathViewSize = 18f
         const val buttonDefaultSize = 21f

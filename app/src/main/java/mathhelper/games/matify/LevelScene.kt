@@ -7,6 +7,7 @@ import android.widget.Toast
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.game.GameResult
@@ -36,7 +37,9 @@ class LevelScene {
                             } else {
                                 value.loading = false
                                 Log.e(TAG, "Error while LevelsActivity initializing")
-                                Toast.makeText(value, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+                                //Toast.makeText(value, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+                                value.finishAffinity()
+                                value.startActivity(Intent(value, GamesActivity::class.java))
                             }
                         }
                     }

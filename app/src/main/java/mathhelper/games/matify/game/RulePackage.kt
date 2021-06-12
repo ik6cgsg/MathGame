@@ -15,14 +15,11 @@ import org.json.JSONObject
 
 data class Rule(
     /** Required values **/
-    @property:Required
-    var nameEn: String = "",
-    @property:Required
     var leftStructureString: String = "",
-    @property:Required
     var rightStructureString: String = "",
-    /** Optional values **/
     var code: String = "",
+    /** Optional values **/
+    var nameEn: String = "",
     var nameRu: String = "",
     var descriptionShortEn: String = "",
     var descriptionShortRu: String = "",
@@ -54,9 +51,8 @@ data class RulePackage(
     var code: String = "",
     @property:Required
     var version: Int = 0,
-    @property:Required
-    var nameEn: String = "",
     /** Optional values **/
+    var nameEn: String = "",
     var nameRu: String = "",
     var descriptionShortEn: String = "",
     var descriptionShortRu: String = "",

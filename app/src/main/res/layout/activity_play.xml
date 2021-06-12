@@ -9,111 +9,59 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
-    <HorizontalScrollView
-        android:id="@+id/global_expression_view"
+    <mathhelper.games.matify.common.GlobalMathView
+        android:id="@+id/global_expression"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:animateLayoutChanges="true"
-        android:background="#0000BCD4"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:duplicateParentState="false"
-        android:fadeScrollbars="true"
-        android:fillViewport="true"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="horizontal"
+        android:text="1 − 2\n⏤⏤⏤ + 4\n2 + 3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_expression_view"
-        app:layout_constraintVertical_bias="0.25">
-
-        <mathhelper.games.matify.common.GlobalMathView
-            android:id="@+id/global_expression"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:includeFontPadding="false" />
-    </HorizontalScrollView>
-
-    <ScrollView
-        android:id="@+id/rules_scroll_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/rect_shape"
-        android:fadeScrollbars="false"
-        android:nestedScrollingEnabled="true"
-        android:overScrollMode="never"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbarSize="12dp"
-        android:scrollbarStyle="insideInset"
-        android:scrollbarThumbVertical="@drawable/alert_shape"
-        android:scrollbars="vertical"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/global_expression_view"
-        app:layout_constraintVertical_bias="1.0">
-
-        <LinearLayout
-            android:id="@+id/rules_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@android:color/background_dark"
-            android:orientation="vertical"
-            android:showDividers="middle|beginning|end|none"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_label"
+        app:layout_constraintVertical_bias="0.20999998" />
 
     <TextView
-        android:id="@+id/end_expression_view"
+        android:id="@+id/end_expression_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:focusable="true"
+        android:labelFor="@id/end_expression_view"
+        android:lines="1"
+        android:onClick="showEndExpression"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:singleLine="true"
+        android:text="@string/end_expression_opened"
+        android:textColor="?attr/textColor"
+        android:textSize="18sp"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/background" />
+
+    <TextView
+        android:id="@+id/message_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:lineSpacingMultiplier="0.5"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/rect_shape_non_required"
+        android:elevation="7dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingMultiplier="1.3"
+        android:singleLine="false"
         android:textColor="?attr/textColor"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:typeface="monospace"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_expression_label" />
-
-    <TextView
-        android:id="@+id/end_expression_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:labelFor="@id/end_expression_view"
-        android:onClick="showEndExpression"
-        android:text="@string/end_expression_opened"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        android:typeface="monospace"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background" />
 
     <LinearLayout
         android:id="@+id/background"
@@ -208,7 +156,7 @@
             android:onClick="previous"
             android:text="@string/previous"
             android:textAlignment="viewEnd"
-            android:textColor="@color/light_click"
+            android:textColor="@color/text_disableable"
             android:textSize="30sp"
             android:textStyle="bold"
             android:typeface="monospace"
@@ -217,28 +165,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/message_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/rect_shape_non_required"
-        android:elevation="7dp"
-        android:gravity="center_horizontal"
-        android:lineSpacingMultiplier="1.3"
-        android:singleLine="false"
-        android:textColor="?attr/textColor"
-        android:textSize="16sp"
-        android:typeface="monospace"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/global_expression_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_expression_view" />
 
 
     <ProgressBar

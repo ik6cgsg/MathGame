@@ -18,7 +18,7 @@ enum class VariableStyle {
 
 enum class TaskType(val str: String) {
     DEFAULT(""),
-    SET("SET")
+    SET("setTheory")
 }
 
 class MathResolver {
@@ -27,33 +27,27 @@ class MathResolver {
         private var baseString = 0
         private lateinit var currentViewTree: MathResolverNodeBase
         private var spannableArray = ArrayList<SpanInfo>()
-        //private val ruleDelim = " ⟼ "
-        //private const val ruleDelim = " → "
-        private const val ruleDelim = " ~> "
+        private val ruleDelim = " ↬ "
 
         fun resolveToPlain(expression: ExpressionNode, style: VariableStyle = VariableStyle.DEFAULT,
-                           taskType: TaskType = TaskType.DEFAULT): MathResolverPair {
+                           taskType: TaskType = TaskType.DEFAULT,
+                           exprType: ExpressionType = ExpressionType.GLOBAL): MathResolverPair {
             if (expression.toString() == "()") {
                 Log.e("MathResolver", "TWF parsing failed")
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
             currentViewTree = MathResolverNodeBase.getTree(expression, style, taskType)
                 ?: return MathResolverPair(null, SpannableStringBuilder("parsing error"))
-            return MathResolverPair(currentViewTree, getPlainString())
+            return MathResolverPair(currentViewTree, getPlainString(exprType))
         }
 
         fun resolveToPlain(expression: String, style: VariableStyle = VariableStyle.DEFAULT,
-                           taskType: TaskType = TaskType.DEFAULT, structureString:Boolean = false): MathResolverPair {
+                           taskType: TaskType = TaskType.DEFAULT, structureString:Boolean = false,
+                           exprType: ExpressionType = ExpressionType.GLOBAL): MathResolverPair {
             val realExpression = if (!structureString) {
                 stringToExpression(expression)
             } else structureStringToExpression(expression)
-            if (realExpression.toString() == "()") {
-                Log.e("MathResolver", "TWF parsing failed")
-                return MathResolverPair(null, SpannableStringBuilder("parsing error"))
-            }
-            currentViewTree = MathResolverNodeBase.getTree(realExpression, style, taskType)
-                ?: return MathResolverPair(null, SpannableStringBuilder("parsing error"))
-            return MathResolverPair(currentViewTree, getPlainString())
+            return resolveToPlain(realExpression, style, taskType, exprType)
         }
 
         fun getRule(left: MathResolverPair, right: MathResolverPair): SpannableStringBuilder {
@@ -82,14 +76,16 @@ class MathResolver {
             }
             val ruleStr = SpannableStringBuilder(mergeMatrices(matrixLeft, matrixRight, leadingTree.baseLineOffset))
             val totalLen = matrixLeft[0].length + ruleDelim.length + matrixRight[0].length + 1
-            for (ls in leftSpans) {
+            /*for (ls in leftSpans) {
                 val offset = (ls.strInd + leftCorr) * totalLen
                 ruleStr.setSpan(ls.span, offset + ls.start, offset + ls.end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             }
             for (rs in rightSpans) {
                 val offset = (rs.strInd + rightCorr) * totalLen + matrixLeft[0].length + ruleDelim.length
                 ruleStr.setSpan(rs.span, offset + rs.start, offset + rs.end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            }
+            }*/
+            ruleStr.setSpan(MatifySpan(ExpressionType.RULE),
+                0, ruleStr.count(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             return ruleStr
         }
 
@@ -130,8 +126,8 @@ class MathResolver {
             return res
         }
 
-        private fun getPlainString(): SpannableStringBuilder {
-            val result = SpannableStringBuilder("")
+        private fun getPlainString(type: ExpressionType): SpannableStringBuilder {
+            var result = SpannableStringBuilder("")
             // matrix init
             stringMatrix = ArrayList()
             spannableArray = ArrayList()
@@ -140,13 +136,21 @@ class MathResolver {
             }
             baseString = currentViewTree.height / 2
             currentViewTree.getPlainNode(stringMatrix, spannableArray)
-            for (str in stringMatrix) {
-                result.append(str).append("\n")
+            for (i in stringMatrix.indices) {
+                result.append(stringMatrix[i])
+                //if (i != stringMatrix.size - 1)
+                    result.append("\n")
             }
-            for (si in spannableArray) {
+            if (type == ExpressionType.GLOBAL) {
+                result.setSpan(
+                    MatifySpan(ExpressionType.GLOBAL),
+                    0, currentViewTree.height * (currentViewTree.length + 1) - 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                )
+            }
+            /*for (si in spannableArray) {
                 val off = si.strInd * (currentViewTree.length + 1)
                 result.setSpan(si.span, off + si.start, off + si.end, si.flag)
-            }
+            }*/
             return result
         }
     }

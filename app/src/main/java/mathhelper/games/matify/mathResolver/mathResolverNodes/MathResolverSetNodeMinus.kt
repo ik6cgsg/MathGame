@@ -9,12 +9,12 @@ class MathResolverSetNodeMinus(
     op: Operation,
     length: Int = 0, height: Int = 0
 ) : MathResolverNodeBase(origin, needBrackets, op, length, height) {
-    private val symbol = "\\"
+    private val symbol = MatifySymbols.setMinus
 
     override fun setNodesFromExpression() {
         super.setNodesFromExpression()
         var maxH = 0
-        length += origin.children.size * symbol.length - 1
+        length += (origin.children.size - 1) * symbol.length
         for (node in origin.children) {
             val elem = createNode(node, getNeedBrackets(node), style, taskType)
             elem.setNodesFromExpression()
@@ -41,15 +41,14 @@ class MathResolverSetNodeMinus(
         val curStr = leftTop.y + baseLineOffset
         var curInd = leftTop.x
         if (needBrackets) {
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(curInd, "(")
             curInd++
-            stringMatrix[curStr] =
-                stringMatrix[curStr].replaceByIndex(rightBottom.x, ")")
+            BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
                 stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, symbol)
+                val off = (stringMatrix[0].length + 1) * curStr
+                //MatifySpan.setSizeMultifyer(off + curInd, off + curInd + symbol.length, 0.8f)
                 curInd += symbol.length
             }
             child.getPlainNode(stringMatrix, spannableArray)

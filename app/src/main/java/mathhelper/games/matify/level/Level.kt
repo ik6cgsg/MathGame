@@ -85,9 +85,9 @@ data class Level(
 
     fun getNameByLanguage(languageCode: String) = if (languageCode.equals("ru", true)) nameRu else nameEn
     fun getDescriptionByLanguage(languageCode: String, full: Boolean = false) = if (languageCode.equals("ru", true)) {
-        if (full) descriptionRu else descriptionShortRu
+        if (full && descriptionRu.isNotEmpty()) descriptionRu else descriptionShortRu
     } else {
-        if (full) descriptionEn else descriptionShortEn
+        if (full && descriptionEn.isNotEmpty()) descriptionEn else descriptionShortEn
     }
 
     companion object {

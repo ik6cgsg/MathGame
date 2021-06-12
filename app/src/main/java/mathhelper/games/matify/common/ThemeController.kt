@@ -61,12 +61,29 @@ class ThemeController {
         ThemeName.DARK to dark
     )
 
-    private val alertDialog = mapOf(
+    private val alertDialogMap = mapOf(
         ThemeName.LIGHT to R.style.AlertDialogCustomLight,
         ThemeName.DARK to R.style.AlertDialogCustomDark
     )
 
-    fun getColor(context: Context, colorName: ColorName): Int {
+    var currentTheme = ThemeName.DARK
+    val alertDialogTheme: Int
+        get() = alertDialogMap[currentTheme] ?: R.style.AlertDialogCustomDark
+
+    fun init(context: Context) {
+        currentTheme = Storage.shared.theme(context)
+    }
+
+    fun color(name: ColorName): Int {
+        return Color.parseColor(themes[currentTheme]?.get(name) ?: "#000000")
+    }
+
+    fun setTheme(context: Context, name: ThemeName) {
+        currentTheme = name
+        Storage.shared.setTheme(context, name)
+    }
+
+    /*fun getColor(context: Context, colorName: ColorName): Int {
         return getColorByTheme(Storage.shared.theme(context), colorName)
     }
 
@@ -82,5 +99,5 @@ class ThemeController {
         if (alertDialogInt == null)
             return R.style.AlertDialogCustomDark
         return alertDialogInt
-    }
+    }*/
 }

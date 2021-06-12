@@ -53,7 +53,8 @@ class GamesActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         setLanguage()
-        setTheme(Storage.shared.themeInt(this))
+        ThemeController.shared.init(this)
+        setTheme(ThemeController.shared.currentTheme.resId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -165,7 +166,7 @@ class GamesActivity: AppCompatActivity() {
                 gameView.setCompoundDrawables(null, null, d, null)
             }
             val themeName = Storage.shared.theme(this)
-            gameView.setTextColor(ThemeController.shared.getColorByTheme(themeName, ColorName.TEXT_COLOR))
+            gameView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
             if (game.lastResult != null) {
                 gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
             }
@@ -183,7 +184,7 @@ class GamesActivity: AppCompatActivity() {
 
     private fun showInfo(game: Game): Boolean {
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle("Game Info")
@@ -224,7 +225,7 @@ class GamesActivity: AppCompatActivity() {
 
     private fun askForTutorialDialog() {
         val builder = AlertDialog.Builder(
-            this, ThemeController.shared.getAlertDialogByTheme(Storage.shared.theme(this))
+            this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.welcome)
