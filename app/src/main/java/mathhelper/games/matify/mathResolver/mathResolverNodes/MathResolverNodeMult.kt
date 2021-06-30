@@ -50,6 +50,9 @@ class MathResolverNodeMult(
             curInd++
             BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
+        if (multiplier < 1f) {
+            spannableArray.add(SpanInfo(MatifyMultiplierSpan(multiplier), leftTop, rightBottom))
+        }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             if (ind != 0) {
                 stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, symbol)

@@ -13,7 +13,9 @@ class MathResolverNodePow(
     override fun setNodesFromExpression()  {
         super.setNodesFromExpression()
         for (node in origin.children) {
-            val elem = createNode(node, getNeedBrackets(node), style, taskType)
+            var mult = multiplier
+            if (node != origin.children[0]) mult *= multiplierDif
+            val elem = createNode(node, getNeedBrackets(node), style, taskType, mult)
             elem.setNodesFromExpression()
             children.add(elem)
             height += elem.height
@@ -36,6 +38,9 @@ class MathResolverNodePow(
     override fun getPlainNode(stringMatrix: ArrayList<String>, spannableArray: ArrayList<SpanInfo>) {
         if (needBrackets) {
             BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
+        }
+        if (multiplier < 1f) {
+            spannableArray.add(SpanInfo(MatifyMultiplierSpan(multiplier), leftTop, rightBottom))
         }
         children.forEach { it.getPlainNode(stringMatrix, spannableArray) }
     }

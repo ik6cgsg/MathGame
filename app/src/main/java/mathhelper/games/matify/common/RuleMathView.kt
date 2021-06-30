@@ -43,15 +43,12 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     }
 
     private fun setDefaults(context: Context) {
-        //isHorizontalScrollBarEnabled = true
         scrollBarSize = 20
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             horizontalScrollbarThumbDrawable = context.getDrawable(R.drawable.alert_shape)
         }
         isScrollbarFadingEnabled = false
-        //scrollBarStyle = SCROLLBARS_INSIDE_INSET
         isFillViewport = true
-        val themeName = Storage.shared.theme(context)
         ruleView = TextView(context)
         ruleView.textSize = Constants.ruleDefaultSize
         ruleView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
@@ -66,6 +63,7 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         ruleView.setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
+        ruleView.includeFontPadding = false
         /*setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)*/
@@ -78,20 +76,8 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     fun setSubst(subst: ExpressionSubstitution, type: String?) {
         this.subst = subst
         val style = if (subst.basedOnTaskContext) VariableStyle.DEFAULT else VariableStyle.GREEK
-        val from = when (type) {
-            TaskType.SET.str -> MathResolver.resolveToPlain(subst.left, style, TaskType.SET)
-            else -> MathResolver.resolveToPlain(subst.left, style)
-        }
-        val to = when (type) {
-            TaskType.SET.str -> MathResolver.resolveToPlain(subst.right, style, TaskType.SET)
-            else -> MathResolver.resolveToPlain(subst.right, style)
-        }
-        if (from.tree == null || to.tree == null) {
-            ruleView.text = context.getString(R.string.parsing_error)
-            return
-        }
         try {
-            val ruleStr = MathResolver.getRule(from, to)
+            val ruleStr = MathResolver.getRule(subst.left, subst.right, style, type)
             ruleView.text = ruleStr
             //ruleView.maxLines = ruleStr.lines().size+1
         } catch (e: Exception) {

@@ -9,12 +9,14 @@ import expressiontree.NodeType
 import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.mathResolver.mathResolverNodes.*
 import java.lang.Exception
+import java.lang.Math.pow
+import kotlin.math.pow
 
 open class MathResolverNodeBase(
     var origin: ExpressionNode,
     var needBrackets: Boolean = false,
     var op: Operation? = null,
-    var length: Int = 0, var height: Int = 0
+    var length: Int = 0, var height: Int = 0,
 ) {
     var children: ArrayList<MathResolverNodeBase> = ArrayList()
     lateinit var leftTop: Point
@@ -22,21 +24,16 @@ open class MathResolverNodeBase(
     var baseLineOffset: Int = -1
     lateinit var style: VariableStyle
     lateinit var taskType: TaskType
+    var multiplier: Float = 1f
     private var customized = false
     private lateinit var outputValue: String
 
     companion object {
-        var checkSymbol = "A"
-        var fontPaint: Paint = run {
-            val fp = Paint(Paint.ANTI_ALIAS_FLAG)
-            fp.textSize = Constants.centralExpressionDefaultSize
-            fp.typeface = Typeface.MONOSPACE
-            fp.style = Paint.Style.STROKE
-            fp
-        }
+        const val multiplierDif = 0.81f
+        private val multiplierMin = multiplierDif.toDouble().pow(2.0).toFloat()
 
         fun createNode(expression: ExpressionNode, needBrackets: Boolean,
-                       style: VariableStyle, taskType: TaskType): MathResolverNodeBase {
+                       style: VariableStyle, taskType: TaskType, multiplier: Float = 1f): MathResolverNodeBase {
             val node = if (expression.nodeType == NodeType.VARIABLE) {
                 val (value, customized) = CustomSymbolsHandler.getPrettyValue(expression, style, taskType)
                 val variable = MathResolverNodeBase(expression, false, null, value.length, 1)
@@ -67,6 +64,7 @@ open class MathResolverNodeBase(
             }
             node.style = style
             node.taskType = taskType
+            node.multiplier = if (multiplier < multiplierMin) multiplierMin else multiplier
             return node
         }
 
@@ -116,6 +114,9 @@ open class MathResolverNodeBase(
             val numberMult = fontPaint.measureText(checkStr) / fontPaint.measureText(outputValue)
             spannableArray.add(SpanInfo(ScaleXSpan(numberMult), leftTop.y, leftTop.x, leftTop.x + outputValue.length))
         }*/
+        if (multiplier < 1f) {
+            spannableArray.add(SpanInfo(MatifyMultiplierSpan(multiplier), leftTop, rightBottom))
+        }
     }
 
     fun getNeedBrackets(node: ExpressionNode): Boolean {

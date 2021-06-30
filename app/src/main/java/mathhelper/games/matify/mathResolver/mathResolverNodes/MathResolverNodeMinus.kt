@@ -37,6 +37,9 @@ class MathResolverNodeMinus(
             curInd++
             BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
+        if (multiplier < 1f) {
+            spannableArray.add(SpanInfo(MatifyMultiplierSpan(multiplier), leftTop, rightBottom))
+        }
         val child = children[0]
         stringMatrix[curStr] = stringMatrix[curStr].replaceByIndex(curInd, symbol)
         child.getPlainNode(stringMatrix, spannableArray)

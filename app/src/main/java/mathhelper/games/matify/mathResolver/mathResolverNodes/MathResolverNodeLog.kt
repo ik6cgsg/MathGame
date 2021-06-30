@@ -14,7 +14,9 @@ class MathResolverNodeLog(
         super.setNodesFromExpression()
         length += op!!.name.length + 2
         for (node in origin.children) {
-            val elem = createNode(node, getNeedBrackets(node), style, taskType)
+            var mult = multiplier
+            if (node == origin.children[1]) mult *= multiplierDif
+            val elem = createNode(node, getNeedBrackets(node), style, taskType, mult )
             elem.setNodesFromExpression()
             children.add(elem)
             length += elem.length
@@ -41,6 +43,9 @@ class MathResolverNodeLog(
         BracketHandler.setBrackets(stringMatrix, spannableArray,
             Point(children[0].leftTop.x - 1, children[0].leftTop.y),
             Point(children[0].rightBottom.x + 1, children[0].rightBottom.y))
+        if (multiplier < 1f) {
+            spannableArray.add(SpanInfo(MatifyMultiplierSpan(multiplier), leftTop, rightBottom))
+        }
         children[1].getPlainNode(stringMatrix, spannableArray)
         children[0].getPlainNode(stringMatrix, spannableArray)
     }

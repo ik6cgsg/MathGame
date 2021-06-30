@@ -49,6 +49,9 @@ class MathResolverNodeFunction(
         curInd += op!!.name.length
         BracketHandler.setBrackets(stringMatrix, spannableArray, Point(curInd, leftTop.y), rightBottom)
         curInd++
+        if (multiplier < 1f) {
+            spannableArray.add(SpanInfo(MatifyMultiplierSpan(multiplier), leftTop, rightBottom))
+        }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             child.getPlainNode(stringMatrix, spannableArray)
             curInd += child.length

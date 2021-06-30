@@ -18,7 +18,7 @@ class MatifySymbols {
         const val plus = "+ "
         const val minusUnary = "− "
         const val minus = "− "
-        const val mult = "* "
+        const val mult = "× "
         // set
         const val setAnd = "∧ "
         const val setOr = "∨ "
@@ -29,7 +29,11 @@ class MatifySymbols {
         private val symbolsToMove = arrayOf(plus, minus, mult, setAnd, setOr, setImplic, setMinus)
             .joinToString(separator = "").replace(" ", "")
 
+        private val symbolsToMagnify= arrayOf(plus, minus, mult)
+            .joinToString(separator = "").replace(" ", "")
+
         fun needMove(s: Char, n: Char?) = symbolsToMove.contains(s) && n == ' '
+        fun needMagnify(s: Char) = symbolsToMagnify.contains(s)
     }
 }
 
@@ -42,27 +46,11 @@ data class SymbolInfo(
 
 class MatifySpan(val type: ExpressionType): ReplacementSpan() {
     companion object {
-        var width = 0
-        var height = 0
+        var widthGlobal = 0
+        var heightGlobal = 0
         private val usualType = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
         private val boldType = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD)
         private var customedSymbols = hashMapOf<Int, SymbolInfo>()
-
-        /*fun setSizeMultifyer(start: Int, end: Int, mult: Float) {
-            //if (type == ExpressionType.GLOBAL) {
-                /*val s = if (start < 0) 0 else start
-                val e = if (end < 0) 0 else end
-                for (i in s until e) {
-                    var oldInfo = customedSymbols[i]
-                    if (oldInfo == null) {
-                        oldInfo = SymbolInfo()
-                    }
-                    oldInfo.sizeMult = mult
-                    oldInfo.removable = false
-                    customedSymbols[i] = oldInfo
-                }*/
-            //}
-        }*/
 
         fun select(start: Int, end: Int, color: Int? = null, multiselection: Boolean = false) {
             val s = if (start < 0) 0 else start
@@ -136,6 +124,14 @@ class MatifySpan(val type: ExpressionType): ReplacementSpan() {
 
     private var mainColor: Int = 0
     private var defSize: Float = 0f
+    private var multiplierMap = hashMapOf<Int, Float>()
+    private var height = 0
+
+    fun setSizeMultiplier(start: Int, end: Int, mult: Float) {
+        for (i in start until end) {
+            multiplierMap[i] = mult
+        }
+    }
 
     private fun getMaxCharWidth(paint: Paint, text: CharSequence, start: Int, end: Int, widths: FloatArray?): Int {
         var widths = widths
@@ -145,7 +141,7 @@ class MatifySpan(val type: ExpressionType): ReplacementSpan() {
         paint.getTextWidths(text, start, end, widths)
         val m = (paint.textSize * 0.59).roundToInt()
         if (type == ExpressionType.GLOBAL) {
-            width = m
+            widthGlobal = m
         }
         return m
     }
@@ -154,10 +150,11 @@ class MatifySpan(val type: ExpressionType): ReplacementSpan() {
         if (fm != null) {
             paint.getFontMetricsInt(fm)
         }
+        val pfm = Paint.FontMetrics()
+        paint.getFontMetrics(pfm)
+        height = (pfm.bottom - pfm.top + pfm.leading).roundToInt()
         if (type == ExpressionType.GLOBAL) {
-            val pfm = Paint.FontMetrics()
-            paint.getFontMetrics(pfm)
-            height = (pfm.bottom - pfm.top + pfm.leading).roundToInt()
+            heightGlobal = height
         }
         var count = end - start
         if (count < 0) {
@@ -166,17 +163,15 @@ class MatifySpan(val type: ExpressionType): ReplacementSpan() {
         return getMaxCharWidth(paint, text, 0, text.length, null) * count
     }
 
-    private fun setPaintAndGetMultCoeff(s: Int, paint: Paint): Float {
+    private fun setPaint(s: Int, paint: Paint, mult: Float) {
         if (type == ExpressionType.GLOBAL && s in customedSymbols.keys) {
             paint.color = customedSymbols[s]!!.color
             if (paint.color == 0) {
                 paint.color = mainColor
             }
             paint.typeface = customedSymbols[s]!!.typeface
-            paint.textSize = defSize * customedSymbols[s]!!.sizeMult
-            return customedSymbols[s]!!.sizeMult
         }
-        return 1f
+        paint.textSize = defSize * mult
     }
 
     private fun clearPaint(paint: Paint) {
@@ -197,13 +192,20 @@ class MatifySpan(val type: ExpressionType): ReplacementSpan() {
         while (i < n) {
             val s = start + i
             var of = 1
-            val w = widths[i] * setPaintAndGetMultCoeff(s, paint)
+            var mult = multiplierMap[s] ?: 1f
+            var yOf = 0f
+            if (MatifySymbols.needMagnify(text[s])) {
+                mult *= 1.5f
+                yOf = height.toFloat() * mult * 0.1f
+            }
+            setPaint(s, paint, mult)
+            val w = widths[i] * mult
             var p = (max - w) / 2
             if (MatifySymbols.needMove(text[s], if (i < n - 1) text[s + 1] else null)) {
                 p += max / 2f
                 of = 2
             }
-            canvas.drawText(text, s, s + 1, x + max * i + p, y.toFloat(), paint)
+            canvas.drawText(text, s, s + 1, x + max * i + p, y.toFloat() + yOf, paint)
             i += of
             clearPaint(paint)
         }

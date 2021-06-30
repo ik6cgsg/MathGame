@@ -184,12 +184,12 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         getLocationOnScreen(loc)
         val evx = event.rawX - loc[0]
         val evy = event.rawY - loc[1]
-        val x = floor(evx / (MatifySpan.width * scale)).toInt()
+        val x = floor(evx / (MatifySpan.widthGlobal * scale)).toInt()
         val n = mathPair!!.height + 1f
-        val msh = MatifySpan.height
+        val msh = MatifySpan.heightGlobal
         val offset = (n * msh - height) / ((n - 1) * msh * 2)
         val spacing = 1 - 2 * offset
-        val y = floor((evy / (MatifySpan.height * scale) - offset) / spacing).toInt()
+        val y = floor((evy / (MatifySpan.heightGlobal * scale) - offset) / spacing).toInt()
         return Pair(x, y)
     }
 
@@ -250,9 +250,9 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     private fun setTextFromMathPair(animated: Boolean = false) {
         val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
         var parw = (parent as ConstraintLayout).width * 1f
-        parw -= parw / 10
+        parw -= parw / 20
         if (curw > parw) {
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize * parw / curw)
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * parw / curw))
         }
         if (animated) {
             animate()

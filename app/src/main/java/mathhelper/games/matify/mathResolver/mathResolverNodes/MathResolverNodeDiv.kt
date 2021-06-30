@@ -57,6 +57,9 @@ class MathResolverNodeDiv(
             curInd++
             BracketHandler.setBrackets(stringMatrix, spannableArray, leftTop, rightBottom)
         }
+        if (multiplier < 1f) {
+            spannableArray.add(SpanInfo(MatifyMultiplierSpan(multiplier), leftTop, rightBottom))
+        }
         children.forEachIndexed { ind: Int, child: MathResolverNodeBase ->
             child.getPlainNode(stringMatrix, spannableArray)
             curStr += child.height
