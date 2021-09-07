@@ -1,19 +1,16 @@
 <resources>
     <string name="app_name">Matify</string>
     <string name="tap_on_some_place_in_expression">⬆ Нажмите на любое место в выражении ⬆\n⬆ Длинное нажатие позволит выделить >1 места ⬆</string>
-    <string name="end_expression_closed">Цель  🔼</string>
     <string name="end_expression_opened"><b><i>Цель:</i></b> %1$s</string>
     <string name="wrong_subs">❌ Это нельзя сделать ❌</string>
     <string name="time_out">😢Время вышло!😢</string>
     <string name="no_rules">🙅 Не нашлось подходящих правил 🙅</string>
     <string name="levels">УРОВНИ</string>
-    <string name="reset">сбросить все</string>
     <string name="settings">⚙ НАСТРОЙКИ ⚙</string>
-    <string name="send_statistics">Отправлять статистику 📈</string>
     <string name="rate_us">⭐ Оцените нас</string>
     <string name="continue_as_guest">Зайти как гость</string>
     <string name="continue_with_github">Войти через GitHub аккаунт</string>
-    <string name="continue_with_google">Войти через Google аккаут</string>
+    <string name="continue_with_google">Войти через Google</string>
     <string name="saved">Сохранено!</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
@@ -44,9 +41,9 @@
     <string name="change_language">🌍 Сменить язык</string>
     <string name="change_language_to">Сменить язык на</string>
     <string name="big_sign_up">РЕГИСТРАЦИЯ</string>
-    <string name="cancel">❌ Отмена ❌</string>
-    <string name="no">🚫 Нет 🚫</string>
-    <string name="yes">✅ Да ✅</string>
+    <string name="cancel">Отмена ❌</string>
+    <string name="no">Нет 🚫</string>
+    <string name="yes">Да ✅</string>
     <string name="congratulations">Поздравляем!</string>
     <string name="next">Вперед</string>
     <string name="menu">Меню</string>
@@ -58,15 +55,8 @@
     <string name="award">НАГРАДА</string>
     <string name="hi">Приветствую</string>
     <string name="send">Отправить</string>
-    <string name="thanks_for_rating">Спасибо за оценку!</string>
-    <string name="tell_us_why_its_so_bad">Напишите, почему все так плохо:</string>
-    <string name="tell_us_why_its_so_perfect">Напишите, что вам больше всего понравилось:</string>
-    <string name="tell_us_anything_you_are_worried_about">Расскажите, что вас смущает:</string>
-    <string name="please_tell_us_about_your_problem">Напишите пожалуйста про Вашу проблему!</string>
     <string name="are_you_sure">Вы уверенны?</string>
     <string name="this_action_will_reset_all_your_achievements">Это действие сбросит все Ваши достижения</string>
-    <string name="wanna_say_something">Обратная связь</string>
-    <string name="tell_about_your_problem">Описание проблемы</string>
     <string name="msg_on_start_multiselect">Режим мультивыбора. Для отмены нажмите ≢</string>
     <string name="start_multiselect_info">Войти в режим мультивыбора</string>
     <string name="end_multiselect_info">Выйти из режима мультивыбора</string>
@@ -131,7 +121,7 @@
     <string name="multiselection_mode_is_off">Обычный</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
-    <string name="level_info_name">Название:</string>
+    <string name="info_name"><b>Название:</b> \"%1$s\"</string>
     <string name="level_info_description">Описание:</string>
     <string name="level_info_steps">Шаги:</string>
     <string name="level_info_select_mode">Режим выбора:</string>
@@ -144,7 +134,7 @@
     <string name="settings_change_theme">Тема</string>
     <string name="settings_rate_app">Оценить приложение</string>
     <string name="settings_start_tutorial">Пройти обучение</string>
-    <string name="settings_reset">СБРОС</string>
+    <string name="settings_reset">Cброс</string>
     <string name="level_info_game">Игра:</string>
     <string name="inst_fill_req">Заполните необходимые поля!</string>
     <string name="inst_enter">Включен режим инструмента</string>
@@ -160,4 +150,7 @@
     <string name="inst_apply">Применить</string>
     <string name="inst_step_param">3. Введи параметр или выбери его из выражения</string>
     <string name="goal_description">Цель. Подробнее</string>
+    <string name="info_game_title">ℹ️ Информация об игре ℹ️</string>
+    <string name="info_recommended">✓ Эта игра рекомендована сообществом MathHelper ✓</string>
+    <string name="info_levels_count"><b>Уровней:</b> %1$d</string>
 </resources>

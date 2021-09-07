@@ -4,20 +4,23 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Handler
 import android.view.View
+import android.widget.Filter
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.game.FilterTaskset
+import mathhelper.games.matify.game.FullTaskset
 import mathhelper.games.matify.game.Game
-import mathhelper.games.matify.statistics.Pages
-import mathhelper.games.matify.statistics.Request
-import mathhelper.games.matify.statistics.RequestData
-import mathhelper.games.matify.statistics.Statistics
+import mathhelper.games.matify.parser.GsonParser
+import mathhelper.games.matify.statistics.*
 import org.json.JSONObject
 import java.lang.Exception
 import java.util.*
@@ -45,14 +48,15 @@ class GlobalScene {
     var googleSignInClient: GoogleSignInClient? = null
     var tutorialProcessing = false
     var games: ArrayList<Game> = ArrayList()
-    var jsonPath = "active"
+    //var jsonPath = "active"
     var gamesActivity: GamesActivity? = null
         set(value) {
             field = value
             if (value != null) {
                 Request.startWorkCycle()
                 tutorialProcessing = false
-                val gameNames = value.assets.list(jsonPath)!!
+                games = ArrayList()
+                /*val gameNames = value.assets.list(jsonPath)!!
                     //.filter { """game.*.json""".toRegex(RegexOption.DOT_MATCHES_ALL).matches(it) }
                 games = ArrayList()
                 for (name in gameNames) {
@@ -60,7 +64,7 @@ class GlobalScene {
                     if (loadedGame != null) {
                         games.add(loadedGame)
                     }
-                }
+                }*/
                 authStatus = Storage.shared.authStatus(value)
             }
         }
@@ -78,17 +82,28 @@ class GlobalScene {
         }
     var loadingElement: ProgressBar? = null
 
-    fun resetAll() {
+    fun resetAll(success: () -> Unit, error: () -> Unit) {
         if (LevelScene.shared.levelsActivity != null) {
             LevelScene.shared.back()
         }
-        games.map { Storage.shared.resetGame(gamesActivity!!, it.code) }
-        gamesActivity!!.recreate()
+        Storage.shared.resetResults(gamesActivity!!)
+        request(gamesActivity!!, background = {
+            val token = Storage.shared.serverToken(gamesActivity!!)
+            Request.resetHistory(RequestData(Pages.USER_HISTORY.value, token, RequestMethod.DELETE))
+        }, foreground = {
+            success()
+            gamesActivity!!.recreate()
+        }, errorground = error)
     }
 
     fun logout() {
-        resetAll()
+        //resetAll()
+        if (LevelScene.shared.levelsActivity != null) {
+            LevelScene.shared.back()
+        }
+        Storage.shared.resetResults(gamesActivity!!)
         Storage.shared.clearUserInfo(gamesActivity!!)
+        Storage.shared.clearSettings(gamesActivity!!)
         if (authStatus == AuthStatus.GOOGLE) {
             googleSignInClient!!.signOut()
         }
@@ -106,15 +121,16 @@ class GlobalScene {
         return res
     }
 
-    fun signUp (context: Activity, userData: AuthInfoObjectBase) {
+    fun signUp(context: Activity, userData: AuthInfoObjectBase) {
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
         requestRoot.put("name", userData.name)
         requestRoot.put("fullName", userData.fullName)
         requestRoot.put("additional", userData.additional)
+        requestRoot.put("locale", "rus")
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
-        shared.request(context, background = {
+        request(context, background = {
             val response = Request.signRequest(req)
             Storage.shared.setServerToken(context, response.getString("token"))
         }, foreground = {
@@ -163,5 +179,84 @@ class GlobalScene {
                 }
             }
         }
+    }
+
+    fun saveResultsFromServer() {
+        // TODO: gamesActivity!!.updateResult()
+    }
+
+    fun parseLoadedOrRequestDefaultGames() {
+        if (!Storage.shared.gotAnySavedTasksets(gamesActivity!!)) {
+            requestGamesByParams(success = {
+                if (games.isEmpty()) {
+                    // TODO error
+                } else {
+                    gamesActivity!!.generateList()
+                }
+            }, error = {
+                // TODO error
+            })
+        } else {
+            GlobalScope.launch {
+                val job = async {
+                    // TODO: loading element?
+                    parsePreloadedGames()
+                    gamesActivity!!.runOnUiThread {
+                        gamesActivity!!.generateList()
+                    }
+                }
+                job.await()
+            }
+        }
+    }
+
+    fun parsePreloadedGames() {
+        val tasksets = Storage.shared.getAllSavedTasksets(gamesActivity!!)
+        for (taskset in tasksets) {
+            val loadedGame = Game.create(taskset, gamesActivity!!)
+            if (loadedGame != null) {
+                games.add(loadedGame)
+            }
+        }
+    }
+
+    fun requestGamesByParams(namespaceCode: String = "global_test", code: String = "", success: () -> Unit, error: () -> Unit) {
+        request(gamesActivity!!, {
+            val tasksetsReqData = RequestData(Pages.TASKSETS_PREVIEW.value, method = RequestMethod.GET)
+            tasksetsReqData.url += "?namespace=$namespaceCode&substr=$code"
+            val res = Request.doSyncRequest(tasksetsReqData)
+            if (res.returnValue != 200) {
+                throw Request.UndefinedException("Something went wrong... (returnCode != 200)")
+            }
+            val tasksets = GsonParser.parse<FilterTaskset>(res.body)?.tasksets
+            for (taskset in tasksets.orEmpty()) {
+                if (taskset.has("code")) {
+                    Storage.shared.saveTaskset(gamesActivity!!, taskset.get("code").asString, taskset.toString())
+                    val loadedGame = Game.create(taskset.toString(), gamesActivity!!)
+                    if (loadedGame != null) {
+                        games.add(loadedGame)
+                    }
+                }
+            }
+        }, success, error)
+    }
+
+    fun requestGameForPlay(game: Game, success: () -> Unit, error: () -> Unit) {
+        request(gamesActivity!!, {
+            var fullTaskset = Storage.shared.tryGetFullTaskset(gamesActivity!!, game.code)
+            if (fullTaskset == null) {
+                val token = Storage.shared.serverToken(gamesActivity!!)
+                val tasksetsReqData = RequestData(Pages.TASKSETS_FULL.value, method = RequestMethod.GET, securityToken = token)
+                tasksetsReqData.url += "/${game.code}"
+                val res = Request.doSyncRequest(tasksetsReqData)
+                if (res.returnValue != 200) {
+                    throw Request.UndefinedException("Something went wrong... (returnCode != 200)")
+                }
+                fullTaskset = GsonParser.parse(res.body)!!
+                Storage.shared.saveTaskset(gamesActivity!!, game.code, fullTaskset.taskset.toString(), Gson().toJson(fullTaskset.rulePacks))
+            }
+            game.preparseRulePacks(fullTaskset.rulePacks)
+            game.load(gamesActivity!!)
+        }, success, error)
     }
 }

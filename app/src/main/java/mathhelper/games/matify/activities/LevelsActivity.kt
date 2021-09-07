@@ -96,10 +96,8 @@ class LevelsActivity: AppCompatActivity() {
             } else {
                 ""
             }
-        var d: Drawable? = null
         when (result?.state) {
             StateType.DONE -> {
-                d = getDrawable(R.drawable.green_tick)
                 when (oldRes?.state) {
                     StateType.NOT_STARTED, null -> LevelScene.shared.levelsPassed += 1
                     StateType.PAUSED -> {
@@ -109,7 +107,6 @@ class LevelsActivity: AppCompatActivity() {
                 }
             }
             StateType.PAUSED -> {
-                d = getDrawable(R.drawable.pause)
                 when (oldRes?.state) {
                     StateType.NOT_STARTED, null -> LevelScene.shared.levelsPaused += 1
                     StateType.DONE -> {
@@ -125,10 +122,8 @@ class LevelsActivity: AppCompatActivity() {
                 }
             }
         }
-        d?.setBounds(0, 0, 90, 90)
-        levelViews[i].setCompoundDrawables(d, null,null, null)
-        LevelScene.shared.currentLevel?.lastResult = result
-        LevelScene.shared.currentLevel?.save(this)
+        AndroidUtil.setLeftDrawable(levelViews[i], AndroidUtil.getDrawableByLevelState(this, result?.state))
+        LevelScene.shared.currentLevel?.save(this, result)
         LevelScene.shared.updateGameResult()
     }
 
@@ -148,13 +143,7 @@ class LevelsActivity: AppCompatActivity() {
             }
             levelView.isLongClickable = true
             levelView.setOnLongClickListener { showInfo(level) }
-            val d: Drawable? = when (level.lastResult?.state) {
-                StateType.DONE -> getDrawable(R.drawable.green_tick)
-                StateType.PAUSED -> getDrawable(R.drawable.pause)
-                else -> null
-            }
-            d?.setBounds(0, 0, 80, 80)
-            levelView.setCompoundDrawables(d, null,null, null)
+            AndroidUtil.setLeftDrawable(levelView, AndroidUtil.getDrawableByLevelState(this, level.lastResult?.state))
             /*levelView.background = getBackgroundByDif(level.difficulty)
             levelView.setOnTouchListener { v, event ->
                 super.onTouchEvent(event)

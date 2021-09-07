@@ -4,6 +4,7 @@ import android.graphics.Color
 
 class Constants {
     companion object {
+        const val appCode = "MATIFY_ANDROID"
         const val centralExpressionDefaultSize = 28f
         const val centralExpressionMaxSize = 68f
         const val ruleDefaultSize = 23f

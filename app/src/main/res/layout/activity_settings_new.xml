@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
@@ -55,7 +55,9 @@
         android:background="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_table"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/version"
@@ -206,6 +208,49 @@
                 android:layout_weight="1"
                 android:text="@string/settings_change_password"
                 android:textColor="@color/text_disableable"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/logout"
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="logoutClicked"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🚪"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:text="@string/sign_out"
+                android:textColor="@android:color/holo_red_light"
                 android:textSize="21sp"
                 android:typeface="monospace" />
         </TableRow>
@@ -373,7 +418,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="❔"
+                android:text="🎓"
                 android:textColor="?attr/textColor"
                 android:textSize="21sp"
                 android:typeface="monospace" />
@@ -389,24 +434,46 @@
                 android:typeface="monospace" />
         </TableRow>
 
-    </TableLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/button_rect"
-        android:onClick="resetClick"
-        android:text="@string/settings_reset"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="monospace"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_table" />
+        <TableRow
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="resetClick"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚠"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:text="@string/settings_reset"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+    </TableLayout>
 
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/blurView"

@@ -2,16 +2,23 @@ package mathhelper.games.matify.game
 
 import android.content.Context
 import android.util.Log
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import mathhelper.games.matify.common.Storage
 import org.json.JSONObject
 import mathhelper.games.matify.level.*
 import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.parser.Required
+import org.jetbrains.annotations.Nullable
 import org.json.JSONArray
+
+data class FilterTaskset(
+    var tasksets: List<JsonObject>
+)
 
 data class FullTaskset(
     @property:Required
-    var taskSet: JsonObject,
+    var taskset: JsonObject,
     @property:Required
     var rulePacks: List<JsonObject>
 )
@@ -36,7 +43,7 @@ data class Game(
     var descriptionRu: String = "",
     var subjectType: String = "",
     var recommendedByCommunity: Boolean = false,
-    var otherData: JsonObject? = null,
+    var otherData: JsonElement? = null,
 ) {
     lateinit var levels: ArrayList<Level>
     lateinit var rulePacks: HashMap<String, RulePackage>
@@ -53,32 +60,32 @@ data class Game(
     companion object {
         private val TAG = "Game"
 
-        fun create(fileName: String, context: Context): Game? {
+        fun create(json: String, context: Context): Game? {
             Log.d(TAG, "create")
-            val res = preload(fileName, context)
+            val res = preload(json)
             res?.loadResult(context)
             return res
         }
 
-        private fun preload(fileName: String, context: Context): Game? {
+        private fun preload(json: String): Game? {
             Log.d(TAG, "preload")
             var res: Game? = null
-            when {
+            /*when {
                 context.assets != null -> {
                     val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
                     val full = GsonParser.parse<FullTaskset>(json) ?: return null
-                    res = GsonParser.parse(full.taskSet)
+                    res = GsonParser.parse(full.taskset)
                     if (res?.preparseRulePacks(full.rulePacks) != true) {
                         res = null
                     }
                 }
                 else -> res = null
-            }
-            return res
+            }*/
+            return GsonParser.parse(json)
         }
     }
 
-    private fun preparseRulePacks(packsJson: List<JsonObject>): Boolean {
+    fun preparseRulePacks(packsJson: List<JsonObject>): Boolean {
         rulePacks = HashMap()
         rulePacksJsons = HashMap()
         for (pack in packsJson) {
@@ -116,20 +123,12 @@ data class Game(
     }
 
     fun save(context: Context) {
-        val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        if (lastResult == null) {
-            prefEdit.remove(code)
-        } else {
-            prefEdit.putString(code, lastResult!!.saveString())
-        }
-        prefEdit.commit()
+        Storage.shared.saveResult(context, lastResult?.saveString(), code)
     }
 
     private fun loadResult(context: Context) {
-        val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
-        val resultStr = prefs.getString(code, "")
-        if (!resultStr.isNullOrEmpty()) {
+        val resultStr = Storage.shared.loadResult(context, code)
+        if (resultStr.isNotBlank()) {
             val resultVals = resultStr.split(" ", limit = 2)
             lastResult = GameResult(resultVals[0].toInt(), resultVals[1].toInt())
         }

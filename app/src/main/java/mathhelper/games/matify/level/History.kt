@@ -1,40 +1,36 @@
 package mathhelper.games.matify.level
 
 import android.util.Log
+import api.expressionToStructureString
 import expressiontree.ExpressionNode
+import mathhelper.games.matify.LevelScene
 
-data class State(var expression: ExpressionNode, var depth: Int = 0)
+data class State(var expression: ExpressionNode, var result: LevelResult)
 
 class History {
     private val TAG = "History"
-    private val index = 0
     var states = ArrayList<State>()
-    var undoDepth = 0
 
     val empty
         get() = states.isEmpty()
 
-    fun saveState(state: State) {
+    fun saveState(steps: Double, time: Long, expression: ExpressionNode) {
         Log.d(TAG, "saveState")
+        val state = State(expression, LevelResult(steps, time, StateType.PAUSED, expressionToStructureString(expression)))
         states.add(state)
-        undoDepth = 0
+        LevelScene.shared.levelsActivity?.updateResult(state.result)
     }
 
     fun getPreviousStep(): State? {
         Log.d(TAG, "getPreviousStep")
         if (states.size < 1) {
+            LevelScene.shared.levelsActivity?.updateResult(null)
             return null
         }
         val res = states[states.size - 1]
         states.removeAt(states.size - 1)
-        res.depth = undoDepth
-        undoDepth++
+        LevelScene.shared.levelsActivity?.updateResult(res.result)
         return res
-    }
-
-    fun getNextStep(): State? {
-        Log.d(TAG, "getNextStep")
-        return null
     }
 
     fun clear() {

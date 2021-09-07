@@ -2,10 +2,18 @@ package mathhelper.games.matify.common
 
 import android.annotation.SuppressLint
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
-import mathhelper.games.matify.R
+import mathhelper.games.matify.game.FullTaskset
+import mathhelper.games.matify.game.GameResult
+import mathhelper.games.matify.level.LevelResult
+import mathhelper.games.matify.level.StateType
+import java.io.File
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
 
 enum class AuthInfo(val str: String) {
@@ -28,7 +36,9 @@ enum class BaseInfo(val str: String) {
 }
 
 enum class SettingInfo(val str: String) {
-    THEME("theme")
+    THEME("theme"),
+    PRELOADED_GAMES("preloadedGames"),
+    LOADED_GAMES("loadedGames")
 }
 
 data class AuthInfoObjectFull(
@@ -47,12 +57,17 @@ data class AuthInfoObjectBase(
     val serverToken: String? = null
 )
 
+interface SavableResult {
+    fun saveString(): String
+}
+
 class Storage {
     companion object {
         private const val userInfoFile = "USER_INFO"
         private const val settingFile = "SETTINGS"
         private const val logFile = "LOGS"
         private const val base = "BASE"
+        private const val resultsFile = "RESULTS"
         val shared = Storage()
     }
 
@@ -217,8 +232,8 @@ class Storage {
     }
 
     @SuppressLint("ApplySharedPref")
-    fun resetGame(context: Context, gameCode: String) {
-        val prefs = context.getSharedPreferences(gameCode, Context.MODE_PRIVATE)
+    fun resetResults(context: Context) {
+        val prefs = context.getSharedPreferences(resultsFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.clear()
         prefEdit.commit()
@@ -231,5 +246,140 @@ class Storage {
         prefEdit.clear()
         prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, false)
         prefEdit.commit()
+    }
+
+    fun saveResult(context: Context, result: String?, gameCode: String, levelCode: String? = null) {
+        val prefs = context.getSharedPreferences(resultsFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        var key = gameCode
+        if (levelCode != null) {
+            key += "_$levelCode"
+        }
+        if (result == null) {
+            prefEdit.remove(key)
+        } else {
+            prefEdit.putString(key, result)
+        }
+        prefEdit.commit()
+    }
+
+    fun loadResult(context: Context, gameCode: String, levelCode: String? = null): String {
+        var result = ""
+        var key = gameCode
+        if (levelCode != null) {
+            key += "_$levelCode"
+        }
+        val prefs = context.getSharedPreferences(resultsFile, Context.MODE_PRIVATE)
+        result = prefs.getString(key, result) ?: result
+        return result
+    }
+
+    fun saveResultFromServer(context: Context, userStat: String) {
+        if (userStat.isNotEmpty()) {
+            val stat = Gson().fromJson(userStat, UserStatForm::class.java)
+            for (tsStat in stat.tasksetStatistics) {
+                val gameRes = GameResult(tsStat.passedCount, tsStat.pausedCount)
+                saveResult(context, gameRes.saveString(), tsStat.code)
+                for (tStat in tsStat.tasksStat) {
+                    val levelRes =
+                        LevelResult(tStat.steps, tStat.time / 1000, StateType.valueOf(tStat.state), tStat.expression ?: "")
+                    saveResult(context, levelRes.saveString(), tsStat.code, tStat.code)
+                }
+            }
+        }
+    }
+
+    fun saveIfNeed(context: Context, file: String, data: String) {
+        val oldFile = File("${context.filesDir.path}/${context.packageName}/shared_prefs/$file")
+        if (!oldFile.exists()) {
+            val prefs = context.getSharedPreferences(file, Context.MODE_PRIVATE)
+            val prefEdit = prefs.edit()
+            prefEdit.putString("data", data)
+            prefEdit.commit()
+        }
+    }
+
+    fun haveAnyFileStartWith(context: Context, name: String): Boolean {
+        val file = File("${context.filesDir.path}/${context.packageName}/shared_prefs/$name*")
+        return file.exists()
+    }
+
+    fun saveTaskset(context: Context, code: String, tasksetJson: String, rulePacks: String? = null) {
+        val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        //if (!prefs.contains("taskset") || prefs.getString("taskset", "") != tasksetJson) {
+            prefEdit.putString("taskset", tasksetJson)
+        //}
+        val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val settingsEdit = settings.edit()
+        if (!prefs.contains("rulePacks") && !rulePacks.isNullOrEmpty()) {
+            prefEdit.putString("rulePacks", rulePacks)
+            val preloaded = HashSet(settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!)
+            val loaded = HashSet(settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!)
+            preloaded.remove(code)
+            loaded.add(code)
+            settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
+            settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)
+        } else {
+            val preloaded = HashSet(settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!)
+            val loaded = HashSet(settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!)
+            loaded.remove(code)
+            preloaded.add(code)
+            settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
+            settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)
+        }
+        settingsEdit.commit()
+        prefEdit.commit()
+    }
+
+    fun gotAnySavedTasksets(context: Context): Boolean {
+        val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val preloaded = settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())
+        val loaded = settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())
+        return !(preloaded.isNullOrEmpty() && loaded.isNullOrEmpty())
+    }
+
+    fun getAllSavedTasksets(context: Context): List<String> {
+        val allTasksets = arrayListOf<String>()
+        val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val allCodes = settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!
+        allCodes += settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!
+        for (code in allCodes) {
+            val tasksetFile = context.getSharedPreferences(code, Context.MODE_PRIVATE)
+            val json = tasksetFile.getString("taskset", null)
+            if (!json.isNullOrEmpty()) {
+                allTasksets.add(json)
+            }
+        }
+        return allTasksets
+    }
+/*
+    fun setDefaultGamesPreloaded(context: Context, flag: Boolean) {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        prefEdit.putBoolean(SettingInfo.DEFAULT_GAMES_PRELOADED.str, flag)
+        prefEdit.commit()
+    }
+
+    fun getDefaultGamesPreloaded(context: Context): Boolean {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        return prefs.getBoolean(SettingInfo.DEFAULT_GAMES_PRELOADED.str, false)
+    }
+*/
+    fun tryGetFullTaskset(context: Context, code: String): FullTaskset? {
+        var res: FullTaskset? = null
+        val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
+        if (prefs.contains("taskset") && prefs.contains("rulePacks")) {
+            res = FullTaskset(
+                taskset = JsonParser.parseString(prefs.getString("taskset", "")).asJsonObject,
+                rulePacks = Gson().fromJson(prefs.getString("rulePacks", ""), Array<JsonObject>::class.java).toList()
+            )
+        }
+        return res
+    }
+
+    fun clearSettings(context: Context) {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        prefs.edit().clear().commit()
     }
 }

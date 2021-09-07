@@ -74,13 +74,13 @@ class StepInfo(
     fun setRequiredStar() {
         val d = context.getDrawable(R.drawable.required_star)
         d!!.setBounds(0, 0, 32, 32)
-        msg.setCompoundDrawables(null, null, d, null)
+        AndroidUtil.setRightDrawable(msg, d)
     }
 
     fun setPassed() {
         val d = context.getDrawable(R.drawable.green_tick)
         d!!.setBounds(0, 0, 50, 50)
-        msg.setCompoundDrawables(null, null, d, null)
+        AndroidUtil.setRightDrawable(msg, d)
     }
 
     fun toggle() {

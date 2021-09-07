@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.Log
 import android.content.Context.MODE_PRIVATE
 import api.*
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import config.CompiledConfiguration
 import expressiontree.*
+import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.*
 import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.parser.GsonParser
@@ -59,19 +61,19 @@ data class Level(
     var descriptionRu: String = "",
     var subjectType: String = "",
     var goalPattern: String? = null,
-    var otherGoalData: JsonObject? = null,
+    var otherGoalData: JsonElement? = null,
     var rulePacks: List<RulePackLink>? = null,
     var rules: List<JsonObject>? = null,
     var stepsNumber: Int = 0,
     var time: Int = 0,
     var difficulty: Double = 0.0,
-    var solutionsStepsTree: List<JsonObject>? = null,
-    var hints: List<JsonObject>? = null,
-    var interestingFacts: List<JsonObject>? = null,
-    var nextRecommendedTasks: List<JsonObject>? = null,
-    var otherCheckSolutionData: JsonObject? = null,
-    var otherAwardData: List<JsonObject>? = null,
-    var otherData: JsonObject? = null,
+    var solutionsStepsTree: JsonElement? = null,
+    var hints: JsonElement? = null,
+    var interestingFacts: JsonElement? = null,
+    var nextRecommendedTasks: JsonElement? = null,
+    var otherCheckSolutionData: JsonElement? = null,
+    var otherAwardData: JsonElement? = null,
+    var otherData: JsonElement? = null,
 ) {
     lateinit var game: Game
     lateinit var startExpression: ExpressionNode
@@ -134,8 +136,8 @@ data class Level(
                 allRules.add(rule.substitution)
             }
         }
-        if (otherCheckSolutionData != null) {
-            val params = GsonParser.parse<CompiledConfigurationParams>(otherCheckSolutionData!!)
+        if (otherCheckSolutionData != null && !otherCheckSolutionData!!.isJsonNull) {
+            val params = GsonParser.parse<CompiledConfigurationParams>(otherCheckSolutionData!!.asJsonObject)
             if (params != null) {
                 additionalParamsMap = params.paramsMap.filter { !it.value.isNullOrBlank() } as MutableMap<String, String>
             }
@@ -230,21 +232,14 @@ data class Level(
         return substitutionApplication.map { it.expressionSubstitution to it.resultExpression }.toMap()
     }
 
-    fun save(context: Context) {
-        val prefs = context.getSharedPreferences(game.code, MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        if (lastResult == null) {
-            prefEdit.remove(code)
-        } else {
-            prefEdit.putString(code, lastResult!!.saveString())
-        }
-        prefEdit.commit()
+    fun save(context: Context, result: LevelResult?) {
+        lastResult = result
+        Storage.shared.saveResult(context, lastResult?.saveString(), game.code, code)
     }
 
     private fun loadResult(context: Context) {
-        val prefs = context.getSharedPreferences(game.code, MODE_PRIVATE)
-        val resultStr = prefs.getString(code, "")
-        if (!resultStr.isNullOrEmpty()) {
+        val resultStr = Storage.shared.loadResult(context, game.code, code)
+        if (resultStr.isNotBlank()) {
             val resultVals = resultStr.split(" ", limit = 4)
             lastResult = LevelResult(resultVals[0].toDouble(), resultVals[1].toLong(),
                 //Award(context, getAwardByCoeff(resultVals[2].toDouble()), resultVals[2].toDouble()))

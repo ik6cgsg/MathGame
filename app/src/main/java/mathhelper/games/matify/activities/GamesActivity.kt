@@ -42,6 +42,7 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var serverScroll: ScrollView
     private var askForTutorial = false
     lateinit var blurView: BlurView
+    private lateinit var progress: ProgressBar
 
     private fun setLanguage() {
         val locale = Locale("en")
@@ -52,21 +53,24 @@ class GamesActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
+        val authed = Storage.shared.isUserAuthorized(this)
+        if (!authed) {
+            startActivity(Intent(this, AuthActivity::class.java))
+            askForTutorial = true
+        }
         setLanguage()
         ThemeController.shared.init(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
+        progress = findViewById(R.id.progress)
+        progress.visibility = View.VISIBLE
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestIdToken(Constants.serverId)
             .build()
         GlobalScene.shared.googleSignInClient = GoogleSignIn.getClient(this, gso)
         Storage.shared.checkDeviceId(this)
-        if (!Storage.shared.isUserAuthorized(this)) {
-            startActivity(Intent(this, AuthActivity::class.java))
-            askForTutorial = true
-        }
         GlobalScene.shared.gamesActivity = this
         gamesViews = ArrayList()
         gamesList = findViewById(R.id.games_list)
@@ -78,10 +82,12 @@ class GamesActivity: AppCompatActivity() {
         serverScroll = findViewById(R.id.server_scroll)
         blurView = findViewById(R.id.blurView)
         setSearchEngine()
-        generateList()
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27"
+        }
+        if (authed) {
+            GlobalScene.shared.parseLoadedOrRequestDefaultGames()
         }
     }
 
@@ -151,21 +157,23 @@ class GamesActivity: AppCompatActivity() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun generateList(search: CharSequence? = null) {
+    fun generateList(search: CharSequence? = null) {
+        gamesList.removeAllViews()
+        gamesViews.clear()
+        val lang = resources.configuration.locale.language
         GlobalScene.shared.games.forEachIndexed { i, game ->
             if (search != null) {
-                if (!game.getNameByLanguage(resources.configuration.locale.language)!!.contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(lang).contains(search, ignoreCase = true)) {
                     return
                 }
             }
             val gameView = AndroidUtil.createButtonView(this)
-            gameView.text = game.getNameByLanguage(resources.configuration.locale.language)
+            gameView.text = game.getNameByLanguage(lang)
             if (game.recommendedByCommunity) {
                 val d = getDrawable(R.drawable.tick)
                 d!!.setBounds(0, 0, 70, 70)
-                gameView.setCompoundDrawables(null, null, d, null)
+                AndroidUtil.setRightDrawable(gameView, d)
             }
-            val themeName = Storage.shared.theme(this)
             gameView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
             if (game.lastResult != null) {
                 gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
@@ -176,19 +184,25 @@ class GamesActivity: AppCompatActivity() {
                 GlobalScene.shared.currentGame = game
             }
             gameView.isLongClickable = true
-            gameView.setOnLongClickListener { showInfo(game) }
+            gameView.setOnLongClickListener { showInfo(game, lang) }
             gamesList.addView(gameView)
             gamesViews.add(gameView)
         }
+        progress.visibility = View.GONE
     }
 
-    private fun showInfo(game: Game): Boolean {
+    private fun showInfo(game: Game, lang: String): Boolean {
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.alertDialogTheme
         )
-        builder
-            .setTitle("Game Info")
-            .setMessage("Name: ${game.nameEn}\nRecommended by society: ${if (game.recommendedByCommunity) "yes" else "no"}")
+        val v = layoutInflater.inflate(R.layout.game_info, null)
+        val name = v.findViewById<TextView>(R.id.name)!!
+        name.text = getString(R.string.info_name, game.getNameByLanguage(lang))
+        val levels = v.findViewById<TextView>(R.id.levels)!!
+        levels.text = getString(R.string.info_levels_count, game.tasks.size)
+        val recommend = v.findViewById<TextView>(R.id.recommended)!!
+        recommend.visibility = if (game.recommendedByCommunity) View.VISIBLE else View.GONE
+        builder.setView(v)
             .setCancelable(true)
         val alert = builder.create()
         AndroidUtil.showDialog(alert, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)

@@ -50,7 +50,7 @@ class Statistics {
                 appliedRule = rule,
                 selectedPlace = (places.map { expressionToStructureString(it) }).toString()
             )
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RULE)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.RULE)
             sendLog(activityLog, activity)
         }
 
@@ -64,7 +64,20 @@ class Statistics {
                 selectedPlace = (places.map { expressionToStructureString(it) }).toString()
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.PLACE)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.PLACE)
+            sendLog(activityLog, activity)
+        }
+
+        fun logInterim(currSteps: Double, currExpr: ExpressionNode) {
+            val currExprStr = expressionToStructureString(currExpr)
+            val activityLog = ActivityLog(
+                currStepsNumber = currSteps,
+                nextStepsNumber = currSteps,
+                currExpression = currExprStr,
+                nextExpression = currExprStr
+            )
+            val activity = PlayScene.shared.playActivity!!
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.INTERIM)
             sendLog(activityLog, activity)
         }
 
@@ -77,7 +90,7 @@ class Statistics {
                 nextExpression = exprStr
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.START)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.START)
             sendLog(activityLog, activity)
         }
 
@@ -100,7 +113,7 @@ class Statistics {
                 selectedPlace = places.toString()
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.UNDO)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.UNDO)
             sendLog(activityLog, activity)
         }
 
@@ -120,7 +133,7 @@ class Statistics {
                 nextExpression = next,
                 selectedPlace = places.toString()
             )
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.RESTART)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.RESTART)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -140,7 +153,7 @@ class Statistics {
                 nextExpression = curr,
                 selectedPlace = places.toString()
             )
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.MENU)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.MENU)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -154,7 +167,7 @@ class Statistics {
                 nextExpression = exprStr
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.WIN)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.WIN)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -174,7 +187,7 @@ class Statistics {
                 selectedPlace = places.toString()
             )
             val activity = PlayScene.shared.playActivity!!
-            activityLog.additionalFrom(activity, LevelScene.shared.currentLevel!!, Action.LOOSE)
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.LOOSE)
             sendLog(activityLog, activity)
             startTime = 0
         }
@@ -225,8 +238,10 @@ class Statistics {
             log.timeFromLastActionMs = time - lastActionTime
             lastActionTime = time
             if (startTime > 0) { // Level was created and set
-                log.currTimeMs = time - startTime
-                otherData["leftTimeMS"] = LevelScene.shared.currentLevel!!.time.toLong() * 1000 - log.currTimeMs!!
+                log.currTimeMs = PlayScene.shared.currentTime * 1000
+                val timeFromLastStart = time - startTime
+                otherData["leftTimeMS"] = LevelScene.shared.currentLevel!!.time.toLong() * 1000 - timeFromLastStart
+                otherData["timeFromLevelLastStart"] = timeFromLastStart
             }
             log.otherData = otherData
         }

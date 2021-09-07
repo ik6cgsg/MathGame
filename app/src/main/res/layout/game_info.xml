@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp">
+
+    <TextView
+        android:id="@+id/info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_game_title"
+        android:textSize="18sp"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        android:layout_gravity="center_horizontal"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="?attr/colorPrimary"
+        android:typeface="monospace"
+        android:text="@string/info_name" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"/>
+
+    <TextView
+        android:id="@+id/levels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="?attr/colorPrimary"
+        android:typeface="monospace"
+        android:text="@string/info_levels_count" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <TextView
+        android:id="@+id/recommended"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="?attr/colorPrimaryDark"
+        android:typeface="monospace"
+        android:textStyle="italic"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible"
+        android:text="@string/info_recommended" />
+
+</LinearLayout>

@@ -37,7 +37,6 @@ class PlayActivity: AppCompatActivity() {
     private var loading = false
     private lateinit var looseDialog: AlertDialog
     private lateinit var winDialog: AlertDialog
-    private lateinit var backDialog: AlertDialog
     private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
 
@@ -94,7 +93,7 @@ class PlayActivity: AppCompatActivity() {
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
         val d = ContextCompat.getDrawable(this, R.drawable.expand)
         d!!.setBounds(0, 0, 70, 70)
-        endExpressionViewLabel.setCompoundDrawables(null, null, d, null)
+        AndroidUtil.setRightDrawable(endExpressionViewLabel, d)
         messageView = findViewById(R.id.message_view)
         timerView = findViewById(R.id.timer_view)
         back = findViewById(R.id.back)
@@ -151,7 +150,6 @@ class PlayActivity: AppCompatActivity() {
         messageView.visibility = View.GONE
         looseDialog = createLooseDialog()
         winDialog = createWinDialog()
-        backDialog = createBackDialog()
         continueDialog = createContinueDialog()
         PlayScene.shared.playActivity = this
         Handler().postDelayed({
@@ -244,11 +242,7 @@ class PlayActivity: AppCompatActivity() {
 
     fun back(v: View?) {
         if (!loading) {
-            if (LevelScene.shared.currentLevel!!.endless && PlayScene.shared.stepsCount > 0) {
-                AndroidUtil.showDialog(backDialog)
-            } else {
-                returnToMenu(false)
-            }
+            returnToMenu()
         }
     }
 
@@ -262,8 +256,8 @@ class PlayActivity: AppCompatActivity() {
         messageTimer.start()
     }
 
-    private fun returnToMenu(save: Boolean) {
-        PlayScene.shared.menu(this, save)
+    private fun returnToMenu() {
+        PlayScene.shared.menu()
         finish()
     }
 
@@ -318,7 +312,7 @@ class PlayActivity: AppCompatActivity() {
             .setMessage("")
             .setPositiveButton(R.string.next) { dialog: DialogInterface, id: Int -> }
             .setNeutralButton(R.string.menu) { dialog: DialogInterface, id: Int ->
-                PlayScene.shared.menu(this,false)
+                PlayScene.shared.menu()
                 finish()
             }
             .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
@@ -354,25 +348,6 @@ class PlayActivity: AppCompatActivity() {
             .setNegativeButton(R.string.menu) { dialog: DialogInterface, id: Int ->
                 back(null)
             }
-            .setCancelable(false)
-        return builder.create()
-    }
-
-    private fun createBackDialog(): AlertDialog {
-        Log.d(TAG, "createBackDialog")
-        val builder = AlertDialog.Builder(
-            this, ThemeController.shared.alertDialogTheme
-        )
-        builder
-            .setTitle(R.string.attention)
-            .setMessage(R.string.save_your_current_state)
-            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
-                returnToMenu(true)
-            }
-            .setNegativeButton(R.string.no) { dialog: DialogInterface, id: Int ->
-                returnToMenu(false)
-            }
-            .setNeutralButton(R.string.cancel) { dialog: DialogInterface, id: Int -> }
             .setCancelable(false)
         return builder.create()
     }

@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import mathhelper.games.matify.activities.PlayActivity
+import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.level.Level
 import java.sql.Timestamp
 
@@ -23,11 +24,11 @@ enum class Action(val str: String) {
 }
 
 data class ActivityLog (
-    var appCode: String = "MATIFY_ANDROID",
+    var appCode: String = Constants.appCode,
     var activityTypeCode: String = "",
     var clientActionTs: Timestamp? = null,
-    var taskSetCode: String? = null,
-    var taskSetVersion: Int? = null,
+    var tasksetCode: String? = null,
+    var tasksetVersion: Int? = null,
     var taskCode: String? = null,
     var taskVersion: Int? = null,
     var autoSubTaskCode: String? = null,
@@ -53,12 +54,12 @@ data class ActivityLog (
     var qualityData: MutableMap<String, *>? = null,
     var baseAward: Double? = null
 ) {
-    fun additionalFrom(activity: PlayActivity, level: Level, action: Action) {
+    fun additionalFrom(level: Level, action: Action) {
         this.activityTypeCode = action.str
         this.taskCode = level.code
         this.taskVersion = level.version
-        this.taskSetCode = level.game.code
-        this.taskSetVersion = level.game.version
+        this.tasksetCode = level.game.code
+        this.tasksetVersion = level.game.version
         this.originalExpression = level.originalExpressionStructureString
         this.goalExpression = level.goalExpressionStructureString
         this.goalPattern = level.goalPattern
@@ -66,7 +67,7 @@ data class ActivityLog (
     }
 
     override fun toString(): String {
-        var gson = GsonBuilder().serializeNulls().create()
+        var gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").serializeNulls().create()
         val res =  gson.toJson(this)
         return res
     }

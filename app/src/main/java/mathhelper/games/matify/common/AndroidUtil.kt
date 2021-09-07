@@ -26,6 +26,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.R
+import mathhelper.games.matify.level.StateType
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -220,6 +221,24 @@ class AndroidUtil {
                 return true
             }
             return false
+        }
+
+        fun getDrawableByLevelState(context: Context, state: StateType?): Drawable? {
+            val d: Drawable? = when (state) {
+                StateType.DONE -> context.getDrawable(R.drawable.green_tick)
+                StateType.PAUSED -> context.getDrawable(R.drawable.pause)
+                else -> null
+            }
+            d?.setBounds(0, 0, 80, 80)
+            return d
+        }
+
+        fun setLeftDrawable(view: TextView, drawable: Drawable?) {
+            view.setCompoundDrawables(drawable, null, null, null)
+        }
+
+        fun setRightDrawable(view: TextView, drawable: Drawable?) {
+            view.setCompoundDrawables(null, null, drawable, null)
         }
     }
 }

@@ -24,8 +24,21 @@ class LevelScene {
     var levelsActivity: LevelsActivity? = null
         set(value) {
             field = value
-            if (value != null) {
-                GlobalScope.launch {
+            if (value != null && GlobalScene.shared.currentGame != null) {
+                GlobalScene.shared.requestGameForPlay(GlobalScene.shared.currentGame!!, success = {
+                    levels = GlobalScene.shared.currentGame!!.levels
+                    levelsPassed = GlobalScene.shared.currentGame!!.lastResult?.levelsPassed ?: 0
+                    levelsPaused = GlobalScene.shared.currentGame!!.lastResult?.levelsPaused ?: 0
+                    value.onLevelsLoaded()
+                }, error = {
+                    value.loading = false
+                    Log.e(TAG, "Error while LevelsActivity initializing")
+                    value.finish()
+                    //Toast.makeText(value, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+                    //value.finishAffinity()
+                    //value.startActivity(Intent(value, GamesActivity::class.java))
+                })
+                /*GlobalScope.launch {
                     val job = async {
                         val loaded = GlobalScene.shared.currentGame?.load(value) ?: false
                         value.runOnUiThread {
@@ -44,7 +57,7 @@ class LevelScene {
                         }
                     }
                     job.await()
-                }
+                }*/
             }
         }
     var currentLevel: Level? = null

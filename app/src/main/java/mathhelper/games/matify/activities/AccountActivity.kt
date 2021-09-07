@@ -25,7 +25,6 @@ class AccountActivity: AppCompatActivity() {
     private lateinit var nameView: TextView
     private lateinit var fullNameView: TextView
     private lateinit var additionalView: TextView
-    private lateinit var logButton: Button
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +38,6 @@ class AccountActivity: AppCompatActivity() {
         nameView = findViewById(R.id.name)
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
-        logButton = findViewById(R.id.log_button)
         GlobalScene.shared.loadingElement = findViewById(R.id.progress)
     }
 
@@ -93,10 +91,5 @@ class AccountActivity: AppCompatActivity() {
                 Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
             }, errorground = {})
         }
-    }
-
-    fun logClicked(v: View?) {
-        GlobalScene.shared.logout()
-        finish()
     }
 }

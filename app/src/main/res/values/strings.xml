@@ -9,15 +9,13 @@
     <string name="time_out">😢Time out!😢</string>
     <string name="no_rules">🙅 No rules for this 🙅</string>
     <string name="levels">LEVELS</string>
-    <string name="reset">reset</string>
     <string name="gear" translatable="false">⚙</string>
     <string name="settings">⚙ SETTINGS ⚙</string>
-    <string name="send_statistics">Send statistics 📈</string>
     <string name="rate_us">⭐ Rate us</string>
     <string name="version_view" translatable="false">Matify v</string>
     <string name="pointer" translatable="false">☝</string>
     <string name="continue_as_guest">Continue as guest</string>
-    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_google">Sign in with Google</string>
     <string name="continue_with_github">Continue with GitHub</string>
     <string name="logo" translatable="false">Logo</string>
     <string name="googlelogo" translatable="false">googleLogo</string>
@@ -52,9 +50,9 @@
     <string name="change_language">🌍 Change language</string>
     <string name="change_language_to">Change language to</string>
     <string name="big_sign_up">SIGN UP</string>
-    <string name="cancel">❌ Cancel ❌</string>
-    <string name="no">🚫 No 🚫</string>
-    <string name="yes">✅ Yes ✅</string>
+    <string name="cancel">Cancel ❌</string>
+    <string name="no">No 🚫</string>
+    <string name="yes">Yes ✅</string>
     <string name="congratulations">Congratulations!</string>
     <string name="next">Next</string>
     <string name="menu">Menu</string>
@@ -66,15 +64,8 @@
     <string name="award">AWARD</string>
     <string name="hi">Hi</string>
     <string name="send">Send</string>
-    <string name="thanks_for_rating">Thanks for rating!</string>
-    <string name="tell_us_why_its_so_bad">Tell us why it\'s so bad:</string>
-    <string name="tell_us_why_its_so_perfect">Tell us why it\'s so perfect:</string>
-    <string name="tell_us_anything_you_are_worried_about">Tell us anything you\'re worried about:</string>
-    <string name="please_tell_us_about_your_problem">Please, tell us about your problem!</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="this_action_will_reset_all_your_achievements">This action will reset all your achievements</string>
-    <string name="wanna_say_something">Wanna say something?</string>
-    <string name="tell_about_your_problem">Tell about your problem</string>
     <string name="i" translatable="false">i</string>
     <string name="start_multiselect" translatable="false">≡</string>
     <string name="end_multiselect" translatable="false">≢</string>
@@ -150,7 +141,8 @@
     </string-array>
 
     <string name="level_info_game">Game:</string>
-    <string name="level_info_name">Name:</string>
+    <string name="info_name"><b>Name:</b> \"%1$s\"</string>
+    <string name="info_game_title">ℹ️ Game info ℹ️</string>
     <string name="level_info_description">Description:</string>
     <string name="level_info_steps">Steps:</string>
     <string name="level_info_select_mode">Select mode:</string>
@@ -164,7 +156,7 @@
     <string name="settings_change_theme">Theme</string>
     <string name="settings_rate_app">Rate app</string>
     <string name="settings_start_tutorial">Start tutorial</string>
-    <string name="settings_reset">RESET</string>
+    <string name="settings_reset">Reset</string>
 
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
@@ -188,4 +180,6 @@
         <item>@string/coming_soon</item>
     </string-array>
     <string name="goal_description">Goal. Details</string>
+    <string name="info_recommended">✓ This game is recommended by MathHelper society ✓</string>
+    <string name="info_levels_count"><b>Levels:</b> %1$d</string>
 </resources>

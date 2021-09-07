@@ -5,6 +5,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import mathhelper.games.matify.common.Constants
 import org.json.JSONObject
 import mathhelper.games.matify.common.RequestTimer
 import java.net.URL
@@ -17,20 +18,22 @@ enum class Pages(val value: String) {
     SIGNIN("/api/auth/signin"),
     SIGNUP("/api/auth/signup"),
     EDIT("/api/auth/edit"),
-    GOOGLE_SIGN_IN("/api/auth/google_sing_in"),
-    ACTIVITY_LOG("/api/activity_log/create")
+    GOOGLE_SIGN_IN("/api/auth/google_sign_in"),
+    ACTIVITY_LOG("/api/log/activity/create"),
+    USER_HISTORY("/api/log/user_statistics"),
+    TASKSETS_PREVIEW("/api/taskset"),
+    TASKSETS_FULL("/api/taskset/play/${Constants.appCode}/endless")
 }
 
-enum class RequestMethod(val value: String) {
-    POST("POST"),
-    GET("GET")
+enum class RequestMethod {
+    POST, GET, DELETE
 }
 
 data class RequestData(
     val page: String,
     val securityToken: String = "",
     var method: RequestMethod = RequestMethod.POST,
-    var url: String = "https://mathhelper.space:8443" + page,
+    var url: String = "https://mathhelper.space:8089$page",
     var body: String = "",
     var headers: Map<String, String> = mapOf(
         "Content-type" to "application/json; charset=UTF-8",
@@ -130,11 +133,11 @@ class Request {
                 with(url.openConnection() as HttpsURLConnection)
                 {
                     // Setting request
-                    requestMethod = requestData.method.value
+                    requestMethod = requestData.method.name
                     requestData.headers.map {
                         setRequestProperty(it.key, it.value)
                     }
-                    if (requestMethod != RequestMethod.GET.value) {
+                    if (requestMethod != RequestMethod.GET.name) {
                         outputStream.write(requestData.body.toByteArray())
                     }
                     // Getting response
@@ -165,12 +168,12 @@ class Request {
                 return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
             }
             Log.d("Request", "Request body: ${req.body}")
-            // TODO: reqQueue.addFirst(req)
+            reqQueue.addFirst(req)
             isConnected = true
         }
 
         @Throws(TimeoutException::class)
-        private fun doSyncRequest(requestData: RequestData): ResponseData {
+        fun doSyncRequest(requestData: RequestData): ResponseData {
             var response = ResponseData()
             timer.start()
             val requestTask = GlobalScope.launch {
@@ -216,6 +219,33 @@ class Request {
                 throw TokenNotFoundException("Bad Credentials")
             }
             Log.d("editRequest", req.toString())
+            val res = doSyncRequest(req)
+            if (res.returnValue != 200) {
+                throw UndefinedException("Something went wrong... (returnCode != 200)")
+            }
+        }
+
+        fun historyRequest(req: RequestData): String {
+            Log.d("historyRequest", req.toString())
+            if (req.securityToken.isNullOrBlank()){
+                Log.d("historyRequest", "No securityToken found")
+                throw TokenNotFoundException("Bad Credentials")
+            }
+            req.url += "?app=${Constants.appCode}"
+            val res = doSyncRequest(req)
+            if (res.returnValue != 200 && res.returnValue != 404) {
+                throw UndefinedException("Something went wrong... (returnCode != 200)")
+            }
+            return if (res.returnValue == 404) "" else res.body
+        }
+
+        fun resetHistory(req: RequestData) {
+            Log.d("historyRequest", req.toString())
+            if (req.securityToken.isNullOrBlank()){
+                Log.d("historyRequest", "No securityToken found")
+                throw TokenNotFoundException("Bad Credentials")
+            }
+            req.url += "?app=${Constants.appCode}"
             val res = doSyncRequest(req)
             if (res.returnValue != 200) {
                 throw UndefinedException("Something went wrong... (returnCode != 200)")

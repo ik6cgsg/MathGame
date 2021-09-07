@@ -49,12 +49,6 @@ class AuthActivity: AppCompatActivity() {
         signInButton = findViewById(R.id.sign_in)
         signInButton.isEnabled = false
         GlobalScene.shared.loadingElement = findViewById(R.id.progress)
-        val standartSignInButton = findViewById<SignInButton>(R.id.sign_in_button)
-        standartSignInButton.setSize(SignInButton.SIZE_WIDE)
-        standartSignInButton.setColorScheme(SignInButton.COLOR_LIGHT)
-        standartSignInButton.setOnClickListener {
-            onGoogleClicked(it)
-        }
     }
 
     override fun onBackPressed() {
@@ -75,15 +69,16 @@ class AuthActivity: AppCompatActivity() {
         ))
         val userData = Storage.shared.getUserInfoBase(this)
         val requestRoot = JSONObject()
-        requestRoot.put("login", userData.login)
+        requestRoot.put("loginOrEmail", userData.login)
         requestRoot.put("password", userData.password)
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
         GlobalScene.shared.request(this, background = {
             val response = Request.signRequest(req)
+            val token = response.getString("token")
             Storage.shared.setServerToken(this, response.getString("token"))
+            getUserHistory(token)
         }, foreground = {
-            Statistics.logSign(this)
-            finish()
+            finishSign()
         }, errorground = {
             this.runOnUiThread {
                 Toast.makeText(this, R.string.self_phone_mode, Toast.LENGTH_LONG).show()
@@ -98,22 +93,23 @@ class AuthActivity: AppCompatActivity() {
         val login = loginView.text.toString()
         val password = passwordView.text.toString()
         val requestRoot = JSONObject()
-        requestRoot.put("login", login)
+        requestRoot.put("loginOrEmail", login)
         requestRoot.put("password", password)
         val req = RequestData(Pages.SIGNIN.value, body = requestRoot.toString())
         GlobalScene.shared.request(this, background = {
             val response = Request.signRequest(req)
+            val token = response.getString("token")
             Storage.shared.initUserInfo(this, AuthInfoObjectBase(
                 login = login,
                 name = response.getString("name"),
                 fullName = response.getString("fullName"),
                 additional = response.getString("additional"),
                 authStatus = AuthStatus.MATH_HELPER,
-                serverToken = response.getString("token")
+                serverToken = token
             ))
+            getUserHistory(token)
         }, foreground = {
-            Statistics.logSign(this)
-            finish()
+            finishSign()
         }, errorground = {
             Storage.shared.invalidateUser(this)
         })
@@ -153,17 +149,18 @@ class AuthActivity: AppCompatActivity() {
             val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
             GlobalScene.shared.request(this, background = {
                 val response = Request.signRequest(req)
+                val token = response.getString("token")
                 Storage.shared.initUserInfo(this, AuthInfoObjectBase(
                     login = response.getString("login"),
                     name = response.getString("name"),
                     fullName = response.getString("fullName"),
                     additional = response.getString("additional"),
                     authStatus = AuthStatus.GOOGLE,
-                    serverToken = response.getString("token")
+                    serverToken = token
                 ))
+                getUserHistory(token)
             }, foreground = {
-                Statistics.logSign(this)
-                finish()
+                finishSign()
             }, errorground = {
                 Storage.shared.invalidateUser(this)
             })
@@ -175,7 +172,38 @@ class AuthActivity: AppCompatActivity() {
         }
     }
 
+    private fun finishSign() {
+        Statistics.logSign(this)
+        finish()
+        GlobalScene.shared.parseLoadedOrRequestDefaultGames()
+    }
+
     fun onGitHubClicked(v: View?) {
         Toast.makeText(this, R.string.coming_soon, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getUserHistory(token: String) {
+        val req = RequestData(Pages.USER_HISTORY.value, securityToken = token)
+        val res = Request.historyRequest(req)
+        Storage.shared.saveResultFromServer(this, res)
+        """
+             {
+                "tasksetStatistics": [
+                    {
+                        "code": "all_rules", "passedCount": 0, "pausedCount": 1,
+                        "tasksStat": [
+                            {"code": "all_rules__Level_01_Compute", "expression": "(*(5;35;4;9))", "time": 2000, "state": "PAUSED", "steps": 1.0}                 
+                        ]
+                    },
+                    {
+                        "code": "start_tutorial", "passedCount": 1, "pausedCount": 1,
+                        "tasksStat": [
+                            {"code": "start_tutorial__Level_02_Compute", "expression": "(+(+(7;1);5;2))", "time": 200, "state": "PAUSED", "steps": 1.0},
+                            {"code": "start_tutorial__Level_01_Compute", "expression": null, "time": 100, "state": "DONE", "steps": 2.0}                       
+                        ]
+                    }             
+                ]
+            }
+            """.trimIndent()
     }
 }

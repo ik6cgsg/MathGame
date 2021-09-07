@@ -1,6 +1,10 @@
 package mathhelper.games.matify.level
 
-class LevelResult(val steps: Double, val time: Long, val state: StateType, var expression: String = "") {
+import mathhelper.games.matify.common.SavableResult
+
+class LevelResult(
+    val steps: Double, val time: Long, val state: StateType, var expression: String = ""
+): SavableResult {
     fun isBetter(other: LevelResult?): Boolean {
         if (other == null) {
             return true
@@ -17,7 +21,7 @@ class LevelResult(val steps: Double, val time: Long, val state: StateType, var e
         return "$stepsStr \uD83D\uDC63   ${time / 60}:$sec ⏰"
     }
 
-    fun saveString(): String {
+    override fun saveString(): String {
         var str = "$steps $time ${state.name}"
         if (expression.isNotBlank()) {
             str += " $expression"

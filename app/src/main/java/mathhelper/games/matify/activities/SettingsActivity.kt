@@ -71,7 +71,12 @@ class SettingsActivity: AppCompatActivity() {
     }
 
     fun resetClick(v: View?) {
-        AndroidUtil.showDialog(resetDialog)
+        AndroidUtil.showDialog(resetDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
+    }
+
+    fun logoutClicked(v: View?) {
+        GlobalScene.shared.logout()
+        finish()
     }
 
     fun changePassClicked(v: View?) {
@@ -118,8 +123,11 @@ class SettingsActivity: AppCompatActivity() {
             .setTitle(R.string.are_you_sure)
             .setMessage(R.string.this_action_will_reset_all_your_achievements)
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
-                GlobalScene.shared.resetAll()
-                finish()
+                GlobalScene.shared.resetAll(success = {
+                    finish()
+                }, error = {
+                    // TODO
+                })
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
             }

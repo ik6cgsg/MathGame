@@ -22,7 +22,7 @@ import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.statistics.Statistics
 
-class PlayScene() {
+class PlayScene {
     companion object {
         private const val TAG = "PlayScene"
         const val messageTime: Long = 2000
@@ -81,7 +81,7 @@ class PlayScene() {
             val res = activity.globalMathView.performSubstitutionForMultiselect(currentRuleView!!.subst!!)
             if (res != null) {
                 stepsCount++
-                history.saveState(State(prev))
+                history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
                 activity.previous.isEnabled = true
                 if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
                     levelPassed = true
@@ -192,6 +192,7 @@ class PlayScene() {
             activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.subjectType)
             activity.globalMathView.center()
         } else {
+            LevelScene.shared.levelsActivity?.updateResult(null)
             activity.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
             activity.globalMathView.center()
             stepsCount = 0.0
@@ -246,17 +247,13 @@ class PlayScene() {
         loadLevel(context,false, languageCode)
     }
 
-    fun menu(context: Context, save: Boolean = true) {
+    fun menu() {
         Log.d(TAG, "menu")
         val activity = playActivity!!
         setMultiselectionMode(false)
-        val currentLevel = LevelScene.shared.currentLevel!!
-        if (save) {
-            val newRes = LevelResult(stepsCount, currentTime, StateType.PAUSED,
-                expressionToStructureString(activity.globalMathView.expression!!))
-            LevelScene.shared.levelsActivity!!.updateResult(newRes)
-        } else if (LevelScene.shared.wasLevelPaused() && currentLevel.lastResult?.state != StateType.DONE) {
-            LevelScene.shared.levelsActivity!!.updateResult(null)
+        if (stepsCount > 0) {
+            history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
+            Statistics.logInterim(stepsCount, activity.globalMathView.expression!!)
         }
         Statistics.logMenu(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }

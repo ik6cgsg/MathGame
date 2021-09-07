@@ -3,6 +3,7 @@ package mathhelper.games.matify.game
 import android.util.Log
 import api.expressionSubstitutionFromStructureStrings
 import api.findSubstitutionPlacesInExpression
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import expressiontree.ExpressionNode
@@ -60,7 +61,7 @@ data class RulePackage(
     var descriptionRu: String = "",
     var rulePacks: List<RulePackLink>? = null,
     var rules: List<JsonObject>? = null,
-    var otherData: JsonObject? = null
+    var otherData: JsonElement? = null
 ) {
     var rulesExpr: ArrayList<Rule> = ArrayList()
     var children = ArrayList<RulePackage>()
