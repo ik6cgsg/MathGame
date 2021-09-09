@@ -69,7 +69,7 @@ class AuthActivity: AppCompatActivity() {
         ))
         val userData = Storage.shared.getUserInfoBase(this)
         val requestRoot = JSONObject()
-        requestRoot.put("loginOrEmail", userData.login)
+        requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
         GlobalScene.shared.request(this, background = {

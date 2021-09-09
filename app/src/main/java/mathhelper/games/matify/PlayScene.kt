@@ -247,11 +247,11 @@ class PlayScene {
         loadLevel(context,false, languageCode)
     }
 
-    fun menu() {
+    fun menu(logAndSave: Boolean = true) {
         Log.d(TAG, "menu")
         val activity = playActivity!!
         setMultiselectionMode(false)
-        if (stepsCount > 0) {
+        if (logAndSave && stepsCount > 0) {
             history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
             Statistics.logInterim(stepsCount, activity.globalMathView.expression!!)
         }

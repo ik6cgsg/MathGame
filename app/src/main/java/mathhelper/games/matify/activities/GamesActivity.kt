@@ -39,10 +39,11 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var serverDivider: View
     private lateinit var serverLabel: TextView
     private lateinit var serverList: LinearLayout
-    private lateinit var serverScroll: ScrollView
+    private lateinit var serverNotFound: TextView
     private var askForTutorial = false
     lateinit var blurView: BlurView
     private lateinit var progress: ProgressBar
+    private var serverGames = arrayListOf<Game>()
 
     private fun setLanguage() {
         val locale = Locale("en")
@@ -79,7 +80,7 @@ class GamesActivity: AppCompatActivity() {
         serverDivider = findViewById(R.id.server_divider)
         serverLabel = findViewById(R.id.server_games_label)
         serverList = findViewById(R.id.server_games_list)
-        serverScroll = findViewById(R.id.server_scroll)
+        serverNotFound = findViewById(R.id.server_not_found)
         blurView = findViewById(R.id.blurView)
         setSearchEngine()
         if (Build.VERSION.SDK_INT < 24) {
@@ -96,7 +97,7 @@ class GamesActivity: AppCompatActivity() {
         serverDivider.visibility = View.GONE
         serverLabel.visibility = View.GONE
         serverList.visibility = View.GONE
-        serverScroll.visibility = View.GONE
+        serverNotFound.visibility = View.GONE
         clearSearch()
         if (askForTutorial) {
             askForTutorialDialog()
@@ -132,14 +133,16 @@ class GamesActivity: AppCompatActivity() {
             res
         }
         searchView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
+            override fun afterTextChanged(s: Editable) {
+                filterList(search = s)
+            }
             override fun beforeTextChanged(s: CharSequence, start: Int,
                                            count: Int, after: Int) {
                 searchView.compoundDrawables[Constants.drawableEnd].setVisible(true, true)
             }
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
-                filterList(search = s)
+                //filterList(search = s)
             }
         })
     }
@@ -167,28 +170,34 @@ class GamesActivity: AppCompatActivity() {
                     return
                 }
             }
-            val gameView = AndroidUtil.createButtonView(this)
-            gameView.text = game.getNameByLanguage(lang)
-            if (game.recommendedByCommunity) {
-                val d = getDrawable(R.drawable.tick)
-                d!!.setBounds(0, 0, 70, 70)
-                AndroidUtil.setRightDrawable(gameView, d)
-            }
-            gameView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
-            if (game.lastResult != null) {
-                gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
-            }
-            gameView.background = getDrawable(R.drawable.button_rect)
-            gameView.setOnClickListener {
+            val gameView = generateGameView(game, onClick = {
                 GlobalScene.shared.currentGameIndex = i
                 GlobalScene.shared.currentGame = game
-            }
-            gameView.isLongClickable = true
-            gameView.setOnLongClickListener { showInfo(game, lang) }
+            })
             gamesList.addView(gameView)
             gamesViews.add(gameView)
         }
         progress.visibility = View.GONE
+    }
+
+    private fun generateGameView(game: Game, onClick: (View) -> Unit): Button {
+        val lang = resources.configuration.locale.language
+        val gameView = AndroidUtil.createButtonView(this)
+        gameView.text = game.getNameByLanguage(lang)
+        if (game.recommendedByCommunity) {
+            val d = getDrawable(R.drawable.tick)
+            d!!.setBounds(0, 0, 70, 70)
+            AndroidUtil.setRightDrawable(gameView, d)
+        }
+        gameView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
+        if (game.lastResult != null) {
+            gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
+        }
+        gameView.background = getDrawable(R.drawable.button_rect)
+        gameView.setOnClickListener { onClick(it) }
+        gameView.isLongClickable = true
+        gameView.setOnLongClickListener { showInfo(game, lang) }
+        return gameView
     }
 
     private fun showInfo(game: Game, lang: String): Boolean {
@@ -211,30 +220,68 @@ class GamesActivity: AppCompatActivity() {
 
     private fun filterList(search: CharSequence? = null) {
         if (search != null && search.isNotBlank()) {
+            // Local
             GlobalScene.shared.games.forEachIndexed { i, game ->
-                if (!game.getNameByLanguage(resources.configuration.locale.language)!!.contains(search, ignoreCase = true)) {
+                if (!game.getNameByLanguage(resources.configuration.locale.language).contains(search, ignoreCase = true)) {
                     gamesViews[i].visibility = View.GONE
                 } else {
                     gamesViews[i].visibility = View.VISIBLE
                 }
             }
+            // Server
             serverDivider.visibility = View.VISIBLE
             serverLabel.visibility = View.VISIBLE
-            serverScroll.visibility = View.VISIBLE
             serverList.visibility = View.VISIBLE
-            // TODO: games from server
-            // val view = AndroidUtil.createButtonView(this)
-            // view.text = search
-            // serverList.addView(view)
+            serverList.removeAllViews()
+            progress.visibility = View.VISIBLE
+            Storage.shared.clearSpecifiedGames(this, serverGames.map { it.code })
+            serverGames = arrayListOf()
+            GlobalScene.shared.cancelActiveJobs()
+            val currentGameCodes = GlobalScene.shared.games.map { it.code }
+            GlobalScene.shared.requestGamesByParams(serverGames, code = search.toString(), success = {
+                progress.visibility = View.GONE
+                serverGames = ArrayList(serverGames.filter { it.code !in currentGameCodes })
+                serverNotFound.visibility = if (serverGames.isEmpty()) View.VISIBLE else View.GONE
+                serverGames.forEach { game ->
+                    if (game.code !in currentGameCodes) {
+                        val view = generateGameView(game, onClick = {
+                            moveServerGameToLocal(game)
+                        })
+                        serverList.addView(view)
+                    }
+                }
+            }, error = {
+                progress.visibility = View.GONE
+                serverList.visibility = View.GONE
+                serverNotFound.visibility = View.VISIBLE
+            })
         } else {
+            progress.visibility = View.GONE
+            GlobalScene.shared.cancelActiveJobs()
             serverDivider.visibility = View.GONE
             serverLabel.visibility = View.GONE
             serverList.removeAllViews()
             serverList.visibility = View.GONE
-            serverScroll.visibility = View.GONE
+            Storage.shared.clearSpecifiedGames(this, serverGames.map { it.code })
+            serverGames = arrayListOf()
+            serverNotFound.visibility = View.GONE
             searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
             gamesViews.map { it.visibility = View.VISIBLE }
         }
+    }
+
+    private fun moveServerGameToLocal(game: Game) {
+        val i = serverGames.indexOf(game)
+        val serverGameButton = serverList.getChildAt(i) as TextView
+        serverGames.removeAt(i)
+        serverList.removeViewAt(i)
+        serverGameButton.setOnClickListener {
+            GlobalScene.shared.currentGameIndex = GlobalScene.shared.games.size
+            GlobalScene.shared.currentGame = game
+        }
+        GlobalScene.shared.games.add(game)
+        gamesList.addView(serverGameButton)
+        gamesViews.add(serverGameButton)
     }
 
     private fun askForTutorialDialog() {

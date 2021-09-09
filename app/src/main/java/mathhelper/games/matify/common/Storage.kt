@@ -353,19 +353,7 @@ class Storage {
         }
         return allTasksets
     }
-/*
-    fun setDefaultGamesPreloaded(context: Context, flag: Boolean) {
-        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        prefEdit.putBoolean(SettingInfo.DEFAULT_GAMES_PRELOADED.str, flag)
-        prefEdit.commit()
-    }
 
-    fun getDefaultGamesPreloaded(context: Context): Boolean {
-        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        return prefs.getBoolean(SettingInfo.DEFAULT_GAMES_PRELOADED.str, false)
-    }
-*/
     fun tryGetFullTaskset(context: Context, code: String): FullTaskset? {
         var res: FullTaskset? = null
         val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
@@ -381,5 +369,21 @@ class Storage {
     fun clearSettings(context: Context) {
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         prefs.edit().clear().commit()
+    }
+
+    fun clearSpecifiedGames(context: Context, codes: List<String>) {
+        val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val settingsEdit = settings.edit()
+        val preloaded = HashSet(settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!)
+        val loaded = HashSet(settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!)
+        codes.forEach {
+            loaded.remove(it)
+            preloaded.remove(it)
+            val prefs = context.getSharedPreferences(it, Context.MODE_PRIVATE)
+            prefs.edit().clear().commit()
+        }
+        settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
+        settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)
+        settingsEdit.commit()
     }
 }

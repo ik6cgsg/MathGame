@@ -312,7 +312,7 @@ class PlayActivity: AppCompatActivity() {
             .setMessage("")
             .setPositiveButton(R.string.next) { dialog: DialogInterface, id: Int -> }
             .setNeutralButton(R.string.menu) { dialog: DialogInterface, id: Int ->
-                PlayScene.shared.menu()
+                PlayScene.shared.menu(false)
                 finish()
             }
             .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->

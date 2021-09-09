@@ -139,7 +139,7 @@ class AndroidUtil {
             }
         }
         
-        fun createButtonView(context: Context): TextView {
+        fun createButtonView(context: Context): Button {
             val view = Button(context)
             view.typeface = Typeface.MONOSPACE
             view.textSize = Constants.buttonDefaultSize
@@ -239,6 +239,14 @@ class AndroidUtil {
 
         fun setRightDrawable(view: TextView, drawable: Drawable?) {
             view.setCompoundDrawables(null, null, drawable, null)
+        }
+
+        fun get3sizedLocale(context: Context): String {
+            return when(context.resources.configuration.locale.language) {
+                "ru" -> "rus"
+                "en" -> "eng"
+                else -> "rus"
+            }
         }
     }
 }

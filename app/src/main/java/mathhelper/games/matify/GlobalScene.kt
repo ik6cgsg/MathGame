@@ -9,11 +9,10 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
+import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.FilterTaskset
@@ -81,6 +80,7 @@ class GlobalScene {
             }
         }
     var loadingElement: ProgressBar? = null
+    val activeJobs = arrayListOf<Job>()
 
     fun resetAll(success: () -> Unit, error: () -> Unit) {
         if (LevelScene.shared.levelsActivity != null) {
@@ -125,10 +125,16 @@ class GlobalScene {
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
-        requestRoot.put("name", userData.name)
-        requestRoot.put("fullName", userData.fullName)
-        requestRoot.put("additional", userData.additional)
-        requestRoot.put("locale", "rus")
+        if (userData.name?.length != null && userData.name.length >= 3) {
+            requestRoot.put("name", userData.name)
+        }
+        if (userData.fullName?.length != null && userData.fullName.length >= 3) {
+            requestRoot.put("fullName", userData.fullName)
+        }
+        if (userData.additional?.length != null && userData.additional.length >= 3) {
+            requestRoot.put("additional", userData.additional)
+        }
+        requestRoot.put("locale", AndroidUtil.get3sizedLocale(gamesActivity!!))
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
         request(context, background = {
             val response = Request.signRequest(req)
@@ -141,6 +147,11 @@ class GlobalScene {
         })
     }
 
+    fun cancelActiveJobs() {
+        activeJobs.forEach { it.cancel() }
+        activeJobs.clear()
+    }
+
     fun request(
         context: Activity,
         background: () -> (Unit),
@@ -148,37 +159,47 @@ class GlobalScene {
         errorground: () -> (Unit)
     ) {
         loadingElement?.visibility = View.VISIBLE
-        GlobalScope.launch {
+        val task = GlobalScope.launch {
             try {
                 background()
-                context.runOnUiThread {
-                    foreground()
+                if (isActive) {
+                    context.runOnUiThread {
+                        foreground()
+                    }
                 }
             } catch (e: Exception) {
-                when (e) {
-                    is Request.TimeoutException -> {
-                        context.runOnUiThread {
-                            Toast.makeText(context, R.string.problems_with_internet_connection, Toast.LENGTH_LONG).show()
+                if (isActive) {
+                    when (e) {
+                        is Request.TimeoutException -> {
+                            context.runOnUiThread {
+                                Toast.makeText(context, R.string.problems_with_internet_connection, Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                        }
+                        is Request.TokenNotFoundException -> {
+                            context.runOnUiThread {
+                                Toast.makeText(context, R.string.bad_credentials_error, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                        is Request.UndefinedException -> {
+                            context.runOnUiThread {
+                                Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
-                    is Request.TokenNotFoundException -> {
-                        context.runOnUiThread {
-                            Toast.makeText(context, R.string.bad_credentials_error, Toast.LENGTH_LONG).show()
-                        }
-                    }
-                    is Request.UndefinedException -> {
-                        context.runOnUiThread {
-                            Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
-                        }
+                    context.runOnUiThread {
+                        errorground()
                     }
                 }
-                errorground()
             } finally {
-                context.runOnUiThread {
-                    loadingElement?.visibility = View.INVISIBLE
-                }
+                //if (isActive) {
+                    context.runOnUiThread {
+                        loadingElement?.visibility = View.INVISIBLE
+                    }
+                //}
             }
         }
+        activeJobs.add(task)
     }
 
     fun saveResultsFromServer() {
@@ -187,7 +208,7 @@ class GlobalScene {
 
     fun parseLoadedOrRequestDefaultGames() {
         if (!Storage.shared.gotAnySavedTasksets(gamesActivity!!)) {
-            requestGamesByParams(success = {
+            requestGamesByParams(games, success = {
                 if (games.isEmpty()) {
                     // TODO error
                 } else {
@@ -220,10 +241,10 @@ class GlobalScene {
         }
     }
 
-    fun requestGamesByParams(namespaceCode: String = "global_test", code: String = "", success: () -> Unit, error: () -> Unit) {
+    fun requestGamesByParams(toList: ArrayList<Game>, namespaceCode: String = "global_test", code: String = "", success: () -> Unit, error: () -> Unit) {
         request(gamesActivity!!, {
             val tasksetsReqData = RequestData(Pages.TASKSETS_PREVIEW.value, method = RequestMethod.GET)
-            tasksetsReqData.url += "?namespace=$namespaceCode&substr=$code"
+            tasksetsReqData.url += "?namespace=$namespaceCode&keywords=$code"
             val res = Request.doSyncRequest(tasksetsReqData)
             if (res.returnValue != 200) {
                 throw Request.UndefinedException("Something went wrong... (returnCode != 200)")
@@ -234,7 +255,7 @@ class GlobalScene {
                     Storage.shared.saveTaskset(gamesActivity!!, taskset.get("code").asString, taskset.toString())
                     val loadedGame = Game.create(taskset.toString(), gamesActivity!!)
                     if (loadedGame != null) {
-                        games.add(loadedGame)
+                        toList.add(loadedGame)
                     }
                 }
             }
