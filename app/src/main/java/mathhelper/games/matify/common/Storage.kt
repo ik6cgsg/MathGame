@@ -372,18 +372,20 @@ class Storage {
     }
 
     fun clearSpecifiedGames(context: Context, codes: List<String>) {
-        val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        val settingsEdit = settings.edit()
-        val preloaded = HashSet(settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!)
-        val loaded = HashSet(settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!)
-        codes.forEach {
-            loaded.remove(it)
-            preloaded.remove(it)
-            val prefs = context.getSharedPreferences(it, Context.MODE_PRIVATE)
-            prefs.edit().clear().commit()
+        if (codes.isNotEmpty()) {
+            val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+            val settingsEdit = settings.edit()
+            val preloaded = HashSet(settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!)
+            val loaded = HashSet(settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!)
+            codes.forEach {
+                loaded.remove(it)
+                preloaded.remove(it)
+                val prefs = context.getSharedPreferences(it, Context.MODE_PRIVATE)
+                prefs.edit().clear().commit()
+            }
+            settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
+            settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)
+            settingsEdit.commit()
         }
-        settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
-        settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)
-        settingsEdit.commit()
     }
 }

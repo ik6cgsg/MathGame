@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -17,9 +18,11 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import eightbitlab.com.blurview.BlurView
+import kotlinx.android.synthetic.main.activity_games.*
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.R
@@ -36,6 +39,7 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var gamesViews: ArrayList<TextView>
     private lateinit var gamesList: LinearLayout
     private lateinit var searchView: EditText
+    private lateinit var gameDivider: View
     private lateinit var serverDivider: View
     private lateinit var serverLabel: TextView
     private lateinit var serverList: LinearLayout
@@ -52,6 +56,11 @@ class GamesActivity: AppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
+    private fun setLoading(flag: Boolean) {
+        progress.visibility = if (flag) View.VISIBLE else View.INVISIBLE
+        gameDivider.visibility = if (flag) View.INVISIBLE else View.VISIBLE
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         val authed = Storage.shared.isUserAuthorized(this)
@@ -65,7 +74,8 @@ class GamesActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
         progress = findViewById(R.id.progress)
-        progress.visibility = View.VISIBLE
+        gameDivider = findViewById(R.id.divider)
+        setLoading(true)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestIdToken(Constants.serverId)
@@ -75,6 +85,7 @@ class GamesActivity: AppCompatActivity() {
         GlobalScene.shared.gamesActivity = this
         gamesViews = ArrayList()
         gamesList = findViewById(R.id.games_list)
+        gameDivider = findViewById(R.id.divider)
         searchView = findViewById(R.id.search)
         searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
         serverDivider = findViewById(R.id.server_divider)
@@ -82,6 +93,24 @@ class GamesActivity: AppCompatActivity() {
         serverList = findViewById(R.id.server_games_list)
         serverNotFound = findViewById(R.id.server_not_found)
         blurView = findViewById(R.id.blurView)
+        val refresher = findViewById<SwipeRefreshLayout>(R.id.refresher)
+        refresher.setOnRefreshListener {
+            refresher.isRefreshing = false
+            setLoading(true)
+            Toast.makeText(this, "refreshing...", Toast.LENGTH_SHORT).show()
+            GlobalScene.shared.games.clear()
+            GlobalScene.shared.requestGamesByParams(GlobalScene.shared.games, success = {
+                if (GlobalScene.shared.games.isEmpty()) {
+                    // TODO error
+                } else {
+                    generateList()
+                }
+                setLoading(false)
+            }, error = {
+                // TODO error
+                setLoading(false)
+            })
+        }
         setSearchEngine()
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
@@ -177,7 +206,7 @@ class GamesActivity: AppCompatActivity() {
             gamesList.addView(gameView)
             gamesViews.add(gameView)
         }
-        progress.visibility = View.GONE
+        setLoading(false)
     }
 
     private fun generateGameView(game: Game, onClick: (View) -> Unit): Button {
@@ -214,8 +243,12 @@ class GamesActivity: AppCompatActivity() {
         builder.setView(v)
             .setCancelable(true)
         val alert = builder.create()
-        AndroidUtil.showDialog(alert, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
+        AndroidUtil.showDialog(alert, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this, setBackground = false)
         return true
+    }
+
+    fun onAlertButtonClicked(v: View) {
+        Toast.makeText(this, "working on this", Toast.LENGTH_SHORT).show()
     }
 
     private fun filterList(search: CharSequence? = null) {
@@ -229,45 +262,46 @@ class GamesActivity: AppCompatActivity() {
                 }
             }
             // Server
-            serverDivider.visibility = View.VISIBLE
-            serverLabel.visibility = View.VISIBLE
-            serverList.visibility = View.VISIBLE
-            serverList.removeAllViews()
-            progress.visibility = View.VISIBLE
-            Storage.shared.clearSpecifiedGames(this, serverGames.map { it.code })
-            serverGames = arrayListOf()
+            val oldServerGames = clearServerListAndSetVisibility(View.VISIBLE)
+            setLoading(true)
             GlobalScene.shared.cancelActiveJobs()
             val currentGameCodes = GlobalScene.shared.games.map { it.code }
             GlobalScene.shared.requestGamesByParams(serverGames, code = search.toString(), success = {
-                progress.visibility = View.GONE
                 serverGames = ArrayList(serverGames.filter { it.code !in currentGameCodes })
+                val gamesToRemove = oldServerGames - serverGames.map { it.code }
+                Storage.shared.clearSpecifiedGames(this, gamesToRemove)
                 serverNotFound.visibility = if (serverGames.isEmpty()) View.VISIBLE else View.GONE
                 serverGames.forEach { game ->
-                    if (game.code !in currentGameCodes) {
-                        val view = generateGameView(game, onClick = {
-                            moveServerGameToLocal(game)
-                        })
-                        serverList.addView(view)
-                    }
+                    val view = generateGameView(game, onClick = {
+                        moveServerGameToLocal(game)
+                    })
+                    serverList.addView(view)
                 }
+                setLoading(false)
             }, error = {
-                progress.visibility = View.GONE
+                setLoading(false)
                 serverList.visibility = View.GONE
                 serverNotFound.visibility = View.VISIBLE
             })
         } else {
-            progress.visibility = View.GONE
             GlobalScene.shared.cancelActiveJobs()
-            serverDivider.visibility = View.GONE
-            serverLabel.visibility = View.GONE
-            serverList.removeAllViews()
-            serverList.visibility = View.GONE
-            Storage.shared.clearSpecifiedGames(this, serverGames.map { it.code })
-            serverGames = arrayListOf()
-            serverNotFound.visibility = View.GONE
+            val gamesToRemove = clearServerListAndSetVisibility(View.GONE)
+            Storage.shared.clearSpecifiedGames(this, gamesToRemove)
             searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
             gamesViews.map { it.visibility = View.VISIBLE }
+            setLoading(false)
         }
+    }
+
+    private fun clearServerListAndSetVisibility(flag: Int): List<String> {
+        serverDivider.visibility = flag
+        serverLabel.visibility = flag
+        serverList.visibility = flag
+        serverNotFound.visibility = View.GONE
+        serverList.removeAllViews()
+        val oldServerGames = serverGames.map { it.code }
+        serverGames = arrayListOf()
+        return oldServerGames
     }
 
     private fun moveServerGameToLocal(game: Game) {
@@ -275,8 +309,9 @@ class GamesActivity: AppCompatActivity() {
         val serverGameButton = serverList.getChildAt(i) as TextView
         serverGames.removeAt(i)
         serverList.removeViewAt(i)
+        val index = GlobalScene.shared.games.size
         serverGameButton.setOnClickListener {
-            GlobalScene.shared.currentGameIndex = GlobalScene.shared.games.size
+            GlobalScene.shared.currentGameIndex = index
             GlobalScene.shared.currentGame = game
         }
         GlobalScene.shared.games.add(game)

@@ -153,4 +153,5 @@
     <string name="info_game_title">ℹ️ Информация об игре ℹ️</string>
     <string name="info_recommended">✓ Эта игра рекомендована сообществом MathHelper ✓</string>
     <string name="info_levels_count"><b>Уровней:</b> %1$d</string>
+    <string name="nothing_was_found">😢 ничего не нашлось 😢</string>
 </resources>

@@ -117,7 +117,8 @@ class AndroidUtil {
             backMode: BackgroundMode = BackgroundMode.SHADOW,
             bottomGravity: Boolean = true,
             blurView: BlurView? = null,
-            activity: AppCompatActivity? = null
+            activity: AppCompatActivity? = null,
+            setBackground: Boolean = true
         ) {
             if (backMode == BackgroundMode.BLUR) {
                 blur(blurView!!, activity!!)
@@ -128,7 +129,11 @@ class AndroidUtil {
             }
             dialog.window!!.attributes.verticalMargin = 0.05f
             dialog.show()
-            dialog.window!!.setBackgroundDrawableResource(R.drawable.alert_shape)
+            if (setBackground) {
+                dialog.window!!.setBackgroundDrawableResource(R.drawable.alert_shape)
+            } else {
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
             dialog.window!!.findViewById<TextView>(android.R.id.message)?.typeface = Typeface.MONOSPACE
             if (dialog.listView != null) {
                 dialog.listView.divider = ColorDrawable(ThemeController.shared.color(ColorName.PRIMARY_COLOR))

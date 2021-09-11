@@ -202,10 +202,6 @@ class GlobalScene {
         activeJobs.add(task)
     }
 
-    fun saveResultsFromServer() {
-        // TODO: gamesActivity!!.updateResult()
-    }
-
     fun parseLoadedOrRequestDefaultGames() {
         if (!Storage.shared.gotAnySavedTasksets(gamesActivity!!)) {
             requestGamesByParams(games, success = {

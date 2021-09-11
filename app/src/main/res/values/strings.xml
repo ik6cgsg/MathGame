@@ -182,4 +182,5 @@
     <string name="goal_description">Goal. Details</string>
     <string name="info_recommended">✓ This game is recommended by MathHelper society ✓</string>
     <string name="info_levels_count"><b>Levels:</b> %1$d</string>
+    <string name="nothing_was_found">😢 nothing was found 😢</string>
 </resources>
