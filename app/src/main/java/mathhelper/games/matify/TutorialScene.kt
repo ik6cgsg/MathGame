@@ -16,11 +16,8 @@ import expressiontree.ExpressionSubstitution
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import mathhelper.games.matify.common.AndroidUtil
+import mathhelper.games.matify.common.*
 import mathhelper.games.matify.tutorial.TutorialPlayActivity
-import mathhelper.games.matify.common.RuleMathView
-import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.mathResolver.MathResolver
@@ -189,7 +186,7 @@ class TutorialScene {
     } else 2
 
     fun loadLevel() {
-        Log.d(TAG, "loadLevel")
+        Logger.d(TAG, "loadLevel")
         val activity = tutorialPlayActivity!!
         clearRules()
         activity.endExpressionView.text = if (tutorialLevel.goalPattern.isNullOrBlank()) {
@@ -207,7 +204,7 @@ class TutorialScene {
     }
 
     fun onRuleClicked(ruleView: RuleMathView) {
-        Log.d(TAG, "onRuleClicked")
+        Logger.d(TAG, "onRuleClicked")
         val activity = tutorialPlayActivity!!
         if (ruleView.subst != null) {
             val res = activity.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
@@ -227,7 +224,7 @@ class TutorialScene {
     }
 
     fun onAtomClicked() {
-        Log.d(TAG, "onAtomClicked")
+        Logger.d(TAG, "onAtomClicked")
         if (wantedZoom) {
             return
         }
@@ -268,7 +265,7 @@ class TutorialScene {
     }
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
-        Log.d(TAG, "redrawRules")
+        Logger.d(TAG, "redrawRules")
         val activity = tutorialPlayActivity!!
         activity.rulesLinearLayout.removeAllViews()
         for (r in rules) {
@@ -387,7 +384,7 @@ class TutorialScene {
     }
 
     fun createLeaveDialog(context: Context): AlertDialog {
-        Log.d(TAG, "createLeaveDialog")
+        Logger.d(TAG, "createLeaveDialog")
         val builder = AlertDialog.Builder(
             context, ThemeController.shared.alertDialogTheme
             )

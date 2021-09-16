@@ -29,7 +29,7 @@ class MathDownTimer(time: Int, interval: Long):
     private val panicTime = 10
 
     override fun onTick(millisUntilFinished: Long) {
-        Log.d(TAG, "onTick")
+        Logger.d(TAG, "onTick")
         PlayScene.shared.currentTime++
         val secs = millisUntilFinished / 1000
         val start = "⏰ "
@@ -47,7 +47,7 @@ class MathDownTimer(time: Int, interval: Long):
     }
 
     override fun onFinish() {
-        Log.d(TAG, "onFinish")
+        Logger.d(TAG, "onFinish")
         val activity = PlayScene.shared.playActivity!!
         activity.timerView.text = activity.getString(R.string.time_out)
         PlayScene.shared.onLoose()
@@ -62,7 +62,7 @@ class MathUpTimer(val interval: Long) {
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                Log.d(TAG, "run")
+                Logger.d(TAG, "run")
                 PlayScene.shared.currentTime++
                 val start = "⏰ "
                 val sec = "${PlayScene.shared.currentTime % 60}".padStart(2, '0')

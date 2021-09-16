@@ -5,7 +5,10 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import mathhelper.games.matify.GlobalScene
+import mathhelper.games.matify.R
 import mathhelper.games.matify.common.Constants
+import mathhelper.games.matify.common.Logger
 import org.json.JSONObject
 import mathhelper.games.matify.common.RequestTimer
 import java.net.URL
@@ -74,6 +77,7 @@ class Request {
     class TimeoutException(message: String): Exception(message)
     class UndefinedException(message: String): Exception(message)
     class TokenNotFoundException(message: String): Exception(message)
+    class UserMessageException(message: String): Exception(message)
 
     companion object {
         private var reqQueue = LinkedList<RequestData>()
@@ -100,17 +104,17 @@ class Request {
                     while (true) {
                         while (reqQueue.isNotEmpty() && isConnected) {
                             try {
-                                Log.d("asyncRequest", reqQueue.last.toString())
+                                Logger.d("asyncRequest", reqQueue.last.toString())
                                 val response = asyncRequest(reqQueue.last)
-                                Log.d("Request", "sended")
+                                Logger.d("Request", "sended")
                                 if (response.returnValue != 500 || response.returnValue != 404) {
-                                    Log.d("asyncRequestReturnCode", response.returnValue.toString())
-                                    Log.d("asyncRequestResultBody", response.body)
+                                    Logger.d("asyncRequestReturnCode", response.returnValue.toString())
+                                    Logger.d("asyncRequestResultBody", response.body)
                                     reqQueue.removeLast()
-                                    Log.d("Request", "removed")
+                                    Logger.d("Request", "removed")
                                 }
                             } catch (e: Exception) {
-                                Log.e("Request", e.message ?: "Error while request queue handling")
+                                Logger.e("Request", e.message ?: "Error while request queue handling")
                             }
                         }
                     }
@@ -157,23 +161,24 @@ class Request {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("Request", e.message ?: "Error while async request")
+                Logger.e("Request", e.message ?: "Error while async request")
             }
             return response
         }
 
         fun sendStatisticRequest(req: RequestData) {
             if (req.securityToken.isNullOrBlank()){
-                Log.d("sendStatisticRequest", "No securityToken found")
+                Logger.d("sendStatisticRequest", "No securityToken found")
                 return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
             }
-            Log.d("Request", "Request body: ${req.body}")
+            Logger.d("Request", "Request body: ${req.body}")
             reqQueue.addFirst(req)
             isConnected = true
         }
 
         @Throws(TimeoutException::class)
         fun doSyncRequest(requestData: RequestData): ResponseData {
+            Logger.d("Request", requestData.toString())
             var response = ResponseData()
             timer.start()
             val requestTask = GlobalScope.launch {
@@ -189,15 +194,16 @@ class Request {
                 throw TimeoutException("More than $timeoutMaxInSec passed...")
             }
             timer.cancel()
+            Logger.d("Request", response.toString())
             return response
         }
 
         @Throws(UndefinedException::class, TokenNotFoundException::class)
         fun signRequest(req: RequestData): JSONObject {
-            Log.d("signRequest", req.toString())
+            Logger.d("signRequest", req.toString())
             val res = doSyncRequest(req)
-            Log.d("signRequestReturnCode", res.returnValue.toString())
-            Log.d("signRequestResultBody", res.body)
+            Logger.d("signRequestReturnCode", res.returnValue.toString())
+            Logger.d("signRequestResultBody", res.body)
             if (res.returnValue != 200) {
                 if (res.returnValue in 400..401) {
                     throw TokenNotFoundException("Bad Credentials")
@@ -209,16 +215,16 @@ class Request {
             if (!response.has("token")) {
                 throw TokenNotFoundException("Can't extract token from response")
             }
-            Log.d("signServerToken", response.getString("token"))
+            Logger.d("signServerToken", response.getString("token"))
             return response
         }
 
         fun editRequest(req: RequestData) {
             if (req.securityToken.isNullOrBlank()){
-                Log.d("editRequest", "No securityToken found")
+                Logger.d("editRequest", "No securityToken found")
                 throw TokenNotFoundException("Bad Credentials")
             }
-            Log.d("editRequest", req.toString())
+            Logger.d("editRequest", req.toString())
             val res = doSyncRequest(req)
             if (res.returnValue != 200) {
                 throw UndefinedException("Something went wrong... (returnCode != 200)")
@@ -226,29 +232,29 @@ class Request {
         }
 
         fun historyRequest(req: RequestData): String {
-            Log.d("historyRequest", req.toString())
+            Logger.d("historyRequest", req.toString())
             if (req.securityToken.isNullOrBlank()){
-                Log.d("historyRequest", "No securityToken found")
+                Logger.d("historyRequest", "No securityToken found")
                 throw TokenNotFoundException("Bad Credentials")
             }
             req.url += "?app=${Constants.appCode}"
             val res = doSyncRequest(req)
             if (res.returnValue != 200 && res.returnValue != 404) {
-                throw UndefinedException("Something went wrong... (returnCode != 200)")
+                throw UserMessageException(GlobalScene.shared.gamesActivity!!.getString(R.string.pers_stat_load_fail))
             }
             return if (res.returnValue == 404) "" else res.body
         }
 
         fun resetHistory(req: RequestData) {
-            Log.d("historyRequest", req.toString())
+            Logger.d("historyRequest", req.toString())
             if (req.securityToken.isNullOrBlank()){
-                Log.d("historyRequest", "No securityToken found")
+                Logger.d("historyRequest", "No securityToken found")
                 throw TokenNotFoundException("Bad Credentials")
             }
             req.url += "?app=${Constants.appCode}"
             val res = doSyncRequest(req)
             if (res.returnValue != 200) {
-                throw UndefinedException("Something went wrong... (returnCode != 200)")
+                throw UserMessageException(GlobalScene.shared.gamesActivity!!.getString(R.string.pers_stat_reset_fail))
             }
         }
     }

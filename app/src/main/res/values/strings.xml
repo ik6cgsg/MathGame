@@ -183,4 +183,8 @@
     <string name="info_recommended">✓ This game is recommended by MathHelper society ✓</string>
     <string name="info_levels_count"><b>Levels:</b> %1$d</string>
     <string name="nothing_was_found">😢 nothing was found 😢</string>
+    <string name="games_load_failed">Games loading failed</string>
+    <string name="level_load_fail">Level loading failed. Try again later.</string>
+    <string name="pers_stat_reset_fail">Personal statistics reset failed</string>
+    <string name="pers_stat_load_fail">Personal statistics loading failed</string>
 </resources>

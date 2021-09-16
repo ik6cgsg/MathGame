@@ -10,6 +10,7 @@ import expressiontree.ExpressionNode
 import expressiontree.ExpressionSubstitution
 import expressiontree.ExpressionSubstitutionNormType
 import mathhelper.games.matify.common.Constants.Companion.defaultRulePriority
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.parser.Required
 import org.json.JSONObject
@@ -67,7 +68,10 @@ data class RulePackage(
     var children = ArrayList<RulePackage>()
 
     companion object {
+        private val TAG = "RulePackage"
+
         fun parse(code: String, rulePacksJsons: HashMap<String, JsonObject>, rulePacks: HashMap<String, RulePackage>): RulePackage? {
+            Logger.d(TAG, "parse pack with code = $code")
             val packJson = rulePacksJsons[code]!!
             val resPckg = GsonParser.parse<RulePackage>(packJson)
             if (resPckg?.rules != null) {
@@ -87,7 +91,7 @@ data class RulePackage(
                             }
                         }
                         else -> {
-                            Log.e("RulePackage::parse", "Can't parse child")
+                            Logger.e(TAG,"Can't parse child")
                         }
                     }
                 }
@@ -96,6 +100,7 @@ data class RulePackage(
         }
 
         fun parseRule(ruleInfo: JsonObject): Rule? {
+            Logger.d(TAG, "parseRule")
             val rule = GsonParser.parse<Rule>(ruleInfo)
             if (rule != null) {
                 rule.substitution = expressionSubstitutionFromStructureStrings(

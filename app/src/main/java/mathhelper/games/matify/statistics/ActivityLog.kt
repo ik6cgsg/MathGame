@@ -36,7 +36,7 @@ data class ActivityLog (
     var goalExpression: String? = null,
     var goalPattern: String? = null,
     var difficulty: Double? = null,
-    var currSolution: String? = null, // TODO: how to fill??
+    var currSolution: String? = null,
     var currExpression: String? = null,
     var nextExpression: String? = null,
     var appliedRule: MutableMap<String, *>? = null,

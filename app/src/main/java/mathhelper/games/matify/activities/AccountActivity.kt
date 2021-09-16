@@ -1,7 +1,6 @@
 package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +10,7 @@ import org.json.JSONObject
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AuthInfoObjectBase
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.statistics.Pages
@@ -28,7 +28,7 @@ class AccountActivity: AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_account)
@@ -84,7 +84,7 @@ class AccountActivity: AppCompatActivity() {
             requestRoot.put("fullName", fullNameView.text.toString())
             requestRoot.put("additional", additionalView.text.toString())
             val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
-            GlobalScene.shared.request(this, background = {
+            GlobalScene.shared.asyncTask(this, background = {
                 Request.editRequest(req)
                 Storage.shared.setUserInfo(this, userData)
             }, foreground = {

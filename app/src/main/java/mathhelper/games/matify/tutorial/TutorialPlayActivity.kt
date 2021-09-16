@@ -42,7 +42,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     private lateinit var pointerInfoView: TextView
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG, "onTouchEvent")
+        Logger.d(TAG, "onTouchEvent")
         scaleDetector.onTouchEvent(event)
         when {
             event.action == MotionEvent.ACTION_DOWN -> {
@@ -77,7 +77,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.tutorial_activity_play)
@@ -121,7 +121,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     private fun createRestartDialog(): AlertDialog {
-        Log.d(TAG, "createRestartDialog")
+        Logger.d(TAG, "createRestartDialog")
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.alertDialogTheme
         )
@@ -137,7 +137,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun messageTutorial() {
-        Log.d(TAG, "messageTutorial")
+        Logger.d(TAG, "messageTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_info))
         pointerMsgView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerMsgView)
@@ -145,7 +145,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun backTutorial() {
-        Log.d(TAG, "backTutorial")
+        Logger.d(TAG, "backTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_to_menu))
         pointerBackView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerBackView)
@@ -154,7 +154,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun infoTutorial() {
-        Log.d(TAG, "infoTutorial")
+        Logger.d(TAG, "infoTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_short_info))
         pointerInfoView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerInfoView)
@@ -163,7 +163,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun restartTutorial() {
-        Log.d(TAG, "restartTutorial")
+        Logger.d(TAG, "restartTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_restart))
         pointerRestartView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerRestartView)
@@ -172,7 +172,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun undoTutorial() {
-        Log.d(TAG, "restartTutorial")
+        Logger.d(TAG, "restartTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_undo))
         pointerUndoView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerUndoView)
@@ -181,7 +181,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun endExpressionTutorial() {
-        Log.d(TAG, "endExpressionTutorial")
+        Logger.d(TAG, "endExpressionTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_goal))
         pointerEndView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerEndView)
@@ -191,7 +191,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun centralExpressionTutorial() {
-        Log.d(TAG, "centralExpressionTutorial")
+        Logger.d(TAG, "centralExpressionTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_main_element))
         pointerCentralView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerCentralView)
@@ -223,7 +223,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     }
 
     fun levelPassed() {
-        Log.d(TAG, "levelPassed")
+        Logger.d(TAG, "levelPassed")
         TutorialScene.shared.showMessage(resources.getString(R.string.congratulations))
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         val builder = AlertDialog.Builder(

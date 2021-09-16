@@ -60,7 +60,7 @@ class PlayActivity: AppCompatActivity() {
     private val messageTimer = MessageTimer()
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG, "onTouchEvent")
+        Logger.d(TAG, "onTouchEvent")
         if (globalMathView.onTouchEvent(event)) {
             needClear = false
             return true
@@ -76,7 +76,7 @@ class PlayActivity: AppCompatActivity() {
                         globalMathView.clearExpression()
                         PlayScene.shared.clearRules()
                     } catch (e: Exception) {
-                        Log.e(TAG, "Error while clearing rules on touch: ${e.message}")
+                        Logger.e(TAG, "Error while clearing rules on touch: ${e.message}")
                         Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
                     }
                 }
@@ -142,7 +142,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_play_new)
@@ -195,7 +195,7 @@ class PlayActivity: AppCompatActivity() {
         try {
             PlayScene.shared.loadLevel(this, continueGame, resources.configuration.locale.language)
         } catch (e: Exception) {
-            Log.e(TAG, "Error while level loading")
+            Logger.e(TAG, "Error while level loading")
             Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
         }
         progress.visibility = View.GONE
@@ -274,7 +274,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
-        Log.d(TAG, "onWin")
+        Logger.d(TAG, "onWin")
         val msgTitle = resources.getString(R.string.you_finished_level_with)
         val steps = "\n\t${resources.getString(R.string.steps)}: ${stepsCount.toInt()}"
         val sec = "${currentTime % 60}".padStart(2, '0')
@@ -303,7 +303,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun createWinDialog(): AlertDialog {
-        Log.d(TAG, "createWinDialog")
+        Logger.d(TAG, "createWinDialog")
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.alertDialogTheme
         )
@@ -336,7 +336,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun createLooseDialog(): AlertDialog {
-        Log.d(TAG, "createLooseDialog")
+        Logger.d(TAG, "createLooseDialog")
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.alertDialogTheme
         )
@@ -353,7 +353,7 @@ class PlayActivity: AppCompatActivity() {
     }
 
     private fun createContinueDialog(): AlertDialog {
-        Log.d(TAG, "createContinueDialog")
+        Logger.d(TAG, "createContinueDialog")
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.alertDialogTheme
         )

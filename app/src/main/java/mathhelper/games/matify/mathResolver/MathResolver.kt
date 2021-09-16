@@ -6,6 +6,7 @@ import android.util.Log
 import api.stringToExpression
 import api.structureStringToExpression
 import expressiontree.ExpressionNode
+import mathhelper.games.matify.common.Logger
 
 fun String.replaceByIndex(i: Int, replacement: String): String {
     return this.substring(0, i) + replacement + this.substring(i + replacement.length)
@@ -35,7 +36,7 @@ class MathResolver {
                            taskType: TaskType = TaskType.DEFAULT,
                            exprType: ExpressionType = ExpressionType.GLOBAL): MathResolverPair {
             if (expression.toString() == "()") {
-                Log.e("MathResolver", "TWF parsing failed")
+                Logger.e("MathResolver", "TWF parsing failed")
                 return MathResolverPair(null, SpannableStringBuilder("parsing error"))
             }
             currentViewTree = MathResolverNodeBase.getTree(expression, style, taskType)

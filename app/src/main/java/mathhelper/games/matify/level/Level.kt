@@ -8,6 +8,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import config.CompiledConfiguration
 import expressiontree.*
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.*
 import mathhelper.games.matify.mathResolver.TaskType
@@ -96,7 +97,7 @@ data class Level(
         private val TAG = "Level"
 
         fun parse(game: Game, levelJson: JsonObject, context: Context): Level? {
-            Log.d(TAG, "parse")
+            Logger.d(TAG, "parse")
             val res = GsonParser.parse<Level>(levelJson) ?: return null
             res.game = game
             if (res.load()) {
@@ -108,12 +109,13 @@ data class Level(
     }
 
     fun load(): Boolean {
+        Logger.d(TAG, "load")
         if (subjectType.isBlank()) {
             subjectType = game.subjectType
         }
         startExpression = structureStringToExpression(originalExpressionStructureString)
         endExpression = structureStringToExpression(goalExpressionStructureString)
-        Log.d("task", "'${startExpression} -> ${endExpression}' parsed from " +
+        Logger.d(TAG, "load", "task '${startExpression} -> ${endExpression}' parsed from " +
             "'${originalExpressionStructureString} -> ${goalExpressionStructureString}'")
         if (goalPattern != null) {
             goalPatternExpr = when (subjectType) {
@@ -161,20 +163,20 @@ data class Level(
     }*/
 
     fun checkEnd(expression: ExpressionNode): Boolean {
-        Log.d(TAG, "checkEnd")
+        Logger.d(TAG, "checkEnd")
         return if (goalPattern.isNullOrBlank()) {
             val currStr = expressionToStructureString(expression)
-            Log.d(TAG, "current: $currStr | end: $goalExpressionStructureString")
+            Logger.d(TAG, "current: $currStr | end: $goalExpressionStructureString")
             currStr == goalExpressionStructureString
         } else {
             val currStr = expressionToStructureString(expression)
-            Log.d(TAG, "current: $currStr | pattern: $goalPatternExpr")
+            Logger.d(TAG, "current: $currStr | pattern: $goalPatternExpr")
             compareByPattern(expression, goalPatternExpr!!)
         }
     }
 
     /*fun getAward(context:Context, resultTime: Long, resultStepsNum: Double): Award {
-        Log.d(TAG, "getAward")
+        Logger.d(TAG, "getAward")
         val mark = when {
             resultStepsNum < stepsNum -> 1.0
 //            resultTime > time -> 0.0
@@ -203,7 +205,7 @@ data class Level(
         expression: ExpressionNode
     ): List<SubstitutionApplication>? {
         val nodeIds = nodes.map{it.nodeId}
-        Log.d(TAG, "getSubstitutionApplication of '${expression.toString()}' in '(${nodeIds.joinToString()})'; detail: '${expression.toStringsWithNodeIds()}'")
+        Logger.d(TAG, "getSubstitutionApplication of '${expression.toString()}' in '(${nodeIds.joinToString()})'; detail: '${expression.toStringsWithNodeIds()}'")
 
         val list = findApplicableSubstitutionsInSelectedPlace(expression, nodeIds.toTypedArray(), compiledConfiguration!!, withReadyApplicationResult = true)
         if (list.isEmpty()) {
@@ -214,10 +216,10 @@ data class Level(
     }
 
     fun getRulesFromSubstitutionApplication(substitutionApplication: List<SubstitutionApplication>): List<ExpressionSubstitution> {
-        Log.d(TAG, "getRulesFromSubstitutionApplication")
+        Logger.d(TAG, "getRulesFromSubstitutionApplication")
 
         var rules = substitutionApplication.map {
-            Log.d(TAG, "expressionSubstitution code: '${it.expressionSubstitution.code}'; priority: '${it.expressionSubstitution.priority}'")
+            Logger.d(TAG, "expressionSubstitution code: '${it.expressionSubstitution.code}'; priority: '${it.expressionSubstitution.priority}'")
             it.expressionSubstitution
         }
         rules = rules.distinctBy { Pair(it.left.identifier, it.right.identifier) }.toMutableList()
@@ -228,17 +230,20 @@ data class Level(
 
     fun getResultFromSubstitutionApplication(substitutionApplication: List<SubstitutionApplication>):
         Map<ExpressionSubstitution, ExpressionNode> {
-        Log.d(TAG, "getResultFromSubstitutionApplication")
+        Logger.d(TAG, "getResultFromSubstitutionApplication")
         return substitutionApplication.map { it.expressionSubstitution to it.resultExpression }.toMap()
     }
 
     fun save(context: Context, result: LevelResult?) {
+        Logger.d(TAG, "save", lastResult?.saveString())
         lastResult = result
         Storage.shared.saveResult(context, lastResult?.saveString(), game.code, code)
     }
 
     private fun loadResult(context: Context) {
+        Logger.d(TAG, "loadResult")
         val resultStr = Storage.shared.loadResult(context, game.code, code)
+        Logger.d(TAG, "loadResult", "loaded result = $resultStr")
         if (resultStr.isNotBlank()) {
             val resultVals = resultStr.split(" ", limit = 4)
             lastResult = LevelResult(resultVals[0].toDouble(), resultVals[1].toLong(),

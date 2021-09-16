@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.PlayActivity
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.game.GameResult
 import mathhelper.games.matify.level.*
 import java.util.*
@@ -32,32 +33,9 @@ class LevelScene {
                     value.onLevelsLoaded()
                 }, error = {
                     value.loading = false
-                    Log.e(TAG, "Error while LevelsActivity initializing")
+                    Logger.e(TAG, "Error while LevelsActivity initializing")
                     value.finish()
-                    //Toast.makeText(value, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
-                    //value.finishAffinity()
-                    //value.startActivity(Intent(value, GamesActivity::class.java))
                 })
-                /*GlobalScope.launch {
-                    val job = async {
-                        val loaded = GlobalScene.shared.currentGame?.load(value) ?: false
-                        value.runOnUiThread {
-                            if (loaded) {
-                                levels = GlobalScene.shared.currentGame!!.levels
-                                levelsPassed = GlobalScene.shared.currentGame!!.lastResult?.levelsPassed ?: 0
-                                levelsPaused = GlobalScene.shared.currentGame!!.lastResult?.levelsPaused ?: 0
-                                value.onLevelsLoaded()
-                            } else {
-                                value.loading = false
-                                Log.e(TAG, "Error while LevelsActivity initializing")
-                                //Toast.makeText(value, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
-                                value.finishAffinity()
-                                value.startActivity(Intent(value, GamesActivity::class.java))
-                            }
-                        }
-                    }
-                    job.await()
-                }*/
             }
         }
     var currentLevel: Level? = null

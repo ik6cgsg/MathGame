@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import org.json.JSONObject
@@ -22,6 +21,7 @@ import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AuthInfoObjectBase
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.statistics.Pages
@@ -38,7 +38,7 @@ class AuthActivity: AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_auth)
@@ -72,7 +72,7 @@ class AuthActivity: AppCompatActivity() {
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
-        GlobalScene.shared.request(this, background = {
+        GlobalScene.shared.asyncTask(this, background = {
             val response = Request.signRequest(req)
             val token = response.getString("token")
             Storage.shared.setServerToken(this, response.getString("token"))
@@ -96,7 +96,7 @@ class AuthActivity: AppCompatActivity() {
         requestRoot.put("loginOrEmail", login)
         requestRoot.put("password", password)
         val req = RequestData(Pages.SIGNIN.value, body = requestRoot.toString())
-        GlobalScene.shared.request(this, background = {
+        GlobalScene.shared.asyncTask(this, background = {
             val response = Request.signRequest(req)
             val token = response.getString("token")
             Storage.shared.initUserInfo(this, AuthInfoObjectBase(
@@ -141,13 +141,13 @@ class AuthActivity: AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            Log.d("GoogleToken", account!!.idToken ?: "")
+            Logger.d("GoogleToken", account!!.idToken ?: "")
             // Signed in successfully, show authenticated UI.
             val idTokenString = account.idToken
             val requestRoot = JSONObject()
             requestRoot.put("idTokenString", idTokenString)
             val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
-            GlobalScene.shared.request(this, background = {
+            GlobalScene.shared.asyncTask(this, background = {
                 val response = Request.signRequest(req)
                 val token = response.getString("token")
                 Storage.shared.initUserInfo(this, AuthInfoObjectBase(

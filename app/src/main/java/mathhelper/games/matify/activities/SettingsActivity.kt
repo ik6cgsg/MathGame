@@ -33,7 +33,7 @@ class SettingsActivity: AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_settings_new)
@@ -125,9 +125,7 @@ class SettingsActivity: AppCompatActivity() {
             .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
                 GlobalScene.shared.resetAll(success = {
                     finish()
-                }, error = {
-                    // TODO
-                })
+                }, error = {})
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
             }

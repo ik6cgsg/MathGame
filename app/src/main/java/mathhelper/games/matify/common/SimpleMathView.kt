@@ -35,17 +35,17 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
-        Log.d(TAG, "constructor from context")
+        Logger.d(TAG, "constructor from context")
         setDefaults()
     }
 
     constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
-        Log.d(TAG, "constructor from attrs")
+        Logger.d(TAG, "constructor from attrs")
         setDefaults()
     }
 
     private fun setDefaults() {
-        Log.d(TAG, "setDefaults")
+        Logger.d(TAG, "setDefaults")
         val themeName = Storage.shared.theme(context)
         setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         typeface = Typeface.MONOSPACE
@@ -54,12 +54,10 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
         setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)
-        // TODO: TEST
-        //setExpression("(*(7;^(6;log(5;6))))", null)
     }
 
     fun setExpression(expressionStr: String, type: String?) {
-        Log.d(TAG, "setExpression from str")
+        Logger.d(TAG, "setExpression from str")
         this.type = type
         if (expressionStr.isNotEmpty()) {
             expression = structureStringToExpression(expressionStr)
@@ -71,7 +69,7 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
-        Log.d(TAG, "setExpression from node")
+        Logger.d(TAG, "setExpression from node")
         this.type = type
         expression = expressionNode
         if (resetSize) {
@@ -81,7 +79,7 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     private fun setTextFromExpression() {
-        Log.d(TAG, "setTextFromExpression")
+        Logger.d(TAG, "setTextFromExpression")
         mathPair = when(type) {
             TaskType.SET.str -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET, exprType = ExpressionType.SIMPLE)
             else -> MathResolver.resolveToPlain(expression!!, exprType = ExpressionType.SIMPLE)

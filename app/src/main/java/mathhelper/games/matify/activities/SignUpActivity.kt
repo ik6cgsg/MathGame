@@ -12,6 +12,7 @@ import org.json.JSONObject
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AuthInfoObjectBase
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
 import mathhelper.games.matify.statistics.Pages
@@ -32,7 +33,7 @@ class SignUpActivity: AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_sign_up)

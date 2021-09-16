@@ -31,7 +31,7 @@ class LevelsActivity: AppCompatActivity() {
     lateinit var blurView: BlurView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_levels)

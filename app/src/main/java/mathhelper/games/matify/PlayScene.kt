@@ -47,7 +47,7 @@ class PlayScene {
                 try {
                     onRuleClicked(context)
                 } catch (e: java.lang.Exception) {
-                    Log.e(TAG, "Error during rule usage: ${e.message}")
+                    Logger.e(TAG, "Error during rule usage: ${e.message}")
                     Toast.makeText(playActivity, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
                 }
             }, 100)
@@ -64,7 +64,7 @@ class PlayScene {
         private set
 
     private fun onRuleClicked(context: Context) {
-        Log.d(TAG, "onRuleClicked")
+        Logger.d(TAG, "onRuleClicked")
         if (GlobalScene.shared.tutorialProcessing) {
             TutorialScene.shared.onRuleClicked(currentRuleView!!)
             return
@@ -111,7 +111,7 @@ class PlayScene {
     }
 
     fun onAtomClicked() {
-        Log.d(TAG, "onAtomClicked")
+        Logger.d(TAG, "onAtomClicked")
         if (GlobalScene.shared.tutorialProcessing) {
             TutorialScene.shared.onAtomClicked()
             return
@@ -148,7 +148,7 @@ class PlayScene {
     }
 
     fun loadLevel(context: Context, continueGame: Boolean, languageCode: String): Boolean {
-        Log.d(TAG, "loadLevel")
+        Logger.d(TAG, "loadLevel")
         val currentLevel = LevelScene.shared.currentLevel!!
         val activity = playActivity!!
         clearRules()
@@ -203,7 +203,7 @@ class PlayScene {
     }
 
     fun previousStep() {
-        Log.d(TAG, "previousStep")
+        Logger.d(TAG, "previousStep")
         if (instrumetProcessing) {
             InstrumentScene.shared.turnOffCurrentInstrument(playActivity!!)
         } else {
@@ -241,17 +241,17 @@ class PlayScene {
     }
 
     fun restart(context: Context, languageCode: String) {
-        Log.d(TAG, "restart")
+        Logger.d(TAG, "restart")
         val activity = playActivity!!
         Statistics.logRestart(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
         loadLevel(context,false, languageCode)
     }
 
     fun menu(logAndSave: Boolean = true) {
-        Log.d(TAG, "menu")
+        Logger.d(TAG, "menu")
         val activity = playActivity!!
         setMultiselectionMode(false)
-        if (logAndSave && stepsCount > 0) {
+        if (logAndSave) { // TODO: && stepsCount > 0 (server is now saving state even if stepsCount == 0)
             history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
             Statistics.logInterim(stepsCount, activity.globalMathView.expression!!)
         }
@@ -287,7 +287,7 @@ class PlayScene {
     }
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
-        Log.d(TAG, "redrawRules")
+        Logger.d(TAG, "redrawRules")
         val activity = playActivity!!
         activity.rulesLinearLayout.removeAllViews()
         for (r in rules) {
@@ -296,7 +296,7 @@ class PlayScene {
                 rule.setSubst(r, LevelScene.shared.currentLevel!!.subjectType)
                 activity.rulesLinearLayout.addView(rule)
             } catch (e: Exception) {
-                Log.e(TAG, "Rule draw Error", e)
+                Logger.e(TAG, "Rule draw Error: $e")
             }
         }
         activity.halfExpandBottomSheet()
@@ -305,7 +305,7 @@ class PlayScene {
     }
 
     fun onWin(context: Context) {
-        Log.d(TAG, "onWin")
+        Logger.d(TAG, "onWin")
         val activity = playActivity!!
         val currentLevel = LevelScene.shared.currentLevel!!
         //val award = currentLevel.getAward(context, currentTime, stepsCount)
@@ -318,7 +318,7 @@ class PlayScene {
     }
 
     fun onLoose() {
-        Log.d(TAG, "onLoose")
+        Logger.d(TAG, "onLoose")
         val activity = playActivity!!
         activity.onLoose()
         Statistics.logLoose(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)

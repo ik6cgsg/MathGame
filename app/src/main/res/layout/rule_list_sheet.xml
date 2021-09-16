@@ -33,7 +33,8 @@
             android:layout_height="70dp"
             android:background="?attr/shapeBackground"
             android:elevation="7dp"
-            android:stretchColumns="*">
+            android:stretchColumns="*"
+            android:visibility="gone">
 
             <TableRow
                 android:layout_width="match_parent"

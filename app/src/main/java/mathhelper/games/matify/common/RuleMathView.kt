@@ -82,24 +82,24 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
             //ruleView.maxLines = ruleStr.lines().size+1
         } catch (e: Exception) {
             ruleView.text = context.getString(R.string.parsing_error)
-            Log.e(TAG, "Error during substitution render")
+            Logger.e(TAG, "Error during substitution render")
         }
     }
 
     /** TextView OVERRIDES **/
     /*override fun onTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG, "onTouchEvent")
+        Logger.d(TAG, "onTouchEvent")
         super.onTouchEvent(event)
         /*when {
             event.action == MotionEvent.ACTION_DOWN -> {
-                Log.d(TAG, "ACTION_DOWN")
+                Logger.d(TAG, "ACTION_DOWN")
                 needClick = true
                 moveCnt = 0
                 val themeName = Storage.shared.theme(context)
                 setBackgroundColor(ThemeController.shared.getColorByTheme(themeName, ColorName.ON_TOUCH_BACKGROUND_COLOR))
             }
             event.action == MotionEvent.ACTION_UP -> {
-                Log.d(TAG, "ACTION_UP")
+                Logger.d(TAG, "ACTION_UP")
                 if (needClick && AndroidUtil.touchUpInsideView(this, event)) {
                     PlayScene.shared.setCurrentRuleView(context, this)
                     needClick = false
@@ -108,7 +108,7 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
                 }
             }
             event.action == MotionEvent.ACTION_MOVE -> {
-                Log.d(TAG, "ACTION_MOVE")
+                Logger.d(TAG, "ACTION_MOVE")
                 if (needClick) {
                     moveCnt++
                     if (moveCnt > moveTreshold) {
@@ -120,7 +120,7 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
                 }
             }
             event.action == MotionEvent.ACTION_CANCEL -> {
-                Log.d(TAG, "ACTION_CANCEL")
+                Logger.d(TAG, "ACTION_CANCEL")
                 needClick = false
                 setBackgroundColor(Color.TRANSPARENT)
             }

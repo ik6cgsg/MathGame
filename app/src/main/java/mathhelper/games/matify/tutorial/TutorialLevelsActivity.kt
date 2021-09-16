@@ -13,6 +13,7 @@ import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.BackgroundMode
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 
 class TutorialLevelsActivity: AppCompatActivity() {
@@ -25,7 +26,7 @@ class TutorialLevelsActivity: AppCompatActivity() {
     var loading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.tutorial_activity_levels)
@@ -65,13 +66,13 @@ class TutorialLevelsActivity: AppCompatActivity() {
     }
 
     fun tellAboutLevelLayout() {
-        Log.d(TAG, "tellAboutLevelLayout")
+        Logger.d(TAG, "tellAboutLevelLayout")
         dialog.setMessage(resources.getString(R.string.level_activity_tutorial))
         AndroidUtil.showDialog(dialog, backMode = BackgroundMode.NONE)
     }
 
     fun waitForLevelClick() {
-        Log.d(TAG, "waitForLevelClick")
+        Logger.d(TAG, "waitForLevelClick")
         pointer.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointer)
     }

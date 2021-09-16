@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import org.json.JSONObject
 import mathhelper.games.matify.level.*
@@ -61,26 +62,14 @@ data class Game(
         private val TAG = "Game"
 
         fun create(json: String, context: Context): Game? {
-            Log.d(TAG, "create")
+            Logger.d(TAG, "create")
             val res = preload(json)
             res?.loadResult(context)
             return res
         }
 
         private fun preload(json: String): Game? {
-            Log.d(TAG, "preload")
-            var res: Game? = null
-            /*when {
-                context.assets != null -> {
-                    val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
-                    val full = GsonParser.parse<FullTaskset>(json) ?: return null
-                    res = GsonParser.parse(full.taskset)
-                    if (res?.preparseRulePacks(full.rulePacks) != true) {
-                        res = null
-                    }
-                }
-                else -> res = null
-            }*/
+            Logger.d(TAG, "preload")
             return GsonParser.parse(json)
         }
     }
@@ -98,11 +87,12 @@ data class Game(
     }
 
     fun load(context: Context): Boolean {
-        Log.d(TAG, "load")
+        Logger.d(TAG, "load")
         return loaded || parse(context)
     }
 
     private fun parse(context: Context): Boolean {
+        Logger.d(TAG, "parse")
         for (key in rulePacksJsons.keys) {
             if (!rulePacks.containsKey(key)) {
                 val pack = RulePackage.parse(key, rulePacksJsons, rulePacks)
@@ -123,11 +113,14 @@ data class Game(
     }
 
     fun save(context: Context) {
+        Logger.d(TAG, "save", lastResult?.saveString())
         Storage.shared.saveResult(context, lastResult?.saveString(), code)
     }
 
     private fun loadResult(context: Context) {
+        Logger.d(TAG, "loadResult")
         val resultStr = Storage.shared.loadResult(context, code)
+        Logger.d(TAG, "loadResult", "loaded result = $resultStr")
         if (resultStr.isNotBlank()) {
             val resultVals = resultStr.split(" ", limit = 2)
             lastResult = GameResult(resultVals[0].toInt(), resultVals[1].toInt())

@@ -339,11 +339,16 @@ class Storage {
         return !(preloaded.isNullOrEmpty() && loaded.isNullOrEmpty())
     }
 
-    fun getAllSavedTasksets(context: Context): List<String> {
-        val allTasksets = arrayListOf<String>()
+    fun getAllSavedTasksetCodes(context: Context): Set<String> {
         val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val allCodes = settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!
         allCodes += settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!
+        return allCodes
+    }
+
+    fun getAllSavedTasksets(context: Context): List<String> {
+        val allTasksets = arrayListOf<String>()
+        val allCodes = getAllSavedTasksetCodes(context)
         for (code in allCodes) {
             val tasksetFile = context.getSharedPreferences(code, Context.MODE_PRIVATE)
             val json = tasksetFile.getString("taskset", null)

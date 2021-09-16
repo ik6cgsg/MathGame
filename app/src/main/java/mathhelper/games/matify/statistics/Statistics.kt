@@ -11,6 +11,7 @@ import expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.BuildConfig
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.level.Award
 import java.sql.Timestamp
@@ -211,7 +212,7 @@ class Statistics {
         }
 
         private fun sendLog(log: ActivityLog, context: Context, forced: Boolean = false) {
-            Log.d("Statistics", "ActivityLog: $log}")
+            Logger.d("Statistics", "ActivityLog: $log}")
             setDefault(log, context)
             sendOneLog(log, context)
         }

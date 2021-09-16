@@ -6,10 +6,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -22,15 +20,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import eightbitlab.com.blurview.BlurView
-import kotlinx.android.synthetic.main.activity_games.*
 import mathhelper.games.matify.GlobalScene
-import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.game.GameResult
-import mathhelper.games.matify.level.StateType
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,6 +43,8 @@ class GamesActivity: AppCompatActivity() {
     lateinit var blurView: BlurView
     private lateinit var progress: ProgressBar
     private var serverGames = arrayListOf<Game>()
+    private val isLoading: Boolean
+        get() = progress.visibility == View.VISIBLE
 
     private fun setLanguage() {
         val locale = Locale("en")
@@ -62,7 +59,7 @@ class GamesActivity: AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         val authed = Storage.shared.isUserAuthorized(this)
         if (!authed) {
             startActivity(Intent(this, AuthActivity::class.java))
@@ -93,24 +90,7 @@ class GamesActivity: AppCompatActivity() {
         serverList = findViewById(R.id.server_games_list)
         serverNotFound = findViewById(R.id.server_not_found)
         blurView = findViewById(R.id.blurView)
-        val refresher = findViewById<SwipeRefreshLayout>(R.id.refresher)
-        refresher.setOnRefreshListener {
-            refresher.isRefreshing = false
-            setLoading(true)
-            Toast.makeText(this, "refreshing...", Toast.LENGTH_SHORT).show()
-            GlobalScene.shared.games.clear()
-            GlobalScene.shared.requestGamesByParams(GlobalScene.shared.games, success = {
-                if (GlobalScene.shared.games.isEmpty()) {
-                    // TODO error
-                } else {
-                    generateList()
-                }
-                setLoading(false)
-            }, error = {
-                // TODO error
-                setLoading(false)
-            })
-        }
+        initSwipeRefresher()
         setSearchEngine()
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
@@ -136,6 +116,20 @@ class GamesActivity: AppCompatActivity() {
 
     fun settings(v: View?) {
         startActivity(Intent(this, SettingsActivity::class.java))
+    }
+
+
+    private fun initSwipeRefresher() {
+        val refresher = findViewById<SwipeRefreshLayout>(R.id.refresher)
+        refresher.setOnRefreshListener {
+            refresher.isRefreshing = false
+            if (!isLoading) {
+                setLoading(true)
+                //Toast.makeText(this, "refreshing...", Toast.LENGTH_SHORT).show()
+                //GlobalScene.shared.games.clear()
+                GlobalScene.shared.refreshGames()
+            }
+        }
     }
 
     private fun clearSearch() {
@@ -223,7 +217,11 @@ class GamesActivity: AppCompatActivity() {
             gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
         }
         gameView.background = getDrawable(R.drawable.button_rect)
-        gameView.setOnClickListener { onClick(it) }
+        gameView.setOnClickListener {
+            if (!isLoading) {
+                onClick(it)
+            }
+        }
         gameView.isLongClickable = true
         gameView.setOnLongClickListener { showInfo(game, lang) }
         return gameView
@@ -266,7 +264,7 @@ class GamesActivity: AppCompatActivity() {
             setLoading(true)
             GlobalScene.shared.cancelActiveJobs()
             val currentGameCodes = GlobalScene.shared.games.map { it.code }
-            GlobalScene.shared.requestGamesByParams(serverGames, code = search.toString(), success = {
+            GlobalScene.shared.requestGamesByParams(serverGames, keywords = search.toString(), success = {
                 serverGames = ArrayList(serverGames.filter { it.code !in currentGameCodes })
                 val gamesToRemove = oldServerGames - serverGames.map { it.code }
                 Storage.shared.clearSpecifiedGames(this, gamesToRemove)

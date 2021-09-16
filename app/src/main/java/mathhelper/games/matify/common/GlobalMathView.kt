@@ -43,17 +43,17 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
-        Log.d(TAG, "constructor from context")
+        Logger.d(TAG, "constructor from context")
         setDefaults(context)
     }
 
     constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
-        Log.d(TAG, "constructor from attrs")
+        Logger.d(TAG, "constructor from attrs")
         setDefaults(context)
     }
 
     private fun setDefaults(context: Context) {
-        Log.d(TAG, "setDefaults")
+        Logger.d(TAG, "setDefaults")
         scaleDetector = ScaleGestureDetector(context, scaleListener)
         setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         includeFontPadding = false
@@ -67,7 +67,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     fun setExpression(expressionStr: String, type: String?) {
-        Log.d(TAG, "setExpression from str")
+        Logger.d(TAG, "setExpression from str")
         if (expressionStr.isNotEmpty()) {
             expression = structureStringToExpression(expressionStr)
             setExpression(expression!!, type, true)
@@ -75,7 +75,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
-        Log.d(TAG, "setExpression from node")
+        Logger.d(TAG, "setExpression from node")
         this.type = type
         expression = expressionNode
         if (resetSize) {
@@ -90,7 +90,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     /** Scene interaction **/
 
     fun performSubstitutionForMultiselect(subst: ExpressionSubstitution): ExpressionNode? {
-        Log.d(TAG, "performSubstitution")
+        Logger.d(TAG, "performSubstitution")
         var res: ExpressionNode? = null
         if (expression == null || currentRulesToResult == null) {
             Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
@@ -122,7 +122,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     /** TextView OVERRIDES **/
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        Log.d(TAG, "onTouchEvent")
+        Logger.d(TAG, "onTouchEvent")
         if (centerX == null || centerY == null) {
             centerX = x
             centerY = y
@@ -194,7 +194,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     private fun selectCurrentAtom(event: MotionEvent) {
-        Log.d(TAG, "selectCurrentAtom")
+        Logger.d(TAG, "selectCurrentAtom")
         if (layout != null) {
             val (x, y) = getMathViewCoord(event)
             val atomColor = ThemeController.shared.color(ColorName.TEXT_HIGHLIGHT_COLOR)
@@ -238,7 +238,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     private fun setTextFromExpression() {
-        Log.d(TAG, "setTextFromExpression")
+        Logger.d(TAG, "setTextFromExpression")
         MatifySpan.clearSelected()
         mathPair = when(type) {
             TaskType.SET.str -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET)

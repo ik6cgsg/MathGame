@@ -7,6 +7,7 @@ import android.util.Log
 import expressiontree.ExpressionNode
 import expressiontree.NodeType
 import mathhelper.games.matify.common.Constants
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.mathResolver.mathResolverNodes.*
 import java.lang.Exception
 import java.lang.Math.pow
@@ -75,7 +76,7 @@ open class MathResolverNodeBase(
                 root.setCoordinates(Point(0, 0))
                 root
             } catch (e: Exception) {
-                Log.e("MathResolverNodeBase", "Error during building tree: ${e.message}")
+                Logger.e("MathResolverNodeBase", "Error during building tree: ${e.message}")
                 null
             }
         }

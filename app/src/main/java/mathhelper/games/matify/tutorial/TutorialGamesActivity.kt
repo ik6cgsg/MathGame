@@ -11,6 +11,7 @@ import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.BackgroundMode
+import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 
 class TutorialGamesActivity: AppCompatActivity() {
@@ -20,7 +21,7 @@ class TutorialGamesActivity: AppCompatActivity() {
     lateinit var leave: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
+        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(Storage.shared.themeInt(this))
         setContentView(R.layout.tutorial_activity_games)
@@ -44,13 +45,13 @@ class TutorialGamesActivity: AppCompatActivity() {
     }
 
     fun tellAboutGameLayout() {
-        Log.d(TAG, "tellAboutGameLayout")
+        Logger.d(TAG, "tellAboutGameLayout")
         dialog.setMessage(resources.getString(R.string.games_activity_tutorial))
         AndroidUtil.showDialog(dialog, backMode = BackgroundMode.NONE)
     }
 
     fun waitForGameClick() {
-        Log.d(TAG, "waitForGameClick")
+        Logger.d(TAG, "waitForGameClick")
         pointer.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointer)
     }

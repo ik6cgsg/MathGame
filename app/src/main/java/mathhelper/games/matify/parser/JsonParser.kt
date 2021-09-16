@@ -3,6 +3,7 @@ package mathhelper.games.matify.parser
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import mathhelper.games.matify.common.Logger
 import java.lang.Exception
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
@@ -21,8 +22,8 @@ class GsonParser {
                 val jsonObj = Gson().fromJson(json, JsonObject::class.java)
                 res = parse(jsonObj)
             } catch (e: Exception) {
-                Log.e("[GsonParser]", "ERROR: Not valid json!! for class ${T::class.java}")
-                Log.e("[GsonParser]", e.message ?: "unknown")
+                Logger.e("[GsonParser]", "ERROR: Not valid json!! for class ${T::class.java}")
+                Logger.e("[GsonParser]", e.message ?: "unknown")
             }
             return res
         }
@@ -34,14 +35,14 @@ class GsonParser {
                 val required = req.map { it.name }
                 for (reqField in required) {
                     if (json.get(reqField) == null) {
-                        Log.e("[GsonParser]", "ERROR: No required field for class ${T::class.java}: '$reqField'")
+                        Logger.e("[GsonParser]", "ERROR: No required field for class ${T::class.java}: '$reqField'")
                         return null
                     }
                 }
                 res = Gson().fromJson(json, T::class.java)
             } catch (e: Exception) {
-                Log.e("[GsonParser]", "ERROR: Not valid json!! for class ${T::class.java}")
-                Log.e("[GsonParser]", e.message ?: "unknown")
+                Logger.e("[GsonParser]", "ERROR: Not valid json!! for class ${T::class.java}")
+                Logger.e("[GsonParser]", e.message ?: "unknown")
             }
             return res
         }
