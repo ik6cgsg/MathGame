@@ -216,11 +216,12 @@ class GlobalScene {
         toList: ArrayList<Game>,
         namespaceCode: String = "global_test",
         keywords: String = "",
-        success: () -> Unit, error: () -> Unit
+        success: () -> Unit, error: () -> Unit, toastError: Boolean = true
     ) {
         asyncTask(gamesActivity!!, {
             val tasksetsReqData = RequestData(Pages.TASKSETS_PREVIEW.value, method = RequestMethod.GET)
-            tasksetsReqData.url += "?namespace=$namespaceCode&keywords=$keywords"
+            tasksetsReqData.url += if (keywords.isNotEmpty()) "?keywords=$keywords"
+                else "?namespace=$namespaceCode"
             val res = Request.doSyncRequest(tasksetsReqData)
             if (res.returnValue != 200) {
                 throw Request.UserMessageException(gamesActivity!!.getString(R.string.games_load_failed))
@@ -238,7 +239,7 @@ class GlobalScene {
                     }
                 }
             }
-        }, success, error)
+        }, success, error, toastError)
     }
 
     fun requestGameForPlay(game: Game, success: () -> Unit, error: () -> Unit) {

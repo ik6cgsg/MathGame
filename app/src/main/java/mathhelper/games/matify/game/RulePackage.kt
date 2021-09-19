@@ -100,7 +100,7 @@ data class RulePackage(
         }
 
         fun parseRule(ruleInfo: JsonObject): Rule? {
-            Logger.d(TAG, "parseRule")
+            //Logger.d(TAG, "parseRule")
             val rule = GsonParser.parse<Rule>(ruleInfo)
             if (rule != null) {
                 rule.substitution = expressionSubstitutionFromStructureStrings(

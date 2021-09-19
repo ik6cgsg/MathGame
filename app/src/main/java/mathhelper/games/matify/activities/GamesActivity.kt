@@ -125,8 +125,6 @@ class GamesActivity: AppCompatActivity() {
             refresher.isRefreshing = false
             if (!isLoading) {
                 setLoading(true)
-                //Toast.makeText(this, "refreshing...", Toast.LENGTH_SHORT).show()
-                //GlobalScene.shared.games.clear()
                 GlobalScene.shared.refreshGames()
             }
         }
@@ -280,7 +278,7 @@ class GamesActivity: AppCompatActivity() {
                 setLoading(false)
                 serverList.visibility = View.GONE
                 serverNotFound.visibility = View.VISIBLE
-            })
+            }, toastError = false)
         } else {
             GlobalScene.shared.cancelActiveJobs()
             val gamesToRemove = clearServerListAndSetVisibility(View.GONE)
