@@ -406,6 +406,8 @@
                 android:background="?attr/dividerColor" />
         </TableRow>
 
+<!-- TODO: decide what to do with tutorial
+
         <TableRow
             android:layout_width="10dp"
             android:clickable="true"
@@ -445,6 +447,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/dividerColor" />
         </TableRow>
+-->
 
         <TableRow
             android:layout_width="10dp"

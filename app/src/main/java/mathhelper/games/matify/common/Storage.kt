@@ -25,10 +25,7 @@ enum class AuthInfo(val str: String) {
     FULL_NAME("fullName"),
     ADDITIONAL("additional"),
     AUTHORIZED("authorized"),
-    AUTH_STATUS("authStatus"),
-    TIME_COEFF("timeCoeff"),
-    AWARD_COEFF("awardCoeff"),
-    UNDO_COEFF("undoCoeff"),
+    AUTH_STATUS("authStatus")
 }
 
 enum class BaseInfo(val str: String) {
@@ -37,6 +34,7 @@ enum class BaseInfo(val str: String) {
 
 enum class SettingInfo(val str: String) {
     THEME("theme"),
+    LANGUAGE("language"),
     PRELOADED_GAMES("preloadedGames"),
     LOADED_GAMES("loadedGames")
 }
@@ -61,6 +59,7 @@ interface SavableResult {
     fun saveString(): String
 }
 
+@SuppressLint("ApplySharedPref")
 class Storage {
     companion object {
         private const val userInfoFile = "USER_INFO"
@@ -71,7 +70,6 @@ class Storage {
         val shared = Storage()
     }
 
-    @SuppressLint("ApplySharedPref")
     fun checkDeviceId(context: Context) {
         val prefs = context.getSharedPreferences(base, Context.MODE_PRIVATE)
         if (!prefs.contains(BaseInfo.DEVICE_ID.str)) {
@@ -81,12 +79,18 @@ class Storage {
         }
     }
 
+    fun deviceId(context: Context): String {
+        return context.getSharedPreferences(base, Context.MODE_PRIVATE)
+            .getString(BaseInfo.DEVICE_ID.str, "")!!
+    }
+
+    //region USER INFO
+
     fun isUserAuthorized(context: Context): Boolean {
         return context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
             .getBoolean(AuthInfo.AUTHORIZED.str, false)
     }
 
-    @SuppressLint("ApplySharedPref")
     fun invalidateUser(context: Context) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -99,11 +103,6 @@ class Storage {
             context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
                 .getString(AuthInfo.AUTH_STATUS.str, AuthStatus.GUEST.str)!!
         )!!
-    }
-
-    fun deviceId(context: Context): String {
-        return context.getSharedPreferences(base, Context.MODE_PRIVATE)
-            .getString(BaseInfo.DEVICE_ID.str, "")!!
     }
 
     fun login(context: Context): String {
@@ -121,21 +120,6 @@ class Storage {
             .getString(AuthInfo.SERVER_TOKEN.str, "")!!
     }
 
-    fun theme(context: Context) : ThemeName {
-        val theme = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-            .getString(SettingInfo.THEME.str, "")
-        return when (theme) {
-            "DARK" -> ThemeName.DARK
-            "LIGHT" -> ThemeName.LIGHT
-            else -> ThemeName.DARK
-        }
-    }
-
-    fun themeInt(context: Context) : Int {
-        return theme(context).resId
-    }
-
-    @SuppressLint("ApplySharedPref")
     fun initWithUuid(context: Context): UUID {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -146,7 +130,6 @@ class Storage {
         return uuid
     }
 
-    @SuppressLint("ApplySharedPref")
     fun initUserInfo(context: Context, info: AuthInfoObjectBase) {
         val uuid = initWithUuid(context)
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
@@ -165,7 +148,6 @@ class Storage {
         setUserInfo(context, info)
     }
 
-    @SuppressLint("ApplySharedPref")
     fun setServerToken(context: Context, serverToken: String) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -173,7 +155,6 @@ class Storage {
         prefEdit.commit()
     }
 
-    @SuppressLint("ApplySharedPref")
     fun setUserInfo(context: Context, info: AuthInfoObjectBase) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -202,13 +183,6 @@ class Storage {
         prefEdit.commit()
     }
 
-    fun setTheme(context: Context, theme: ThemeName?) {
-        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        prefEdit.putString(SettingInfo.THEME.str, theme.toString())
-        prefEdit.commit()
-    }
-
     fun getUserInfoBase(context: Context): AuthInfoObjectBase {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         return AuthInfoObjectBase(
@@ -231,20 +205,22 @@ class Storage {
         )
     }
 
-    @SuppressLint("ApplySharedPref")
-    fun resetResults(context: Context) {
-        val prefs = context.getSharedPreferences(resultsFile, Context.MODE_PRIVATE)
-        val prefEdit = prefs.edit()
-        prefEdit.clear()
-        prefEdit.commit()
-    }
-
-    @SuppressLint("ApplySharedPref")
     fun clearUserInfo(context: Context) {
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.clear()
         prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, false)
+        prefEdit.commit()
+    }
+
+    //endregion
+
+    //region RESULTS
+
+    fun resetResults(context: Context) {
+        val prefs = context.getSharedPreferences(resultsFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        prefEdit.clear()
         prefEdit.commit()
     }
 
@@ -289,20 +265,56 @@ class Storage {
         }
     }
 
-    fun saveIfNeed(context: Context, file: String, data: String) {
-        val oldFile = File("${context.filesDir.path}/${context.packageName}/shared_prefs/$file")
-        if (!oldFile.exists()) {
-            val prefs = context.getSharedPreferences(file, Context.MODE_PRIVATE)
-            val prefEdit = prefs.edit()
-            prefEdit.putString("data", data)
-            prefEdit.commit()
+    //endregion
+
+    //region SETTINGS
+
+    fun setTheme(context: Context, theme: ThemeName?) {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        prefEdit.putString(SettingInfo.THEME.str, theme.toString())
+        prefEdit.commit()
+    }
+
+    fun theme(context: Context) : ThemeName {
+        val theme = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+            .getString(SettingInfo.THEME.str, "")
+        return when (theme) {
+            "DARK" -> ThemeName.DARK
+            "LIGHT" -> ThemeName.LIGHT
+            else -> ThemeName.DARK
         }
     }
 
-    fun haveAnyFileStartWith(context: Context, name: String): Boolean {
-        val file = File("${context.filesDir.path}/${context.packageName}/shared_prefs/$name*")
-        return file.exists()
+    fun themeInt(context: Context) : Int {
+        return theme(context).resId
     }
+
+    fun setLanguage(context: Context, language: String?) {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        val saveStr = when (language) {
+            "ru", "rus" -> "ru"
+            "en", "eng" -> "en"
+            else -> "ru"
+        }
+        prefEdit.putString(SettingInfo.LANGUAGE.str, saveStr)
+        prefEdit.commit()
+    }
+
+    fun language(context: Context): String {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        return prefs.getString(SettingInfo.LANGUAGE.str, "ru")!!
+    }
+
+    fun clearSettings(context: Context) {
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
+        prefs.edit().clear().commit()
+    }
+
+    //endregion
+
+    //region TASKSETS
 
     fun saveTaskset(context: Context, code: String, tasksetJson: String, rulePacks: String? = null) {
         val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
@@ -371,11 +383,6 @@ class Storage {
         return res
     }
 
-    fun clearSettings(context: Context) {
-        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        prefs.edit().clear().commit()
-    }
-
     fun clearSpecifiedGames(context: Context, codes: List<String>) {
         if (codes.isNotEmpty()) {
             val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
@@ -393,4 +400,6 @@ class Storage {
             settingsEdit.commit()
         }
     }
+
+    //endregion
 }

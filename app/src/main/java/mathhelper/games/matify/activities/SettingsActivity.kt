@@ -168,9 +168,10 @@ class SettingsActivity: AppCompatActivity() {
                     1 -> "en"
                     else -> "en"
                 }
-                val config = Configuration(resources.configuration)
+                /*val config = Configuration(resources.configuration)
                 config.locale = Locale(languageToChoose); //locale
-                resources.updateConfiguration(config, resources.displayMetrics)
+                resources.updateConfiguration(config, resources.displayMetrics)*/
+                Storage.shared.setLanguage(this, languageToChoose)
                 finishAffinity()
                 startActivity(Intent(this, GamesActivity::class.java))
             }

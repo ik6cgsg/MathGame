@@ -47,9 +47,10 @@ class GamesActivity: AppCompatActivity() {
         get() = progress.visibility == View.VISIBLE
 
     private fun setLanguage() {
-        val locale = Locale("en")
+        val locale = Locale(Storage.shared.language(this))
         Locale.setDefault(locale)
         val config = Configuration(resources.configuration)
+        config.locale = locale;
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
@@ -63,7 +64,7 @@ class GamesActivity: AppCompatActivity() {
         val authed = Storage.shared.isUserAuthorized(this)
         if (!authed) {
             startActivity(Intent(this, AuthActivity::class.java))
-            askForTutorial = true
+            //askForTutorial = true
         }
         setLanguage()
         ThemeController.shared.init(this)
@@ -108,10 +109,11 @@ class GamesActivity: AppCompatActivity() {
         serverList.visibility = View.GONE
         serverNotFound.visibility = View.GONE
         clearSearch()
+        /* TODO: decide what to do with tutorial
         if (askForTutorial) {
             askForTutorialDialog()
             askForTutorial = false
-        }
+        }*/
     }
 
     fun settings(v: View?) {
