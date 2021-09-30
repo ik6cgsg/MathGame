@@ -51,7 +51,7 @@ class SignUpActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        loginView.text = Storage.shared.login(this)
+        loginView.text = Storage.shared.login()
         signButton.isEnabled = false
         loginView.doAfterTextChanged { checkInput() }
         passwordView.doAfterTextChanged { checkInput() }
@@ -82,13 +82,13 @@ class SignUpActivity: AppCompatActivity() {
             fullName = fullNameView.text.toString(),
             additional = additionalView.text.toString()
         )
-        Storage.shared.setUserInfo(this, userData)
+        Storage.shared.setUserInfo(userData)
         GlobalScene.shared.signUp(this, userData)
     }
 
     fun cancel(v: View?) {
         startActivity(Intent(this, AuthActivity::class.java))
-        Storage.shared.invalidateUser(this)
+        Storage.shared.invalidateUser()
         finish()
     }
 }

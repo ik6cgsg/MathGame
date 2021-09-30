@@ -114,12 +114,12 @@ data class Game(
 
     fun save(context: Context) {
         Logger.d(TAG, "save", lastResult?.saveString())
-        Storage.shared.saveResult(context, lastResult?.saveString(), code)
+        Storage.shared.saveResult(lastResult?.saveString(), code)
     }
 
     private fun loadResult(context: Context) {
         Logger.d(TAG, "loadResult")
-        val resultStr = Storage.shared.loadResult(context, code)
+        val resultStr = Storage.shared.loadResult(code)
         Logger.d(TAG, "loadResult", "loaded result = $resultStr")
         if (resultStr.isNotBlank()) {
             val resultVals = resultStr.split(" ", limit = 2)

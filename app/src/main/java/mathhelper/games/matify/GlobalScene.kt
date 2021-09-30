@@ -1,6 +1,7 @@
 package mathhelper.games.matify
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
@@ -12,6 +13,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
+import mathhelper.games.matify.activities.SplashActivity
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Logger
@@ -23,6 +25,7 @@ import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.statistics.*
 import org.json.JSONObject
 import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,7 +52,7 @@ class GlobalScene {
     var tutorialProcessing = false
     var games: ArrayList<Game> = ArrayList()
     var gamesActivity: GamesActivity? = null
-        set(value) {
+        /*set(value) {
             field = value
             if (value != null) {
                 Request.startWorkCycle()
@@ -57,7 +60,7 @@ class GlobalScene {
                 games = ArrayList()
                 authStatus = Storage.shared.authStatus(value)
             }
-        }
+        }*/
     var currentGameIndex: Int = 0
     var currentGame: Game? = null
         set(value) {
@@ -70,6 +73,13 @@ class GlobalScene {
         }
     var loadingElement: ProgressBar? = null
     private val activeJobs = arrayListOf<Job>()
+
+    fun init() {
+        Request.startWorkCycle()
+        tutorialProcessing = false
+        games = ArrayList()
+        authStatus = Storage.shared.authStatus()
+    }
 
     fun cancelActiveJobs() {
         activeJobs.forEach { it.cancel() }
@@ -123,12 +133,14 @@ class GlobalScene {
             LevelScene.shared.back()
         }
         asyncTask(gamesActivity!!, background = {
-            val token = Storage.shared.serverToken(gamesActivity!!)
+            val token = Storage.shared.serverToken()
             Request.resetHistory(RequestData(Pages.USER_HISTORY.value, token, RequestMethod.DELETE))
-            Storage.shared.resetResults(gamesActivity!!)
+            Storage.shared.resetResults()
         }, foreground = {
             success()
-            gamesActivity!!.recreate()
+            gamesActivity!!.startActivity(Intent(gamesActivity!!, SplashActivity::class.java))
+            gamesActivity!!.finish()
+            //gamesActivity!!.recreate()
         }, errorground = error)
     }
 
@@ -136,14 +148,16 @@ class GlobalScene {
         if (LevelScene.shared.levelsActivity != null) {
             LevelScene.shared.back()
         }
-        Storage.shared.resetResults(gamesActivity!!)
-        Storage.shared.clearUserInfo(gamesActivity!!)
-        Storage.shared.clearSettings(gamesActivity!!)
+        Storage.shared.resetResults()
+        Storage.shared.clearUserInfo()
+        Storage.shared.clearSettings()
         if (authStatus == AuthStatus.GOOGLE) {
             googleSignInClient!!.signOut()
         }
         Request.stopWorkCycle()
-        gamesActivity!!.recreate()
+        gamesActivity!!.startActivity(Intent(gamesActivity!!, SplashActivity::class.java))
+        gamesActivity!!.finish()
+        //gamesActivity!!.recreate()
     }
 
     private fun getByNormDist(mean: Float, sigma: Float): Float {
@@ -173,17 +187,17 @@ class GlobalScene {
         val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
         asyncTask(context, background = {
             val response = Request.signRequest(req)
-            Storage.shared.setServerToken(context, response.getString("token"))
+            Storage.shared.setServerToken(response.getString("token"))
         }, foreground = {
             Statistics.logSign(context)
             context.finish()
         }, errorground = {
-            Storage.shared.invalidateUser(context)
+            Storage.shared.invalidateUser()
         })
     }
 
     fun parseLoadedOrRequestDefaultGames() {
-        if (!Storage.shared.gotAnySavedTasksets(gamesActivity!!)) {
+        if (!Storage.shared.gotAnySavedTasksets()) {
             requestGamesByParams(games, success = {
                 if (games.isNotEmpty()) {
                     gamesActivity!!.generateList()
@@ -203,7 +217,7 @@ class GlobalScene {
     }
 
     private fun parsePreloadedGames() {
-        val tasksets = Storage.shared.getAllSavedTasksets(gamesActivity!!)
+        val tasksets = Storage.shared.getAllSavedTasksets()
         for (taskset in tasksets) {
             val loadedGame = Game.create(taskset, gamesActivity!!)
             if (loadedGame != null) {
@@ -232,7 +246,7 @@ class GlobalScene {
             }
             for (taskset in tasksets.orEmpty()) {
                 if (taskset.has("code")) {
-                    Storage.shared.saveTaskset(gamesActivity!!, taskset.get("code").asString, taskset.toString())
+                    Storage.shared.saveTaskset(taskset.get("code").asString, taskset.toString())
                     val loadedGame = Game.create(taskset.toString(), gamesActivity!!)
                     if (loadedGame != null) {
                         toList.add(loadedGame)
@@ -244,9 +258,9 @@ class GlobalScene {
 
     fun requestGameForPlay(game: Game, success: () -> Unit, error: () -> Unit) {
         asyncTask(gamesActivity!!, {
-            var fullTaskset = Storage.shared.tryGetFullTaskset(gamesActivity!!, game.code)
+            var fullTaskset = Storage.shared.tryGetFullTaskset(game.code)
             if (fullTaskset == null) {
-                val token = Storage.shared.serverToken(gamesActivity!!)
+                val token = Storage.shared.serverToken()
                 val tasksetsReqData = RequestData(Pages.TASKSETS_FULL.value, method = RequestMethod.GET, securityToken = token)
                 tasksetsReqData.url += "/${game.code}"
                 val res = Request.doSyncRequest(tasksetsReqData)
@@ -254,7 +268,7 @@ class GlobalScene {
                     throw Request.UserMessageException(gamesActivity!!.getString(R.string.level_load_fail))
                 }
                 fullTaskset = GsonParser.parse(res.body)!!
-                Storage.shared.saveTaskset(gamesActivity!!, game.code, fullTaskset.taskset.toString(), Gson().toJson(fullTaskset.rulePacks))
+                Storage.shared.saveTaskset(game.code, fullTaskset.taskset.toString(), Gson().toJson(fullTaskset.rulePacks))
             }
             game.preparseRulePacks(fullTaskset.rulePacks)
             game.load(gamesActivity!!)
@@ -263,8 +277,8 @@ class GlobalScene {
 
     fun refreshGames(): ArrayList<Game> {
         games = arrayListOf()
-        val codes = Storage.shared.getAllSavedTasksetCodes(gamesActivity!!)
-        val token = Storage.shared.serverToken(gamesActivity!!)
+        val codes = Storage.shared.getAllSavedTasksetCodes()
+        val token = Storage.shared.serverToken()
         val tasksetsReqData = RequestData(Pages.TASKSETS_FULL.value, method = RequestMethod.GET, securityToken = token)
         val base = "${tasksetsReqData.url}/"
         GlobalScope.launch {
@@ -278,7 +292,7 @@ class GlobalScene {
                     }
                     val fullTaskset = GsonParser.parse<FullTaskset>(res.body)!!
                     val taskset = fullTaskset.taskset.toString()
-                    Storage.shared.saveTaskset(gamesActivity!!, code, taskset, Gson().toJson(fullTaskset.rulePacks))
+                    Storage.shared.saveTaskset(code, taskset, Gson().toJson(fullTaskset.rulePacks))
                     val game = Game.create(taskset, gamesActivity!!)
                     //?: throw Request.UserMessageException("Games refreshing failed. Try again later.")
                     if (game == null) {

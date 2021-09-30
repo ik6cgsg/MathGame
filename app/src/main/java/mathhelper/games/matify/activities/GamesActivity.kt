@@ -47,7 +47,7 @@ class GamesActivity: AppCompatActivity() {
         get() = progress.visibility == View.VISIBLE
 
     private fun setLanguage() {
-        val locale = Locale(Storage.shared.language(this))
+        val locale = Locale(Storage.shared.language())
         Locale.setDefault(locale)
         val config = Configuration(resources.configuration)
         config.locale = locale;
@@ -61,25 +61,27 @@ class GamesActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
-        val authed = Storage.shared.isUserAuthorized(this)
+        /*val authed = Storage.shared.isUserAuthorized(this)
         if (!authed) {
             startActivity(Intent(this, AuthActivity::class.java))
             //askForTutorial = true
         }
         setLanguage()
-        ThemeController.shared.init(this)
+        ThemeController.shared.init(this)*/
         setTheme(ThemeController.shared.currentTheme.resId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
         progress = findViewById(R.id.progress)
         gameDivider = findViewById(R.id.divider)
         setLoading(true)
+        /*
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestIdToken(Constants.serverId)
             .build()
         GlobalScene.shared.googleSignInClient = GoogleSignIn.getClient(this, gso)
         Storage.shared.checkDeviceId(this)
+        */
         GlobalScene.shared.gamesActivity = this
         gamesViews = ArrayList()
         gamesList = findViewById(R.id.games_list)
@@ -97,9 +99,9 @@ class GamesActivity: AppCompatActivity() {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27"
         }
-        if (authed) {
+        //if (authed) {
             GlobalScene.shared.parseLoadedOrRequestDefaultGames()
-        }
+        //}
     }
 
     override fun onResume() {
@@ -267,7 +269,7 @@ class GamesActivity: AppCompatActivity() {
             GlobalScene.shared.requestGamesByParams(serverGames, keywords = search.toString(), success = {
                 serverGames = ArrayList(serverGames.filter { it.code !in currentGameCodes })
                 val gamesToRemove = oldServerGames - serverGames.map { it.code }
-                Storage.shared.clearSpecifiedGames(this, gamesToRemove)
+                Storage.shared.clearSpecifiedGames(gamesToRemove)
                 serverNotFound.visibility = if (serverGames.isEmpty()) View.VISIBLE else View.GONE
                 serverGames.forEach { game ->
                     val view = generateGameView(game, onClick = {
@@ -284,7 +286,7 @@ class GamesActivity: AppCompatActivity() {
         } else {
             GlobalScene.shared.cancelActiveJobs()
             val gamesToRemove = clearServerListAndSetVisibility(View.GONE)
-            Storage.shared.clearSpecifiedGames(this, gamesToRemove)
+            Storage.shared.clearSpecifiedGames(gamesToRemove)
             searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
             gamesViews.map { it.visibility = View.VISIBLE }
             setLoading(false)

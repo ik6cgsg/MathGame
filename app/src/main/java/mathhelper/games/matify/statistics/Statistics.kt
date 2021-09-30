@@ -205,7 +205,7 @@ class Statistics {
                 activityTypeCode = Action.SIGN.str,
                 otherData = mutableMapOf(
                     "hardwareProperties" to getHwInfo(),
-                    "hardwareDeviceId" to Storage.shared.deviceId(context)
+                    "hardwareDeviceId" to Storage.shared.deviceId()
                 )
             )
             sendLog(activityLog, context)
@@ -218,7 +218,7 @@ class Statistics {
         }
 
         private fun sendOneLog(log: ActivityLog, context: Context) {
-            val req = RequestData(Pages.ACTIVITY_LOG.value, Storage.shared.serverToken(context))
+            val req = RequestData(Pages.ACTIVITY_LOG.value, Storage.shared.serverToken())
             req.body = log.toString()
             Request.sendStatisticRequest(req)
         }
@@ -229,11 +229,11 @@ class Statistics {
         }
 
         private fun setDefault(log: ActivityLog, context: Context) {
-            val fullInfo = Storage.shared.getFullUserInfo(context)
+            val fullInfo = Storage.shared.getFullUserInfo()
             val time = System.currentTimeMillis()
             log.clientActionTs = Timestamp(time)
             val otherData = mutableMapOf<String, Any?>()
-            otherData["hardwareDeviceId"] = Storage.shared.deviceId(context)
+            otherData["hardwareDeviceId"] = Storage.shared.deviceId()
             otherData["applicationVersion"] = BuildConfig.VERSION_NAME
             otherData["userId"] = fullInfo.uuid
             log.timeFromLastActionMs = time - lastActionTime

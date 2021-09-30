@@ -162,7 +162,7 @@ class PlayActivity: AppCompatActivity() {
         super.onResume()
         if (GlobalScene.shared.currentGame == null || LevelScene.shared.currentLevel == null) {
             finishAffinity()
-            startActivity(Intent(this, GamesActivity::class.java))
+            startActivity(Intent(this, SplashActivity::class.java))
         }
     }
 

@@ -79,7 +79,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme(Storage.shared.themeInt(this))
+        setTheme(Storage.shared.themeInt())
         setContentView(R.layout.tutorial_activity_play)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()

@@ -23,7 +23,7 @@ class TutorialGamesActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme(Storage.shared.themeInt(this))
+        setTheme(Storage.shared.themeInt())
         setContentView(R.layout.tutorial_activity_games)
         pointer = findViewById(R.id.pointer_game)
         dialog = TutorialScene.shared.createTutorialDialog(this)

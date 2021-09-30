@@ -58,7 +58,7 @@ class PasswordActivity: AppCompatActivity() {
 
     fun confirm(v: View?) {
         if (oldPassInputLayout.visibility == View.VISIBLE) {
-            val oldPass = Storage.shared.password(this)
+            val oldPass = Storage.shared.password()
             if (oldPassView.text.toString() == oldPass) {
                 oldPassInputLayout.visibility = View.GONE
                 newPassInputLayout.visibility = View.VISIBLE
@@ -67,18 +67,18 @@ class PasswordActivity: AppCompatActivity() {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
             }
         } else if (newPassView.text.toString() == repeatPassView.text.toString()) {
-            if (Storage.shared.serverToken(this).isNullOrBlank()){
-                val userData = Storage.shared.getUserInfoBase(this)
+            if (Storage.shared.serverToken().isNullOrBlank()){
+                val userData = Storage.shared.getUserInfoBase()
                 userData.password = newPassView.text.toString()
                 GlobalScene.shared.signUp(this, userData)
             } else {
                 val requestRoot = JSONObject()
                 requestRoot.put("password", newPassView.text.toString())
-                val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
+                val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(), body = requestRoot.toString())
                 GlobalScene.shared.asyncTask(this, background = {
                     Request.editRequest(req)
                     Storage.shared.setUserInfo(
-                        this, AuthInfoObjectBase(
+                        AuthInfoObjectBase(
                             password = newPassView.text.toString(),
                             authStatus = AuthStatus.MATH_HELPER
                         )

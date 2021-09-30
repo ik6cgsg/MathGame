@@ -28,7 +28,7 @@ class TutorialLevelsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setTheme(Storage.shared.themeInt(this))
+        setTheme(Storage.shared.themeInt())
         setContentView(R.layout.tutorial_activity_levels)
         pointer = findViewById(R.id.pointer_level)
         dialog = TutorialScene.shared.createTutorialDialog(this)

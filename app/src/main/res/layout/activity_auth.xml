@@ -21,13 +21,16 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="48dp"
         android:background="?attr/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/google_sign"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/logo"
@@ -38,7 +41,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/matify" />
+        app:srcCompat="@drawable/matify"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="3dp"
+        android:foreground="@drawable/logo_border"/>
 
     <LinearLayout
         android:id="@+id/google_sign"
@@ -165,7 +171,7 @@
             android:id="@+id/loginTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/ic_launcher_background">
+            android:textColorHint="?attr/colorHint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginText"
@@ -185,7 +191,7 @@
             android:id="@+id/passwordTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/ic_launcher_background"
+            android:textColorHint="?attr/colorHint"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="?attr/colorHint">
 

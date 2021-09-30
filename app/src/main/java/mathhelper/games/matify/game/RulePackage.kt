@@ -101,21 +101,26 @@ data class RulePackage(
 
         fun parseRule(ruleInfo: JsonObject): Rule? {
             //Logger.d(TAG, "parseRule")
-            val rule = GsonParser.parse<Rule>(ruleInfo)
+            var rule = GsonParser.parse<Rule>(ruleInfo)
             if (rule != null) {
-                rule.substitution = expressionSubstitutionFromStructureStrings(
-                    leftStructureString = rule.leftStructureString,
-                    rightStructureString = rule.rightStructureString,
-                    basedOnTaskContext = rule.basedOnTaskContext,
-                    matchJumbledAndNested = rule.matchJumbledAndNested,
-                    simpleAdditional = rule.simpleAdditional,
-                    isExtending = rule.isExtending,
-                    priority = rule.priority,
-                    code = rule.code,
-                    nameEn = rule.nameEn,
-                    nameRu = rule.nameRu,
-                    normType = ExpressionSubstitutionNormType.valueOf(rule.normalizationType)
-                )
+                try {
+                    rule.substitution = expressionSubstitutionFromStructureStrings(
+                        leftStructureString = rule.leftStructureString,
+                        rightStructureString = rule.rightStructureString,
+                        basedOnTaskContext = rule.basedOnTaskContext,
+                        matchJumbledAndNested = rule.matchJumbledAndNested,
+                        simpleAdditional = rule.simpleAdditional,
+                        isExtending = rule.isExtending,
+                        priority = rule.priority,
+                        code = rule.code,
+                        nameEn = rule.nameEn,
+                        nameRu = rule.nameRu,
+                        normType = ExpressionSubstitutionNormType.valueOf(rule.normalizationType)
+                    )
+                } catch(e: Exception) {
+                    Logger.e(TAG, "Parse rule error: $e")
+                    rule = null
+                }
             }
             return rule
         }

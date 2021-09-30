@@ -43,7 +43,7 @@ class AccountActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val info = Storage.shared.getUserInfoBase(this)
+        val info = Storage.shared.getUserInfoBase()
         loginView.text = info.login ?: ""
         nameView.text = info.name ?: ""
         fullNameView.text = info.fullName ?: ""
@@ -67,7 +67,7 @@ class AccountActivity: AppCompatActivity() {
     }
 
     fun save(v: View?) {
-        val passwordData = Storage.shared.getUserInfoBase(this).password
+        val passwordData = Storage.shared.getUserInfoBase().password
         val userData = AuthInfoObjectBase(
             login = loginView.text.toString(),
             name = nameView.text.toString(),
@@ -75,7 +75,7 @@ class AccountActivity: AppCompatActivity() {
             additional = additionalView.text.toString(),
             password = if (passwordData.isNullOrBlank()) loginView.text.toString() else passwordData
         )
-        if (Storage.shared.serverToken(this).isNullOrBlank()){
+        if (Storage.shared.serverToken().isBlank()){
             GlobalScene.shared.signUp(this, userData)
         } else {
             val requestRoot = JSONObject()
@@ -83,10 +83,10 @@ class AccountActivity: AppCompatActivity() {
             requestRoot.put("name", nameView.text.toString())
             requestRoot.put("fullName", fullNameView.text.toString())
             requestRoot.put("additional", additionalView.text.toString())
-            val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(this), body = requestRoot.toString())
+            val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(), body = requestRoot.toString())
             GlobalScene.shared.asyncTask(this, background = {
                 Request.editRequest(req)
-                Storage.shared.setUserInfo(this, userData)
+                Storage.shared.setUserInfo(userData)
             }, foreground = {
                 Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
             }, errorground = {})

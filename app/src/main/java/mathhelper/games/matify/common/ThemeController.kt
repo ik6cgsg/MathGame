@@ -71,7 +71,7 @@ class ThemeController {
         get() = alertDialogMap[currentTheme] ?: R.style.AlertDialogCustomDark
 
     fun init(context: Context) {
-        currentTheme = Storage.shared.theme(context)
+        currentTheme = Storage.shared.theme()
     }
 
     fun color(name: ColorName): Int {
@@ -80,6 +80,6 @@ class ThemeController {
 
     fun setTheme(context: Context, name: ThemeName) {
         currentTheme = name
-        Storage.shared.setTheme(context, name)
+        Storage.shared.setTheme(name)
     }
 }

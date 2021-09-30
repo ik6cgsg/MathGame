@@ -46,7 +46,7 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
 
     private fun setDefaults() {
         Logger.d(TAG, "setDefaults")
-        val themeName = Storage.shared.theme(context)
+        val themeName = Storage.shared.theme()
         setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         typeface = Typeface.MONOSPACE
         textSize = Constants.simpleMathViewSize

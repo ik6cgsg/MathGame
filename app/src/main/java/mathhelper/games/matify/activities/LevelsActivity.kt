@@ -54,7 +54,7 @@ class LevelsActivity: AppCompatActivity() {
         super.onResume()
         if (GlobalScene.shared.currentGame == null) {
             finishAffinity()
-            startActivity(Intent(this, GamesActivity::class.java))
+            startActivity(Intent(this, SplashActivity::class.java))
         }
     }
 
@@ -135,7 +135,7 @@ class LevelsActivity: AppCompatActivity() {
             if (level.lastResult != null) {
                 levelView.text = "${level.getNameByLanguage(resources.configuration.locale.language)}\n${level.lastResult!!}"
             }
-            val themeName = Storage.shared.theme(this)
+            val themeName = Storage.shared.theme()
             levelView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
             levelView.background = getDrawable(R.drawable.button_rect)
             levelView.setOnClickListener {

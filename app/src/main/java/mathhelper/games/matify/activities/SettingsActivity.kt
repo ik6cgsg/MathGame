@@ -55,7 +55,7 @@ class SettingsActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        greetings.text = "\uD83D\uDC4B ${resources.getString(R.string.hi)}, ${Storage.shared.login(this)}! \uD83D\uDC4B"
+        greetings.text = "\uD83D\uDC4B ${resources.getString(R.string.hi)}, ${Storage.shared.login()}! \uD83D\uDC4B"
         when (GlobalScene.shared.authStatus) {
             AuthStatus.MATH_HELPER, AuthStatus.GUEST -> changePassword.isEnabled = true
             else -> changePassword.isEnabled = false
@@ -147,7 +147,7 @@ class SettingsActivity: AppCompatActivity() {
                 }
                 ThemeController.shared.setTheme(this, themeToChoose)
                 finishAffinity()
-                startActivity(Intent(this, GamesActivity::class.java))
+                startActivity(Intent(this, SplashActivity::class.java))
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
             }
@@ -171,9 +171,9 @@ class SettingsActivity: AppCompatActivity() {
                 /*val config = Configuration(resources.configuration)
                 config.locale = Locale(languageToChoose); //locale
                 resources.updateConfiguration(config, resources.displayMetrics)*/
-                Storage.shared.setLanguage(this, languageToChoose)
+                Storage.shared.setLanguage(languageToChoose)
                 finishAffinity()
-                startActivity(Intent(this, GamesActivity::class.java))
+                startActivity(Intent(this, SplashActivity::class.java))
             }
             .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
             }

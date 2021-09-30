@@ -64,10 +64,10 @@ class AuthActivity: AppCompatActivity() {
     }
 
     fun continueAsGuest(v: View?) {
-        Storage.shared.initUserInfo(this, AuthInfoObjectBase(
+        Storage.shared.initUserInfo(AuthInfoObjectBase(
             authStatus = AuthStatus.GUEST
         ))
-        val userData = Storage.shared.getUserInfoBase(this)
+        val userData = Storage.shared.getUserInfoBase()
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
@@ -75,7 +75,7 @@ class AuthActivity: AppCompatActivity() {
         GlobalScene.shared.asyncTask(this, background = {
             val response = Request.signRequest(req)
             val token = response.getString("token")
-            Storage.shared.setServerToken(this, response.getString("token"))
+            Storage.shared.setServerToken(response.getString("token"))
             getUserHistory(token)
         }, foreground = {
             finishSign()
@@ -99,7 +99,7 @@ class AuthActivity: AppCompatActivity() {
         GlobalScene.shared.asyncTask(this, background = {
             val response = Request.signRequest(req)
             val token = response.getString("token")
-            Storage.shared.initUserInfo(this, AuthInfoObjectBase(
+            Storage.shared.initUserInfo(AuthInfoObjectBase(
                 login = login,
                 name = response.getString("name"),
                 fullName = response.getString("fullName"),
@@ -111,12 +111,12 @@ class AuthActivity: AppCompatActivity() {
         }, foreground = {
             finishSign()
         }, errorground = {
-            Storage.shared.invalidateUser(this)
+            Storage.shared.invalidateUser()
         })
     }
 
     fun signUp(v: View?) {
-        Storage.shared.initUserInfo(this, AuthInfoObjectBase(authStatus = AuthStatus.MATH_HELPER))
+        Storage.shared.initUserInfo(AuthInfoObjectBase(authStatus = AuthStatus.MATH_HELPER))
         startActivity(Intent(this, SignUpActivity::class.java))
         finish()
     }
@@ -150,7 +150,7 @@ class AuthActivity: AppCompatActivity() {
             GlobalScene.shared.asyncTask(this, background = {
                 val response = Request.signRequest(req)
                 val token = response.getString("token")
-                Storage.shared.initUserInfo(this, AuthInfoObjectBase(
+                Storage.shared.initUserInfo(AuthInfoObjectBase(
                     login = response.getString("login"),
                     name = response.getString("name"),
                     fullName = response.getString("fullName"),
@@ -162,7 +162,7 @@ class AuthActivity: AppCompatActivity() {
             }, foreground = {
                 finishSign()
             }, errorground = {
-                Storage.shared.invalidateUser(this)
+                Storage.shared.invalidateUser()
             })
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
@@ -175,7 +175,8 @@ class AuthActivity: AppCompatActivity() {
     private fun finishSign() {
         Statistics.logSign(this)
         finish()
-        GlobalScene.shared.parseLoadedOrRequestDefaultGames()
+        startActivity(Intent(this, GamesActivity::class.java))
+        //GlobalScene.shared.parseLoadedOrRequestDefaultGames()
     }
 
     fun onGitHubClicked(v: View?) {
@@ -185,25 +186,6 @@ class AuthActivity: AppCompatActivity() {
     private fun getUserHistory(token: String) {
         val req = RequestData(Pages.USER_HISTORY.value, securityToken = token)
         val res = Request.historyRequest(req)
-        Storage.shared.saveResultFromServer(this, res)
-        """
-             {
-                "tasksetStatistics": [
-                    {
-                        "code": "all_rules", "passedCount": 0, "pausedCount": 1,
-                        "tasksStat": [
-                            {"code": "all_rules__Level_01_Compute", "expression": "(*(5;35;4;9))", "time": 2000, "state": "PAUSED", "steps": 1.0}                 
-                        ]
-                    },
-                    {
-                        "code": "start_tutorial", "passedCount": 1, "pausedCount": 1,
-                        "tasksStat": [
-                            {"code": "start_tutorial__Level_02_Compute", "expression": "(+(+(7;1);5;2))", "time": 200, "state": "PAUSED", "steps": 1.0},
-                            {"code": "start_tutorial__Level_01_Compute", "expression": null, "time": 100, "state": "DONE", "steps": 2.0}                       
-                        ]
-                    }             
-                ]
-            }
-            """.trimIndent()
+        Storage.shared.saveResultFromServer(res)
     }
 }

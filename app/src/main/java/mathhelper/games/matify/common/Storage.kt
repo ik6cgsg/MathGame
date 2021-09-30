@@ -12,6 +12,7 @@ import mathhelper.games.matify.game.GameResult
 import mathhelper.games.matify.level.LevelResult
 import mathhelper.games.matify.level.StateType
 import java.io.File
+import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
@@ -70,7 +71,10 @@ class Storage {
         val shared = Storage()
     }
 
-    fun checkDeviceId(context: Context) {
+    lateinit var context: WeakReference<Context>
+
+    fun checkDeviceId() {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(base, Context.MODE_PRIVATE)
         if (!prefs.contains(BaseInfo.DEVICE_ID.str)) {
             val prefEdit = prefs.edit()
@@ -79,48 +83,56 @@ class Storage {
         }
     }
 
-    fun deviceId(context: Context): String {
+    fun deviceId(): String {
+        val context = context.get() ?: return ""
         return context.getSharedPreferences(base, Context.MODE_PRIVATE)
             .getString(BaseInfo.DEVICE_ID.str, "")!!
     }
 
     //region USER INFO
 
-    fun isUserAuthorized(context: Context): Boolean {
+    fun isUserAuthorized(): Boolean {
+        val context = context.get() ?: return false
         return context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
             .getBoolean(AuthInfo.AUTHORIZED.str, false)
     }
 
-    fun invalidateUser(context: Context) {
+    fun invalidateUser() {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.putBoolean(AuthInfo.AUTHORIZED.str, false)
         prefEdit.commit()
     }
 
-    fun authStatus(context: Context): AuthStatus {
+    fun authStatus(): AuthStatus {
+        val context = context.get() ?: return AuthStatus.GUEST
         return AuthStatus.value(
             context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
                 .getString(AuthInfo.AUTH_STATUS.str, AuthStatus.GUEST.str)!!
         )!!
     }
 
-    fun login(context: Context): String {
+    fun login(): String {
+        val context = context.get() ?: return ""
         return context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
             .getString(AuthInfo.LOGIN.str, "")!!
     }
 
-    fun password(context: Context): String {
+    fun password(): String {
+        val context = context.get() ?: return ""
         return context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
             .getString(AuthInfo.PASSWORD.str, "")!!
     }
 
-    fun serverToken(context: Context): String {
+    fun serverToken(): String {
+        val context = context.get() ?: return ""
         return context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
             .getString(AuthInfo.SERVER_TOKEN.str, "")!!
     }
 
-    fun initWithUuid(context: Context): UUID {
+    fun initWithUuid(): UUID {
+        val context = context.get() ?: return UUID.randomUUID()
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         val uuid = UUID.randomUUID()
@@ -130,8 +142,9 @@ class Storage {
         return uuid
     }
 
-    fun initUserInfo(context: Context, info: AuthInfoObjectBase) {
-        val uuid = initWithUuid(context)
+    fun initUserInfo(info: AuthInfoObjectBase) {
+        val context = context.get() ?: return
+        val uuid = initWithUuid()
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         if (info.login.isNullOrBlank()) {
@@ -145,17 +158,19 @@ class Storage {
             info.password = info.login
         }
         prefEdit.commit()
-        setUserInfo(context, info)
+        setUserInfo(info)
     }
 
-    fun setServerToken(context: Context, serverToken: String) {
+    fun setServerToken(serverToken: String) {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.putString(AuthInfo.SERVER_TOKEN.str, serverToken)
         prefEdit.commit()
     }
 
-    fun setUserInfo(context: Context, info: AuthInfoObjectBase) {
+    fun setUserInfo(info: AuthInfoObjectBase) {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         if (info.authStatus != null) {
@@ -183,7 +198,8 @@ class Storage {
         prefEdit.commit()
     }
 
-    fun getUserInfoBase(context: Context): AuthInfoObjectBase {
+    fun getUserInfoBase(): AuthInfoObjectBase {
+        val context = context.get() ?: return AuthInfoObjectBase()
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         return AuthInfoObjectBase(
             login = prefs.getString(AuthInfo.LOGIN.str, null),
@@ -197,15 +213,17 @@ class Storage {
         )
     }
 
-    fun getFullUserInfo(context: Context): AuthInfoObjectFull {
+    fun getFullUserInfo(): AuthInfoObjectFull {
+        val context = context.get() ?: return AuthInfoObjectFull()
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         return AuthInfoObjectFull(
-            base = getUserInfoBase(context),
+            base = getUserInfoBase(),
             uuid = prefs.getString(AuthInfo.UUID.str, "")
         )
     }
 
-    fun clearUserInfo(context: Context) {
+    fun clearUserInfo() {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(userInfoFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.clear()
@@ -217,14 +235,16 @@ class Storage {
 
     //region RESULTS
 
-    fun resetResults(context: Context) {
+    fun resetResults() {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(resultsFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.clear()
         prefEdit.commit()
     }
 
-    fun saveResult(context: Context, result: String?, gameCode: String, levelCode: String? = null) {
+    fun saveResult(result: String?, gameCode: String, levelCode: String? = null) {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(resultsFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         var key = gameCode
@@ -239,7 +259,8 @@ class Storage {
         prefEdit.commit()
     }
 
-    fun loadResult(context: Context, gameCode: String, levelCode: String? = null): String {
+    fun loadResult(gameCode: String, levelCode: String? = null): String {
+        val context = context.get() ?: return ""
         var result = ""
         var key = gameCode
         if (levelCode != null) {
@@ -250,16 +271,16 @@ class Storage {
         return result
     }
 
-    fun saveResultFromServer(context: Context, userStat: String) {
+    fun saveResultFromServer(userStat: String) {
         if (userStat.isNotEmpty()) {
             val stat = Gson().fromJson(userStat, UserStatForm::class.java)
             for (tsStat in stat.tasksetStatistics) {
                 val gameRes = GameResult(tsStat.passedCount, tsStat.pausedCount)
-                saveResult(context, gameRes.saveString(), tsStat.code)
+                saveResult(gameRes.saveString(), tsStat.code)
                 for (tStat in tsStat.tasksStat) {
                     val levelRes =
                         LevelResult(tStat.steps, tStat.time / 1000, StateType.valueOf(tStat.state), tStat.expression ?: "")
-                    saveResult(context, levelRes.saveString(), tsStat.code, tStat.code)
+                    saveResult(levelRes.saveString(), tsStat.code, tStat.code)
                 }
             }
         }
@@ -269,14 +290,16 @@ class Storage {
 
     //region SETTINGS
 
-    fun setTheme(context: Context, theme: ThemeName?) {
+    fun setTheme(theme: ThemeName?) {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         prefEdit.putString(SettingInfo.THEME.str, theme.toString())
         prefEdit.commit()
     }
 
-    fun theme(context: Context) : ThemeName {
+    fun theme(): ThemeName {
+        val context = context.get() ?: return ThemeName.DARK
         val theme = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
             .getString(SettingInfo.THEME.str, "")
         return when (theme) {
@@ -286,11 +309,12 @@ class Storage {
         }
     }
 
-    fun themeInt(context: Context) : Int {
-        return theme(context).resId
+    fun themeInt(): Int {
+        return theme().resId
     }
 
-    fun setLanguage(context: Context, language: String?) {
+    fun setLanguage(language: String?) {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         val saveStr = when (language) {
@@ -302,12 +326,14 @@ class Storage {
         prefEdit.commit()
     }
 
-    fun language(context: Context): String {
+    fun language(): String {
+        val context = context.get() ?: return ""
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         return prefs.getString(SettingInfo.LANGUAGE.str, "ru")!!
     }
 
-    fun clearSettings(context: Context) {
+    fun clearSettings() {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         prefs.edit().clear().commit()
     }
@@ -316,7 +342,8 @@ class Storage {
 
     //region TASKSETS
 
-    fun saveTaskset(context: Context, code: String, tasksetJson: String, rulePacks: String? = null) {
+    fun saveTaskset(code: String, tasksetJson: String, rulePacks: String? = null) {
+        val context = context.get() ?: return
         val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
         //if (!prefs.contains("taskset") || prefs.getString("taskset", "") != tasksetJson) {
@@ -344,23 +371,26 @@ class Storage {
         prefEdit.commit()
     }
 
-    fun gotAnySavedTasksets(context: Context): Boolean {
+    fun gotAnySavedTasksets(): Boolean {
+        val context = context.get() ?: return false
         val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val preloaded = settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())
         val loaded = settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())
         return !(preloaded.isNullOrEmpty() && loaded.isNullOrEmpty())
     }
 
-    fun getAllSavedTasksetCodes(context: Context): Set<String> {
+    fun getAllSavedTasksetCodes(): Set<String> {
+        val context = context.get() ?: return setOf()
         val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val allCodes = settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!
         allCodes += settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!
         return allCodes
     }
 
-    fun getAllSavedTasksets(context: Context): List<String> {
+    fun getAllSavedTasksets(): List<String> {
+        val context = context.get() ?: return listOf()
         val allTasksets = arrayListOf<String>()
-        val allCodes = getAllSavedTasksetCodes(context)
+        val allCodes = getAllSavedTasksetCodes()
         for (code in allCodes) {
             val tasksetFile = context.getSharedPreferences(code, Context.MODE_PRIVATE)
             val json = tasksetFile.getString("taskset", null)
@@ -371,7 +401,8 @@ class Storage {
         return allTasksets
     }
 
-    fun tryGetFullTaskset(context: Context, code: String): FullTaskset? {
+    fun tryGetFullTaskset(code: String): FullTaskset? {
+        val context = context.get() ?: return null
         var res: FullTaskset? = null
         val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
         if (prefs.contains("taskset") && prefs.contains("rulePacks")) {
@@ -383,7 +414,8 @@ class Storage {
         return res
     }
 
-    fun clearSpecifiedGames(context: Context, codes: List<String>) {
+    fun clearSpecifiedGames(codes: List<String>) {
+        val context = context.get() ?: return
         if (codes.isNotEmpty()) {
             val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
             val settingsEdit = settings.edit()

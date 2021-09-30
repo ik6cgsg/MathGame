@@ -237,12 +237,12 @@ data class Level(
     fun save(context: Context, result: LevelResult?) {
         Logger.d(TAG, "save", lastResult?.saveString())
         lastResult = result
-        Storage.shared.saveResult(context, lastResult?.saveString(), game.code, code)
+        Storage.shared.saveResult(lastResult?.saveString(), game.code, code)
     }
 
     private fun loadResult(context: Context) {
         Logger.d(TAG, "loadResult")
-        val resultStr = Storage.shared.loadResult(context, game.code, code)
+        val resultStr = Storage.shared.loadResult(game.code, code)
         Logger.d(TAG, "loadResult", "loaded result = $resultStr")
         if (resultStr.isNotBlank()) {
             val resultVals = resultStr.split(" ", limit = 4)

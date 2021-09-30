@@ -32,9 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="?attr/shapeBackground"
-            android:elevation="7dp"
-            android:stretchColumns="*"
-            android:visibility="gone">
+            android:elevation="7dp">
+            <!-- android:stretchColumns="*" -->
 
             <TableRow
                 android:layout_width="match_parent"
@@ -59,7 +58,8 @@
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"
+                    android:visibility="gone"/>
 
                 <Space />
 
@@ -78,7 +78,8 @@
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"
+                    android:visibility="gone"/>
 
                 <Space />
 
@@ -97,7 +98,8 @@
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"
+                    android:visibility="gone"/>
 
                 <Space />
 
@@ -116,7 +118,8 @@
                     android:textColor="?attr/colorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"
+                    android:visibility="gone"/>
 
                 <Space />
 
