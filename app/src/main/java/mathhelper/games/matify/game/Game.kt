@@ -1,17 +1,13 @@
 package mathhelper.games.matify.game
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
-import org.json.JSONObject
-import mathhelper.games.matify.level.*
+import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.parser.Required
-import org.jetbrains.annotations.Nullable
-import org.json.JSONArray
 
 data class FilterTaskset(
     var tasksets: List<JsonObject>

@@ -3,11 +3,11 @@ package mathhelper.games.matify.level
 import android.content.Context
 import android.util.Log
 import android.content.Context.MODE_PRIVATE
-import api.*
+import mathhelper.twf.api.*
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import config.CompiledConfiguration
-import expressiontree.*
+import mathhelper.twf.config.CompiledConfiguration
+import mathhelper.twf.expressiontree.*
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.game.*

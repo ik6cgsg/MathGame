@@ -1,8 +1,8 @@
 package mathhelper.games.matify.level
 
 import android.util.Log
-import api.expressionToStructureString
-import expressiontree.ExpressionNode
+import mathhelper.twf.api.expressionToStructureString
+import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.common.Logger
 

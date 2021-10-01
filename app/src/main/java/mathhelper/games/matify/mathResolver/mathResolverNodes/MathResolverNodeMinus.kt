@@ -1,6 +1,6 @@
 package mathhelper.games.matify.mathResolver.mathResolverNodes
 
-import expressiontree.ExpressionNode
+import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.games.matify.mathResolver.*
 
 class MathResolverNodeMinus(

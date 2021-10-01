@@ -7,7 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.text.getSpans
-import expressiontree.ExpressionNode
+import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.ColorName

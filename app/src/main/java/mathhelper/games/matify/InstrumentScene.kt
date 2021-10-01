@@ -6,13 +6,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import api.expressionToStructureString
-import expressiontree.ExpressionNode
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.ColorName
 import mathhelper.games.matify.common.SimpleMathView
 import mathhelper.games.matify.common.ThemeController
+import mathhelper.twf.api.expressionToStructureString
+import mathhelper.twf.expressiontree.ExpressionNode
 
 enum class InstrumentType {
     OPPO, VAR, BRACKET, PERMUTE, MULTI

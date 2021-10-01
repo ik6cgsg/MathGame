@@ -11,8 +11,8 @@ import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.util.Log
-import expressiontree.SimpleComputationRuleParams
-import expressiontree.ExpressionSubstitution
+import mathhelper.twf.expressiontree.SimpleComputationRuleParams
+import mathhelper.twf.expressiontree.ExpressionSubstitution
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

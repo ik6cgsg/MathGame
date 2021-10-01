@@ -9,10 +9,10 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import api.findLowestSubtreeTopOfSelectedNodesInExpression
-import api.structureStringToExpression
-import expressiontree.ExpressionNode
-import expressiontree.ExpressionSubstitution
+import mathhelper.twf.api.findLowestSubtreeTopOfSelectedNodesInExpression
+import mathhelper.twf.api.structureStringToExpression
+import mathhelper.twf.expressiontree.ExpressionNode
+import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.mathResolver.MathResolver

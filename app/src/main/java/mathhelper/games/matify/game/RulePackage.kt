@@ -1,19 +1,14 @@
 package mathhelper.games.matify.game
 
-import android.util.Log
-import api.expressionSubstitutionFromStructureStrings
-import api.findSubstitutionPlacesInExpression
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.google.gson.annotations.SerializedName
-import expressiontree.ExpressionNode
-import expressiontree.ExpressionSubstitution
-import expressiontree.ExpressionSubstitutionNormType
 import mathhelper.games.matify.common.Constants.Companion.defaultRulePriority
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.parser.Required
-import org.json.JSONObject
+import mathhelper.twf.api.expressionSubstitutionFromStructureStrings
+import mathhelper.twf.expressiontree.ExpressionSubstitution
+import mathhelper.twf.expressiontree.ExpressionSubstitutionNormType
 
 data class Rule(
     /** Required values **/
@@ -115,7 +110,7 @@ data class RulePackage(
                         code = rule.code,
                         nameEn = rule.nameEn,
                         nameRu = rule.nameRu,
-                        normType = ExpressionSubstitutionNormType.valueOf(rule.normalizationType)
+                        normalizationType = ExpressionSubstitutionNormType.valueOf(rule.normalizationType)
                     )
                 } catch(e: Exception) {
                     Logger.e(TAG, "Parse rule error: $e")

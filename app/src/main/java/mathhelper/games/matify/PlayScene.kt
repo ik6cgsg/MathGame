@@ -10,10 +10,10 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
-import api.expressionToStructureString
+import mathhelper.twf.api.expressionToStructureString
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import expressiontree.ExpressionNode
-import expressiontree.ExpressionSubstitution
+import mathhelper.twf.expressiontree.ExpressionNode
+import mathhelper.twf.expressiontree.ExpressionSubstitution
 import kotlinx.android.synthetic.main.activity_play.*
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.*

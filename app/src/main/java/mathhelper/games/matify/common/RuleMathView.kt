@@ -11,8 +11,8 @@ import android.view.MotionEvent
 import android.widget.HorizontalScrollView
 import android.widget.ScrollView
 import android.widget.TextView
-import api.expressionSubstitutionFromStructureStrings
-import expressiontree.ExpressionSubstitution
+import mathhelper.twf.api.expressionSubstitutionFromStructureStrings
+import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.mathResolver.MathResolver

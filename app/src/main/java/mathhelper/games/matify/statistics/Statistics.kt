@@ -4,10 +4,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
-import api.expressionToStructureString
+import mathhelper.twf.api.expressionToStructureString
 import com.google.gson.Gson
-import expressiontree.ExpressionNode
-import expressiontree.ExpressionSubstitution
+import mathhelper.twf.expressiontree.ExpressionNode
+import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.BuildConfig
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
