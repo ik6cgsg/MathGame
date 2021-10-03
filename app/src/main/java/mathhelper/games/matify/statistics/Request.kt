@@ -1,5 +1,9 @@
 package mathhelper.games.matify.statistics
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.Log
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
@@ -11,6 +15,8 @@ import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.common.Logger
 import org.json.JSONObject
 import mathhelper.games.matify.common.RequestTimer
+import mathhelper.games.matify.common.Storage
+import java.lang.ref.WeakReference
 import java.net.URL
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -81,12 +87,43 @@ class Request {
 
     companion object {
         private var reqQueue = LinkedList<RequestData>()
-        private var isConnected = false
         private var isWorking = false
         private lateinit var job: Deferred<Unit>
-        private const val timeoutMaxInSec = 7  //TODO: move to UI interface
+        private const val timeoutMaxInSec = 7 // TODO: move to UI interface
         private var timer = RequestTimer(timeoutMaxInSec.toLong())
         var timeout = false
+        private var isConnected = true
+            set(value) {
+                if (field != value) {
+                    when(field) {
+                        false -> reqQueue = Storage.shared.getLogRequests()
+                        true -> Storage.shared.saveLogRequests(reqQueue)
+                    }
+                    field = value
+                }
+            }
+
+        lateinit var context: WeakReference<Context>
+
+        private fun isNetworkAvailable(): Boolean {
+            val context = context.get() ?: return false
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork) ?: return false
+                return when {
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                    else -> false
+                }
+            } else {
+                val activeNetworkInfo = connectivityManager.activeNetworkInfo
+                if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
+                    return true
+                }
+            }
+            return false
+        }
 
         fun startWorkCycle() {
             if (isWorking) {
@@ -166,16 +203,6 @@ class Request {
             return response
         }
 
-        fun sendStatisticRequest(req: RequestData) {
-            if (req.securityToken.isNullOrBlank()){
-                Logger.d("sendStatisticRequest", "No securityToken found")
-                return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
-            }
-            Logger.d("Request", "Request body: ${req.body}")
-            reqQueue.addFirst(req)
-            isConnected = true
-        }
-
         @Throws(TimeoutException::class)
         fun doSyncRequest(requestData: RequestData): ResponseData {
             Logger.d("Request", requestData.toString())
@@ -196,6 +223,22 @@ class Request {
             timer.cancel()
             Logger.d("Request", response.toString())
             return response
+        }
+
+        //region Request patterns
+
+        fun sendStatisticRequest(req: RequestData) {
+            if (req.securityToken.isNullOrBlank()){
+                Logger.d("sendStatisticRequest", "No securityToken found")
+                return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
+            }
+            Logger.d("Request", "Request body: ${req.body}")
+            isConnected = isNetworkAvailable()
+            if (isConnected) {
+                reqQueue.addFirst(req)
+            } else {
+                Storage.shared.saveOneLogRequest(req)
+            }
         }
 
         @Throws(UndefinedException::class, TokenNotFoundException::class)
@@ -257,5 +300,7 @@ class Request {
                 throw UserMessageException(GlobalScene.shared.gamesActivity!!.getString(R.string.pers_stat_reset_fail))
             }
         }
+
+        //endregion
     }
 }

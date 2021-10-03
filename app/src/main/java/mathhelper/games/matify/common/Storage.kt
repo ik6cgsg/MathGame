@@ -11,6 +11,7 @@ import mathhelper.games.matify.game.FullTaskset
 import mathhelper.games.matify.game.GameResult
 import mathhelper.games.matify.level.LevelResult
 import mathhelper.games.matify.level.StateType
+import mathhelper.games.matify.statistics.RequestData
 import java.io.File
 import java.lang.ref.WeakReference
 import java.util.*
@@ -38,6 +39,10 @@ enum class SettingInfo(val str: String) {
     LANGUAGE("language"),
     PRELOADED_GAMES("preloadedGames"),
     LOADED_GAMES("loadedGames")
+}
+
+enum class LogInfo(val str: String) {
+    REQUESTS("requests")
 }
 
 data class AuthInfoObjectFull(
@@ -87,6 +92,34 @@ class Storage {
         val context = context.get() ?: return ""
         return context.getSharedPreferences(base, Context.MODE_PRIVATE)
             .getString(BaseInfo.DEVICE_ID.str, "")!!
+    }
+
+    fun saveLogRequests(reqs: LinkedList<RequestData>) {
+        val context = context.get() ?: return
+        val prefs = context.getSharedPreferences(logFile, Context.MODE_PRIVATE)
+        val prefEdit = prefs.edit()
+        val json = Gson().toJson(reqs)
+        prefEdit.putString(LogInfo.REQUESTS.str, json)
+        prefEdit.commit()
+    }
+
+    fun saveOneLogRequest(req: RequestData) {
+        val reqs = getLogRequests()
+        reqs.addFirst(req)
+        saveLogRequests(reqs)
+    }
+
+    fun getLogRequests(): LinkedList<RequestData> {
+        val context = context.get() ?: return LinkedList<RequestData>()
+        val prefs = context.getSharedPreferences(logFile, Context.MODE_PRIVATE)
+        val json = prefs.getString(LogInfo.REQUESTS.str, "[]")
+        try {
+            val data = Gson().fromJson(json, Array<RequestData>::class.java)
+            val reqs = LinkedList(data.toList())
+            return reqs
+        } catch (e: Exception) {
+            return LinkedList<RequestData>()
+        }
     }
 
     //region USER INFO
