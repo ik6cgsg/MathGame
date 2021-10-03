@@ -191,8 +191,8 @@ class TutorialScene {
         clearRules()
         activity.endExpressionView.text = if (tutorialLevel.goalPattern.isNullOrBlank()) {
             when (tutorialLevel.subjectType) {
-                TaskType.SET.str -> MathResolver.resolveToPlain(tutorialLevel.endExpression, taskType = TaskType.SET).matrix
-                else -> MathResolver.resolveToPlain(tutorialLevel.endExpression).matrix
+                TaskType.SET.str -> MathResolver.resolveToPlain(tutorialLevel.endExpression!!, taskType = TaskType.SET).matrix
+                else -> MathResolver.resolveToPlain(tutorialLevel.endExpression!!).matrix
             }
         } else {
             tutorialLevel.goalPattern

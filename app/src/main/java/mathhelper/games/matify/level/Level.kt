@@ -53,7 +53,7 @@ data class Level(
     @property:Required
     var originalExpressionStructureString: String = "",
     var goalType: String = "",
-    var goalExpressionStructureString: String = "",
+    var goalExpressionStructureString: String? = null,
     /** Optional values **/
     var nameRu: String = "",
     var descriptionShortEn: String = "",
@@ -78,7 +78,7 @@ data class Level(
 ) {
     lateinit var game: Game
     lateinit var startExpression: ExpressionNode
-    lateinit var endExpression: ExpressionNode
+    var endExpression: ExpressionNode? = null
     var goalPatternExpr: ExpressionStructureConditionNode? = null
     var currentStepNum = 0
     var endless = true
@@ -114,14 +114,18 @@ data class Level(
             subjectType = game.subjectType
         }
         startExpression = structureStringToExpression(originalExpressionStructureString)
-        endExpression = structureStringToExpression(goalExpressionStructureString)
-        Logger.d(TAG, "load", "task '${startExpression} -> ${endExpression}' parsed from " +
-            "'${originalExpressionStructureString} -> ${goalExpressionStructureString}'")
+        if (goalExpressionStructureString != null) {
+            endExpression = structureStringToExpression(goalExpressionStructureString!!)
+            Logger.d(TAG, "load", "task '${startExpression} -> ${endExpression}' parsed from " +
+                "'${originalExpressionStructureString} -> ${goalExpressionStructureString}'")
+        }
         if (goalPattern != null) {
             goalPatternExpr = when (subjectType) {
                 TaskType.SET.str -> stringToExpressionStructurePattern(goalPattern!!, TaskType.SET.str)
                 else -> stringToExpressionStructurePattern(goalPattern!!)
             }
+            Logger.d(TAG, "load", "task '${startExpression} with pattern = ${goalPatternExpr}' parsed from " +
+                "'${originalExpressionStructureString} with pattern = ${goalPattern}'")
         }
         var allRules = ArrayList<ExpressionSubstitution>()
         if (rulePacks != null) {

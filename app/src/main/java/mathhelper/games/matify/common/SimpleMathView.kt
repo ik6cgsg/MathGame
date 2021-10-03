@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
@@ -52,7 +53,7 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
         textSize = Constants.simpleMathViewSize
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(
-            Constants.defaultPadding, Constants.defaultPadding,
+            Constants.defaultPadding, Constants.defaultPadding * 3,
             Constants.defaultPadding, Constants.defaultPadding)
     }
 

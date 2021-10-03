@@ -160,6 +160,11 @@ class PlayScene {
                 currentLevel.getDescriptionByLanguage(languageCode)
             )
         )
+        activity.endExpressionMathView.visibility = View.GONE
+        if (!currentLevel.goalExpressionStructureString.isNullOrBlank()) {
+            activity.endExpressionMathView.setExpression(currentLevel.goalExpressionStructureString!!, null)
+            activity.endExpressionMathView.visibility = View.VISIBLE
+        }
         if (currentLevel.endless) {
             loadEndless(context, continueGame)
         } else {
@@ -314,7 +319,7 @@ class PlayScene {
             LevelScene.shared.levelsActivity!!.updateResult(newRes)
         }
         activity.onWin(stepsCount, currentTime, StateType.DONE)
-        Statistics.logWin(stepsCount)
+        Statistics.logWin(stepsCount, activity.globalMathView.expression!!)
     }
 
     fun onLoose() {

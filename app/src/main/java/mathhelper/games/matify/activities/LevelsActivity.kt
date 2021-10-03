@@ -141,31 +141,10 @@ class LevelsActivity: AppCompatActivity() {
             levelView.setOnClickListener {
                 LevelScene.shared.currentLevelIndex = i
             }
-            levelView.isLongClickable = true
-            levelView.setOnLongClickListener { showInfo(level) }
+            // TODO: make normal level info
+            // levelView.isLongClickable = true
+            // levelView.setOnLongClickListener { showInfo(level) }
             AndroidUtil.setLeftDrawable(levelView, AndroidUtil.getDrawableByLevelState(this, level.lastResult?.state))
-            /*levelView.background = getBackgroundByDif(level.difficulty)
-            levelView.setOnTouchListener { v, event ->
-                super.onTouchEvent(event)
-                when {
-                    event.action == MotionEvent.ACTION_DOWN && levelTouched == null -> {
-                        levelTouched = v
-                        v.background = getDrawable(R.drawable.rect_shape_clicked)
-                    }
-                    event.action == MotionEvent.ACTION_UP && levelTouched == v -> {
-                        v.background = getBackgroundByDif(level.difficulty)
-                        if (AndroidUtil.touchUpInsideView(v, event)) {
-                            LevelScene.shared.currentLevelIndex = i
-                        }
-                        levelTouched = null
-                    }
-                    event.action == MotionEvent.ACTION_CANCEL && levelTouched == v -> {
-                        v.background = getBackgroundByDif(level.difficulty)
-                        levelTouched = null
-                    }
-                }
-                true
-            }*/
             levelsList.addView(levelView)
             levelViews.add(levelView)
         }

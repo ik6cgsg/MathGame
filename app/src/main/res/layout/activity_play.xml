@@ -17,30 +17,76 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_expression_label"
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_scroll"
         app:layout_constraintVertical_bias="0.20999998" />
 
-    <TextView
-        android:id="@+id/end_expression_label"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:id="@+id/end_expression_scroll"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/backgroundColor"
-        android:clickable="true"
-        android:elevation="5dp"
-        android:focusable="true"
-        android:labelFor="@id/end_expression_view"
-        android:lines="1"
-        android:onClick="showEndExpression"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:singleLine="true"
-        android:text="@string/end_expression_opened"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        android:typeface="monospace"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toStartOf="@id/end_expression_detail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background" />
+        app:layout_constraintTop_toBottomOf="@+id/background">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/end_expression_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/backgroundColor"
+                android:clickable="true"
+                android:focusable="true"
+                android:labelFor="@id/end_expression_view"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/end_expression_opened"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                android:typeface="monospace"
+                />
+            <mathhelper.games.matify.common.SimpleMathView
+                android:id="@+id/end_expression_math_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="0dp"
+                android:includeFontPadding="false"
+                android:visibility="visible"
+                android:paddingTop="8dp"
+                android:background="@drawable/rect_shape_non_required"
+                android:text="  2\n⎧1⎫\n⎪—⎪\n⎩2⎭"/>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/end_expression_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="❓"
+        android:gravity="center_vertical"
+        android:textColor="?attr/textColor"
+        android:textSize="20sp"
+        android:typeface="monospace"
+        android:clickable="true"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:onClick="showEndExpression"
+        android:background="@drawable/background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/end_expression_scroll"
+        app:layout_constraintBottom_toBottomOf="@+id/end_expression_scroll"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/message_view"
@@ -61,7 +107,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_expression_label" />
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_scroll" />
 
     <LinearLayout
         android:id="@+id/background"

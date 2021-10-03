@@ -52,15 +52,10 @@ class GlobalScene {
     var tutorialProcessing = false
     var games: ArrayList<Game> = ArrayList()
     var gamesActivity: GamesActivity? = null
-        /*set(value) {
+        set(value) {
             field = value
-            if (value != null) {
-                Request.startWorkCycle()
-                tutorialProcessing = false
-                games = ArrayList()
-                authStatus = Storage.shared.authStatus(value)
-            }
-        }*/
+            games = ArrayList()
+        }
     var currentGameIndex: Int = 0
     var currentGame: Game? = null
         set(value) {
@@ -228,7 +223,7 @@ class GlobalScene {
 
     fun requestGamesByParams(
         toList: ArrayList<Game>,
-        namespaceCode: String = "global_test",
+        namespaceCode: String = "global",
         keywords: String = "",
         success: () -> Unit, error: () -> Unit, toastError: Boolean = true
     ) {

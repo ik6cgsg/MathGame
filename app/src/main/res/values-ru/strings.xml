@@ -121,7 +121,7 @@
     <string name="multiselection_mode_is_off">Обычный</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
-    <string name="info_name"><b>Название:</b> \"%1$s\"</string>
+    <string name="info_name">Название:</string>
     <string name="level_info_description">Описание:</string>
     <string name="level_info_steps">Шаги:</string>
     <string name="level_info_select_mode">Режим выбора:</string>

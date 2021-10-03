@@ -44,6 +44,7 @@ class PlayActivity: AppCompatActivity() {
     lateinit var mainViewAnim: TransitionDrawable
     lateinit var globalMathView: GlobalMathView
     lateinit var endExpressionViewLabel: TextView
+    lateinit var endExpressionMathView: SimpleMathView
     lateinit var messageView: TextView
     lateinit var rulesLinearLayout: LinearLayout
     lateinit var rulesScrollView: ScrollView
@@ -91,9 +92,7 @@ class PlayActivity: AppCompatActivity() {
         bottomSheet = findViewById(R.id.bottom_sheet)
         globalMathView = findViewById(R.id.global_expression)
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
-        val d = ContextCompat.getDrawable(this, R.drawable.expand)
-        d!!.setBounds(0, 0, 70, 70)
-        AndroidUtil.setRightDrawable(endExpressionViewLabel, d)
+        endExpressionMathView = findViewById(R.id.end_expression_math_view)
         messageView = findViewById(R.id.message_view)
         timerView = findViewById(R.id.timer_view)
         back = findViewById(R.id.back)
@@ -103,7 +102,6 @@ class PlayActivity: AppCompatActivity() {
         info = findViewById(R.id.info)
         progress = findViewById(R.id.progress)
         blurView = findViewById(R.id.blurView)
-
         rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
         rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
         rulesMsg = bottomSheet.findViewById(R.id.rules_msg)

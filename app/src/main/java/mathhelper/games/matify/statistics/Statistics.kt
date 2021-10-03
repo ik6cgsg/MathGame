@@ -159,8 +159,8 @@ class Statistics {
             startTime = 0
         }
 
-        fun logWin(currSteps: Double/*, award: Award*/) {
-            val exprStr = expressionToStructureString(LevelScene.shared.currentLevel!!.endExpression)
+        fun logWin(currSteps: Double, currExpr: ExpressionNode/*, award: Award*/) {
+            val exprStr = expressionToStructureString(currExpr)
             val activityLog = ActivityLog(
                 currStepsNumber = currSteps,
                 nextStepsNumber = currSteps,
