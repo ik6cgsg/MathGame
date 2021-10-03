@@ -13,3 +13,5 @@ app/release
 /captures
 .externalNativeBuild
 .cxx
+/.idea/deploymentTargetDropDown.xml
+/.idea/misc.xml
