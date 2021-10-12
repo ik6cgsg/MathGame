@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.LevelScene
@@ -24,11 +25,13 @@ import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity() {
     private val TAG = "LevelsActivity"
-    var loading = false
     private lateinit var levelViews: ArrayList<TextView>
     private lateinit var levelsList: LinearLayout
     private lateinit var progress: ProgressBar
+    private lateinit var divider: View
     lateinit var blurView: BlurView
+    private val isLoading: Boolean
+        get() = progress.visibility == View.VISIBLE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
@@ -36,8 +39,8 @@ class LevelsActivity: AppCompatActivity() {
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
-        progress.visibility = View.VISIBLE
-        loading = true
+        divider = findViewById(R.id.divider)
+        setLoading(true)
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27"
@@ -47,7 +50,25 @@ class LevelsActivity: AppCompatActivity() {
         levelsList = findViewById(R.id.levels_list)
         val title = findViewById<TextView>(R.id.levels)
         title.text = GlobalScene.shared.currentGame?.getNameByLanguage(resources.configuration.locale.language) ?: title.text
+        initSwipeRefresher()
         LevelScene.shared.levelsActivity = this
+    }
+
+    fun setLoading(flag: Boolean) {
+        progress.visibility = if (flag) View.VISIBLE else View.INVISIBLE
+        divider.visibility = if (flag) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun initSwipeRefresher() {
+        val refresher = findViewById<SwipeRefreshLayout>(R.id.refresher)
+        refresher.setOnRefreshListener {
+            refresher.isRefreshing = false
+            if (!isLoading) {
+                setLoading(true)
+                Toast.makeText(this, R.string.refresh_taskset_message, Toast.LENGTH_LONG).show()
+                LevelScene.shared.refreshGame()
+            }
+        }
     }
 
     override fun onResume() {
@@ -59,13 +80,12 @@ class LevelsActivity: AppCompatActivity() {
     }
 
     fun onLevelsLoaded() {
-        progress.visibility = View.GONE
-        loading = false
+        setLoading(false)
         generateList()
     }
 
     override fun onBackPressed() {
-        if (!loading) {
+        if (!isLoading) {
             back(null)
         }
     }
@@ -76,13 +96,13 @@ class LevelsActivity: AppCompatActivity() {
     }
 
     fun back(v: View?) {
-        if (!loading) {
+        if (!isLoading) {
             LevelScene.shared.back()
         }
     }
 
     fun settings(v: View?) {
-        if (!loading) {
+        if (!isLoading) {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
@@ -129,6 +149,8 @@ class LevelsActivity: AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun generateList() {
+        levelsList.removeAllViews()
+        levelViews.clear()
         LevelScene.shared.levels.forEachIndexed { i, level ->
             val levelView = AndroidUtil.createButtonView(this)
             levelView.text = level.getNameByLanguage(resources.configuration.locale.language)

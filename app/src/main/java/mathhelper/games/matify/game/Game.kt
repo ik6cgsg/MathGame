@@ -70,6 +70,23 @@ data class Game(
         }
     }
 
+    fun updateWithJson(json: JsonObject) {
+        val updated = GsonParser.parse<Game>(json) ?: return
+        namespaceCode = updated.namespaceCode
+        code = updated.code
+        version = updated.version
+        tasks = updated.tasks
+        nameEn = updated.nameEn
+        nameRu = updated.nameRu
+        descriptionShortEn = updated.descriptionShortEn
+        descriptionShortRu = updated.descriptionShortRu
+        descriptionEn = updated.descriptionEn
+        descriptionRu = updated.descriptionRu
+        subjectType = updated.subjectType
+        recommendedByCommunity = updated.recommendedByCommunity
+        otherData = updated.otherData
+    }
+
     fun preparseRulePacks(packsJson: List<JsonObject>): Boolean {
         rulePacks = HashMap()
         rulePacksJsons = HashMap()

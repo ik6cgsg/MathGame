@@ -102,7 +102,9 @@ class GamesActivity: AppCompatActivity() {
     }
 
     fun settings(v: View?) {
-        startActivity(Intent(this, SettingsActivity::class.java))
+        if (!isLoading) {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 
 
@@ -112,6 +114,7 @@ class GamesActivity: AppCompatActivity() {
             refresher.isRefreshing = false
             if (!isLoading) {
                 setLoading(true)
+                Toast.makeText(this, R.string.refresh_message, Toast.LENGTH_LONG).show()
                 GlobalScene.shared.refreshGames()
             }
         }
@@ -122,18 +125,20 @@ class GamesActivity: AppCompatActivity() {
         searchView.clearFocus()
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
+        if (!isLoading) {
+            generateList()
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setSearchEngine() {
         searchView.setOnTouchListener { v, event ->
             var res = false
-            if (event.action == MotionEvent.ACTION_UP) {
+            if (!isLoading && event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = searchView.compoundDrawables[Constants.drawableEnd]
                 if (drawableEnd != null) {
                     if (event.x >= (searchView.width - searchView.paddingRight - drawableEnd.intrinsicWidth)) {
                         clearSearch()
-                        filterList()
                         res = true
                     }
                 }
@@ -142,7 +147,9 @@ class GamesActivity: AppCompatActivity() {
         }
         searchView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                filterList(search = s)
+                if (!isLoading) {
+                    filterList(search = s)
+                }
             }
             override fun beforeTextChanged(s: CharSequence, start: Int,
                                            count: Int, after: Int) {

@@ -45,6 +45,13 @@ enum class LogInfo(val str: String) {
     REQUESTS("requests")
 }
 
+enum class TasksetInfo(val str: String) {
+    TASKSET("taskset"),
+    RULE_PACKS("rulePacks"),
+    VERSION("version"),
+    IS_PREVIEW("isPreview")
+}
+
 data class AuthInfoObjectFull(
     val base: AuthInfoObjectBase = AuthInfoObjectBase(),
     val uuid: String? = null
@@ -94,6 +101,21 @@ class Storage {
             .getString(BaseInfo.DEVICE_ID.str, "")!!
     }
 
+    fun swapValueInStringSets(file: String, src: String, dst: String, value: String) {
+        val context = context.get() ?: return
+        val settings = context.getSharedPreferences(file, Context.MODE_PRIVATE)
+        val settingsEdit = settings.edit()
+        val srcSet = HashSet(settings.getStringSet(src, setOf())!!)
+        val dstSet = HashSet(settings.getStringSet(dst, setOf())!!)
+        srcSet.remove(value)
+        dstSet.add(value)
+        settingsEdit.putStringSet(src, srcSet)
+        settingsEdit.putStringSet(dst, dstSet)
+        settingsEdit.commit()
+    }
+
+    //region REQUESTS
+
     fun saveLogRequests(reqs: LinkedList<RequestData>) {
         val context = context.get() ?: return
         val prefs = context.getSharedPreferences(logFile, Context.MODE_PRIVATE)
@@ -121,6 +143,8 @@ class Storage {
             return LinkedList<RequestData>()
         }
     }
+
+    //endregion
 
     //region USER INFO
 
@@ -365,42 +389,41 @@ class Storage {
         return prefs.getString(SettingInfo.LANGUAGE.str, "ru")!!
     }
 
-    fun clearSettings() {
+    fun clearAllGames() {
         val context = context.get() ?: return
-        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        prefs.edit().clear().commit()
+        val codes = getAllSavedTasksetCodes()
+        for (code in codes) {
+            context.getSharedPreferences(code, Context.MODE_PRIVATE).edit().clear().commit()
+            File("${context.filesDir.parent}/shared_prefs/$code.xml").delete()
+        }
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE).edit()
+        prefs.remove(SettingInfo.PRELOADED_GAMES.str)
+        prefs.remove(SettingInfo.LOADED_GAMES.str)
+        prefs.commit()
     }
 
     //endregion
 
     //region TASKSETS
 
-    fun saveTaskset(code: String, tasksetJson: String, rulePacks: String? = null) {
+    fun saveTaskset(code: String, tasksetJson: JsonObject, rulePacks: List<JsonObject>? = null) {
         val context = context.get() ?: return
         val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
-        //if (!prefs.contains("taskset") || prefs.getString("taskset", "") != tasksetJson) {
-            prefEdit.putString("taskset", tasksetJson)
-        //}
-        val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        val settingsEdit = settings.edit()
-        if (!prefs.contains("rulePacks") && !rulePacks.isNullOrEmpty()) {
-            prefEdit.putString("rulePacks", rulePacks)
-            val preloaded = HashSet(settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!)
-            val loaded = HashSet(settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!)
-            preloaded.remove(code)
-            loaded.add(code)
-            settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
-            settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)
+        val oldVersion = prefs.getInt(TasksetInfo.VERSION.str, -1)
+        val newVersion = tasksetJson.get(TasksetInfo.VERSION.str)?.asInt ?: oldVersion
+        prefEdit.putInt(TasksetInfo.VERSION.str, newVersion)
+        val wasPreview = prefs.getBoolean(TasksetInfo.IS_PREVIEW.str, true)
+        val isPreview = rulePacks.isNullOrEmpty()
+        prefEdit.putBoolean(TasksetInfo.IS_PREVIEW.str, isPreview)
+        prefEdit.putString(TasksetInfo.TASKSET.str, tasksetJson.toString())
+        if (isPreview) {
+            prefEdit.remove(TasksetInfo.RULE_PACKS.str)
+            swapValueInStringSets(settingFile, SettingInfo.LOADED_GAMES.str, SettingInfo.PRELOADED_GAMES.str, code)
         } else {
-            val preloaded = HashSet(settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!)
-            val loaded = HashSet(settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!)
-            loaded.remove(code)
-            preloaded.add(code)
-            settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
-            settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)
+            prefEdit.putString(TasksetInfo.RULE_PACKS.str, Gson().toJson(rulePacks))
+            swapValueInStringSets(settingFile, SettingInfo.PRELOADED_GAMES.str, SettingInfo.LOADED_GAMES.str, code)
         }
-        settingsEdit.commit()
         prefEdit.commit()
     }
 
@@ -415,7 +438,8 @@ class Storage {
     fun getAllSavedTasksetCodes(): Set<String> {
         val context = context.get() ?: return setOf()
         val settings = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
-        val allCodes = settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!
+        val allCodes = mutableSetOf<String>()
+        allCodes += settings.getStringSet(SettingInfo.PRELOADED_GAMES.str, setOf())!!
         allCodes += settings.getStringSet(SettingInfo.LOADED_GAMES.str, setOf())!!
         return allCodes
     }
@@ -426,7 +450,7 @@ class Storage {
         val allCodes = getAllSavedTasksetCodes()
         for (code in allCodes) {
             val tasksetFile = context.getSharedPreferences(code, Context.MODE_PRIVATE)
-            val json = tasksetFile.getString("taskset", null)
+            val json = tasksetFile.getString(TasksetInfo.TASKSET.str, null)
             if (!json.isNullOrEmpty()) {
                 allTasksets.add(json)
             }
@@ -438,10 +462,10 @@ class Storage {
         val context = context.get() ?: return null
         var res: FullTaskset? = null
         val prefs = context.getSharedPreferences(code, Context.MODE_PRIVATE)
-        if (prefs.contains("taskset") && prefs.contains("rulePacks")) {
+        if (!prefs.getBoolean(TasksetInfo.IS_PREVIEW.str, true)) {
             res = FullTaskset(
-                taskset = JsonParser.parseString(prefs.getString("taskset", "")).asJsonObject,
-                rulePacks = Gson().fromJson(prefs.getString("rulePacks", ""), Array<JsonObject>::class.java).toList()
+                taskset = JsonParser.parseString(prefs.getString(TasksetInfo.TASKSET.str, "")).asJsonObject,
+                rulePacks = Gson().fromJson(prefs.getString(TasksetInfo.RULE_PACKS.str, ""), Array<JsonObject>::class.java).toList()
             )
         }
         return res
@@ -459,6 +483,7 @@ class Storage {
                 preloaded.remove(it)
                 val prefs = context.getSharedPreferences(it, Context.MODE_PRIVATE)
                 prefs.edit().clear().commit()
+                File("${context.filesDir.parent}/shared_prefs/$it.xml").delete()
             }
             settingsEdit.putStringSet(SettingInfo.PRELOADED_GAMES.str, preloaded)
             settingsEdit.putStringSet(SettingInfo.LOADED_GAMES.str, loaded)

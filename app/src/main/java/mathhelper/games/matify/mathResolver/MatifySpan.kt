@@ -18,7 +18,7 @@ class MatifySymbols {
         const val plus = "+ "
         const val minusUnary = "− "
         const val minus = "− "
-        const val mult = "× "
+        const val mult = "∙ "
         // set
         const val setAnd = "∧ "
         const val setOr = "∨ "

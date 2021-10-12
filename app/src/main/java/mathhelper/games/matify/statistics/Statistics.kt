@@ -3,9 +3,7 @@ package mathhelper.games.matify.statistics
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
 import mathhelper.twf.api.expressionToStructureString
-import com.google.gson.Gson
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.BuildConfig
@@ -13,7 +11,6 @@ import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.level.Award
 import java.sql.Timestamp
 
 class Statistics {
@@ -218,7 +215,7 @@ class Statistics {
         }
 
         private fun sendOneLog(log: ActivityLog, context: Context) {
-            val req = RequestData(Pages.ACTIVITY_LOG.value, Storage.shared.serverToken())
+            val req = RequestData(RequestPage.ACTIVITY_LOG, Storage.shared.serverToken())
             req.body = log.toString()
             Request.sendStatisticRequest(req)
         }

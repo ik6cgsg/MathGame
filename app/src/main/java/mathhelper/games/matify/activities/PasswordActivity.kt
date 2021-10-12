@@ -2,7 +2,6 @@ package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,7 @@ import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
-import mathhelper.games.matify.statistics.Pages
+import mathhelper.games.matify.statistics.RequestPage
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
 
@@ -74,7 +73,7 @@ class PasswordActivity: AppCompatActivity() {
             } else {
                 val requestRoot = JSONObject()
                 requestRoot.put("password", newPassView.text.toString())
-                val req = RequestData(Pages.EDIT.value, Storage.shared.serverToken(), body = requestRoot.toString())
+                val req = RequestData(RequestPage.EDIT, Storage.shared.serverToken(), body = requestRoot.toString())
                 GlobalScene.shared.asyncTask(this, background = {
                     Request.editRequest(req)
                     Storage.shared.setUserInfo(

@@ -24,7 +24,7 @@ import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
-import mathhelper.games.matify.statistics.Pages
+import mathhelper.games.matify.statistics.RequestPage
 import mathhelper.games.matify.statistics.Request
 import mathhelper.games.matify.statistics.RequestData
 import mathhelper.games.matify.statistics.Statistics
@@ -71,7 +71,7 @@ class AuthActivity: AppCompatActivity() {
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
-        val req = RequestData(Pages.SIGNUP.value, body = requestRoot.toString())
+        val req = RequestData(RequestPage.SIGNUP, body = requestRoot.toString())
         GlobalScene.shared.asyncTask(this, background = {
             val response = Request.signRequest(req)
             val token = response.getString("token")
@@ -83,6 +83,7 @@ class AuthActivity: AppCompatActivity() {
             this.runOnUiThread {
                 Toast.makeText(this, R.string.self_phone_mode, Toast.LENGTH_LONG).show()
                 finish()
+                startActivity(Intent(this, GamesActivity::class.java))
             }
         })
     }
@@ -95,7 +96,7 @@ class AuthActivity: AppCompatActivity() {
         val requestRoot = JSONObject()
         requestRoot.put("loginOrEmail", login)
         requestRoot.put("password", password)
-        val req = RequestData(Pages.SIGNIN.value, body = requestRoot.toString())
+        val req = RequestData(RequestPage.SIGNIN, body = requestRoot.toString())
         GlobalScene.shared.asyncTask(this, background = {
             val response = Request.signRequest(req)
             val token = response.getString("token")
@@ -146,7 +147,7 @@ class AuthActivity: AppCompatActivity() {
             val idTokenString = account.idToken
             val requestRoot = JSONObject()
             requestRoot.put("idTokenString", idTokenString)
-            val req = RequestData(Pages.GOOGLE_SIGN_IN.value, body = requestRoot.toString())
+            val req = RequestData(RequestPage.GOOGLE_SIGN_IN, body = requestRoot.toString())
             GlobalScene.shared.asyncTask(this, background = {
                 val response = Request.signRequest(req)
                 val token = response.getString("token")
@@ -184,7 +185,7 @@ class AuthActivity: AppCompatActivity() {
     }
 
     private fun getUserHistory(token: String) {
-        val req = RequestData(Pages.USER_HISTORY.value, securityToken = token)
+        val req = RequestData(RequestPage.USER_HISTORY, securityToken = token)
         val res = Request.historyRequest(req)
         Storage.shared.saveResultFromServer(res)
     }

@@ -160,6 +160,7 @@ class PlayScene {
                 currentLevel.getDescriptionByLanguage(languageCode)
             )
         )
+        activity.endExpressionViewLabel.visibility = View.VISIBLE
         activity.endExpressionMathView.visibility = View.GONE
         if (!currentLevel.goalExpressionStructureString.isNullOrBlank()) {
             activity.endExpressionMathView.setExpression(currentLevel.goalExpressionStructureString!!, null)
@@ -273,6 +274,10 @@ class PlayScene {
         v.findViewById<TextView>(R.id.game)?.text = currentLevel.game.getNameByLanguage(languageCode)
         v.findViewById<TextView>(R.id.name)?.text = currentLevel.getNameByLanguage(languageCode)
         v.findViewById<TextView>(R.id.description)?.text = currentLevel.getDescriptionByLanguage(languageCode)
+        if (!currentLevel.goalExpressionStructureString.isNullOrBlank()) {
+            v.findViewById<SimpleMathView>(R.id.info_end_math_view).setExpression(currentLevel.goalExpressionStructureString!!, null)
+            v.findViewById<View>(R.id.info_end_math_view_row).visibility = View.VISIBLE
+        }
         v.findViewById<TextView>(R.id.steps)?.text = stepsCount.toInt().toString()
         v.findViewById<TextView>(R.id.mode)?.text = if (multi) playActivity!!.getString(R.string.multiselection_mode_is_on)
             else playActivity!!.getString(R.string.multiselection_mode_is_off)

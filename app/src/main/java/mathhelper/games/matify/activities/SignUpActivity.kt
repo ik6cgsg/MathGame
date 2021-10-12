@@ -3,21 +3,16 @@ package mathhelper.games.matify.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import org.json.JSONObject
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
-import mathhelper.games.matify.statistics.Pages
-import mathhelper.games.matify.statistics.Request
-import mathhelper.games.matify.statistics.RequestData
 
 class SignUpActivity: AppCompatActivity() {
     private val TAG = "SignUpActivity"

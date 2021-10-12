@@ -92,7 +92,9 @@ class PlayActivity: AppCompatActivity() {
         bottomSheet = findViewById(R.id.bottom_sheet)
         globalMathView = findViewById(R.id.global_expression)
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
+        endExpressionViewLabel.visibility = View.GONE
         endExpressionMathView = findViewById(R.id.end_expression_math_view)
+        endExpressionMathView.visibility = View.GONE
         messageView = findViewById(R.id.message_view)
         timerView = findViewById(R.id.timer_view)
         back = findViewById(R.id.back)

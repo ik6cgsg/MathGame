@@ -53,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/info_name"
+                android:text="@string/level_info_level_name"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="16sp"
                 android:typeface="monospace" />
@@ -92,6 +92,31 @@
                 android:textColor="?attr/textColor"
                 android:textSize="16sp"
                 android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/info_end_math_view_row"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingVertical="0dp"
+            android:paddingHorizontal="8dp"
+            android:visibility="gone">
+            <Space android:layout_width="16dp" />
+            <Space android:layout_width="16dp" />
+            <mathhelper.games.matify.common.SimpleMathView
+                android:id="@+id/info_end_math_view"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="0dp"
+                android:includeFontPadding="false"
+                android:paddingTop="8dp"
+                android:background="@drawable/rect_bordered"
+                android:text=""/>
         </TableRow>
 
         <TableRow

@@ -23,14 +23,14 @@ import java.security.cert.X509Certificate
 import java.util.*
 import javax.net.ssl.*
 
-enum class Pages(val value: String) {
+enum class RequestPage(val value: String) {
     SIGNIN("/api/auth/signin"),
     SIGNUP("/api/auth/signup"),
     EDIT("/api/auth/edit"),
     GOOGLE_SIGN_IN("/api/auth/google_sign_in"),
     ACTIVITY_LOG("/api/log/activity/create"),
     USER_HISTORY("/api/log/user_statistics"),
-    TASKSETS_PREVIEW("/api/taskset"),
+    TASKSETS_PREVIEW("/api/taskset?form=link"),
     TASKSETS_FULL("/api/taskset/play/${Constants.appCode}/endless")
 }
 
@@ -39,10 +39,10 @@ enum class RequestMethod {
 }
 
 data class RequestData(
-    val page: String,
+    val page: RequestPage,
     val securityToken: String = "",
     var method: RequestMethod = RequestMethod.POST,
-    var url: String = "https://mathhelper.space:8089$page",
+    var url: String = "https://mathhelper.space:8089${page.value}",
     var body: String = "",
     var headers: Map<String, String> = mapOf(
         "Content-type" to "application/json; charset=UTF-8",

@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/background"
             android:gravity="center_vertical">
             <TextView
                 android:id="@+id/end_expression_label"
@@ -62,9 +63,8 @@
                 android:layout_marginBottom="0dp"
                 android:includeFontPadding="false"
                 android:visibility="visible"
-                android:paddingTop="8dp"
-                android:background="@drawable/rect_shape_non_required"
-                android:text="  2\n⎧1⎫\n⎪—⎪\n⎩2⎭"/>
+                android:background="@drawable/rect_bordered"
+                android:text=""/>
         </LinearLayout>
 
     </HorizontalScrollView>
@@ -78,6 +78,7 @@
         android:textColor="?attr/textColor"
         android:textSize="20sp"
         android:typeface="monospace"
+        android:elevation="2dp"
         android:clickable="true"
         android:paddingVertical="8dp"
         android:paddingHorizontal="8dp"

@@ -32,7 +32,7 @@ class LevelScene {
                     levelsPaused = GlobalScene.shared.currentGame!!.lastResult?.levelsPaused ?: 0
                     value.onLevelsLoaded()
                 }, error = {
-                    value.loading = false
+                    value.setLoading(false)
                     Logger.e(TAG, "Error while LevelsActivity initializing")
                     value.finish()
                 })
@@ -87,5 +87,19 @@ class LevelScene {
         GlobalScene.shared.currentGame?.levels?.clear()
         GlobalScene.shared.currentGame?.loaded = false
         levelsActivity?.finish()
+    }
+
+    fun refreshGame() {
+        val activity = levelsActivity ?: return
+        GlobalScene.shared.requestGameForPlay(GlobalScene.shared.currentGame!!, forceRefresh = true, success = {
+            levels = GlobalScene.shared.currentGame!!.levels
+            levelsPassed = GlobalScene.shared.currentGame!!.lastResult?.levelsPassed ?: 0
+            levelsPaused = GlobalScene.shared.currentGame!!.lastResult?.levelsPaused ?: 0
+            activity.onLevelsLoaded()
+        }, error = {
+            activity.setLoading(false)
+            Logger.e(TAG, "Error while LevelsActivity initializing")
+            activity.finish()
+        })
     }
 }

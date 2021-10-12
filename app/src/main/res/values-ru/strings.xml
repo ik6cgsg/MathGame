@@ -111,7 +111,7 @@
     <string name="parsing_error">Ошибка загрузки выражения</string>
     <string name="something_went_wrong">Что-то пошло не так, попробуй повторить</string>
     <string name="misclick_happened_please_retry">Неточный клик, повтори пожалуйста</string>
-    <string name="problems_with_internet_connection">проблемы с интернет-соединением</string>
+    <string name="problems_with_internet_connection">Проблемы с интернет-соединением</string>
     <string name="bad_credentials_error">Некорректные идентификаторы</string>
     <string name="self_phone_mode">Ваши результаты сохраняются только локально</string>
     <string name="google_sign_in_error">Ошибка в ходе Google-авторизации…</string>
@@ -121,7 +121,7 @@
     <string name="multiselection_mode_is_off">Обычный</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
-    <string name="info_name">Название:</string>
+    <string name="info_name">Название: %1$s</string>
     <string name="level_info_description">Описание:</string>
     <string name="level_info_steps">Шаги:</string>
     <string name="level_info_select_mode">Режим выбора:</string>
@@ -158,4 +158,7 @@
     <string name="level_load_fail">Ошибка загрузки уровня. Попробуй позже.</string>
     <string name="pers_stat_reset_fail">Ошибка сброса персональной статистики</string>
     <string name="pers_stat_load_fail">Ошибка загрузки персональной статистики</string>
+    <string name="refresh_message">Обновляем все текущие игры... 🤔</string>
+    <string name="refresh_taskset_message">Обновляем текущую игру... 🤔</string>
+    <string name="level_info_level_name">Уровень:</string>
 </resources>

@@ -141,7 +141,8 @@
     </string-array>
 
     <string name="level_info_game">Game:</string>
-    <string name="info_name">Name:</string>
+    <string name="info_name">Name: %1$s</string>
+    <string name="level_info_level_name">Level:</string>
     <string name="info_game_title">ℹ️ Game info ℹ️</string>
     <string name="level_info_description">Description:</string>
     <string name="level_info_steps">Steps:</string>
@@ -187,4 +188,6 @@
     <string name="level_load_fail">Level loading failed. Try again later.</string>
     <string name="pers_stat_reset_fail">Personal statistics reset failed</string>
     <string name="pers_stat_load_fail">Personal statistics loading failed</string>
+    <string name="refresh_message">Refreshing all current games... 🤔</string>
+    <string name="refresh_taskset_message">Refreshing current game... 🤔</string>
 </resources>
