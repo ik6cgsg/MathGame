@@ -11,7 +11,7 @@ import mathhelper.games.matify.game.FullTaskset
 import mathhelper.games.matify.game.GameResult
 import mathhelper.games.matify.level.LevelResult
 import mathhelper.games.matify.level.StateType
-import mathhelper.games.matify.statistics.RequestData
+import mathhelper.games.matify.common.RequestData
 import java.io.File
 import java.lang.ref.WeakReference
 import java.util.*

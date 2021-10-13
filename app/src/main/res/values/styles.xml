@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppDarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="custom_red">#8b039c</item>
+        <item name="errorColor">#B30707</item>
         <item name="colorPrimary">#008577</item>
         <item name="colorPrimaryDisabled">#33008577</item>
         <item name="colorPrimaryDark">#016154</item>
@@ -27,7 +27,7 @@
     </style>
 
     <style name="AppLightTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="custom_red">#8b030c</item>
+        <item name="errorColor">#DC380F</item>
         <item name="colorPrimary">#9E579D</item>
         <item name="colorPrimaryDisabled">#8b030c</item>
         <item name="colorPrimaryDark">#424874</item>

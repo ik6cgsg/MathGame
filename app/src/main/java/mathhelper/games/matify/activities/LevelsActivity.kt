@@ -23,12 +23,13 @@ import mathhelper.games.matify.level.StateType
 import org.w3c.dom.Text
 import kotlin.collections.ArrayList
 
-class LevelsActivity: AppCompatActivity() {
+class LevelsActivity: AppCompatActivity(), ConnectionListener {
     private val TAG = "LevelsActivity"
     private lateinit var levelViews: ArrayList<TextView>
     private lateinit var levelsList: LinearLayout
     private lateinit var progress: ProgressBar
     private lateinit var divider: View
+    private lateinit var offline: TextView
     lateinit var blurView: BlurView
     private val isLoading: Boolean
         get() = progress.visibility == View.VISIBLE
@@ -40,6 +41,8 @@ class LevelsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
         divider = findViewById(R.id.divider)
+        offline = findViewById(R.id.offline)
+        offline.visibility = View.GONE
         setLoading(true)
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
@@ -52,6 +55,12 @@ class LevelsActivity: AppCompatActivity() {
         title.text = GlobalScene.shared.currentGame?.getNameByLanguage(resources.configuration.locale.language) ?: title.text
         initSwipeRefresher()
         LevelScene.shared.levelsActivity = this
+        ConnectionChecker.shared.subscribe(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ConnectionChecker.shared.unsubscribe(this)
     }
 
     fun setLoading(flag: Boolean) {
@@ -77,6 +86,24 @@ class LevelsActivity: AppCompatActivity() {
             finishAffinity()
             startActivity(Intent(this, SplashActivity::class.java))
         }
+    }
+
+    override fun onConnectionChange(type: ConnectionChangeType) {
+        runOnUiThread {
+            if (type == ConnectionChangeType.ESTABLISHED) {
+                offline.visibility = View.GONE
+            } else {
+                offline.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    override fun connectionBannerClicked(v: View?) {
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+    }
+
+    override fun connectionButtonClick(v: View) {
+        ConnectionChecker.shared.connectionButtonClick(this, v)
     }
 
     fun onLevelsLoaded() {

@@ -11,10 +11,7 @@ import kotlinx.coroutines.*
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.SplashActivity
-import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.common.AuthInfoObjectBase
-import mathhelper.games.matify.common.Logger
-import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.*
 import mathhelper.games.matify.game.FilterTaskset
 import mathhelper.games.matify.game.FullTaskset
 import mathhelper.games.matify.game.Game
@@ -269,6 +266,7 @@ class GlobalScene {
     }
 
     fun refreshGames(): ArrayList<Game> {
+        val oldGames = games
         games = arrayListOf()
         val codes = Storage.shared.getAllSavedTasksetCodes()
         val token = Storage.shared.serverToken()
@@ -300,6 +298,10 @@ class GlobalScene {
                         gamesActivity!!.generateList()
                     }
                 }, error = {
+                    games = oldGames
+                    gamesActivity!!.runOnUiThread {
+                        gamesActivity!!.setLoading(false)
+                    }
                     Logger.e(TAG, "refreshGames error while requesting default games")
                 })
             }

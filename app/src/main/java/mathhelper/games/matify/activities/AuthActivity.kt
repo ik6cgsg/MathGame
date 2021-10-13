@@ -16,25 +16,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import eightbitlab.com.blurview.BlurView
 import org.json.JSONObject
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.AuthInfoObjectBase
-import mathhelper.games.matify.common.Logger
-import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.common.ThemeController
-import mathhelper.games.matify.statistics.RequestPage
-import mathhelper.games.matify.statistics.Request
-import mathhelper.games.matify.statistics.RequestData
+import mathhelper.games.matify.common.*
 import mathhelper.games.matify.statistics.Statistics
 
-class AuthActivity: AppCompatActivity() {
+class AuthActivity: AppCompatActivity(), ConnectionListener {
     private val TAG = "AuthActivity"
     private val signIn = 1
     private lateinit var loginView: TextView
     private lateinit var passwordView: TextView
     private lateinit var signInButton: Button
+    private lateinit var offline: TextView
+    private lateinit var blurView: BlurView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +45,34 @@ class AuthActivity: AppCompatActivity() {
         passwordView.doAfterTextChanged { checkInput() }
         signInButton = findViewById(R.id.sign_in)
         signInButton.isEnabled = false
+        offline = findViewById(R.id.offline)
+        offline.visibility = View.GONE
+        blurView = findViewById(R.id.blurView)
         GlobalScene.shared.loadingElement = findViewById(R.id.progress)
+        ConnectionChecker.shared.subscribe(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ConnectionChecker.shared.unsubscribe(this)
+    }
+
+    override fun onConnectionChange(type: ConnectionChangeType) {
+        runOnUiThread {
+            if (type == ConnectionChangeType.ESTABLISHED) {
+                offline.visibility = View.GONE
+            } else {
+                offline.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    override fun connectionBannerClicked(v: View?) {
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+    }
+
+    override fun connectionButtonClick(v: View) {
+        ConnectionChecker.shared.connectionButtonClick(this, v)
     }
 
     override fun onBackPressed() {

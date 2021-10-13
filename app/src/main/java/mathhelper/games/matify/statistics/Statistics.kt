@@ -9,8 +9,7 @@ import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.BuildConfig
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
-import mathhelper.games.matify.common.Logger
-import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.*
 import java.sql.Timestamp
 
 class Statistics {

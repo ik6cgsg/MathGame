@@ -14,9 +14,9 @@ import mathhelper.games.matify.common.AuthInfoObjectBase
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
 import mathhelper.games.matify.common.ThemeController
-import mathhelper.games.matify.statistics.RequestPage
-import mathhelper.games.matify.statistics.Request
-import mathhelper.games.matify.statistics.RequestData
+import mathhelper.games.matify.common.RequestPage
+import mathhelper.games.matify.common.Request
+import mathhelper.games.matify.common.RequestData
 
 class PasswordActivity: AppCompatActivity() {
     private val TAG = "PasswordActivity"

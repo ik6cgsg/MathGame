@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="custom_red" format="color" />
+    <attr name="errorColor" format="color" />
     <attr name="colorTest" format="color"/>
     <attr name="colorPrimary" format="color"/>
     <attr name="colorPrimaryDisabled" format="color"/>

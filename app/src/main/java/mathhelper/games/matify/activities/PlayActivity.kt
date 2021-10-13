@@ -31,7 +31,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class PlayActivity: AppCompatActivity() {
+class PlayActivity: AppCompatActivity(), ConnectionListener {
     private val TAG = "PlayActivity"
     private var needClear = false
     private var loading = false
@@ -52,6 +52,7 @@ class PlayActivity: AppCompatActivity() {
     lateinit var blurView: BlurView
     lateinit var bottomSheet: LinearLayout
     lateinit var rulesMsg: TextView
+    lateinit var offline: TextView
 
     private lateinit var restart: TextView
     private lateinit var back: TextView
@@ -104,11 +105,13 @@ class PlayActivity: AppCompatActivity() {
         info = findViewById(R.id.info)
         progress = findViewById(R.id.progress)
         blurView = findViewById(R.id.blurView)
+        offline = findViewById(R.id.offline)
+        offline.visibility = View.GONE
         rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
         rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
         rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
-
         InstrumentScene.shared.init(bottomSheet, this)
+        ConnectionChecker.shared.subscribe(this)
     }
 
     private fun setLongClick() {
@@ -176,6 +179,29 @@ class PlayActivity: AppCompatActivity() {
         PlayScene.shared.cancelTimers()
         PlayScene.shared.playActivity = null
         super.finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ConnectionChecker.shared.unsubscribe(this)
+    }
+
+    override fun onConnectionChange(type: ConnectionChangeType) {
+        runOnUiThread {
+            if (type == ConnectionChangeType.ESTABLISHED) {
+                offline.visibility = View.GONE
+            } else {
+                offline.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    override fun connectionBannerClicked(v: View?) {
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+    }
+
+    override fun connectionButtonClick(v: View) {
+        ConnectionChecker.shared.connectionButtonClick(this, v)
     }
 
     fun startCreatingLevelUI() {

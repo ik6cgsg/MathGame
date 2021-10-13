@@ -185,9 +185,13 @@
     <string name="info_levels_count"><b>Levels:</b> %1$d</string>
     <string name="nothing_was_found">😢 nothing was found 😢</string>
     <string name="games_load_failed">Games loading failed</string>
-    <string name="level_load_fail">Level loading failed. Try again later.</string>
+    <string name="level_load_fail">Level loading from server failed. Try again later.</string>
     <string name="pers_stat_reset_fail">Personal statistics reset failed</string>
     <string name="pers_stat_load_fail">Personal statistics loading failed</string>
     <string name="refresh_message">Refreshing all current games... 🤔</string>
     <string name="refresh_taskset_message">Refreshing current game... 🤔</string>
+    <string name="connection_alert_text">It seems that there is no internet ☹️ \n\nThis means that we arent able to authorize you and save your game data in the cloud!\n</string>
+    <string name="connect_me_to_internet">Connect me</string>
+    <string name="wanna_be_off_the_line">Wanna be offline</string>
+    <string name="you_are_offline">☹️ you are offline ☹️</string>
 </resources>

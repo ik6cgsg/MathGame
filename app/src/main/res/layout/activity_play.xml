@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_expression_scroll"
-        app:layout_constraintVertical_bias="0.20999998" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <HorizontalScrollView
         android:id="@+id/end_expression_scroll"
@@ -30,7 +30,7 @@
         android:scrollbars="none"
         app:layout_constraintEnd_toStartOf="@id/end_expression_detail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background">
+        app:layout_constraintTop_toBottomOf="@+id/offline">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,7 +80,6 @@
         android:typeface="monospace"
         android:elevation="2dp"
         android:clickable="true"
-        android:paddingVertical="8dp"
         android:paddingHorizontal="8dp"
         android:onClick="showEndExpression"
         android:background="@drawable/background"
@@ -89,13 +88,21 @@
         app:layout_constraintBottom_toBottomOf="@+id/end_expression_scroll"
         android:focusable="true" />
 
+    <include layout="@layout/connection_offline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
     <TextView
         android:id="@+id/message_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/rect_shape_non_required"
         android:elevation="7dp"
@@ -111,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@+id/end_expression_scroll" />
 
     <LinearLayout
-        android:id="@+id/background"
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/shapeBackground"

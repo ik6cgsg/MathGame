@@ -1,4 +1,4 @@
-package mathhelper.games.matify.statistics
+package mathhelper.games.matify.common
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -104,26 +104,6 @@ class Request {
             }
 
         lateinit var context: WeakReference<Context>
-
-        private fun isNetworkAvailable(): Boolean {
-            val context = context.get() ?: return false
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork) ?: return false
-                return when {
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                    else -> false
-                }
-            } else {
-                val activeNetworkInfo = connectivityManager.activeNetworkInfo
-                if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                    return true
-                }
-            }
-            return false
-        }
 
         fun startWorkCycle() {
             if (isWorking) {
@@ -233,7 +213,7 @@ class Request {
                 return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
             }
             Logger.d("Request", "Request body: ${req.body}")
-            isConnected = isNetworkAvailable()
+            isConnected = ConnectionChecker.shared.isConnected
             if (isConnected) {
                 reqQueue.addFirst(req)
             } else {

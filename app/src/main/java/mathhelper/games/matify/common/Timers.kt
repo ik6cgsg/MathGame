@@ -13,7 +13,7 @@ import android.view.View
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.statistics.Request
+import mathhelper.games.matify.common.Request
 import java.util.*
 
 class MessageTimer: CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {

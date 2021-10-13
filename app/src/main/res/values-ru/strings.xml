@@ -155,10 +155,14 @@
     <string name="info_levels_count"><b>Уровней:</b> %1$d</string>
     <string name="nothing_was_found">😢 ничего не нашлось 😢</string>
     <string name="games_load_failed">Ошибка загрузки игр</string>
-    <string name="level_load_fail">Ошибка загрузки уровня. Попробуй позже.</string>
+    <string name="level_load_fail">Ошибка загрузки уровня с сервера. Попробуй позже.</string>
     <string name="pers_stat_reset_fail">Ошибка сброса персональной статистики</string>
     <string name="pers_stat_load_fail">Ошибка загрузки персональной статистики</string>
     <string name="refresh_message">Обновляем все текущие игры... 🤔</string>
     <string name="refresh_taskset_message">Обновляем текущую игру... 🤔</string>
     <string name="level_info_level_name">Уровень:</string>
+    <string name="connection_alert_text">Кажется, нет подключения к интернету ☹️\n\nЭтозначит,что мы не сможем авторизовать тебя и сохранять данные твоего прохождения в облаке!\n</string>
+    <string name="connect_me_to_internet">Подключите меня</string>
+    <string name="wanna_be_off_the_line">Хочу быть офлайн</string>
+    <string name="you_are_offline">☹️ в офлайне ☹️</string>
 </resources>

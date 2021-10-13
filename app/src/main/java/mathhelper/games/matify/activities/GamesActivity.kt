@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -29,7 +30,7 @@ import mathhelper.games.matify.game.GameResult
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GamesActivity: AppCompatActivity() {
+class GamesActivity: AppCompatActivity(), ConnectionListener {
     private val TAG = "GamesActivity"
     private lateinit var gamesViews: ArrayList<TextView>
     private lateinit var gamesList: LinearLayout
@@ -39,9 +40,10 @@ class GamesActivity: AppCompatActivity() {
     private lateinit var serverLabel: TextView
     private lateinit var serverList: LinearLayout
     private lateinit var serverNotFound: TextView
-    private var askForTutorial = false
-    lateinit var blurView: BlurView
     private lateinit var progress: ProgressBar
+    private lateinit var offline: TextView
+    //private var askForTutorial = false
+    lateinit var blurView: BlurView
     private var serverGames = arrayListOf<Game>()
     private val isLoading: Boolean
         get() = progress.visibility == View.VISIBLE
@@ -54,7 +56,7 @@ class GamesActivity: AppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
-    private fun setLoading(flag: Boolean) {
+    fun setLoading(flag: Boolean) {
         progress.visibility = if (flag) View.VISIBLE else View.INVISIBLE
         gameDivider.visibility = if (flag) View.INVISIBLE else View.VISIBLE
     }
@@ -78,6 +80,8 @@ class GamesActivity: AppCompatActivity() {
         serverList = findViewById(R.id.server_games_list)
         serverNotFound = findViewById(R.id.server_not_found)
         blurView = findViewById(R.id.blurView)
+        offline = findViewById(R.id.offline)
+        offline.visibility = View.GONE
         initSwipeRefresher()
         setSearchEngine()
         if (Build.VERSION.SDK_INT < 24) {
@@ -85,6 +89,7 @@ class GamesActivity: AppCompatActivity() {
             settings.text = "\uD83D\uDD27"
         }
         GlobalScene.shared.parseLoadedOrRequestDefaultGames()
+        ConnectionChecker.shared.subscribe(this)
     }
 
     override fun onResume() {
@@ -99,6 +104,29 @@ class GamesActivity: AppCompatActivity() {
             askForTutorialDialog()
             askForTutorial = false
         }*/
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ConnectionChecker.shared.unsubscribe(this)
+    }
+
+    override fun onConnectionChange(type: ConnectionChangeType) {
+        runOnUiThread {
+            if (type == ConnectionChangeType.ESTABLISHED) {
+                offline.visibility = View.GONE
+            } else {
+                offline.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    override fun connectionBannerClicked(v: View?) {
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+    }
+
+    override fun connectionButtonClick(v: View) {
+        ConnectionChecker.shared.connectionButtonClick(this, v)
     }
 
     fun settings(v: View?) {
