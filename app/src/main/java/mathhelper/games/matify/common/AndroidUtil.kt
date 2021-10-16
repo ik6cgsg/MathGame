@@ -248,8 +248,8 @@ class AndroidUtil {
             view.setCompoundDrawables(null, null, drawable, null)
         }
 
-        fun get3sizedLocale(context: Context): String {
-            return when(context.resources.configuration.locale.language) {
+        fun get3sizedLocale(context: Context?): String {
+            return when(context?.resources?.configuration?.locale?.language) {
                 "ru" -> "rus"
                 "en" -> "eng"
                 else -> "rus"

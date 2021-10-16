@@ -50,7 +50,7 @@
     <string name="change_language">🌍 Change language</string>
     <string name="change_language_to">Change language to</string>
     <string name="big_sign_up">SIGN UP</string>
-    <string name="cancel">Cancel ❌</string>
+    <string name="cancel">Cancel</string>
     <string name="no">No 🚫</string>
     <string name="yes">Yes ✅</string>
     <string name="congratulations">Congratulations!</string>
@@ -141,7 +141,8 @@
     </string-array>
 
     <string name="level_info_game">Game:</string>
-    <string name="info_name">Name: %1$s</string>
+    <string name="info_name"><b>Name:</b> %1$s</string>
+    <string name="info_levels_count"><b>Levels:</b> %1$d</string>
     <string name="level_info_level_name">Level:</string>
     <string name="info_game_title">ℹ️ Game info ℹ️</string>
     <string name="level_info_description">Description:</string>
@@ -182,7 +183,6 @@
     </string-array>
     <string name="goal_description">Goal. Details</string>
     <string name="info_recommended">✓ This game is recommended by MathHelper society ✓</string>
-    <string name="info_levels_count"><b>Levels:</b> %1$d</string>
     <string name="nothing_was_found">😢 nothing was found 😢</string>
     <string name="games_load_failed">Games loading failed</string>
     <string name="level_load_fail">Level loading from server failed. Try again later.</string>
@@ -190,7 +190,7 @@
     <string name="pers_stat_load_fail">Personal statistics loading failed</string>
     <string name="refresh_message">Refreshing all current games... 🤔</string>
     <string name="refresh_taskset_message">Refreshing current game... 🤔</string>
-    <string name="connection_alert_text">It seems that there is no internet ☹️ \n\nThis means that we arent able to authorize you and save your game data in the cloud!\n</string>
+    <string name="connection_alert_text">It seems that there is no internet ☹️ \n\nThis means that we arent able to:\n* authorize you 😎\n* load more exciting games ⬇️\n* save your data in the cloud ☁️\n\n</string>
     <string name="connect_me_to_internet">Connect me</string>
     <string name="wanna_be_off_the_line">Wanna be offline</string>
     <string name="you_are_offline">☹️ you are offline ☹️</string>

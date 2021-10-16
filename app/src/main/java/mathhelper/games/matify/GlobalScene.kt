@@ -169,7 +169,7 @@ class GlobalScene {
         if (userData.additional?.length != null && userData.additional.length >= 3) {
             requestRoot.put("additional", userData.additional)
         }
-        requestRoot.put("locale", AndroidUtil.get3sizedLocale(gamesActivity!!))
+        requestRoot.put("locale", AndroidUtil.get3sizedLocale(Storage.shared.context.get()))
         val req = RequestData(RequestPage.SIGNUP, body = requestRoot.toString())
         asyncTask(context, background = {
             val response = Request.signRequest(req)
