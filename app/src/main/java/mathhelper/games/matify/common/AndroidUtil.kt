@@ -63,10 +63,10 @@ class AndroidUtil {
 
         fun exteriorClickInside(view: View, event: MotionEvent): Boolean {
             val loc = IntArray(2)
-            view.getLocationOnScreen(loc)
+            view.getLocationInWindow(loc)
             if (event.action == MotionEvent.ACTION_UP &&
-                loc[0] <= event.rawX && event.rawX <= loc[0] + view.width * view.scaleX &&
-                loc[1] <= event.rawY && event.rawY <= loc[1] + view.height * view.scaleY) {
+                loc[0] <= event.x && event.x <= loc[0] + view.width * view.scaleX &&
+                loc[1] <= event.y && event.y <= loc[1] + view.height * view.scaleY) {
                 return true
             }
             return false
@@ -219,7 +219,7 @@ class AndroidUtil {
 
         fun insideParentWithOffset(v: View, difX: Float = 0f, difY: Float = 0f): Boolean {
             val loc = IntArray(2)
-            v.getLocationOnScreen(loc)
+            v.getLocationInWindow(loc)
             val p = v.parent as ConstraintLayout
             val sw = v.width * v.scaleX
             val sh = v.height * v.scaleY

@@ -132,12 +132,12 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 dragged = 0f
-                dX = event.rawX
-                dY = event.rawY
+                dX = event.x
+                dY = event.y
             }
             MotionEvent.ACTION_MOVE -> {
-                val difX = event.rawX - dX
-                val difY = event.rawY - dY
+                val difX = event.x - dX
+                val difY = event.y - dY
                 dragged += max(abs(difX), abs(difY))
                 if (dragged > 100) {
                     ignoreUpAfterDrag = event.pointerCount
@@ -150,8 +150,8 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                             .y(newy)
                             .setDuration(0)
                             .start()
-                        dX = event.rawX
-                        dY = event.rawY
+                        dX = event.x
+                        dY = event.y
                     }
                 }
             }
@@ -181,9 +181,9 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     /** View OVERRIDES **/
     private fun getMathViewCoord(event: MotionEvent): Pair<Int, Int> {
         val loc = IntArray(2)
-        getLocationOnScreen(loc)
-        val evx = event.rawX - loc[0]
-        val evy = event.rawY - loc[1]
+        getLocationInWindow(loc)
+        val evx = event.x - loc[0]
+        val evy = event.y - loc[1]
         val x = floor(evx / (MatifySpan.widthGlobal * scale)).toInt()
         val n = mathPair!!.height + 1f
         val msh = MatifySpan.heightGlobal
