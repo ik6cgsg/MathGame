@@ -1,10 +1,6 @@
 package mathhelper.games.matify.common
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
-import android.util.Log
+import android.view.View
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -85,7 +81,7 @@ class Request {
     class TokenNotFoundException(message: String): Exception(message)
     class UserMessageException(message: String): Exception(message)
 
-    companion object {
+    companion object: ConnectionListener {
         private var reqQueue = LinkedList<RequestData>()
         private var isWorking = false
         private lateinit var job: Deferred<Unit>
@@ -93,17 +89,6 @@ class Request {
         private var timer = RequestTimer(timeoutMaxInSec.toLong())
         var timeout = false
         private var isConnected = true
-            set(value) {
-                if (field != value) {
-                    when(field) {
-                        false -> reqQueue = Storage.shared.getLogRequests()
-                        true -> Storage.shared.saveLogRequests(reqQueue)
-                    }
-                    field = value
-                }
-            }
-
-        lateinit var context: WeakReference<Context>
 
         fun startWorkCycle() {
             if (isWorking) {
@@ -205,6 +190,23 @@ class Request {
             return response
         }
 
+        override fun onConnectionChange(type: ConnectionChangeType) {
+            when (type) {
+                ConnectionChangeType.ESTABLISHED -> {
+                    isConnected = true
+                    reqQueue = Storage.shared.getLogRequests()
+                }
+                ConnectionChangeType.LOST -> {
+                    isConnected = false
+                    Storage.shared.saveLogRequests(reqQueue)
+                }
+                else -> return
+            }
+        }
+
+        override fun connectionBannerClicked(v: View?) {}
+        override fun connectionButtonClick(v: View) {}
+
         //region Request patterns
 
         fun sendStatisticRequest(req: RequestData) {
@@ -213,7 +215,6 @@ class Request {
                 return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
             }
             Logger.d("Request", "Request body: ${req.body}")
-            isConnected = ConnectionChecker.shared.isConnected
             if (isConnected) {
                 reqQueue.addFirst(req)
             } else {

@@ -10,7 +10,7 @@ class Matify: Application() {
     override fun onCreate() {
         super.onCreate()
         Storage.shared.context = WeakReference(this)
-        Request.context = WeakReference(this)
         ConnectionChecker.shared.context = WeakReference(this)
+        ConnectionChecker.shared.subscribe(Request.Companion)
     }
 }
