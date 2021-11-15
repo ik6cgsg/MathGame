@@ -33,6 +33,10 @@ enum class AuthStatus(val str: String) {
     }
 }
 
+enum class SearchType {
+    BY_NAME, BY_CODE, BY_SPACE
+}
+
 class GlobalScene {
     companion object {
         private const val TAG = "GlobalScene"
@@ -50,15 +54,21 @@ class GlobalScene {
             games = ArrayList()
         }
     var currentGameIndex: Int = 0
-    var currentGame: Game? = null
         set(value) {
-            field = value
-            if (value != null) {
+            field = if (value >= 0 && value < games.size) {
+                value
+            } else {
+                0
+            }
+            currentGame = games[field]
+            if (currentGame != null) {
                 Handler().postDelayed({
                     gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
                 }, 100)
             }
         }
+    var currentGame: Game? = null
+        private set
     var loadingElement: ProgressBar? = null
     private val activeJobs = arrayListOf<Job>()
 
@@ -184,11 +194,12 @@ class GlobalScene {
 
     fun parseLoadedOrRequestDefaultGames() {
         if (!Storage.shared.gotAnySavedTasksets()) {
-            requestGamesByParams(games, success = {
+            gamesActivity!!.generateList()
+            /*requestGamesByParams(games, success = {
                 if (games.isNotEmpty()) {
                     gamesActivity!!.generateList()
                 }
-            }, error = {})
+            }, error = {})*/
         } else {
             GlobalScope.launch {
                 val job = async {
@@ -214,14 +225,17 @@ class GlobalScene {
 
     fun requestGamesByParams(
         toList: ArrayList<Game>,
-        namespaceCode: String = "global",
-        keywords: String = "",
+        searchType: SearchType = SearchType.BY_SPACE,
+        searchQuery: String = "global",
         success: () -> Unit, error: () -> Unit, toastError: Boolean = true
     ) {
         asyncTask(gamesActivity!!, {
             val tasksetsReqData = RequestData(RequestPage.TASKSETS_PREVIEW, method = RequestMethod.GET)
-            tasksetsReqData.url += if (keywords.isNotEmpty()) "&keywords=$keywords"
-                else "&namespace=$namespaceCode"
+            tasksetsReqData.url += when(searchType) {
+                SearchType.BY_NAME -> "&keywords=$searchQuery"
+                SearchType.BY_SPACE -> "&namespace=$searchQuery"
+                SearchType.BY_CODE -> "&code=$searchQuery"
+            }
             val res = Request.doSyncRequest(tasksetsReqData)
             if (res.returnValue != 200) {
                 throw Request.UserMessageException(gamesActivity!!.getString(R.string.games_load_failed))
@@ -274,10 +288,10 @@ class GlobalScene {
         val base = "${tasksetsReqData.url}&code="
         GlobalScope.launch {
             val job = async {
-                requestGamesByParams(games, success = { // getting all default games
+                /*requestGamesByParams(games, success = { // getting all default games
                     val updatedCodes = games.map { it.code }
-                    val codesToUpdate = codes - updatedCodes
-                    for (code in codesToUpdate) { // getting saved non-default games one by one
+                    val codesToUpdate = codes - updatedCodes*/
+                    for (code in codes) { // getting saved non-default games one by one
                         tasksetsReqData.url = base + code
                         val res = Request.doSyncRequest(tasksetsReqData)
                         if (res.returnValue != 200) {
@@ -297,16 +311,31 @@ class GlobalScene {
                     gamesActivity!!.runOnUiThread {
                         gamesActivity!!.generateList()
                     }
-                }, error = {
+                /*}, error = {
                     games = oldGames
                     gamesActivity!!.runOnUiThread {
                         gamesActivity!!.setLoading(false)
                     }
                     Logger.e(TAG, "refreshGames error while requesting default games")
-                })
+                })*/
             }
             job.await()
         }
         return games
+    }
+
+    fun addGame(game: Game): Int {
+        val activity = gamesActivity ?: return 0
+        val i = games.size
+        val gameView = AndroidUtil.generateGameView(activity, game, onClick = {
+            if (!activity.isLoading) {
+                currentGameIndex = i
+            }
+        }, onLongClick = {
+            activity.showInfo(game, activity.resources.configuration.locale.language)
+        })
+        games.add(game)
+        activity.gamesList.addView(gameView)
+        return i
     }
 }

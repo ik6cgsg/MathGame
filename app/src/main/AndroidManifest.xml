@@ -25,6 +25,9 @@
         <activity android:name="mathhelper.games.matify.activities.GamesActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="mathhelper.games.matify.activities.SearchActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name="mathhelper.games.matify.activities.LevelsActivity"
             android:screenOrientation="portrait">
         </activity>

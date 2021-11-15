@@ -28,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.R
+import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.StateType
 import kotlin.math.abs
 import kotlin.math.pow
@@ -256,28 +257,29 @@ class AndroidUtil {
             }
         }
 
-        fun isNetworkAvailable(context: Context?): Boolean {
-            if (context == null) return false
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-                if (capabilities != null) {
-                    when {
-                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ->
-                            return true
-                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ->
-                            return true
-                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ->
-                            return true
-                    }
-                }
-            } else {
-                val activeNetworkInfo = connectivityManager.activeNetworkInfo
-                if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                    return true
-                }
+        fun generateGameView(
+            context: Context,
+            game: Game,
+            onClick: (View) -> Unit,
+            onLongClick: (View) -> Boolean
+        ): Button {
+            val lang = context.resources.configuration.locale.language
+            val gameView = createButtonView(context)
+            gameView.text = game.getNameByLanguage(lang)
+            /*if (game.recommendedByCommunity) {
+                val d = getDrawable(R.drawable.tick)
+                d!!.setBounds(0, 0, 70, 70)
+                AndroidUtil.setRightDrawable(gameView, d)
+            }*/
+            gameView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
+            if (game.lastResult != null) {
+                gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
             }
-            return false
+            gameView.background = context.getDrawable(R.drawable.button_rect)
+            gameView.setOnClickListener { onClick(it) }
+            gameView.isLongClickable = true
+            gameView.setOnLongClickListener { onLongClick(it) }
+            return gameView
         }
     }
 }

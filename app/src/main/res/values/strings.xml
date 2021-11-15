@@ -40,8 +40,8 @@
     <string name="big_password">PASSWORD</string>
     <string name="old_password">Old password</string>
     <string name="ok">ok</string>
-    <string name="games">GAMES</string>
-    <string name="games_from_cloud">☁ games from global search ☁</string>
+    <string name="games">MY GAMES</string>
+    <string name="games_from_cloud">☁ global games ☁</string>
     <string name="search_for_a_game">Search for a game!</string>
     <string name="edit_account">✏ Edit account</string>
     <string name="change_theme">🌗 Change theme</string>
@@ -194,4 +194,9 @@
     <string name="connect_me_to_internet">Connect me</string>
     <string name="wanna_be_off_the_line">Wanna be offline</string>
     <string name="you_are_offline">☹️ you are offline ☹️</string>
+    <string name="tab_by_name">by name</string>
+    <string name="tab_by_code">by code</string>
+    <string name="tab_by_space">by space</string>
+    <string name="search_hint">search</string>
+    <string name="local_games">local games</string>
 </resources>

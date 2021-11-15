@@ -31,8 +31,8 @@
     <string name="big_password">ПАРОЛЬ</string>
     <string name="old_password">Старый пароль</string>
     <string name="ok">ок</string>
-    <string name="games">ИГРЫ</string>
-    <string name="games_from_cloud">☁ игры из глобального поиска ☁</string>
+    <string name="games">МОИ ИГРЫ</string>
+    <string name="games_from_cloud">☁ глобальные игры  ☁</string>
     <string name="search_for_a_game">Найти игру!</string>
     <string name="edit_account">✏ Редактировать профиль</string>
     <string name="change_theme">🌗 Сменить тему</string>
@@ -165,4 +165,9 @@
     <string name="connect_me_to_internet">Подключите меня</string>
     <string name="wanna_be_off_the_line">Хочу быть офлайн</string>
     <string name="you_are_offline">☹️ в офлайне ☹️</string>
+    <string name="tab_by_name">по имени</string>
+    <string name="tab_by_code">по коду</string>
+    <string name="tab_by_space">по спейсу</string>
+    <string name="search_hint">поиск</string>
+    <string name="local_games">локальные игры</string>
 </resources>

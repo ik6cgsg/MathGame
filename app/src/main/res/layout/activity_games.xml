@@ -10,6 +10,21 @@
     tools:context=".activities.GamesActivity">
 
     <TextView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="search"
+        android:text="🔍"
+        android:textColor="?attr/textColor"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/games"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +57,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
+        android:visibility="gone"
         android:id="@+id/search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
