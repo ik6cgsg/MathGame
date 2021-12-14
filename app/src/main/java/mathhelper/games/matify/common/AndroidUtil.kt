@@ -261,11 +261,12 @@ class AndroidUtil {
             context: Context,
             game: Game,
             onClick: (View) -> Unit,
-            onLongClick: (View) -> Boolean
+            onLongClick: (View) -> Boolean,
         ): Button {
             val lang = context.resources.configuration.locale.language
             val gameView = createButtonView(context)
-            gameView.text = game.getNameByLanguage(lang)
+            val pin = if (game.isPinned) "📌 " else ""
+            gameView.text = "$pin${game.getNameByLanguage(lang)}"
             /*if (game.recommendedByCommunity) {
                 val d = getDrawable(R.drawable.tick)
                 d!!.setBounds(0, 0, 70, 70)
@@ -276,9 +277,11 @@ class AndroidUtil {
                 gameView.text = "${gameView.text}\n${game.lastResult!!.toString().format(game.tasks.size)}"
             }
             gameView.background = context.getDrawable(R.drawable.button_rect)
+            gameView.setTextColor(context.getColorStateList(R.color.text_simple_disableable))
             gameView.setOnClickListener { onClick(it) }
             gameView.isLongClickable = true
             gameView.setOnLongClickListener { onLongClick(it) }
+            gameView.isEnabled = ConnectionChecker.shared.isConnected || !game.isPreview
             return gameView
         }
     }

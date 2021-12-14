@@ -44,6 +44,8 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
     private lateinit var offline: TextView
     //private var askForTutorial = false
     lateinit var blurView: BlurView
+    private var currentLongClicked: String = ""
+    private var alertInfo: AlertDialog? = null
     val isLoading: Boolean
         get() = progress.visibility == View.VISIBLE
 
@@ -77,7 +79,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = "\uD83D\uDD27"
         }
-        GlobalScene.shared.parseLoadedOrRequestDefaultGames()
+        GlobalScene.shared.parseDefaultAndLoadedGames()
         ConnectionChecker.shared.subscribe(this)
     }
 
@@ -106,6 +108,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
             } else {
                 offline.visibility = View.VISIBLE
             }
+            generateList()
         }
     }
 
@@ -145,7 +148,8 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
     fun updateResult(newRes: GameResult?) {
         val i = GlobalScene.shared.currentGameIndex
         val view = gamesList[i] as TextView
-        view.text = "${GlobalScene.shared.currentGame?.getNameByLanguage(resources.configuration.locale.language)}" +
+        val pin = if (GlobalScene.shared.currentGame?.isPinned == true) "📌 " else ""
+        view.text = "$pin${GlobalScene.shared.currentGame?.getNameByLanguage(resources.configuration.locale.language)}" +
             if (newRes != null) {
                 "\n${newRes.toString().format(GlobalScene.shared.currentGame?.tasks?.size)}"
             } else {
@@ -159,16 +163,21 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
     fun generateList() {
         gamesList.removeAllViews()
         val lang = resources.configuration.locale.language
-        GlobalScene.shared.games.forEachIndexed { i, game ->
-            val gameView = AndroidUtil.generateGameView(this, game, onClick = {
-                if (!isLoading) {
-                    GlobalScene.shared.currentGameIndex = i
-                }
-            }, onLongClick = {
-                showInfo(game, lang)
-            })
+        GlobalScene.shared.gameOrder.forEachIndexed { i, code ->
+            val gameView = GlobalScene.shared.gameMap[code]?.let { game ->
+                AndroidUtil.generateGameView(this, game,
+                    onClick = {
+                        if (!isLoading) {
+                            GlobalScene.shared.currentGameIndex = i
+                        }
+                    }, onLongClick = {
+                        currentLongClicked = game.code
+                        showInfo(game, lang)
+                    })
+            }
             gamesList.addView(gameView)
         }
+        Storage.shared.saveOrder(GlobalScene.shared.gameOrder)
         setLoading(false)
     }
 
@@ -183,15 +192,25 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
         levels.text = getString(R.string.info_levels_count, game.tasks.size)
         val recommend = v.findViewById<TextView>(R.id.recommended)!!
         recommend.visibility = if (game.recommendedByCommunity) View.VISIBLE else View.GONE
+        val pin = v.findViewById<Button>(R.id.pin)!!
+        pin.text = if (game.isPinned) getString(R.string.unpin_game) else getString(R.string.pin_game)
+        val delete = v.findViewById<Button>(R.id.delete)!!
+        delete.visibility = if (game.isDefault) View.GONE else View.VISIBLE
         builder.setView(v)
             .setCancelable(true)
-        val alert = builder.create()
-        AndroidUtil.showDialog(alert, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this, setBackground = false)
+        alertInfo = builder.create()
+        AndroidUtil.showDialog(alertInfo!!, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this, setBackground = false)
         return true
     }
 
-    fun onAlertButtonClicked(v: View) {
-        Toast.makeText(this, "working on this", Toast.LENGTH_SHORT).show()
+    fun removeGame(v: View) {
+        GlobalScene.shared.removeGame(currentLongClicked)
+        alertInfo?.dismiss()
+    }
+
+    fun pinGame(v: View) {
+        GlobalScene.shared.pinGame(currentLongClicked)
+        alertInfo?.dismiss()
     }
 
     private fun askForTutorialDialog() {

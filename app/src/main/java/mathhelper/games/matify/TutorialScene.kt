@@ -108,7 +108,7 @@ class TutorialScene {
 
     fun start(context: Context) {
         GlobalScene.shared.tutorialProcessing = true
-        tutorialGame = Game.create("tutorial.json", context)
+        tutorialGame = null//Game.create("tutorial.json", context)
         if (tutorialGame == null) {
             return
         }

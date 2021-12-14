@@ -196,7 +196,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🔑"
-                android:textColor="@color/text_disableable"
+                android:textColor="@color/text_action_disableable"
                 android:textSize="21sp"
                 android:typeface="monospace" />
             <Space android:layout_width="16dp"/>
@@ -207,7 +207,7 @@
                 android:singleLine="true"
                 android:layout_weight="1"
                 android:text="@string/settings_change_password"
-                android:textColor="@color/text_disableable"
+                android:textColor="@color/text_action_disableable"
                 android:textSize="21sp"
                 android:typeface="monospace" />
         </TableRow>

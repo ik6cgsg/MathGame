@@ -1,127 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="16dp"
-    android:background="@drawable/alert_shape">
-
-    <TextView
-        android:id="@+id/info_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/info_game_title"
-        android:textSize="18sp"
-        android:textColor="?attr/colorPrimary"
-        android:textStyle="bold"
-        android:typeface="monospace"
-        android:layout_gravity="center_horizontal"/>
-
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="10dp"/>
-
-    <TextView
-        android:id="@+id/name"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="?attr/textColor"
-        android:typeface="monospace"
-        android:text="@string/info_name" />
+        android:background="@drawable/alert_shape"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/info_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/info_game_title"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info_name"
+            android:textColor="?attr/textColor"
+            android:textSize="16sp"
+            android:typeface="monospace" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/levels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info_levels_count"
+            android:textColor="?attr/textColor"
+            android:textSize="16sp"
+            android:typeface="monospace" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/recommended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/info_recommended"
+            android:textColor="?attr/colorPrimaryDark"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:typeface="monospace"
+            android:visibility="visible" />
+
+
+    </LinearLayout>
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="10dp"/>
+        android:layout_height="10dp" />
 
-    <TextView
-        android:id="@+id/levels"
+    <Button
+        android:id="@+id/pin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:background="@drawable/alert_shape"
+        android:onClick="pinGame"
+        android:text="@string/pin_game"
+        android:textAlignment="center"
+        android:textAllCaps="true"
         android:textColor="?attr/textColor"
-        android:typeface="monospace"
-        android:text="@string/info_levels_count" />
+        android:textSize="21sp"
+        android:typeface="monospace" />
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="20dp"/>
+        android:layout_height="10dp" />
 
-    <TextView
-        android:id="@+id/recommended"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:textColor="?attr/colorPrimaryDark"
-        android:typeface="monospace"
-        android:textStyle="italic"
-        android:layout_gravity="center_horizontal"
-        android:visibility="visible"
-        android:text="@string/info_recommended" />
-
-
-
-</LinearLayout>
-
-<Space
-android:layout_width="wrap_content"
-android:layout_height="10dp"/>
-
-<Button
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:typeface="monospace"
-android:textSize="21sp"
-android:textAlignment="center"
-android:textAllCaps="true"
-android:textColor="?attr/textColor"
-android:background="@drawable/alert_shape"
-android:text="📍 pin 📍"
-android:onClick="onAlertButtonClicked"
-    android:visibility="gone"
-/>
-
-<Space
-android:layout_width="wrap_content"
-android:layout_height="10dp"/>
-
-<Button
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:typeface="monospace"
-android:textSize="21sp"
-android:textAlignment="center"
-android:textAllCaps="true"
-android:textColor="?attr/textColor"
-android:background="@drawable/alert_shape"
-android:text="⬇ download ⬇"
-android:onClick="onAlertButtonClicked"
-    android:visibility="gone"
-/>
-
-<Space
-android:layout_width="wrap_content"
-android:layout_height="10dp"/>
-
-<Button
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:typeface="monospace"
-android:textSize="21sp"
-android:textAlignment="center"
-android:textAllCaps="true"
-android:textColor="@color/red_click"
-android:background="@drawable/alert_shape"
-android:text="🗑 remove 🗑"
-android:onClick="onAlertButtonClicked"
-android:visibility="gone"
-/>
+        android:background="@drawable/alert_shape"
+        android:onClick="removeGame"
+        android:text="@string/remove_game"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/red_click"
+        android:textSize="21sp"
+        android:typeface="monospace" />
 
 </LinearLayout>

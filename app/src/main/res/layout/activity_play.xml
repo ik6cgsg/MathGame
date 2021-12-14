@@ -210,7 +210,7 @@
             android:onClick="previous"
             android:text="@string/previous"
             android:textAlignment="viewEnd"
-            android:textColor="@color/text_disableable"
+            android:textColor="@color/text_action_disableable"
             android:textSize="30sp"
             android:textStyle="bold"
             android:typeface="monospace"

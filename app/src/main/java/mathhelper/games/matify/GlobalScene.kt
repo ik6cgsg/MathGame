@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.gson.Gson
 import kotlinx.coroutines.*
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
@@ -47,20 +48,23 @@ class GlobalScene {
     var authStatus = AuthStatus.GUEST
     var googleSignInClient: GoogleSignInClient? = null
     var tutorialProcessing = false
-    var games: ArrayList<Game> = ArrayList()
+    var gameMap = hashMapOf<String, Game>()
+    var gameOrder = arrayListOf<String>()
+    //private var games: ArrayList<Game> = ArrayList()
     var gamesActivity: GamesActivity? = null
         set(value) {
             field = value
-            games = ArrayList()
+            gameMap = hashMapOf()
+            gameOrder = arrayListOf()
         }
     var currentGameIndex: Int = 0
         set(value) {
-            field = if (value >= 0 && value < games.size) {
+            field = if (value >= 0 && value < gameOrder.size) {
                 value
             } else {
                 0
             }
-            currentGame = games[field]
+            currentGame = gameMap[gameOrder[value]]
             if (currentGame != null) {
                 Handler().postDelayed({
                     gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
@@ -75,7 +79,8 @@ class GlobalScene {
     fun init() {
         Request.startWorkCycle()
         tutorialProcessing = false
-        games = ArrayList()
+        gameMap = hashMapOf()
+        gameOrder = arrayListOf()
         authStatus = Storage.shared.authStatus()
     }
 
@@ -192,33 +197,30 @@ class GlobalScene {
         })
     }
 
-    fun parseLoadedOrRequestDefaultGames() {
-        if (!Storage.shared.gotAnySavedTasksets()) {
-            gamesActivity!!.generateList()
-            /*requestGamesByParams(games, success = {
-                if (games.isNotEmpty()) {
-                    gamesActivity!!.generateList()
-                }
-            }, error = {})*/
-        } else {
-            GlobalScope.launch {
-                val job = async {
-                    parsePreloadedGames()
-                    gamesActivity!!.runOnUiThread {
-                        gamesActivity!!.generateList()
-                    }
-                }
-                job.await()
+    fun parseDefaultAndLoadedGames() {
+        GlobalScope.launch {
+            parsePreloadedGames()
+            gamesActivity!!.runOnUiThread {
+                gamesActivity!!.generateList()
             }
         }
     }
 
     private fun parsePreloadedGames() {
+        gameOrder = ArrayList(Storage.shared.getOrderedTasksetCodes())
+        val needToFill = gameOrder.size == 0
+        val pinned = Storage.shared.getPinnedTasksetCodes()
         val tasksets = Storage.shared.getAllSavedTasksets()
         for (taskset in tasksets) {
             val loadedGame = Game.create(taskset, gamesActivity!!)
             if (loadedGame != null) {
-                games.add(loadedGame)
+                if (loadedGame.code in pinned) {
+                    loadedGame.isPinned = true
+                }
+                gameMap[loadedGame.code] = loadedGame
+                if (needToFill) {
+                    gameOrder.add(loadedGame.code)
+                }
             }
         }
     }
@@ -246,8 +248,8 @@ class GlobalScene {
             }
             for (taskset in tasksets.orEmpty()) {
                 if (taskset.has("code")) {
-                    Storage.shared.saveTaskset(taskset.get("code").asString, taskset)
-                    val loadedGame = Game.create(taskset.toString(), gamesActivity!!)
+                    val info = TasksetInfo(taskset = taskset)
+                    val loadedGame = Game.create(info, gamesActivity!!)
                     if (loadedGame != null) {
                         toList.add(loadedGame)
                     }
@@ -258,11 +260,7 @@ class GlobalScene {
 
     fun requestGameForPlay(game: Game, forceRefresh: Boolean = false, success: () -> Unit = {}, error: () -> Unit = {}) {
         asyncTask(gamesActivity!!, {
-            var fullTaskset: FullTaskset? = null
-            if (!forceRefresh) {
-                fullTaskset = Storage.shared.tryGetFullTaskset(game.code)
-            }
-            if (fullTaskset == null) {
+            if (forceRefresh || game.isPreview) {
                 val token = Storage.shared.serverToken()
                 val tasksetsReqData = RequestData(RequestPage.TASKSETS_FULL, method = RequestMethod.GET, securityToken = token)
                 tasksetsReqData.url += "/${game.code}"
@@ -270,63 +268,51 @@ class GlobalScene {
                 if (res.returnValue != 200) {
                     throw Request.UserMessageException(gamesActivity!!.getString(R.string.level_load_fail))
                 }
-                fullTaskset = GsonParser.parse(res.body)!!
+                val fullTaskset: FullTaskset = GsonParser.parse(res.body) ?:
+                throw Request.UserMessageException(gamesActivity!!.getString(R.string.level_load_fail))
                 Storage.shared.saveTaskset(game.code, fullTaskset.taskset, fullTaskset.rulePacks)
-                game.updateWithJson(fullTaskset.taskset)
+                game.updateWithJsons(fullTaskset.taskset, fullTaskset.rulePacks)
             }
-            game.preparseRulePacks(fullTaskset.rulePacks)
             game.load(gamesActivity!!)
         }, success, error)
     }
 
-    fun refreshGames(): ArrayList<Game> {
-        val oldGames = games
-        games = arrayListOf()
-        val codes = Storage.shared.getAllSavedTasksetCodes()
+    fun refreshGames() {
+        val defGames = gameMap.filter { it.value.isDefault }
+        val codesToUpdate = gameMap.map { it.key } - defGames.map { it.key }
+        val pinned = Storage.shared.getPinnedTasksetCodes()
         val token = Storage.shared.serverToken()
         val tasksetsReqData = RequestData(RequestPage.TASKSETS_PREVIEW, method = RequestMethod.GET, securityToken = token)
         val base = "${tasksetsReqData.url}&code="
         GlobalScope.launch {
-            val job = async {
-                /*requestGamesByParams(games, success = { // getting all default games
-                    val updatedCodes = games.map { it.code }
-                    val codesToUpdate = codes - updatedCodes*/
-                    for (code in codes) { // getting saved non-default games one by one
-                        tasksetsReqData.url = base + code
-                        val res = Request.doSyncRequest(tasksetsReqData)
-                        if (res.returnValue != 200) {
-                            Logger.e(TAG, "failed to refresh game with code = $code")
-                            continue
-                            //throw Request.UserMessageException("Games refreshing failed. Try again later.")
-                        }
-                        val tasksets = GsonParser.parse<FilterTaskset>(res.body)?.tasksets
-                        if (tasksets != null && tasksets.size == 1 && tasksets[0].has("code")) {
-                            Storage.shared.saveTaskset(tasksets[0].get("code").asString, tasksets[0])
-                            val loadedGame = Game.create(tasksets[0].toString(), gamesActivity!!)
-                            if (loadedGame != null) {
-                                games.add(loadedGame)
-                            }
-                        }
+            for (code in codesToUpdate) { // getting saved non-default games one by one
+                tasksetsReqData.url = base + code
+                val res = Request.doSyncRequest(tasksetsReqData)
+                if (res.returnValue != 200) {
+                    Logger.e(TAG, "failed to refresh game with code = $code")
+                    continue
+                    //throw Request.UserMessageException("Games refreshing failed. Try again later.")
+                }
+                val tasksets = GsonParser.parse<FilterTaskset>(res.body)?.tasksets
+                if (tasksets != null && tasksets.size == 1 && tasksets[0].has("code")) {
+                    Storage.shared.saveTaskset(tasksets[0].get("code").asString, tasksets[0])
+                    val info = TasksetInfo(taskset = tasksets[0])
+                    val loadedGame = Game.create(info, gamesActivity!!)
+                    if (loadedGame != null) {
+                        loadedGame.isPinned = loadedGame.code in pinned
+                        gameMap[loadedGame.code] = loadedGame
                     }
-                    gamesActivity!!.runOnUiThread {
-                        gamesActivity!!.generateList()
-                    }
-                /*}, error = {
-                    games = oldGames
-                    gamesActivity!!.runOnUiThread {
-                        gamesActivity!!.setLoading(false)
-                    }
-                    Logger.e(TAG, "refreshGames error while requesting default games")
-                })*/
+                }
             }
-            job.await()
+            gamesActivity!!.runOnUiThread {
+                gamesActivity!!.generateList()
+            }
         }
-        return games
     }
 
     fun addGame(game: Game): Int {
         val activity = gamesActivity ?: return 0
-        val i = games.size
+        val i = gameOrder.size
         val gameView = AndroidUtil.generateGameView(activity, game, onClick = {
             if (!activity.isLoading) {
                 currentGameIndex = i
@@ -334,8 +320,34 @@ class GlobalScene {
         }, onLongClick = {
             activity.showInfo(game, activity.resources.configuration.locale.language)
         })
-        games.add(game)
+        gameOrder.add(game.code)
+        gameMap[game.code] = game
         activity.gamesList.addView(gameView)
+        Storage.shared.saveOrder(gameOrder)
         return i
+    }
+
+    fun removeGame(code: String) {
+        val activity = gamesActivity ?: return
+        gameOrder.remove(code)
+        gameMap.remove(code)
+        Storage.shared.deleteTaskset(code)
+        Storage.shared.deletePin(code)
+        activity.generateList()
+    }
+
+    fun pinGame(code: String) {
+        val activity = gamesActivity ?: return
+        gameOrder.remove(code)
+        val game = gameMap[code] ?: return
+        game.isPinned = !game.isPinned
+        if (game.isPinned) {
+            Storage.shared.savePin(game.code)
+            gameOrder.add(0, code)
+        } else {
+            Storage.shared.deletePin(game.code)
+            gameOrder.add(code)
+        }
+        activity.generateList()
     }
 }

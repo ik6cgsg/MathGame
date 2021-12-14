@@ -1,10 +1,12 @@
 package mathhelper.games.matify.game
 
 import android.content.Context
+import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.common.Storage
+import mathhelper.games.matify.common.TasksetInfo
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.parser.Required
@@ -47,6 +49,9 @@ data class Game(
     lateinit var rulePacksJsons: HashMap<String, JsonObject>
     var loaded = false
     var lastResult: GameResult? = null
+    var isPreview = true
+    var isDefault = false
+    var isPinned = false
 
     fun getNameByLanguage (languageCode: String) = if (languageCode.equals("ru", true)) {
         nameRu
@@ -57,20 +62,25 @@ data class Game(
     companion object {
         private val TAG = "Game"
 
-        fun create(json: String, context: Context): Game? {
+        fun create(info: TasksetInfo, context: Context): Game? {
             Logger.d(TAG, "create")
-            val res = preload(json)
+            val res = preload(info.taskset)
+            res?.isPreview = info.isPreview
+            if (!info.isPreview) {
+                res?.preparseRulePacks(info.rulePacks!!)
+            }
+            res?.isDefault = info.isDefault
             res?.loadResult(context)
             return res
         }
 
-        private fun preload(json: String): Game? {
+        private fun preload(json: JsonObject): Game? {
             Logger.d(TAG, "preload")
             return GsonParser.parse(json)
         }
     }
 
-    fun updateWithJson(json: JsonObject) {
+    fun updateWithJsons(json: JsonObject, packsJson: List<JsonObject>) {
         val updated = GsonParser.parse<Game>(json) ?: return
         namespaceCode = updated.namespaceCode
         code = updated.code
@@ -85,18 +95,23 @@ data class Game(
         subjectType = updated.subjectType
         recommendedByCommunity = updated.recommendedByCommunity
         otherData = updated.otherData
+        preparseRulePacks(packsJson)
+        isPreview = false
     }
 
-    fun preparseRulePacks(packsJson: List<JsonObject>): Boolean {
-        rulePacks = HashMap()
-        rulePacksJsons = HashMap()
-        for (pack in packsJson) {
-            val code = pack.get("code").asString
-            if (!rulePacksJsons.containsKey(code)) {
-                rulePacksJsons[code] = pack
+    private fun preparseRulePacks(packsJson: List<JsonObject>): Boolean {
+        return try {
+            //val packsJson: Array<JsonObject> = Gson().fromJson(packs, Array<JsonObject>::class.java)
+            rulePacks = HashMap()
+            rulePacksJsons = HashMap()
+            for (pack in packsJson) {
+                val code = pack.get("code").asString
+                if (!rulePacksJsons.containsKey(code)) {
+                    rulePacksJsons[code] = pack
+                }
             }
-        }
-        return true
+            true
+        } catch (e: Exception) { false }
     }
 
     fun load(context: Context): Boolean {

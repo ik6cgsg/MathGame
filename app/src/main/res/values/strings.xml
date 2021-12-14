@@ -199,4 +199,7 @@
     <string name="tab_by_space">by space</string>
     <string name="search_hint">search</string>
     <string name="local_games">local games</string>
+    <string name="pin_game">📌 pin 📌</string>
+    <string name="remove_game">🗑 remove 🗑</string>
+    <string name="unpin_game">📌 unpin 📌</string>
 </resources>

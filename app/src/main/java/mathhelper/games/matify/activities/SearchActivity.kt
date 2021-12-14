@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.JsonWriter
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.core.view.size
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import eightbitlab.com.blurview.BlurView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
@@ -96,7 +98,7 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
 
     override fun onDestroy() {
         super.onDestroy()
-        Storage.shared.clearSpecifiedGames(serverGamesCodes)
+        //Storage.shared.clearSpecifiedGames(serverGamesCodes)
         ConnectionChecker.shared.unsubscribe(this)
     }
 
@@ -107,6 +109,7 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
             } else {
                 offline.visibility = View.VISIBLE
             }
+            filter(currentQuery)
         }
     }
 
@@ -138,7 +141,7 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
             filterServer(search)
         } else {
             GlobalScene.shared.cancelActiveJobs()
-            Storage.shared.clearSpecifiedGames(serverGamesCodes)
+            //Storage.shared.clearSpecifiedGames(serverGamesCodes)
             localGamesList.removeAllViews()
             serverGamesList.removeAllViews()
             localNotFound.visibility = View.VISIBLE
@@ -155,7 +158,8 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
             SearchType.BY_CODE -> { g: Game -> g.code.contains(q, ignoreCase = true) }
             SearchType.BY_SPACE -> { g: Game -> g.namespaceCode.contains(q, ignoreCase = true) }
         }
-        GlobalScene.shared.games.forEachIndexed { i, game ->
+        GlobalScene.shared.gameOrder.forEachIndexed { i, code ->
+            val game = GlobalScene.shared.gameMap[code] ?: return
             if (isOk(game)) {
                 val gameView = AndroidUtil.generateGameView(this, game, onClick = {
                     if (!isLoading) {
@@ -172,17 +176,17 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
     private fun filterServer(search: String) {
         serverGamesList.removeAllViews()
         GlobalScene.shared.cancelActiveJobs()
-        val currentGameCodes = GlobalScene.shared.games.map { it.code }
+        val currentGameCodes = GlobalScene.shared.gameOrder
         var serverGames = arrayListOf<Game>()
         GlobalScene.shared.requestGamesByParams(serverGames, searchType, search, success = {
             serverGames = ArrayList(serverGames.filter { it.code !in currentGameCodes })
-            val gamesToRemove = serverGamesCodes - serverGames.map { it.code }
             serverGamesCodes = ArrayList(serverGames.map { it.code })
-            Storage.shared.clearSpecifiedGames(gamesToRemove)
             serverNotFound.visibility = if (serverGames.isEmpty()) View.VISIBLE else View.GONE
             serverGames.forEach { game ->
                 val view = AndroidUtil.generateGameView(this, game, onClick = {
                     if (!isLoading) {
+                        // TODO: open or only add to local games?
+                        Storage.shared.saveTaskset(game.code, Gson().toJsonTree(game).asJsonObject)
                         GlobalScene.shared.currentGameIndex = GlobalScene.shared.addGame(game)
                         finish()
                     }

@@ -170,4 +170,7 @@
     <string name="tab_by_space">по спейсу</string>
     <string name="search_hint">поиск</string>
     <string name="local_games">локальные игры</string>
+    <string name="pin_game">📌 закрепить 📌</string>
+    <string name="remove_game">🗑 удалить 🗑</string>
+    <string name="unpin_game">📌 открепить 📌</string>
 </resources>
