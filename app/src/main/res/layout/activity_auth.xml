@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/offline"
-        app:srcCompat="@drawable/matify"
+        app:srcCompat="@drawable/matify_logo_plain"
         android:paddingHorizontal="5dp"
         android:paddingVertical="3dp"
         android:foreground="@drawable/logo_border"/>

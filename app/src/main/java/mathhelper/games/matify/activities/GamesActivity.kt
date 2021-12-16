@@ -175,7 +175,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
                         showInfo(game, lang)
                     })
             }
-            gamesList.addView(gameView)
+            gamesList.addView(gameView ?: return)
         }
         Storage.shared.saveOrder(GlobalScene.shared.gameOrder)
         setLoading(false)

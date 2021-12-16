@@ -560,6 +560,10 @@ class Storage {
         val context = context.get() ?: return
         val dir = context.getDir("games", Context.MODE_PRIVATE) ?: return
         dir.deleteRecursively()
+        val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE).edit()
+        prefs.remove(SettingInfo.ORDER.str)
+        prefs.remove(SettingInfo.PINNED.str)
+        prefs.commit()
     }
     //endregion
 }
