@@ -165,7 +165,7 @@ data class GameITR(
 
 class LevelJsonConverter {
     val oldGamesPath = "/Users/vkatsman/StudioProjects/MathGame/app/src/main/assets/old/"
-    val newGamesPath = "/Users/vkatsman/StudioProjects/MathGame/app/src/main/assets/active/"
+    val newGamesPath = "/Users/vkatsman/StudioProjects/MathGame/app/src/main/assets/default_games/"
 
     @Test
     fun runConvertJsonToITR() {

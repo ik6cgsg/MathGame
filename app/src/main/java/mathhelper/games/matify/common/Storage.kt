@@ -21,6 +21,7 @@ import java.nio.charset.Charset
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
+import kotlin.text.Charsets.UTF_8
 
 enum class AuthInfo(val str: String) {
     UUID("uuid"),
@@ -464,14 +465,14 @@ class Storage {
         val context = context.get() ?: return arrayListOf()
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val pinned = prefs.getString(SettingInfo.PINNED.str, null) ?: return arrayListOf()
-        return pinned.split(",")
+        return pinned.split(",").filter { it.isNotBlank() }
     }
 
     fun getOrderedTasksetCodes(): List<String> {
         val context = context.get() ?: return arrayListOf()
         val prefs = context.getSharedPreferences(settingFile, Context.MODE_PRIVATE)
         val ordered = prefs.getString(SettingInfo.ORDER.str, null) ?: return arrayListOf()
-        return ordered.split(",")
+        return ordered.split(",").filter { it.isNotBlank() }
     }
 
     fun saveOrder(codes: List<String>) {
@@ -519,12 +520,16 @@ class Storage {
             }
         }
         // default
-        val gamesJson = JsonParser.parseString(context.resources.openRawResource(R.raw.default_games).readBytes().toString(Charsets.UTF_8))
-        for (json in gamesJson.asJsonArray) {
+        val gameFiles = context.assets.list("default_games")
+        for (file in gameFiles ?: arrayOf()) {
+            val code = file.replace(".json", "")
+            if (code in loadedCodes) continue
+            val input = context.assets.open("default_games/$file")
+            val json = input.readBytes().toString(UTF_8)
+            input.close()
             val parsed = Gson().fromJson(json, FullTaskset::class.java)
-            val code = parsed.taskset.get("code").asString
             val version = parsed.taskset.get("version")?.asInt ?: 0
-            if (code !in loadedCodes || version > mapOfLoadedInfos[code]?.version ?: 0) {
+            if (version > mapOfLoadedInfos[code]?.version ?: -1) {
                 val isPreview = parsed.rulePacks.isNullOrEmpty()
                 val info = TasksetInfo(
                     taskset = parsed.taskset, rulePacks = parsed.rulePacks,

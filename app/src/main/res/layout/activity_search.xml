@@ -33,7 +33,7 @@
         android:layout_marginEnd="8dp"
         android:iconifiedByDefault="false"
         android:paddingHorizontal="0dp"
-        android:queryBackground="@color/background"
+        android:queryBackground="?attr/backgroundColor"
         android:queryHint="@string/search_hint"
         android:searchHintIcon="@null"
         android:searchIcon="@null"
