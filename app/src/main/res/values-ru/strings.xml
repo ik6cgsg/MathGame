@@ -173,4 +173,5 @@
     <string name="pin_game">📌 закрепить 📌</string>
     <string name="remove_game">🗑 удалить 🗑</string>
     <string name="unpin_game">📌 открепить 📌</string>
+    <string name="add_to_my_games">☝️ добавить в мои игры ☝️</string>
 </resources>

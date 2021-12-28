@@ -1,6 +1,7 @@
 package mathhelper.games.matify.common
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Bitmap
@@ -283,6 +284,45 @@ class AndroidUtil {
             gameView.setOnLongClickListener { onLongClick(it) }
             gameView.isEnabled = ConnectionChecker.shared.isConnected || !game.isPreview
             return gameView
+        }
+
+        fun showGameInfo(activity: AppCompatActivity, game: Game, blurView: BlurView, search: Boolean = false): AlertDialog {
+            val builder = AlertDialog.Builder(
+                activity, ThemeController.shared.alertDialogTheme
+            )
+            val v = activity.layoutInflater.inflate(R.layout.game_info, null)
+            val name = v.findViewById<TextView>(R.id.name)!!
+            val lang = activity.resources.configuration.locale.language
+            name.text = activity.getString(R.string.info_name, game.getNameByLanguage(lang))
+            val levels = v.findViewById<TextView>(R.id.levels)!!
+            levels.text = activity.getString(R.string.info_levels_count, game.tasks.size)
+            val recommend = v.findViewById<TextView>(R.id.recommended)!!
+            recommend.visibility = if (game.recommendedByCommunity) View.VISIBLE else View.GONE
+            // Buttons
+            val pin = v.findViewById<Button>(R.id.pin)!!
+            val delete = v.findViewById<Button>(R.id.delete)!!
+            val add = v.findViewById<Button>(R.id.add)!!
+            if (search) {
+                pin.visibility = View.GONE
+                delete.visibility = View.GONE
+                add.visibility = View.VISIBLE
+            } else {
+                pin.visibility = View.VISIBLE
+                pin.text = if (game.isPinned) activity.getString(R.string.unpin_game) else activity.getString(R.string.pin_game)
+                delete.visibility = if (game.isDefault) View.GONE else View.VISIBLE
+                add.visibility = View.GONE
+            }
+            builder.setView(v)
+                .setCancelable(true)
+            val alertInfo = builder.create()
+            showDialog(
+                alertInfo!!,
+                backMode = BackgroundMode.BLUR,
+                blurView = blurView,
+                activity = activity,
+                setBackground = false
+            )
+            return alertInfo
         }
     }
 }

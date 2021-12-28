@@ -202,4 +202,5 @@
     <string name="pin_game">📌 pin 📌</string>
     <string name="remove_game">🗑 remove 🗑</string>
     <string name="unpin_game">📌 unpin 📌</string>
+    <string name="add_to_my_games">☝️ add to my games ☝️</string>
 </resources>

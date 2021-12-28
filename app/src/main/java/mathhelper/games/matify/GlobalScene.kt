@@ -312,13 +312,15 @@ class GlobalScene {
 
     fun addGame(game: Game): Int {
         val activity = gamesActivity ?: return 0
+        Storage.shared.saveTaskset(game.code, Gson().toJsonTree(game).asJsonObject)
         val i = gameOrder.size
         val gameView = AndroidUtil.generateGameView(activity, game, onClick = {
             if (!activity.isLoading) {
                 currentGameIndex = i
             }
         }, onLongClick = {
-            activity.showInfo(game, activity.resources.configuration.locale.language)
+            AndroidUtil.showGameInfo(activity, game, activity.blurView)
+            true
         })
         gameOrder.add(game.code)
         gameMap[game.code] = game

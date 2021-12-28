@@ -1,5 +1,6 @@
 package mathhelper.games.matify.activities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -43,6 +44,9 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
     private var searchType = SearchType.BY_NAME
     private val isLoading: Boolean
         get() = progress.visibility == View.VISIBLE
+    private var alertInfo: AlertDialog? = null
+    private var currentLongClickedGame: Game? = null
+    private var currentLongClickedView: View? = null
 
     private fun setLoading(flag: Boolean) {
         progress.visibility = if (flag) View.VISIBLE else View.INVISIBLE
@@ -185,12 +189,15 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
             serverGames.forEach { game ->
                 val view = AndroidUtil.generateGameView(this, game, onClick = {
                     if (!isLoading) {
-                        // TODO: open or only add to local games?
-                        Storage.shared.saveTaskset(game.code, Gson().toJsonTree(game).asJsonObject)
                         GlobalScene.shared.currentGameIndex = GlobalScene.shared.addGame(game)
                         finish()
                     }
-                }, onLongClick = { false })
+                }, onLongClick = {
+                    currentLongClickedGame = game
+                    currentLongClickedView = it
+                    alertInfo = AndroidUtil.showGameInfo(this, game, blurView, true)
+                    true
+                })
                 serverGamesList.addView(view)
             }
             setLoading(false)
@@ -198,5 +205,13 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
             setLoading(false)
             serverNotFound.visibility = View.VISIBLE
         }, toastError = false)
+    }
+
+    fun addGame(v: View) {
+        alertInfo?.dismiss()
+        alertInfo = null
+        GlobalScene.shared.addGame(currentLongClickedGame ?: return)
+        filterLocal(currentQuery)
+        serverGamesList.removeView(currentLongClickedView ?: return)
     }
 }

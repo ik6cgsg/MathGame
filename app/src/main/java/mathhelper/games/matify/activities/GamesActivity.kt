@@ -162,7 +162,6 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
     @SuppressLint("ClickableViewAccessibility")
     fun generateList() {
         gamesList.removeAllViews()
-        val lang = resources.configuration.locale.language
         GlobalScene.shared.gameOrder.forEachIndexed { i, code ->
             val gameView = GlobalScene.shared.gameMap[code]?.let { game ->
                 AndroidUtil.generateGameView(this, game,
@@ -172,35 +171,14 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
                         }
                     }, onLongClick = {
                         currentLongClicked = game.code
-                        showInfo(game, lang)
+                        AndroidUtil.showGameInfo(this, game, blurView)
+                        true
                     })
             }
             gamesList.addView(gameView ?: return)
         }
         Storage.shared.saveOrder(GlobalScene.shared.gameOrder)
         setLoading(false)
-    }
-
-    fun showInfo(game: Game, lang: String): Boolean {
-        val builder = AlertDialog.Builder(
-            this, ThemeController.shared.alertDialogTheme
-        )
-        val v = layoutInflater.inflate(R.layout.game_info, null)
-        val name = v.findViewById<TextView>(R.id.name)!!
-        name.text = getString(R.string.info_name, game.getNameByLanguage(lang))
-        val levels = v.findViewById<TextView>(R.id.levels)!!
-        levels.text = getString(R.string.info_levels_count, game.tasks.size)
-        val recommend = v.findViewById<TextView>(R.id.recommended)!!
-        recommend.visibility = if (game.recommendedByCommunity) View.VISIBLE else View.GONE
-        val pin = v.findViewById<Button>(R.id.pin)!!
-        pin.text = if (game.isPinned) getString(R.string.unpin_game) else getString(R.string.pin_game)
-        val delete = v.findViewById<Button>(R.id.delete)!!
-        delete.visibility = if (game.isDefault) View.GONE else View.VISIBLE
-        builder.setView(v)
-            .setCancelable(true)
-        alertInfo = builder.create()
-        AndroidUtil.showDialog(alertInfo!!, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this, setBackground = false)
-        return true
     }
 
     fun removeGame(v: View) {

@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/alert_shape"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp">
 
         <TextView
             android:id="@+id/info_title"
@@ -69,10 +70,6 @@
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="10dp" />
-
     <Button
         android:id="@+id/pin"
         android:layout_width="match_parent"
@@ -84,11 +81,9 @@
         android:textAllCaps="true"
         android:textColor="?attr/textColor"
         android:textSize="21sp"
-        android:typeface="monospace" />
-
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="10dp" />
+        android:typeface="monospace"
+        android:layout_marginBottom="8dp"
+        />
 
     <Button
         android:id="@+id/delete"
@@ -101,6 +96,21 @@
         android:textAllCaps="true"
         android:textColor="@color/red_click"
         android:textSize="21sp"
-        android:typeface="monospace" />
+        android:typeface="monospace"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/alert_shape"
+        android:onClick="addGame"
+        android:text="@string/add_to_my_games"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="?attr/textColor"
+        android:textSize="21sp"
+        android:typeface="monospace"
+        android:layout_marginBottom="8dp"/>
 
 </LinearLayout>
