@@ -413,14 +413,14 @@ class Storage {
 
     //region TASKSETS
 
-    fun saveTaskset(code: String, tasksetJson: JsonObject, rulePacks: List<JsonObject>? = null) {
+    fun saveTaskset(code: String, tasksetJson: JsonObject, rulePacks: List<JsonObject>? = null, isDefault: Boolean = false) {
         val context = context.get() ?: return
         val dir = context.getDir("games", Context.MODE_PRIVATE) ?: return
         val file = File(dir, code)
         val version = tasksetJson.get("version")?.asInt ?: 0
         val isPreview = rulePacks.isNullOrEmpty()
         val info = TasksetInfo(taskset = tasksetJson, version = version,
-                rulePacks = rulePacks, isPreview = isPreview)
+                rulePacks = rulePacks, isPreview = isPreview, isDefault = isDefault)
         file.outputStream().write(Gson().toJson(info).toByteArray())
     }
 

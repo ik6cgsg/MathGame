@@ -270,7 +270,7 @@ class GlobalScene {
                 }
                 val fullTaskset: FullTaskset = GsonParser.parse(res.body) ?:
                 throw Request.UserMessageException(gamesActivity!!.getString(R.string.level_load_fail))
-                Storage.shared.saveTaskset(game.code, fullTaskset.taskset, fullTaskset.rulePacks)
+                Storage.shared.saveTaskset(game.code, fullTaskset.taskset, fullTaskset.rulePacks, game.isDefault)
                 game.updateWithJsons(fullTaskset.taskset, fullTaskset.rulePacks)
             }
             game.load(gamesActivity!!)
@@ -278,14 +278,14 @@ class GlobalScene {
     }
 
     fun refreshGames() {
-        val defGames = gameMap.filter { it.value.isDefault }
-        val codesToUpdate = gameMap.map { it.key } - defGames.map { it.key }
+        val defCodes = gameMap.filter { it.value.isDefault }.map { it.key }
+        val codesToUpdate = gameMap.map { it.key }
         val pinned = Storage.shared.getPinnedTasksetCodes()
         val token = Storage.shared.serverToken()
         val tasksetsReqData = RequestData(RequestPage.TASKSETS_PREVIEW, method = RequestMethod.GET, securityToken = token)
         val base = "${tasksetsReqData.url}&code="
         GlobalScope.launch {
-            for (code in codesToUpdate) { // getting saved non-default games one by one
+            for (code in codesToUpdate) {
                 tasksetsReqData.url = base + code
                 val res = Request.doSyncRequest(tasksetsReqData)
                 if (res.returnValue != 200) {
@@ -295,8 +295,9 @@ class GlobalScene {
                 }
                 val tasksets = GsonParser.parse<FilterTaskset>(res.body)?.tasksets
                 if (tasksets != null && tasksets.size == 1 && tasksets[0].has("code")) {
-                    Storage.shared.saveTaskset(tasksets[0].get("code").asString, tasksets[0])
-                    val info = TasksetInfo(taskset = tasksets[0])
+                    val isDefault = code in defCodes
+                    Storage.shared.saveTaskset(tasksets[0].get("code").asString, tasksets[0], isDefault = isDefault)
+                    val info = TasksetInfo(taskset = tasksets[0], isDefault = isDefault)
                     val loadedGame = Game.create(info, gamesActivity!!)
                     if (loadedGame != null) {
                         loadedGame.isPinned = loadedGame.code in pinned

@@ -108,8 +108,8 @@ class Request {
                             try {
                                 Logger.d("asyncRequest", reqQueue.last.toString())
                                 val response = asyncRequest(reqQueue.last)
-                                Logger.d("Request", "sended")
-                                if (response.returnValue != 500 || response.returnValue != 404) {
+                                Logger.d("Request", "sent")
+                                if (response.returnValue !in arrayOf(404, 500)) {
                                     Logger.d("asyncRequestReturnCode", response.returnValue.toString())
                                     Logger.d("asyncRequestResultBody", response.body)
                                     reqQueue.removeLast()
