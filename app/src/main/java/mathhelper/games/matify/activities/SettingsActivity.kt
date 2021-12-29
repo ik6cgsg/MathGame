@@ -29,6 +29,8 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var changeThemeDialog: AlertDialog
     private lateinit var greetings: TextView
     private lateinit var changePassword: View
+    private lateinit var editAccount: View
+    private lateinit var logoutText: TextView
     lateinit var blurView: BlurView
 
     @SuppressLint("ClickableViewAccessibility")
@@ -43,6 +45,8 @@ class SettingsActivity: AppCompatActivity() {
         changeThemeDialog = createChangeThemeAlert()
         changeLanguageDialog = createChangeLanguageAlert()
         changePassword = findViewById(R.id.pass_change)
+        editAccount = findViewById(R.id.edit_account)
+        logoutText = findViewById(R.id.logout_text)
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
             settings.text = resources.getString(R.string.settings)
@@ -59,6 +63,14 @@ class SettingsActivity: AppCompatActivity() {
         when (GlobalScene.shared.authStatus) {
             AuthStatus.MATH_HELPER, AuthStatus.GUEST -> changePassword.isEnabled = true
             else -> changePassword.isEnabled = false
+        }
+        if (!Storage.shared.isUserAuthorized()) {
+            changePassword.isEnabled = false
+            editAccount.isEnabled = false
+            logoutText.text = getString(R.string.sign_in)
+        } else {
+            editAccount.isEnabled = true
+            logoutText.text = getString(R.string.sign_out)
         }
     }
 

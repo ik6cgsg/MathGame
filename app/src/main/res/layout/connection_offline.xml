@@ -13,5 +13,5 @@
     android:paddingVertical="8dp"
     android:text="@string/you_are_offline"
     android:textColor="?attr/textColor"
-    android:textSize="21sp"
+    android:textSize="12sp"
     android:typeface="monospace" />

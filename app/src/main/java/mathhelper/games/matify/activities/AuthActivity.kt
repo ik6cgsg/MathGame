@@ -30,6 +30,8 @@ class AuthActivity: AppCompatActivity(), ConnectionListener {
     private lateinit var loginView: TextView
     private lateinit var passwordView: TextView
     private lateinit var signInButton: Button
+    private lateinit var signUpButton: Button
+    private lateinit var googleSignButton: View
     private lateinit var offline: TextView
     private lateinit var blurView: BlurView
 
@@ -45,6 +47,8 @@ class AuthActivity: AppCompatActivity(), ConnectionListener {
         passwordView.doAfterTextChanged { checkInput() }
         signInButton = findViewById(R.id.sign_in)
         signInButton.isEnabled = false
+        signUpButton = findViewById(R.id.sign_up)
+        googleSignButton = findViewById(R.id.google_sign)
         offline = findViewById(R.id.offline)
         offline.visibility = View.GONE
         blurView = findViewById(R.id.blurView)
@@ -61,8 +65,12 @@ class AuthActivity: AppCompatActivity(), ConnectionListener {
         runOnUiThread {
             if (type == ConnectionChangeType.ESTABLISHED) {
                 offline.visibility = View.GONE
+                signUpButton.isEnabled = true
+                googleSignButton.isEnabled = true
             } else {
                 offline.visibility = View.VISIBLE
+                signUpButton.isEnabled = false
+                googleSignButton.isEnabled = false
             }
         }
     }
@@ -105,6 +113,7 @@ class AuthActivity: AppCompatActivity(), ConnectionListener {
             finishSign()
         }, errorground = {
             this.runOnUiThread {
+                Storage.shared.invalidateUser()
                 Toast.makeText(this, R.string.self_phone_mode, Toast.LENGTH_LONG).show()
                 finish()
                 startActivity(Intent(this, GamesActivity::class.java))
