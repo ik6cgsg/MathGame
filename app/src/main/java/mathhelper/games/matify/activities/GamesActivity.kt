@@ -45,8 +45,8 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
     private lateinit var unsavedData: TextView
     //private var askForTutorial = false
     lateinit var blurView: BlurView
-    private var currentLongClicked: String = ""
-    private var alertInfo: AlertDialog? = null
+    var currentLongClicked: String = ""
+    var alertInfo: AlertDialog? = null
     val isLoading: Boolean
         get() = progress.visibility == View.VISIBLE
 
@@ -182,7 +182,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
                         }
                     }, onLongClick = {
                         currentLongClicked = game.code
-                        AndroidUtil.showGameInfo(this, game, blurView)
+                        alertInfo = AndroidUtil.showGameInfo(this, game, blurView)
                         true
                     })
             }

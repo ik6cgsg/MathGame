@@ -321,7 +321,8 @@ class GlobalScene {
                 currentGameIndex = i
             }
         }, onLongClick = {
-            AndroidUtil.showGameInfo(activity, game, activity.blurView)
+            activity.currentLongClicked = game.code
+            activity.alertInfo = AndroidUtil.showGameInfo(activity, game, activity.blurView)
             true
         })
         gameOrder.add(game.code)
