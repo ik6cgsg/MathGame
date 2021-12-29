@@ -31,7 +31,7 @@ import mathhelper.games.matify.game.GameResult
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GamesActivity: AppCompatActivity(), ConnectionListener {
+class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
     private val TAG = "GamesActivity"
     lateinit var gamesList: LinearLayout
     private lateinit var searchView: EditText
@@ -42,6 +42,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
     private lateinit var serverNotFound: TextView
     private lateinit var progress: ProgressBar
     private lateinit var offline: TextView
+    private lateinit var unsavedData: TextView
     //private var askForTutorial = false
     lateinit var blurView: BlurView
     private var currentLongClicked: String = ""
@@ -74,6 +75,8 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
         blurView = findViewById(R.id.blurView)
         offline = findViewById(R.id.offline)
         offline.visibility = View.GONE
+        unsavedData = findViewById(R.id.unsaved_data)
+        unsavedData.visibility = View.GONE
         initSwipeRefresher()
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
@@ -81,6 +84,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
         }
         GlobalScene.shared.parseDefaultAndLoadedGames()
         ConnectionChecker.shared.subscribe(this)
+        Request.subscribe(this)
     }
 
     override fun onResume() {
@@ -99,6 +103,13 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
     override fun onDestroy() {
         super.onDestroy()
         ConnectionChecker.shared.unsubscribe(this)
+        Request.unsubscribe()
+    }
+
+    override fun onLogStateChange(haveUnsavedData: Boolean) {
+        runOnUiThread {
+            unsavedData.visibility = if (haveUnsavedData) View.VISIBLE else View.GONE
+        }
     }
 
     override fun onConnectionChange(type: ConnectionChangeType) {
@@ -113,7 +124,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun connectionBannerClicked(v: View?) {
-        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView, ActivityType.GAMES)
     }
 
     override fun connectionButtonClick(v: View) {
@@ -136,7 +147,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.refresher)
         refresher.setOnRefreshListener {
             refresher.isRefreshing = false
-            if (!isLoading) {
+            if (!isLoading && ConnectionChecker.shared.isConnected) {
                 setLoading(true)
                 Toast.makeText(this, R.string.refresh_message, Toast.LENGTH_LONG).show()
                 GlobalScene.shared.refreshGames()

@@ -29,7 +29,7 @@
             android:layout_height="10dp" />
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/alert_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/connection_alert_text"

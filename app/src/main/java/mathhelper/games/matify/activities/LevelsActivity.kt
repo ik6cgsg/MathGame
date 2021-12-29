@@ -72,7 +72,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
         val refresher = findViewById<SwipeRefreshLayout>(R.id.refresher)
         refresher.setOnRefreshListener {
             refresher.isRefreshing = false
-            if (!isLoading) {
+            if (!isLoading && ConnectionChecker.shared.isConnected) {
                 setLoading(true)
                 Toast.makeText(this, R.string.refresh_taskset_message, Toast.LENGTH_LONG).show()
                 LevelScene.shared.refreshGame()
@@ -99,7 +99,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun connectionBannerClicked(v: View?) {
-        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView, ActivityType.LEVELS)
     }
 
     override fun connectionButtonClick(v: View) {

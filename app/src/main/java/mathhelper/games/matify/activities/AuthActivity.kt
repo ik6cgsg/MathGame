@@ -76,7 +76,7 @@ class AuthActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun connectionBannerClicked(v: View?) {
-        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView, ActivityType.AUTH)
     }
 
     override fun connectionButtonClick(v: View) {

@@ -190,7 +190,11 @@
     <string name="pers_stat_load_fail">Personal statistics loading failed</string>
     <string name="refresh_message">Refreshing all current games... 🤔</string>
     <string name="refresh_taskset_message">Refreshing current game... 🤔</string>
-    <string name="connection_alert_text">It seems that there is no internet ☹️ \n\nThis means that we arent able to:\n* authorize you 😎\n* load more exciting games ⬇️\n* save your data in the cloud ☁️\n\n</string>
+    <string name="connection_alert_text">It seems that there is no internet ☹</string>
+    <string name="connection_alert_text_auth">It seems that there is no internet ☹\n\nYou can not authorize, but you can continue as guest.\n(Results will be saved to local storage only)</string>
+    <string name="connection_alert_text_games">It seems that there is no internet ☹\n\n* You can\'t download games from the cloud or refresh current\n* Games data will be saved locally (when connected, the data will be automatically sent to the server)</string>
+    <string name="connection_alert_text_levels">It seems that there is no internet ☹</string>
+    <string name="connection_alert_text_play">It seems that there is no internet ☹\n\nGame data is saved locally only!</string>
     <string name="connect_me_to_internet">Connect me</string>
     <string name="wanna_be_off_the_line">Wanna be offline</string>
     <string name="you_are_offline">☹️ you are offline ☹️</string>
@@ -203,4 +207,5 @@
     <string name="remove_game">🗑 remove 🗑</string>
     <string name="unpin_game">📌 unpin 📌</string>
     <string name="add_to_my_games">☝️ add to my games ☝️</string>
+    <string name="unsaved_data_banner">⚠ you have unsaved game data ⚠</string>
 </resources>

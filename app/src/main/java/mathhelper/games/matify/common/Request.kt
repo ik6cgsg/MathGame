@@ -1,10 +1,7 @@
 package mathhelper.games.matify.common
 
 import android.view.View
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.Constants
@@ -75,6 +72,10 @@ class TrustAllCertsManager : X509TrustManager {
     }
 }
 
+interface LogStateListener {
+    fun onLogStateChange(haveUnsavedData: Boolean)
+}
+
 class Request {
     class TimeoutException(message: String): Exception(message)
     class UndefinedException(message: String): Exception(message)
@@ -86,9 +87,11 @@ class Request {
         private var isWorking = false
         private lateinit var job: Deferred<Unit>
         private const val timeoutMaxInSec = 7 // TODO: move to UI interface
+        private const val onErrorDelay: Long = 500
         private var timer = RequestTimer(timeoutMaxInSec.toLong())
         var timeout = false
         private var isConnected = true
+        private var logStateListener: LogStateListener? = null
 
         fun startWorkCycle() {
             if (isWorking) {
@@ -104,6 +107,7 @@ class Request {
             GlobalScope.launch {
                 job = async {
                     while (true) {
+                        delay(300)
                         while (reqQueue.isNotEmpty() && isConnected) {
                             try {
                                 Logger.d("asyncRequest", reqQueue.last.toString())
@@ -113,7 +117,12 @@ class Request {
                                     Logger.d("asyncRequestReturnCode", response.returnValue.toString())
                                     Logger.d("asyncRequestResultBody", response.body)
                                     reqQueue.removeLast()
+                                    if (reqQueue.isEmpty()) {
+                                        logStateListener?.onLogStateChange(false)
+                                    }
                                     Logger.d("Request", "removed")
+                                } else {
+                                    delay(onErrorDelay)
                                 }
                             } catch (e: Exception) {
                                 Logger.e("Request", e.message ?: "Error while request queue handling")
@@ -123,6 +132,16 @@ class Request {
                 }
             }
             isWorking = true
+        }
+
+        fun subscribe(listener: LogStateListener) {
+            logStateListener = listener
+            val gotUnsentData = reqQueue.isNotEmpty() || Storage.shared.getLogRequests().isNotEmpty()
+            logStateListener?.onLogStateChange(gotUnsentData)
+        }
+
+        fun unsubscribe() {
+            logStateListener = null
         }
 
         fun stopWorkCycle() {
@@ -194,7 +213,7 @@ class Request {
             when (type) {
                 ConnectionChangeType.ESTABLISHED -> {
                     isConnected = true
-                    reqQueue = Storage.shared.getLogRequests()
+                    reqQueue = Storage.shared.getAndClearLogRequests()
                 }
                 ConnectionChangeType.LOST -> {
                     isConnected = false
@@ -215,6 +234,7 @@ class Request {
                 return  //TODO: add in queue and try to take token until it will not be obtained because the user become authorized
             }
             Logger.d("Request", "Request body: ${req.body}")
+            logStateListener?.onLogStateChange(true)
             if (isConnected) {
                 reqQueue.addFirst(req)
             } else {

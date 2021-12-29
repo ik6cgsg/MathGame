@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.PlayActivity
+import mathhelper.games.matify.common.ConnectionChecker
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.game.GameResult
 import mathhelper.games.matify.level.*
@@ -90,6 +91,7 @@ class LevelScene {
     }
 
     fun refreshGame() {
+        if (!ConnectionChecker.shared.isConnected) return
         val activity = levelsActivity ?: return
         GlobalScene.shared.requestGameForPlay(GlobalScene.shared.currentGame!!, forceRefresh = true, success = {
             levels = GlobalScene.shared.currentGame!!.levels

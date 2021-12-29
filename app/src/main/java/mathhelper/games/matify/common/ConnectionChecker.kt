@@ -9,6 +9,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.provider.Settings
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import eightbitlab.com.blurview.BlurView
 import kotlinx.coroutines.GlobalScope
@@ -16,10 +17,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.R
+import mathhelper.games.matify.common.ActivityType.*
 import java.lang.ref.WeakReference
 
 enum class ConnectionChangeType {
     SAME, ESTABLISHED, LOST
+}
+
+enum class ActivityType {
+    AUTH, GAMES, LEVELS, PLAY, SETTINGS, SEARCH
 }
 
 interface ConnectionListener {
@@ -48,11 +54,20 @@ class ConnectionChecker {
     private var listeners: ArrayList<ConnectionListener> = arrayListOf()
     private var currentAlert: AlertDialog? = null
 
-    fun connectionBannerClicked(activity: AppCompatActivity, blurView: BlurView) {
+    fun connectionBannerClicked(activity: AppCompatActivity, blurView: BlurView, activityType: ActivityType) {
         val builder = AlertDialog.Builder(
             activity, ThemeController.shared.alertDialogTheme
         )
         val v = activity.layoutInflater.inflate(R.layout.connection_alert, null)
+        val textView = v.findViewById<TextView>(R.id.alert_text)
+        textView.text = when (activityType) {
+            AUTH -> activity.getString(R.string.connection_alert_text_auth)
+            GAMES -> activity.getString(R.string.connection_alert_text_games)
+            LEVELS -> activity.getString(R.string.connection_alert_text_levels)
+            PLAY -> activity.getString(R.string.connection_alert_text_play)
+            SETTINGS -> activity.getString(R.string.connection_alert_text)
+            SEARCH -> activity.getString(R.string.connection_alert_text)
+        }
         builder.setView(v)
             .setCancelable(true)
             .setOnCancelListener {

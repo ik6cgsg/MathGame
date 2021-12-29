@@ -118,7 +118,7 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
     }
 
     override fun connectionBannerClicked(v: View?) {
-        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView, ActivityType.SEARCH)
     }
 
     override fun connectionButtonClick(v: View) {

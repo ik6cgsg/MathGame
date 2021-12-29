@@ -197,7 +197,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun connectionBannerClicked(v: View?) {
-        ConnectionChecker.shared.connectionBannerClicked(this, blurView)
+        ConnectionChecker.shared.connectionBannerClicked(this, blurView, ActivityType.PLAY)
     }
 
     override fun connectionButtonClick(v: View) {

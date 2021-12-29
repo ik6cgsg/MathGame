@@ -107,22 +107,10 @@ class Storage {
             .getString(BaseInfo.DEVICE_ID.str, "")!!
     }
 
-    /*fun swapValueInStringSets(file: String, src: String, dst: String, value: String) {
-        val context = context.get() ?: return
-        val settings = context.getSharedPreferences(file, Context.MODE_PRIVATE)
-        val settingsEdit = settings.edit()
-        val srcSet = HashSet(settings.getStringSet(src, setOf())!!)
-        val dstSet = HashSet(settings.getStringSet(dst, setOf())!!)
-        srcSet.remove(value)
-        dstSet.add(value)
-        settingsEdit.putStringSet(src, srcSet)
-        settingsEdit.putStringSet(dst, dstSet)
-        settingsEdit.commit()
-    }*/
-
     //region REQUESTS
 
     fun saveLogRequests(reqs: LinkedList<RequestData>) {
+        if (reqs.isEmpty()) return
         val context = context.get() ?: return
         val prefs = context.getSharedPreferences(logFile, Context.MODE_PRIVATE)
         val prefEdit = prefs.edit()
@@ -148,6 +136,15 @@ class Storage {
         } catch (e: Exception) {
             return LinkedList<RequestData>()
         }
+    }
+
+    fun getAndClearLogRequests(): LinkedList<RequestData> {
+        val context = context.get() ?: return LinkedList<RequestData>()
+        val reqs = getLogRequests()
+        val prefEdit = context.getSharedPreferences(logFile, Context.MODE_PRIVATE).edit()
+        prefEdit.clear()
+        prefEdit.commit()
+        return reqs
     }
 
     //endregion
@@ -540,25 +537,6 @@ class Storage {
             }
         }
         return res
-    }
-
-    fun tryGetFullTaskset(code: String): TasksetInfo? {
-        val context = context.get() ?: return null
-        val dir = context.getDir("games", Context.MODE_PRIVATE) ?: return null
-        val file = File(dir, code)
-        return try {
-            val info = Gson().fromJson(file.readText(), TasksetInfo::class.java)
-            if (info.isPreview) null else info
-        } catch (e: Exception) { null }
-    }
-
-    fun clearSpecifiedGames(codes: List<String>) {
-        val context = context.get() ?: return
-        val dir = context.getDir("games", Context.MODE_PRIVATE) ?: return
-        for (code in codes) {
-            val file = File(dir, code)
-            file.delete()
-        }
     }
 
     fun clearAllGames() {

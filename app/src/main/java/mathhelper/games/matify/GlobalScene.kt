@@ -278,6 +278,7 @@ class GlobalScene {
     }
 
     fun refreshGames() {
+        if (!ConnectionChecker.shared.isConnected) return
         val defCodes = gameMap.filter { it.value.isDefault }.map { it.key }
         val codesToUpdate = gameMap.map { it.key }
         val pinned = Storage.shared.getPinnedTasksetCodes()
