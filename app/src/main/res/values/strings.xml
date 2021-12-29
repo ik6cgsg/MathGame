@@ -1,20 +1,211 @@
 <resources>
-    <string name="app_name">MathGame</string>
-    <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆</string>
-    <string name="end_expression_closed">End expression  🔼</string>
-    <string name="end_expression_opened">End expression  🔽</string>
-    <string name="previous">↶</string>
-    <string name="restart">↺</string>
-    <string name="back">←</string>
+    <string name="app_name">Matify</string>
+    <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆\n⬆ Long tap allows to select >1 places ⬆</string>
+    <string name="end_expression_opened"><b><i>Goal:</i></b> %1$s</string>
+    <string name="previous" translatable="false">↶</string>
+    <string name="restart" translatable="false">↺</string>
+    <string name="back" translatable="false">←</string>
     <string name="wrong_subs">❌ Can\'t do this ❌</string>
     <string name="time_out">😢Time out!😢</string>
     <string name="no_rules">🙅 No rules for this 🙅</string>
     <string name="levels">LEVELS</string>
-    <string name="reset">❌</string>
-    <string name="gear">⚙</string>
+    <string name="gear" translatable="false">⚙</string>
     <string name="settings">⚙ SETTINGS ⚙</string>
-    <string name="send_statistics">Send statistics 📈</string>
-    <string name="report_bug">Report bug 🐛</string>
-    <string name="version_view">MathGame v</string>
-    <string name="pointer">☝</string>
+    <string name="rate_us">⭐ Rate us</string>
+    <string name="version_view" translatable="false">Matify v</string>
+    <string name="pointer" translatable="false">☝</string>
+    <string name="continue_as_guest">Continue as guest</string>
+    <string name="continue_with_google">Sign in with Google</string>
+    <string name="continue_with_github">Continue with GitHub</string>
+    <string name="logo" translatable="false">Logo</string>
+    <string name="googlelogo" translatable="false">googleLogo</string>
+    <string name="githublogo" translatable="false">githubLogo</string>
+    <string name="saved">Saved!</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">sign up</string>
+    <string name="or">OR</string>
+    <string name="account">ACCOUNT</string>
+    <string name="name">Name</string>
+    <string name="full_name">Full name</string>
+    <string name="additional">Additional</string>
+    <string name="additional_auth_info">Show additional info</string>
+    <string name="save">Save</string>
+    <string name="sign_out">Sign out</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="different_password">Different passwords</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="big_password">PASSWORD</string>
+    <string name="old_password">Old password</string>
+    <string name="ok">ok</string>
+    <string name="games">MY GAMES</string>
+    <string name="games_from_cloud">☁ global games ☁</string>
+    <string name="search_for_a_game">Search for a game!</string>
+    <string name="edit_account">✏ Edit account</string>
+    <string name="change_theme">🌗 Change theme</string>
+    <string name="change_theme_to">Change theme to</string>
+    <string name="change_password">🔑 Change password</string>
+    <string name="change_language">🌍 Change language</string>
+    <string name="change_language_to">Change language to</string>
+    <string name="big_sign_up">SIGN UP</string>
+    <string name="cancel">Cancel</string>
+    <string name="no">No 🚫</string>
+    <string name="yes">Yes ✅</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="next">Next</string>
+    <string name="menu">Menu</string>
+    <string name="restart_label">Restart</string>
+    <string name="next_after_last_level_label">Sorry, that`s the last level 😀 \n Try another game</string>
+    <string name="you_finished_level_with">You finished level with:</string>
+    <string name="steps">Steps</string>
+    <string name="time">Time</string>
+    <string name="award">AWARD</string>
+    <string name="hi">Hi</string>
+    <string name="send">Send</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="this_action_will_reset_all_your_achievements">This action will reset all your achievements</string>
+    <string name="i" translatable="false">i</string>
+    <string name="start_multiselect" translatable="false">≡</string>
+    <string name="end_multiselect" translatable="false">≢</string>
+    <string name="msg_on_start_multiselect">The multiselection mode. To cancel, press ≢</string>
+    <string name="start_multiselect_info">Start the multiselection mode</string>
+    <string name="end_multiselect_info">Exit from the multiselection mode</string>
+    <string name="previous_info">Previous step</string>
+    <string name="previous_multiselect_info">Cancel the last selection</string>
+    <string name="restart_info">Restart</string>
+    <string name="i_info">About level</string>
+    <string name="back_info">Back to levels</string>
+    <string name="save_your_current_state">Save your current state?</string>
+    <string name="welkome_back">Welcome back!</string>
+    <string name="continue_from_where_you_stopped">Continue from where you stopped?</string>
+
+    <string name="tutorial">Tutorial</string>
+    <string name="tutorial_level">Tutorial Level</string>
+    <string name="tutorial_game">Tutorial Game</string>
+    <string name="start_tutorial">❔ Start tutorial</string>
+    <string name="wanna_leave">Wanna leave?</string>
+    <string name="wanna_see_tutorial">Wanna see tutorial?</string>
+    <string name="restart_tutorial">Restart tutorial?</string>
+    <string name="attention">❗ Attention ❗</string>
+    <string name="leave">Leave</string>
+    <string name="step_back">Step back</string>
+    <string name="got_it">🙃 Got it? 🙃</string>
+    <string name="yep">Yep 😎</string>
+    <string name="a_good_choice">👏 A good choice! 👏</string>
+    <string name="no_rules_try_another">No rules for this place 😅 \n Try another one!</string>
+    <string name="welcome">🍀 Welcome! 🍀</string>
+    <string name="games_activity_tutorial">🍀 Welcome! 🍀\nHere you can:\n* Search local and global games\n* Choose one and play!\n\n🙃 Got it? 🙃</string>
+    <string name="level_activity_tutorial">And here you can choose level to play!\n\n🙃 Got it? 🙃</string>
+    <string name="tutorial_on_level_info">🍀 Welcome to level! 🍀\nThat\'s a place for short\nimportant (and funny) messages</string>
+    <string name="tutorial_on_level_to_menu">← This can return to menu… ←\nAnd even save 💾 your progress!</string>
+    <string name="tutorial_on_level_short_info">i Tap to see short\ninfo about level i</string>
+    <string name="tutorial_on_level_restart">↺ Restart level button ↺</string>
+    <string name="tutorial_on_level_undo">↶ Undo the last transformation ↶</string>
+    <string name="tutorial_on_level_goal">⬆ Goal: transform expression to it ⬆</string>
+    <string name="tutorial_on_level_goal_explanation">This is final goal for level💥\nAKA The result criteria for current task!\n\n</string>
+    <string name="tutorial_on_level_goal_toggle">P.S. You can toggle it with 🔽 if you need!\n\n🙃 Got it? 🙃</string>
+    <string name="tutorial_on_level_main_element">⬇ Main element of our game 🥁 ⬇</string>
+    <string name="tutorial_on_level_main_element_current">Here is current expression, to win - transform it to goal.\n</string>
+    <string name="tutorial_on_level_main_element_to_win">To win 🏆 you need:\n</string>
+    <string name="tutorial_on_level_main_element_touch">1. Touch 🖕 on expression\n</string>
+    <string name="tutorial_on_level_main_element_find_rule">2. Find 🔎 necessary rule\n</string>
+    <string name="tutorial_on_level_main_element_make_subst">3. Touch chosen rule ~> make substitution\n</string>
+    <string name="tutorial_on_level_main_element_repeat">4. Repeat until you win 👏🏆\n</string>
+    <string name="tutorial_on_level_tap">👉 Let\'s check it out! 👈\n1. Tap near plus in the expression 👇</string>
+    <string name="tutorial_on_level_select">1. Tap near plus in the expression ✅\n2. Now 🔍 rule from a list below</string>
+    <string name="tutorial_on_level_win">2. Rule applied ✅\n3. Continue and win! 👏🏆</string>
+    <string name="tutorial_on_level_seems">Seems you got it all!\n</string>
+    <string name="tutorial_on_level_i_am_pro">Yep, now I\'m PRO too 😎</string>
+    <string name="no_i_am_pro">No, I\'m PRO 😎</string>
+
+    <string name="parsing_error">parsing error</string>
+    <string name="something_went_wrong">Something went wrong, please retry</string>
+    <string name="misclick_happened_please_retry">Misclick happened, please retry</string>
+    <string name="problems_with_internet_connection">Problems with internet connection</string>
+    <string name="bad_credentials_error">Bad credentials error</string>
+    <string name="self_phone_mode">You are authorized in self-phone mode</string>
+    <string name="google_sign_in_error">Error while sign with Google…</string>
+    <string name="coming_soon">Coming soon…</string>
+    <string name="steps_count">Steps:</string>
+    <string name="multiselection_mode_is_on">Multiselection</string>
+    <string name="multiselection_mode_is_off">Usual</string>
+
+
+    <string-array
+        name="languages_array">
+        <item>Русский</item>
+        <item>English</item>
+        <item>@string/coming_soon</item>
+    </string-array>
+
+    <string name="level_info_game">Game:</string>
+    <string name="info_name"><b>Name:</b> %1$s</string>
+    <string name="info_levels_count"><b>Levels:</b> %1$d</string>
+    <string name="level_info_level_name">Level:</string>
+    <string name="info_game_title">ℹ️ Game info ℹ️</string>
+    <string name="level_info_description">Description:</string>
+    <string name="level_info_steps">Steps:</string>
+    <string name="level_info_select_mode">Select mode:</string>
+    <string name="level_info_level_info">ℹ️ Level info ℹ️</string>
+
+    <string name="settings_account">Account</string>
+    <string name="settings_edit_account">Edit Account</string>
+    <string name="settings_change_password">Change password</string>
+    <string name="settings_application">Application</string>
+    <string name="settings_change_language">Language</string>
+    <string name="settings_change_theme">Theme</string>
+    <string name="settings_rate_app">Rate app</string>
+    <string name="settings_start_tutorial">Start tutorial</string>
+    <string name="settings_reset">Reset</string>
+
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="inst_fill_req">Fill required fields!</string>
+    <string name="inst_enter">Enter instrument processing</string>
+    <string name="inst_rules_msg">☟ Instrument processing ☟</string>
+    <string name="no_rules_msg">No rules. Click somewhere in expression!</string>
+    <string name="rules_found_msg">☟ Rules found: ☟</string>
+    <string name="oppo_descr">Apply operator and inverse operator</string>
+    <string name="var_descr">Introduce a new variable</string>
+    <string name="bracket_descr">Group expression nodes</string>
+    <string name="permute_descr">Permute expression nodes</string>
+    <string name="step_detail_descr">1. Detail instrument</string>
+    <string name="step_place_descr">2. Choose place from expression</string>
+    <string name="inst_apply">Apply</string>
+    <string name="inst_step_param">3. Enter param or choose from expression</string>
+    <string-array
+        name="themes_array">
+        <item>@string/theme_light</item>
+        <item>@string/theme_dark</item>
+        <item>@string/coming_soon</item>
+    </string-array>
+    <string name="goal_description">Goal. Details</string>
+    <string name="info_recommended">✓ This game is recommended by MathHelper society ✓</string>
+    <string name="nothing_was_found">😢 nothing was found 😢</string>
+    <string name="games_load_failed">Games loading failed</string>
+    <string name="level_load_fail">Level loading from server failed. Try again later.</string>
+    <string name="pers_stat_reset_fail">Personal statistics reset failed</string>
+    <string name="pers_stat_load_fail">Personal statistics loading failed</string>
+    <string name="refresh_message">Refreshing all current games... 🤔</string>
+    <string name="refresh_taskset_message">Refreshing current game... 🤔</string>
+    <string name="connection_alert_text">It seems that there is no internet ☹</string>
+    <string name="connection_alert_text_auth">It seems that there is no internet ☹\n\nYou can not authorize, but you can continue as guest.\n(Results will be saved to local storage only)</string>
+    <string name="connection_alert_text_games">It seems that there is no internet ☹\n\n* You can\'t download games from the cloud or refresh current\n* Games data will be saved locally (when connected, the data will be automatically sent to the server)</string>
+    <string name="connection_alert_text_levels">It seems that there is no internet ☹</string>
+    <string name="connection_alert_text_play">It seems that there is no internet ☹\n\nGame data is saved locally only!</string>
+    <string name="connect_me_to_internet">Connect me</string>
+    <string name="wanna_be_off_the_line">Wanna be offline</string>
+    <string name="you_are_offline">☹️ you are offline ☹️</string>
+    <string name="tab_by_name">by name</string>
+    <string name="tab_by_code">by code</string>
+    <string name="tab_by_space">by space</string>
+    <string name="search_hint">search</string>
+    <string name="local_games">local games</string>
+    <string name="pin_game">📌 pin 📌</string>
+    <string name="remove_game">🗑 remove 🗑</string>
+    <string name="unpin_game">📌 unpin 📌</string>
+    <string name="add_to_my_games">☝️ add to my games ☝️</string>
+    <string name="unsaved_data_banner">⚠ you have unsaved game data ⚠</string>
 </resources>

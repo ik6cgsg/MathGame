@@ -1,0 +1,310 @@
+{
+  "gameSpace": "",
+  "gameCode": "game_029_set_combo_1",
+  "name": "Множества-1",
+  "en": "Sets Logic-1",
+  "ru": "Множества-1",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "game_029_set_combo_1__Level_01_Prove",
+      "name": "Level 1 Prove",
+      "ru": "Уровень 1 Доказательство",
+      "en": "Level 1 Prove",
+      "difficulty": 1.0,
+      "type": "set",
+      "stepsNum": 2,
+      "time": 50,
+      "originalExpression": "(and(or(A;not(B));or(A;not(C))))",
+      "finalExpression": "(or(A;not(or(B;C))))",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_02_Prove",
+      "name": "Level 2 Prove",
+      "ru": "Уровень 2 Доказательство",
+      "en": "Level 2 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 90,
+      "originalExpression": "(or(A;and(A;B)))",
+      "finalExpression": "(A)",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_03_Prove",
+      "name": "Level 3 Prove",
+      "ru": "Уровень 3 Доказательство",
+      "en": "Level 3 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 60,
+      "originalExpression": "(or(set-(not(A);B);C))",
+      "finalExpression": "(implic(or(A;B);C))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_04_Prove",
+      "name": "Level 4 Prove",
+      "ru": "Уровень 4 Доказательство",
+      "en": "Level 4 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 4,
+      "time": 60,
+      "originalExpression": "(implic(implic(A;not(B));C))",
+      "finalExpression": "(or(and(A;B);C))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_05_Prove",
+      "name": "Level 5 Prove",
+      "ru": "Уровень 5 Доказательство",
+      "en": "Level 5 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 7,
+      "time": 90,
+      "originalExpression": "(implic(and(A;B);or(not(C);B)))",
+      "finalExpression": "(implic(A;implic(B;implic(C;B))))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_06_Prove",
+      "name": "Level 6 Prove",
+      "ru": "Уровень 6 Доказательство",
+      "en": "Level 6 Prove",
+      "difficulty": 2.0,
+      "type": "set",
+      "stepsNum": 6,
+      "time": 90,
+      "originalExpression": "(set-(not(and(A;B));B))",
+      "finalExpression": "(not(B))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_07_Prove",
+      "name": "Level 7 Prove",
+      "ru": "Уровень 7 Доказательство",
+      "en": "Level 7 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 8,
+      "time": 150,
+      "originalExpression": "(or(set-(set-(A;B);C);or(not(B);C)))",
+      "finalExpression": "(implic(implic(A;or(B;C));implic(B;C)))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_08_Prove",
+      "name": "Level 8 Prove",
+      "ru": "Уровень 8 Доказательство",
+      "en": "Level 8 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 13,
+      "time": 200,
+      "originalExpression": "(implic(or(A;B);and(A;B)))",
+      "finalExpression": "(and(not(set-(A;B));not(set-(B;A))))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_09_Prove",
+      "name": "Level 9 Prove",
+      "ru": "Уровень 9 Доказательство",
+      "en": "Level 9 Prove",
+      "difficulty": 3.0,
+      "type": "set",
+      "stepsNum": 22,
+      "time": 300,
+      "originalExpression": "(set-(or(A;B);and(implic(A;B);implic(B;A))))",
+      "finalExpression": "(or(set-(A;B);set-(B;A)))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_10_Prove",
+      "name": "Level 10 Prove",
+      "ru": "Уровень 10 Доказательство",
+      "en": "Level 10 Prove",
+      "difficulty": 4.0,
+      "type": "set",
+      "stepsNum": 10,
+      "time": 200,
+      "originalExpression": "(implic(implic(set-(A;C);D);set-(D;B)))",
+      "finalExpression": "(or(set-(D;B);set-(A;or(C;D))))",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_11_Prove",
+      "name": "Level 11 Prove",
+      "ru": "Уровень 11 Доказательство",
+      "en": "Level 11 Prove",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 16,
+      "time": 350,
+      "originalExpression": "(and(or(A;B;C);implic(A;or(C;D));implic(C;or(B;D));not(B);not(D)))",
+      "finalExpression": "(0)",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    },
+    {
+      "levelCode": "game_029_set_combo_1__Level_12_Prove",
+      "name": "Level 12 Prove",
+      "ru": "Уровень 12 Доказательство",
+      "en": "Level 12 Prove",
+      "difficulty": 5.0,
+      "type": "set",
+      "stepsNum": 11,
+      "time": 300,
+      "originalExpression": "(and(or(A;B);implic(not(C);not(A));implic(not(D);not(B));not(or(C;D));not(or(not(C);not(D)))))",
+      "finalExpression": "(0)",
+      "rules":[
+        {"rulePack": "LogicImplicationDifference"},
+        {"rulePack": "LogicAbsorptionLaw"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "SetDeMorgan",
+      "type": "set",
+      "rules":[
+        {"left": "(not(and(A;B)))","right": "(or(not(A);not(B)))", "priority": 15},
+        {"left": "(or(not(A);not(B)))","right": "(not(and(A;B)))", "priority": 10},
+        {"left": "(not(or(A;B)))","right": "(and(not(A);not(B)))", "priority": 15},
+        {"left": "(and(not(A);not(B)))","right": "(not(or(A;B)))", "priority": 10}
+      ]
+    },
+    {
+      "name": "LogicAndOrBase",
+      "type": "set",
+      "rules":[
+        {"rulePack": "SetDeMorgan"},
+
+        {"left": "(not(not(a)))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(not(not(a)))", "isExtending": true, "priority": 89},
+
+        {"left": "(or(a;a))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(or(a;a))", "isExtending": true, "priority": 90},
+        {"left": "(and(a;a))","right": "(a)", "priority": 5},
+        {"left": "(a)","right": "(and(a;a))", "isExtending": true, "priority": 90},
+
+        {"left":"(and(a;b))","right":"(and(b;a))", "priority": 40, "isExtending": true},
+        {"left":"(or(a;b))","right":"(or(b;a))", "priority": 40, "isExtending": true},
+
+        {"left":"(a)","right":"(and(a;1))", "priority": 90, "isExtending": true},
+        {"left":"(a)","right":"(or(a;0))", "priority": 90, "isExtending": true},
+
+        {"left": "(or(A;not(A)))","right": "(1)", "priority": 5},
+        {"left": "(or(not(A);A))","right": "(1)", "priority": 5},
+        {"left": "(and(A;not(A)))","right": "(0)", "priority": 5},
+        {"left": "(and(not(A);A))","right": "(0)", "priority": 5},
+        {"left": "(or(A;1))","right": "(1)", "priority": 5},
+        {"left": "(or(1;A))","right": "(1)", "priority": 5},
+        {"left": "(and(A;1))","right": "(A)", "priority": 5},
+        {"left": "(and(1;A))","right": "(A)", "priority": 5},
+        {"left": "(or(A;0))","right": "(A)", "priority": 5},
+        {"left": "(or(0;A))","right": "(A)", "priority": 5},
+        {"left": "(and(A;0))","right": "(0)", "priority": 5},
+        {"left": "(and(0;A))","right": "(0)", "priority": 5},
+
+        {"left": "(not(0))","right": "(1)", "priority": 5},
+        {"left": "(not(1))","right": "(0)", "priority": 5},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "SetComplicatingExtension", "priority": 92},
+        {"code": "ParentBracketsExpansion", "priority": 30},
+        {"code": "ArgumentsSwap", "priority": 40},
+        {"code": "ArgumentsPermutation", "priority": 40},
+        {"code": "OpeningBrackets", "priority": 30},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41},
+        {"code": "ReduceArithmetic", "priority": 10},
+        {"code": "TwoSidesArithmeticReduce", "priority": 10}
+      ]
+    },
+    {
+      "name": "LogicImplicationDifference",
+      "type": "set",
+      "rules":[
+        {"rulePack": "LogicAndOrBase"},
+
+        {"left": "(or(not(A);B))","right": "(implic(A;B))"},
+        {"left": "(or(B;not(A)))","right": "(implic(A;B))"},
+        {"left": "(implic(A;B))","right": "(or(not(A);B))"},
+
+        {"left": "(and(A;not(B)))","right": "(set-(A;B))"},
+        {"left": "(and(not(B);A))","right": "(set-(A;B))"},
+        {"left": "(set-(A;B))","right": "(and(A;not(B)))"},
+
+        {"left": "(set-(A;B))","right": "(not(implic(A;B)))"},
+        {"left": "(not(implic(A;B)))","right": "(set-(A;B))"},
+        {"left": "(implic(A;B))","right": "(not(set-(A;B)))"},
+        {"left": "(not(set-(A;B)))","right": "(implic(A;B))"},
+
+        {"left": "(set-(A;0))","right": "(A)", "priority": 5},
+        {"left": "(set-(A;1))","right": "(0)", "priority": 5},
+        {"left": "(set-(0;A))","right": "(0)", "priority": 5},
+        {"left": "(set-(1;A))","right": "(not(A))", "priority": 5},
+
+        {"left": "(implic(0;A))","right": "(1)", "priority": 5},
+        {"left": "(implic(A;1))","right": "(1)", "priority": 5},
+        {"left": "(implic(A;0))","right": "(not(A))", "priority": 5},
+        {"left": "(implic(1;A))","right": "(A)", "priority": 5},
+
+        {"left": "(A)","right": "(set-(A;0))", "priority": 91, "isExtending": true},
+        {"left": "(A)","right": "(implic(1;A))", "priority": 91, "isExtending": true}
+      ]
+    },
+    {
+      "name": "LogicAbsorptionLaw",
+      "type": "set",
+      "rules":[
+        {"left": "(and(A;or(A;B)))","right": "(A)", "priority": 6},
+        {"left": "(or(A;and(A;B)))","right": "(A)", "priority": 6},
+        {"left": "(and(A;or(B;A)))","right": "(A)", "priority": 6},
+        {"left": "(or(A;and(B;A)))","right": "(A)", "priority": 6},
+        {"left": "(and(or(A;B);A))","right": "(A)", "priority": 6},
+        {"left": "(or(and(A;B);A))","right": "(A)", "priority": 6},
+        {"left": "(and(or(B;A);A))","right": "(A)", "priority": 6},
+        {"left": "(or(and(B;A);A))","right": "(A)", "priority": 6},
+
+        {"left": "(A)","right": "(and(A;or(A;B)))", "priority": 90, "isExtending": true},
+        {"left": "(A)","right": "(or(A;and(A;B)))", "priority": 90, "isExtending": true}
+      ]
+    }
+  ]
+}

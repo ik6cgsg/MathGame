@@ -2,10 +2,10 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="@color/gray"/>
+    <solid android:color="?attr/shapeBackground"/>
 
     <stroke
-        android:width="0.5dp"
+        android:width="2dp"
         android:color="#667700" />
 
     <padding

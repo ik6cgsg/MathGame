@@ -1,0 +1,326 @@
+{
+  "gameSpace": "",
+  "gameCode": "start_tutorial",
+  "name": "Старт: игра-туториал",
+  "en": "Start: game-tutorial",
+  "ru": "Старт: игра-туториал",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "start_tutorial__Level_01_Compute",
+      "name": "Add by tap on plus",
+      "ru": "Сложи, нажав на плюс",
+      "en": "Add by tap on plus",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 1,
+      "time": 20,
+      "originalExpression": "(+(2;3))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "ArithmeticSimplePositiveAddition"}
+      ]
+    },
+    {
+      "levelCode": "start_tutorial__Level_02_Compute",
+      "name": "Select 2 numbers with sum 10",
+      "ru": "Выдели 2 числа с суммой 10",
+      "en": "Select 2 numbers with sum 10",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 2,
+      "time": 20,
+      "originalExpression": "(+(8;5;2))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "simpleComputationRuleParamsMaxCalcComplexity": "2",
+      "simpleComputationRuleParamsMaxPlusArgRounded": "1",
+      "simpleComputationRuleParamsMaxResRounded": "10",
+      "rules":[
+        {"rulePack": "ArithmeticSimplePositiveAddition"}
+      ]
+    },
+    {
+      "levelCode": "start_tutorial__Level_03_Compute",
+      "name": "Get 3y in brackets by tap 3 then y",
+      "ru": "Взять 3y в скобки нажав 3, затем y",
+      "en": "Get 3y in brackets by tap 3 then y",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 1,
+      "time": 20,
+      "originalExpression": "(*(x;y;3;z))",
+      "finalExpression": "(*(*(3;y);x;z))",
+      "rules":[
+        {"rulePack": "ArithmeticMultiplication"}
+      ]
+    },
+    {
+      "levelCode": "start_tutorial__Level_04_Compute",
+      "name": "Get x+y-y by tap x then y",
+      "ru": "Получи x+y-y нажав x затем y",
+      "en": "Get x+y-y by tap x then y",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 1,
+      "time": 20,
+      "originalExpression": "(/(x;y))",
+      "finalExpression": "(/(+(x;y;-(y));y))",
+      "rules":[
+        {"rulePack": "ArithmeticDivision"}
+      ]
+    },
+    {
+      "levelCode": "start_tutorial__Level_05_Compute",
+      "name": "Factorize",
+      "ru": "Разложи на множители",
+      "en": "Factorize",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 1,
+      "time": 20,
+      "originalExpression": "(+(*(6;y);*(y;x)))",
+      "finalExpression": "(*(y;+(6;x)))",
+      "rules":[
+        {"rulePack": "ArithmeticDivision"}
+      ]
+    },
+    {
+      "levelCode": "start_tutorial__Level_06_Compute",
+      "name": "Get square by taking 3x in brackets",
+      "ru": "Сверни кватрат, взяв 3x в скобки",
+      "en": "Get square by taking 3x in brackets",
+      "difficulty": 1.0,
+      "type": "algebra",
+      "stepsNum": 3,
+      "time": 20,
+      "originalExpression": "(+(*(^(3;2);^(x;2));*(2;3;x);1))",
+      "finalExpression": "(^(+(*(3;x);1);2))",
+      "rules":[
+        {"rulePack": "ShortMultiplication"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "ArithmeticSimplePositiveAddition",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a))","right":"(a)", "priority": 30},
+        {"left":"(+(a;b))","right":"(+(b;a))", "priority": 20, "isExtending": true},
+        {"left":"(a)","right":"(+(a;0))", "isExtending": true},
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "PositiveNumberPlusMinus1", "priority": 20},
+        {"code": "ParentBracketsExpansion", "priority": 30},
+        {"code": "ArgumentsSwap", "priority": 40},
+        {"code": "ArgumentsPermutation", "priority": 40},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41}
+      ]
+    },
+    {
+      "name": "ArithmeticAddition",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a))","right":"(a)", "priority": 30},
+        {"left":"(+(a;b))","right":"(+(b;a))", "priority": 20, "isExtending": true},
+        {"left":"(a)","right":"(+(a;0))", "priority": 90, "isExtending": true},
+        {"left":"(+(-(+(-(a)))))","right":"(a)", "priority": 5},
+        {"left":"(-(+(-(a))))","right":"(a)", "priority": 5},
+        {"left":"(-(-(a)))","right":"(a)", "priority": 5},
+        {"left":"(a)","right":"(-(+(-(a))))", "priority": 95, "isExtending": true},
+
+        {"left":"(+(a;-(a)))","right":"(0)", "priority": 5},
+        {"left":"(+(-(a);a))","right":"(0)", "priority": 5},
+        {"left":"(+(a;+(-(a))))","right":"(0)", "priority": 5},
+        {"left":"(+(+(-(a));a))","right":"(0)", "priority": 5},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "NumberPlusMinus1", "priority": 20},
+        {"code": "MinusInOutBrackets", "priority": 31},
+        {"code": "ParentBracketsExpansion", "priority": 30},
+        {"code": "ArgumentsSwap", "priority": 40},
+        {"code": "ArgumentsPermutation", "priority": 40},
+        {"code": "ArgumentsPermutationInOriginalOrder", "priority": 41},
+        {"code": "AdditiveComplicatingExtension", "priority": 92}
+      ]
+    },
+    {
+      "name": "ArithmeticMultiplication",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticAddition"},
+
+        {"left":"(*(a;0))","right":"(0)", "priority": 10},
+        {"left":"(*(0;a))","right":"(0)", "priority": 10},
+        {"left":"(0)","right":"(*(a;0))", "isExtending": true},
+        {"left":"(*(a;1))","right":"(a)", "priority": 10},
+        {"left":"(*(1;a))","right":"(a)", "priority": 10},
+        {"left":"(a)","right":"(*(a;1))", "isExtending": true},
+        {"left":"(*(a;b))","right":"(*(b;a))", "priority": 20, "isExtending": true},
+        {"code": "OpeningBrackets", "priority": 30},
+        {"code": "ReduceArithmetic", "priority": 10},
+        {"code": "TwoSidesArithmeticReduce", "priority": 10},
+        {"code": "MultiplicationFactorization", "priority": 15},
+
+        {"left":"(+(a;a))","right":"(*(2;a))"},
+        {"left":"(+(a;+(a)))","right":"(*(2;a))"},
+        {"left":"(+(+(a);a))","right":"(*(2;a))"},
+        {"left":"(*(2;a))","right":"(+(a;a))"}
+      ]
+    },
+    {
+      "name": "ArithmeticDivision",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticMultiplication"},
+
+        {"left":"(/(0;a))","right":"(0)", "priority": 10},
+        {"left":"(/(a;1))","right":"(a)", "priority": 10},
+        {"left":"(/(a;a))","right":"(1)", "priority": 10},
+        {"left":"(*(/(1;a);a))","right":"(1)", "priority": 10},
+        {"left":"(/(1;/(1;a)))","right":"(a)", "priority": 10, "matchJumbledAndNested": true},
+        {"left":"(a)","right":"(/(1;/(1;a)))", "priority": 90, "isExtending": true},
+        {"left": "(0.5)","right": "(/(1;2))", "priority": 15, "simpleAdditional": true},
+        {"left": "(/(1;2))","right": "(0.5)", "priority": 5, "simpleAdditional": true},
+        {"left":"(/(a;b))","right":"(/(*(a;b);*(b;b)))", "priority": 90, "isExtending": true},
+
+        {"code": "MultiplicativeComplicatingExtension", "priority": 92},
+        {"code": "ReduceFraction", "priority": 10},
+        {"code": "DecimalToFraction", "priority": 15}
+      ]
+    },
+    {
+      "name": "ArithmeticPow",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticDivision"},
+
+        {"left":"(a)","right":"(^(a;1))", "simpleAdditional": true, "isExtending": true},
+        {"left":"(1)","right":"(^(1;2))", "simpleAdditional": true, "isExtending": true},
+        {"left":"(1)","right":"(^(1;3))", "simpleAdditional": true, "isExtending": true},
+        {"left": "(/(1;a))","right": "(^(a;+(-(1))))"},
+        {"left": "(^(a;+(-(1))))","right": "(/(1;a))"},
+        {"code": "PowFactorization", "priority": 15},
+
+        {"left": "(^(a;+(b;-(c))))","right": "(/(^(a;b);^(a;c)))"},
+        {"left": "(/(^(a;b);^(a;c)))","right": "(^(a;+(b;-(c))))"},
+
+        {"left": "(/(B;^(A;C)))","right": "(*(B;^(A;+(-(C)))))"},
+        {"left": "(*(B;^(A;+(-(C)))))","right": "(/(B;^(A;C)))"},
+        {"left": "(/(1;^(A;C)))","right": "(^(A;+(-(C))))"},
+        {"left": "(^(A;+(-(C))))","right": "(/(1;^(A;C)))"},
+        {"left": "(/(A;B))","right": "(^(/(B;A);+(-(1))))"},
+        {"left": "(^(/(B;A);+(-(1))))","right": "(/(A;B))"},
+
+        {"left": "(^(A;0))","right": "(1)", "priority": 5},
+        {"left": "(^(1;A))","right": "(1)", "priority": 5},
+        {"left": "(^(A;1))","right": "(A)", "priority": 5},
+        {"left": "(^(0;A))","right": "(0)", "priority": 5},
+
+        {"left": "(*(a;a))","right": "(^(a;2))", "simpleAdditional": true},
+        {"left": "(^(a;2))","right": "(*(a;a))", "simpleAdditional": true},
+
+        {"left": "(*(a;^(a;n)))","right": "(^(a;+(n;1)))"},
+        {"left": "(^(a;+(n;1)))","right": "(*(a;^(a;n)))"},
+        {"left": "(*(^(a;n);a))","right": "(^(a;+(1;n)))"},
+        {"left": "(^(a;+(1;n)))","right": "(*(^(a;n);a))"},
+
+        {"left": "(/(^(a;n);a))","right": "(^(a;+(n;-(1))))"},
+        {"left": "(^(a;+(n;-(1))))","right": "(/(^(a;n);a))"},
+
+        {"left": "(^(A;*(B;C)))","right": "(^(^(A;B);C))"},
+        {"left": "(^(^(A;B);C))","right": "(^(A;*(B;C)))"},
+
+        {"left": "(^(/(B;C);A))","right": "(/(^(B;A);^(C;A)))"},
+        {"left": "(/(^(B;A);^(C;A)))","right": "(^(/(B;C);A))"},
+
+        {"left": "(^(A;*(2;n)))","right": "(^(-(A);*(2;n)))"},
+        {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"},
+        {"left": "(^(-(A);2))","right": "(^(A;2))"},
+
+        {"left": "(^(^(a;b);/(1;b)))","right": "(a)", "priority": 5}
+      ]
+    },
+    {
+      "name": "ShortMultiplication",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticPow"},
+
+        {"left": "(+(^(a;2);-(^(b;2))))","right": "(*(+(a;-(b));+(a;b)))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;-(b));+(a;b)))","right": "(+(^(a;2);-(^(b;2))))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;b);2))","right": "(+(^(a;2);*(2;a;b);^(b;2)))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;2);*(2;a;b);^(b;2)))","right": "(^(+(a;b);2))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;2);*(2;a);1))","right": "(^(+(a;1);2))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;-(b));2))","right": "(+(^(a;2);-(*(2;a;b));^(b;2)))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;2);-(*(2;a;b));^(b;2)))","right": "(^(+(a;-(b));2))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;2);-(*(2;a));1))","right": "(^(+(a;-(1));2))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;b);3))","right": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))","right": "(^(+(a;b);3))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;3);*(3;^(a;2));*(3;a);1))","right": "(^(+(a;1);3))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;-(b));3))","right": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))","right": "(^(+(a;-(b));3))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;3);-(*(3;^(a;2)));*(3;a);-(1)))","right": "(^(+(a;-(1));3))", "matchJumbledAndNested": true},
+
+        {"left": "(+(^(a;3);-(^(b;3))))","right": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))","right": "(+(^(a;3);-(^(b;3))))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;-(1));+(^(a;2);a;1)))","right": "(+(^(a;3);-(^(1;3))))", "matchJumbledAndNested": true},
+
+        {"left": "(+(^(a;3);^(b;3)))","right": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))","right": "(+(^(a;3);^(b;3)))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;1);+(^(a;2);-(a);1)))","right": "(+(^(a;3);^(1;3)))", "matchJumbledAndNested": true}
+      ]
+    },
+
+    {
+      "name": "Logarithm",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticPow"},
+
+        {"left": "(^(a;log(b;a)))","right": "(b)", "priority": 5},
+
+        {"left": "(log(1;A))","right": "(0)", "priority": 5},
+        {"left": "(log(A;A))","right": "(1)", "priority": 5},
+
+        {"left": "(log(*(b;c);a))","right": "(+(log(b;a);log(c;a)))"},
+        {"left": "(+(log(b;a);log(c;a)))","right": "(log(*(b;c);a))"},
+        {"left": "(log(*(b;c;d);a))","right": "(+(log(b;a);log(c;a);log(d;a)))"},
+        {"left": "(+(log(b;a);log(c;a);log(d;a)))","right": "(log(*(b;c;d);a))"},
+        {"left": "(log(*(b;c;d;e);a))","right": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))"},
+        {"left": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))","right": "(log(*(b;c;d;e);a))"},
+
+        {"left": "(log(/(b;c);a))","right": "(+(log(b;a);-(log(c;a))))"},
+        {"left": "(+(log(b;a);-(log(c;a))))","right": "(log(/(b;c);a))"},
+
+        {"left": "(log(^(b;c);a))","right": "(*(c;log(b;a)))"},
+        {"left": "(*(c;log(b;a)))","right": "(log(^(b;c);a))"},
+        {"left": "(*(log(b;a);c))","right": "(log(^(b;c);a))"},
+
+        {"left": "(log(b;^(a;k)))","right": "(/(log(b;a);k))"},
+        {"left": "(/(log(b;a);k))","right": "(log(b;^(a;k)))"},
+
+        {"left": "(/(1;log(b;a)))","right": "(log(a;b))"},
+        {"left": "(log(a;b))","right": "(/(1;log(b;a)))"},
+
+        {"left": "(/(log(c;a);log(b;a)))","right": "(log(c;b))"},
+
+        {"left": "(log(/(b;c);a))","right": "(+(-(log(/(c;b);a))))"},
+        {"left": "(+(-(log(/(c;b);a))))","right": "(log(/(b;c);a))"},
+
+        {"left": "(log(b;a))","right": "(+(-(log(/(1;b);a))))"},
+        {"left": "(+(-(log(/(1;b);a))))","right": "(log(b;a))"},
+
+        {"left": "(log(/(1;b);a))","right": "(+(-(log(b;a))))"},
+        {"left": "(+(-(log(b;a))))","right": "(log(/(1;b);a))"}
+      ]
+    }
+  ]
+}

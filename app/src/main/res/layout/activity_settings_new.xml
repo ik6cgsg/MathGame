@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".activities.SettingsActivity">
+
+    <TextView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="back"
+        android:text="@string/back"
+        android:textColor="?attr/textColor"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="@+id/settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/settings"
+        android:textColor="?attr/textColor"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_table"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/version_view"
+        android:textColor="?attr/colorHint"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <View
+        android:id="@+id/divider_top"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings" />
+
+    <HorizontalScrollView
+        android:id="@+id/greetings_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_top"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingVertical="8dp"
+        android:scrollbarSize="0dp">
+        <TextView
+            android:id="@+id/greetings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/textColor"
+            android:textSize="18sp"
+            android:maxLines="1"
+            android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"/>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/account_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:singleLine="true"
+        android:text="@string/settings_account"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/greetings_scroll" />
+
+    <TableLayout
+        android:id="@+id/account_table"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="20dp"
+        android:stretchColumns="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_label">
+
+        <TableRow
+            android:id="@+id/edit_account"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="editClick"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✏"
+                android:textColor="@color/text_simple_disableable"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp" />
+
+            <TextView
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_edit_account"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:textColor="@color/text_simple_disableable"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/pass_change"
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="changePassClicked"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔑"
+                android:textColor="@color/text_simple_disableable"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:text="@string/settings_change_password"
+                android:textColor="@color/text_simple_disableable"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/logout"
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="logoutClicked"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🚪"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:id="@+id/logout_text"
+                android:duplicateParentState="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:text="@string/sign_out"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/app_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:singleLine="true"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="18sp"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:text="@string/settings_application"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_table" />
+
+    <TableLayout
+        android:id="@+id/app_table"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="20dp"
+        android:stretchColumns="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_label">
+
+        <TableRow
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="changeLanguageClicked"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌍"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_change_language"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="changeThemeClicked"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌗"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_change_theme"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="rateClick"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⭐"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_rate_app"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+
+<!-- TODO: decide what to do with tutorial
+
+        <TableRow
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="startTutorialClick"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎓"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:text="@string/settings_start_tutorial"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+            <Space android:layout_width="16dp"/>
+            <Space android:layout_width="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+-->
+
+        <TableRow
+            android:layout_width="10dp"
+            android:clickable="true"
+            android:background="@drawable/row_clickable"
+            android:onClick="resetClick"
+            android:focusable="true"
+            android:layout_height="match_parent"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="24dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚠"
+                android:textColor="?attr/textColor"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+            <Space android:layout_width="16dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:text="@string/settings_reset"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="21sp"
+                android:typeface="monospace" />
+        </TableRow>
+    </TableLayout>
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp"
+        android:visibility="gone"
+        app:blurOverlayColor="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </eightbitlab.com.blurview.BlurView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

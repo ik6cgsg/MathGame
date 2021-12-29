@@ -1,0 +1,876 @@
+{
+  "gameSpace": "",
+  "gameCode": "ege_trigonometry",
+  "name": "ЕГЭ Тригонометрия",
+  "en": "EGE trigonometry",
+  "ru": "ЕГЭ Тригонометрия",
+  "version": 10,
+  "levels":[
+    {
+      "levelCode": "ege_trigonometry__Hello_World_Level",
+      "name": "Начнем с простого",
+      "ru": "Начнем с простого",
+      "en": "Let's start simple",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 150,
+      "originalExpression": "(/(*(18;sin(a);cos(a));sin(*(2;a))))",
+      "finalExpression": "Упростить",
+      "finalPattern": "?:0:?:?N",
+      "rules":[
+        {"rulePack": "MathBase"},
+        {"left":"(18)","right":"(*(9;2))"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_01_Compute",
+      "name": "Уровень 1 Вычисление",
+      "ru": "Уровень 1 Вычисление",
+      "en": "Level 1 Calculation",
+      "difficulty": 4.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 150,
+      "originalExpression": "(*(36;tg(/(π;6));cos(/(π;6))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(36)","right":"(*(18;2))"},
+        {"left":"(36)","right":"(*(6;6))"},
+        {"left":"(6)","right":"(*(3;2))"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_02_Compute",
+      "name": "Уровень 2 Вычисление",
+      "ru": "Уровень 2 Вычисление",
+      "en": "Level 2 Calculation",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 5,
+      "time": 150,
+      "originalExpression": "(*(2;cos(*(2;x))))",
+      "finalExpression": "Вычислить при sin(x)=0.6",
+      "finalPattern": "?:0:?:?R",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(sin(x))","right":"(0.6)","basedOnTaskContext": true}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_03_Compute",
+      "name": "Уровень 3 Упрощение",
+      "ru": "Уровень 3 Упрощение",
+      "en": "Level 3 Simplification",
+      "difficulty": 5.0,
+      "type": "algebra",
+      "stepsNum": 11,
+      "time": 200,
+      "originalExpression": "(/(+(sin(+(/(π;2);a));-(*(5;cos(+(π;-(a))))));-(cos(+(*(3;π);a)))))",
+      "finalExpression": "Упростить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(+(*(5;a);a))","right":"(*(6;a))"},
+        {"left":"(+(a;*(5;a)))","right":"(*(6;a))"},
+        {"left":"(cos(+(*(3;π);a)))","right":"(cos(+(π;a)))"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_04_Compute",
+      "name": "Уровень 4 Вычисление",
+      "ru": "Уровень 4 Вычисление",
+      "en": "Level 4 Calculation",
+      "difficulty": 7.0,
+      "type": "algebra",
+      "stepsNum": 41,
+      "time": 300,
+      "originalExpression": "(+(-(*(18;/(sin(+(-(/(*(3;π);4))));^(2;0.5))))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(/(2;4))","right":"(/(1;2))"},
+        {"left":"(4)","right":"(*(2;2))"},
+        {"left":"(*(2;2))","right":"(4)"},
+        {"left":"(+(2;1))","right":"(3)"},
+        {"left":"(+(1;2))","right":"(3)"},
+        {"left":"(3)","right":"(+(2;1))"},
+        {"left":"(18)","right":"(*(9;2))"},
+        {"left":"(/(18;2))","right":"(9)"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_05_Compute",
+      "name": "Уровень 5 Упрощение",
+      "ru": "Уровень 5 Упрощение",
+      "en": "Level 5 Simplification",
+      "difficulty": 8.0,
+      "type": "algebra",
+      "stepsNum": 41,
+      "time": 300,
+      "originalExpression": "(/(+(*(2;sin(+(a;-(*(7;π)))));cos(+(/(*(3;π);2);a)));-(sin(+(π;a)))))",
+      "finalExpression": "Упростить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(+(-(2);1))","right":"(1)"},
+        {"left":"(+(1;-(2)))","right":"(1)"},
+        {"left":"(3)","right":"(+(2;1))"},
+        {"left":"(+(-(*(2;a));a))","right":"(a)"},
+        {"left":"(+(a;-(*(2;a))))","right":"(a)"},
+        {"left":"(sin(+(a;-(*(7;π)))))","right":"(sin(+(a;-(π))))"},
+        {"left":"(sin(+(a;-(*(7;π)))))","right":"(sin(+(a;π)))"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_06_Compute",
+      "name": "Уровень 6 Вычисление",
+      "ru": "Уровень 6 Вычисление",
+      "en": "Level 6 Calculation",
+      "difficulty": 5.0,
+      "type": "algebra",
+      "stepsNum": 8,
+      "time": 300,
+      "originalExpression": "(*(16;tg(/(π;8));tg(/(*(3;π);8))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(/(*(3;π);8))","right":"(+(/(π;2);-(/(π;8))))"},
+        {"left":"(/(π;8))","right":"(+(/(π;2);-(/(*(3;π);8))))"},
+        {"left":"(/(*(3;π);8))","right":"(/(*(6;π);16))"},
+        {"left":"(/(π;8))","right":"(/(*(2;π);16))"},
+        {"left":"(6)","right":"(*(3;2))"},
+        {"left":"(16)","right":"(*(8;2))"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_07_Simplify",
+      "name": "Уровень 7 Упрощение",
+      "ru": "Уровень 7 Упрощение",
+      "en": "Level 7 Simplification",
+      "difficulty": 3.0,
+      "type": "algebra",
+      "stepsNum": 3,
+      "time": 150,
+      "originalExpression": "(+(/(1;+(1;^(tg(*(2;a));2)));/(1;+(1;^(ctg(*(2;a));2)))))",
+      "finalExpression": "Упростить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_08_Compute",
+      "name": "Уровень 8 Вычисление",
+      "ru": "Уровень 8 Вычисление",
+      "en": "Level 8 Calculation",
+      "difficulty": 5.0,
+      "type": "algebra",
+      "stepsNum": 13,
+      "time": 900,
+      "originalExpression": "(*(25;sin(+(arcsin(/(4;5));arccos(/(3;5))))))",
+      "finalExpression": "Вычислить",
+      "finalPattern": "?:0:?:?N",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(sin(arcsin(a)))","right":"(a)"},
+        {"left":"(cos(arccos(a)))","right":"(a)"},
+        {"left":"(arccos(/(3;5)))","right":"(arcsin(/(4;5)))"},
+        {"left":"(arccos(/(4;5)))","right":"(arcsin(/(3;5)))"},
+        {"left":"(arcsin(/(3;5)))","right":"(arccos(/(4;5)))"},
+        {"left":"(arcsin(/(4;5)))","right":"(arccos(/(3;5)))"},
+        {"left":"(*(4;3))","right":"(12)"},
+        {"left":"(*(3;4))","right":"(12)"},
+        {"left":"(+(12;12))","right":"(24)"},
+        {"left":"(*(12;2))","right":"(24)"},
+        {"left":"(*(2;12))","right":"(24)"},
+        {"left":"(*(5;5))","right":"(25)"},
+        {"left":"(^(5;2))","right":"(25)"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_09_Prove",
+      "name": "Уровень 9 Доказательство",
+      "ru": "Уровень 9 Доказательство",
+      "en": "Level 9 Proof",
+      "difficulty": 9.0,
+      "type": "algebra",
+      "stepsNum": 66,
+      "time": 900,
+      "originalExpression": "(/(+(1;sin(*(2;a));-(cos(*(2;a))));+(1;sin(*(2;a));cos(*(2;a)))))",
+      "finalExpression": "(tg(a))",
+      "finalPattern": "",
+      "rules": [
+        {"rulePack": "MathBase"}
+      ]
+    },
+    {
+      "levelCode": "ege_trigonometry__Level_10_Prove",
+      "name": "Уровень 10 Доказательство",
+      "ru": "Уровень 10 Доказательство",
+      "en": "Level 10 Proof",
+      "difficulty": 10.0,
+      "type": "algebra",
+      "stepsNum": 66,
+      "time": 900,
+      "originalExpression": "(+(/(1;(+(tg(*(3;a));tg(a))));-(/(1;(+(ctg(*(3;a));ctg(a)))))))",
+      "finalExpression": "(ctg(*(4;a)))",
+      "finalPattern": "",
+      "rules": [
+        {"rulePack": "MathBase"},
+        {"left":"(+(*(3;a);a))","right":"(*(4;a))"},
+        {"left":"(*(4;a))","right":"((+(*(3;a);a))"},
+        {"left":"(+(*(2;a);*(2;a)))","right":"(*(4;a))"},
+        {"left":"(*(4;a))","right":"(+(*(2;a);*(2;a)))"},
+        {"left":"(+(*(3;a);-(*(2;a))))","right":"(a)"},
+        {"left":"(a)","right":"(+(*(3;a);-(*(2;a))))"},
+        {"left":"(+(*(3;a);-(a)))","right":"(*(2;a))"},
+        {"left":"(+(*(4;a);-(a)))","right":"(*(3;a))"},
+        {"left":"(*(3;a))","right":"(+(*(4;a);-(a)))"},
+        {"left":"(+(*(2;a);-(a)))","right":"(a)"},
+        {"left":"(a)","right":"(+(*(2;a);-(a)))"}
+      ]
+    }
+  ],
+  "rulePacks":[
+    {
+      "name": "MathBase",
+      "rules":[
+        {"rulePack": "ArithmeticСommutativity"},
+        {"rulePack": "ArithmeticMinus"},
+        {"rulePack": "BaseDigits"},
+        {"rulePack": "ArithmeticAssociativity"},
+        {"rulePack": "AdditiveToMultiplicative"},
+        {"rulePack": "ArithmeticDegree"},
+
+        {"rulePack": "ShortMultiplication"},
+
+        {"rulePack": "Trigonometry"},
+        {"rulePack": "TrigonometryZk"},
+        {"rulePack": "TrigonometryCompleteTgCtg"},
+
+        {"rulePack": "ArithmeticPlusSelections"},
+
+        {"code": "SimpleComputation", "priority": 5},
+        {"code": "ZeroComputation", "priority": 5},
+        {"code": "NumberPlusMinus1", "priority": 20},
+        {"code": "MultiplicationFactorization", "priority": 15},
+        {"code": "DecimalToFraction", "priority": 15},
+        {"code": "PowFactorization", "priority": 15}
+      ]
+    },
+    {
+      "name": "BaseDigits",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a))","right":"(a)"},
+
+        {"left":"(+(a;+(b)))","right":"(+(a;b))"},
+        {"left":"(+(+(a);b))","right":"(+(a;b))"},
+
+        {"left":"(+(a;a))","right":"(*(2;a))"},
+        {"left":"(+(a;+(a)))","right":"(*(2;a))"},
+        {"left":"(+(+(a);a))","right":"(*(2;a))"},
+        {"left":"(*(2;a))","right":"(+(a;a))"},
+
+        {"left":"(+(a;a;a))","right":"(*(3;a))"},
+        {"left":"(+(a;*(2;a)))","right":"(*(3;a))"},
+        {"left":"(+(*(2;a);a))","right":"(*(3;a))"},
+        {"left":"(*(3;a))","right":"(+(a;*(2;a)))"},
+
+        {"left":"(+(a;*(3;a)))","right":"(*(4;a))"},
+        {"left":"(+(*(3;a);a))","right":"(*(4;a))"},
+        {"left":"(+(*(2;a);*(2;a)))","right":"(*(4;a))"},
+        {"left":"(*(4;a))","right":"(+(a;*(3;a)))"},
+
+        {"left":"(+(a;0))","right":"(a)"},
+        {"left":"(+(0;a))","right":"(a)"},
+        {"left":"(a)","right":"(+(a;0))"},
+        {"left":"(*(a;0))","right":"(0)"},
+        {"left":"(*(0;a))","right":"(0)"},
+        {"left":"(/(0;a))","right":"(0)"},
+        {"left":"(*(a;1))","right":"(a)"},
+        {"left":"(*(1;a))","right":"(a)"},
+        {"left":"(/(a;1))","right":"(a)"},
+        {"left":"(/(a;a))","right":"(1)"},
+        {"left":"(a)","right":"(*(a;1))"},
+        {"left":"(a)","right":"(/(1;/(1;a)))"},
+        {"left":"(/(1;/(1;a)))","right":"(a)"},
+
+        {"left":"(+(-(+(-(a)))))","right":"(a)"},
+        {"left":"(-(+(-(a))))","right":"(a)"},
+        {"left":"(a)","right":"(-(+(-(a))))"},
+
+        {"left":"(+(1;1))","right":"(2)"},
+        {"left":"(2)","right":"(+(1;1))"},
+        {"left":"(+(1;2))","right":"(3)"},
+        {"left":"(3)","right":"(+(1;2))"},
+
+        {"left":"(*(1;1))","right":"(1)"},
+        {"left":"(1)","right":"(*(1;1))"},
+
+        {"left": "(0.5)","right": "(/(1;2))"},
+        {"left": "(/(1;2))","right": "(0.5)"}
+      ]
+    },
+    {
+      "name": "ArithmeticСommutativity",
+      "type": "algebra",
+      "rules":[
+        {"rulePack": "ArithmeticAdditionalСommutativity"},
+        {"rulePack": "ArithmeticMultiplicativeСommutativity"}
+      ]
+    },
+    {
+      "name": "ArithmeticAdditionalСommutativity",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(a;b))","right":"(+(b;a))"},
+
+        {"left": "(+(A;+(B;C)))","right": "(+(A;B;C))"},
+        {"left": "(+(A;B;C))","right": "(+(A;+(B;C)))"},
+        {"left": "(+(A;+(B;C)))","right": "(+(+(A;B);C))"},
+        {"left": "(+(+(A;B);C))","right": "(+(A;+(B;C)))"},
+        {"left": "(+(+(A;B);C))","right": "(+(A;B;C))"},
+        {"left": "(+(A;B;C))","right": "(+(+(A;B);C))"},
+
+        {"left": "(+(A;B;C))","right": "(+(A;C;B))"},
+        {"left": "(+(A;B;C))","right": "(+(B;A;C))"},
+        {"left": "(+(A;B;C))","right": "(+(C;A;B))"},
+
+        {"left": "(+(+(A;B);+(C;D)))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;+(B;C;D)))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(A;+(B;C;D)))"},
+        {"left": "(+(+(A;B;C);D))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(+(A;B;C);D))"},
+
+        {"left": "(+(A;B;+(C;D)))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(A;B;+(C;D)))"},
+        {"left": "(+(A;+(B;C);D))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(A;+(B;C);D))"},
+        {"left": "(+(+(A;B);C;D))","right": "(+(A;B;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(+(A;B);C;D))"},
+
+        {"left": "(+(A;B;C;D))","right": "(+(B;A;C;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(C;A;B;D))"},
+        {"left": "(+(A;B;C;D))","right": "(+(D;A;B;C))"},
+
+        {"left": "(+(A;+(B;C;D;E)))","right": "(+(A;B;C;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(A;+(B;C;D;E)))"},
+        {"left": "(+(+(A;B;C;D);E))","right": "(+(A;B;C;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(+(A;B;C;D);E))"},
+
+        {"left": "(+(A;B;C;D;E))","right": "(+(B;A;C;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(C;A;B;D;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(D;A;B;C;E))"},
+        {"left": "(+(A;B;C;D;E))","right": "(+(E;A;B;C;D))"}
+      ]
+    },
+    {
+      "name": "ArithmeticPlusSelections",
+      "type": "algebra",
+      "rules": [
+        {"left":"(+(a;b))","right":"(+(a;+(b)))"},
+        {"left":"(+(a;b))","right":"(+(+(a);b))"},
+
+        {"left":"(+(a;b;c))","right":"(+(+(a);b;c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;+(b);c))"},
+        {"left":"(+(a;b;c))","right":"(+(a;b;+(c)))"},
+
+        {"left":"(+(a;b;c;d))","right":"(+(+(a);b;c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;+(b);c;d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;+(c);d))"},
+        {"left":"(+(a;b;c;d))","right":"(+(a;b;c;+(d)))"},
+
+        {"left":"(+(a;b;c;d;e))","right":"(+(+(a);b;c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;+(b);c;d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;+(c);d;e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;+(d);e))"},
+        {"left":"(+(a;b;c;d;e))","right":"(+(a;b;c;d;+(e)))"},
+
+        {"right":"(+(a;b))","left":"(+(a;+(b)))"},
+        {"right":"(+(a;b))","left":"(+(+(a);b))"},
+
+        {"right":"(+(a;b;c))","left":"(+(+(a);b;c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;+(b);c))"},
+        {"right":"(+(a;b;c))","left":"(+(a;b;+(c)))"},
+
+        {"right":"(+(a;b;c;d))","left":"(+(+(a);b;c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;+(b);c;d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;+(c);d))"},
+        {"right":"(+(a;b;c;d))","left":"(+(a;b;c;+(d)))"},
+
+        {"right":"(+(a;b;c;d;e))","left":"(+(+(a);b;c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;+(b);c;d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;+(c);d;e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;+(d);e))"},
+        {"right":"(+(a;b;c;d;e))","left":"(+(a;b;c;d;+(e)))"}
+      ]
+    },
+    {
+      "name": "ArithmeticMultiplicativeСommutativity",
+      "type": "algebra",
+      "rules":[
+        {"left":"(*(a;b))","right":"(*(b;a))"},
+
+        {"left": "(*(A;*(B;C)))","right": "(*(A;B;C))"},
+        {"left": "(*(A;B;C))","right": "(*(A;*(B;C)))"},
+        {"left": "(*(A;*(B;C)))","right": "(*(*(A;B);C))"},
+        {"left": "(*(*(A;B);C))","right": "(*(A;*(B;C)))"},
+        {"left": "(*(*(A;B);C))","right": "(*(A;B;C))"},
+        {"left": "(*(A;B;C))","right": "(*(*(A;B);C))"},
+
+        {"left": "(*(A;B;C))","right": "(*(A;C;B))"},
+        {"left": "(*(A;B;C))","right": "(*(B;A;C))"},
+        {"left": "(*(A;B;C))","right": "(*(C;A;B))"},
+
+        {"left": "(*(*(A;B);*(C;D)))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;*(B;C;D)))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(A;*(B;C;D)))"},
+        {"left": "(*(*(A;B;C);D))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(*(A;B;C);D))"},
+
+        {"left": "(*(A;B;*(C;D)))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(A;B;*(C;D)))"},
+        {"left": "(*(A;*(B;C);D))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(A;*(B;C);D))"},
+        {"left": "(*(*(A;B);C;D))","right": "(*(A;B;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(*(A;B);C;D))"},
+
+        {"left": "(*(A;B;C;D))","right": "(*(B;A;C;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(C;A;B;D))"},
+        {"left": "(*(A;B;C;D))","right": "(*(D;A;B;C))"},
+
+        {"left": "(*(A;*(B;C;D;E)))","right": "(*(A;B;C;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(A;*(B;C;D;E)))"},
+        {"left": "(*(*(A;B;C;D);E))","right": "(*(A;B;C;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(*(A;B;C;D);E))"},
+
+        {"left": "(*(A;B;C;D;E))","right": "(*(B;A;C;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(C;A;B;D;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(D;A;B;C;E))"},
+        {"left": "(*(A;B;C;D;E))","right": "(*(E;A;B;C;D))"}
+      ]
+    },
+    {
+      "name": "ArithmeticMinus",
+      "type": "algebra",
+      "rules":[
+        {"left":"(+(-(+(-(a)))))","right":"(a)"},
+        {"left":"(-(+(-(a))))","right":"(a)"},
+        {"left":"(-(-(a)))","right":"(a)"},
+        {"left":"(b)","right":"(+(-(+(-(b)))))"},
+
+        {"left":"(+(a;-(0)))","right":"(a)"},
+        {"left":"(+(-(0);a))","right":"(a)"},
+        {"left":"(+(0;-(a)))","right":"(+(-(a)))"},
+        {"left":"(+(-(a);0))","right":"(+(-(a)))"},
+        {"left":"(+(a;-(a)))","right":"(0)"},
+        {"left":"(+(-(a);a))","right":"(0)"},
+        {"left":"(+(a;+(-(a))))","right":"(0)"},
+        {"left":"(+(+(-(a));a))","right":"(0)"},
+
+        {"left":"(+(b;-(-(a))))","right":"(+(b;a))"},
+        {"left":"(+(b;-(+(-(a)))))","right":"(+(b;a))"},
+        {"left":"(+(b;a))","right":"(+(b;-(+(-(a)))))"},
+
+        {"left":"(0)","right":"(+(1;-(1)))"},
+
+        {"left": "(-(+(B;C)))","right": "(+(-(B);-(C)))"},
+        {"left": "(+(-(B);-(C)))","right": "(-(+(B;C)))"},
+        {"left": "(-(+(B;C;D)))","right": "(+(-(B);-(C);-(D)))"},
+        {"left": "(+(-(B);-(C);-(D)))","right": "(-(+(B;C;D)))"},
+        {"left": "(-(+(B;C;D;E)))","right": "(+(-(B);-(C);-(D);-(E)))"},
+        {"left": "(+(-(B);-(C);-(D);-(E)))","right": "(-(+(B;C;D;E)))"},
+
+        {"left": "(+(A;-(+(B;-(C)))))","right": "(+(A;-(B);C))"},
+        {"left": "(+(A;-(+(B;C))))","right": "(+(A;-(B);-(C)))"},
+        {"left": "(+(A;-(B);-(C)))","right": "(+(A;-(+(B;C))))"},
+        {"left": "(+(A;-(B);C))","right": "(+(A;-(+(B;-(C)))))"},
+        {"left": "(+(A;-(+(B;-(C);D))))","right": "(+(A;-(B);C;-(D)))"},
+        {"left": "(+(A;-(+(B;-(C);-(D)))))","right": "(+(A;-(B);C;D))"},
+        {"left": "(+(A;-(+(B;C;D))))","right": "(+(A;-(B);-(C);-(D)))"},
+        {"left": "(+(A;-(B);-(C);-(D)))","right": "(+(A;-(+(B;C;D))))"},
+        {"left": "(+(A;-(+(B;-(C)));D))","right": "(+(A;-(B);C;D))"},
+        {"left": "(+(A;-(+(B;C));D))","right": "(+(A;-(B);-(C);D))"},
+        {"left": "(+(A;-(B);-(C);D))","right": "(+(A;-(+(B;C));D))"},
+        {"left": "(+(A;-(+(B;C;D;E))))","right": "(+(A;-(B);-(C);-(D);-(E)))"},
+        {"left": "(+(A;-(B);-(C);-(D);-(E)))","right": "(+(A;-(+(B;C;D;E))))"},
+        {"left": "(+(A;-(+(B;C;D));E))","right": "(+(A;-(B);-(C);-(D);E))"},
+        {"left": "(+(A;-(B);-(C);-(D);E))","right": "(+(A;-(+(B;C;D));E))"},
+
+        {"left": "(+(A;C;-(A)))","right": "(+(C))"},
+        {"left": "(+(A;-(A);C))","right": "(+(C))"},
+        {"left": "(+(A;C;D;-(A)))","right": "(+(C;D))"},
+        {"left": "(+(A;C;-(A);D))","right": "(+(C;D))"},
+        {"left": "(+(A;-(A);C;D))","right": "(+(C;D))"},
+        {"left": "(+(A;C;D;E;-(A)))","right": "(+(C;D;E))"},
+        {"left": "(+(A;C;D;-(A);E))","right": "(+(C;D;E))"},
+        {"left": "(+(A;C;-(A);D;E))","right": "(+(C;D;E))"},
+        {"left": "(+(A;-(A);C;D;E))","right": "(+(C;D;E))"}
+      ]
+    },
+    {
+      "name": "AdditiveToMultiplicative",
+      "type": "algebra",
+      "rules":[
+        {"left": "(+(a;*(a;n)))","right": "(*(a;+(n;1)))"},
+        {"left": "(*(a;+(n;1)))","right": "(+(a;*(a;n)))"},
+        {"left": "(+(*(a;n);a))","right": "(*(a;+(1;n)))"},
+        {"left": "(*(a;+(1;n)))","right": "(+(*(a;n);a))"}
+      ]
+    },
+    {
+      "name": "ArithmeticAssociativity",
+      "type": "algebra",
+      "rules":[
+        {"left": "(*(A;+(B;C)))","right": "(+(*(A;B);*(A;C)))"},
+        {"left": "(*(+(B;C);A))","right": "(+(*(B;A);*(C;A)))"},
+        {"left": "(+(*(A;B);*(A;C)))","right": "(*(A;+(B;C)))"},
+        {"left": "(+(*(B;C);*(A;C)))","right": "(*(+(B;A);C))"},
+
+        {"left": "(*(A;+(B;C;D)))","right": "(+(*(A;B);*(A;C);*(A;D)))"},
+        {"left": "(+(*(A;B);*(A;C);*(A;D)))","right": "(*(A;+(B;C;D)))"},
+        {"left": "(*(+(B;C;D);A))","right": "(+(*(B;A);*(C;A);*(D;A)))"},
+        {"left": "(+(*(B;A);*(C;A);*(D;A)))","right": "(*(+(B;C;D);A))"},
+
+        {"left": "(*(A;+(B;C;D;E)))","right": "(+(*(A;B);*(A;C);*(A;D);*(A;E)))"},
+        {"left": "(+(*(A;B);*(A;C);*(A;D);*(A;E)))","right": "(*(A;+(B;C;D;E)))"},
+        {"left": "(*(+(B;C;D;E);A))","right": "(+(*(B;A);*(C;A);*(D;A);*(E;A)))"},
+        {"left": "(+(*(B;A);*(C;A);*(D;A);*(E;A)))","right": "(*(+(B;C;D;E);A))"},
+
+        {"left": "(*(A;+(B;-(C))))","right": "(+(*(A;B);-(*(A;C))))"},
+        {"left": "(*(+(B;-(A));C))","right": "(+(*(B;C);-(*(A;C))))"},
+        {"left": "(+(*(A;B);-(*(A;C))))","right": "(*(A;+(B;-(C))))"},
+        {"left": "(+(*(B;C);-(*(A;C))))","right": "(*(+(B;-(A));C))"},
+
+        {"left": "(+(/(B;C);/(A;C)))","right": "(/(+(B;A);C))"},
+        {"left": "(/(+(B;A);C))","right": "(+(/(B;C);/(A;C)))"},
+        {"left": "(+(/(B;C);-(/(A;C))))","right": "(/(+(B;-(A));C))"},
+        {"left": "(/(+(B;-(A));C))","right": "(+(/(B;C);-(/(A;C))))"},
+
+        {"left": "(-(*(A;C)))","right": "(*(-(A);C))"},
+        {"left": "(*(-(A);C))","right": "(-(*(A;C)))"},
+        {"left": "(-(*(A;C)))","right": "(*(A;-(C)))"},
+        {"left": "(*(A;-(C)))","right": "(-(*(A;C)))"},
+        {"left": "(*(A;-(C)))","right": "(*(-(A);C))"},
+        {"left": "(*(-(A);C))","right": "(*(A;-(C)))"},
+
+        {"left": "(-(/(A;C)))","right": "(/(-(A);C))"},
+        {"left": "(/(-(A);C))","right": "(-(/(A;C)))"},
+        {"left": "(-(/(A;C)))","right": "(/(A;-(C)))"},
+        {"left": "(/(A;-(C)))","right": "(-(/(A;C)))"},
+        {"left": "(/(A;-(C)))","right": "(/(-(A);C))"},
+        {"left": "(/(-(A);C))","right": "(/(A;-(C)))"},
+
+        {"left": "(+(-(*(A;C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(+(-(*(A;C))))"},
+        {"left": "(+(-(*(A;C))))","right": "(*(A;+(-(C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(+(-(*(A;C))))"},
+        {"left": "(*(A;+(-(C))))","right": "(*(+(-(A));C))"},
+        {"left": "(*(+(-(A));C))","right": "(*(A;+(-(C))))"},
+
+        {"left": "(+(-(/(A;C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(+(-(/(A;C))))"},
+        {"left": "(+(-(/(A;C))))","right": "(/(A;+(-(C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(+(-(/(A;C))))"},
+        {"left": "(/(A;+(-(C))))","right": "(/(+(-(A));C))"},
+        {"left": "(/(+(-(A));C))","right": "(/(A;+(-(C))))"},
+
+        {"left": "(*(-(A);-(B)))","right": "(*(A;B))"},
+        {"left": "(/(-(A);-(B)))","right": "(/(A;B))"},
+        {"left": "(*(A;B))","right": "(*(+(-(A));+(-(B))))"},
+        {"left": "(/(A;B))","right": "(/(+(-(A));+(-(B))))"},
+        {"left": "(*(+(-(A));+(-(B))))","right": "(*(A;B))"},
+        {"left": "(/(+(-(A));+(-(B))))","right": "(/(A;B))"},
+
+        {"left": "(+(/(B;C);/(A;D)))","right": "(/(+(*(B;D);*(C;A));*(C;D)))"},
+        {"left": "(+(/(B;C);-(/(A;D))))","right": "(/(+(*(B;D);-(*(C;A)));*(C;D)))"},
+
+        {"left": "(*(A;/(B;A)))","right": "(B)"},
+        {"left": "(*(/(B;A);A))","right": "(B)"},
+
+        {"left": "(*(A;/(B;C)))","right": "(/(*(A;B);C))"},
+        {"left": "(*(/(B;C);A))","right": "(/(*(A;B);C))"},
+        {"left": "(/(A;B))","right": "(/(1;/(B;A)))"},
+        {"left": "(/(1;/(B;A)))","right": "(/(A;B))"},
+        {"left": "(/(*(A;B);C))","right": "(*(A;/(B;C)))"},
+
+        {"left": "(/(/(B;C);A))","right": "(/(B;*(A;C)))"},
+        {"left": "(/(B;*(A;C)))","right": "(/(/(B;C);A))"},
+
+        {"left": "(/(A;/(B;C)))","right": "(/(*(A;C);B))"},
+        {"left": "(/(*(A;C);B))","right": "(/(A;/(B;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(A;B);/(1;C)))"},
+        {"left": "(/(A;*(B;C)))","right": "(*(/(1;B);/(A;C)))"},
+        {"left": "(*(/(A;B);/(1;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(1;B);/(A;C)))","right": "(/(A;*(B;C)))"},
+        {"left": "(*(/(D;B);/(A;C)))","right": "(/(*(D;A);*(B;C)))"},
+        {"left": "(/(*(D;A);*(B;C)))","right": "(*(/(D;B);/(A;C)))"},
+        {"left": "(/(*(D;A);*(B;A)))","right": "(/(D;B))"},
+
+        {"left": "(/(*(D;A);*(D;C)))","right": "(/(A;C))"},
+        {"left": "(/(*(D;A);D))","right": "(A)"},
+        {"left": "(/(*(A;D);D))","right": "(A)"}
+      ]
+    },
+    {
+      "name": "ArithmeticDegree",
+      "type": "algebra",
+      "rules":[
+        {"left": "(/(1;A))","right": "(^(A;+(-(1))))"},
+        {"left": "(^(A;+(-(1))))","right": "(/(1;A))"},
+
+        {"left": "(^(A;+(B;C)))","right": "(*(^(A;B);^(A;C)))"},
+        {"left": "(*(^(A;B);^(A;C)))","right": "(^(A;+(B;C)))"},
+        {"left": "(^(A;+(B;C;D)))","right": "(*(^(A;B);^(A;C);^(A;D)))"},
+        {"left": "(*(^(A;B);^(A;C);^(A;D)))","right": "(^(A;+(B;C;D)))"},
+
+        {"left": "(^(A;+(B;-(C))))","right": "(/(^(A;B);^(A;C)))"},
+        {"left": "(/(^(A;B);^(A;C)))","right": "(^(A;+(B;-(C))))"},
+
+        {"left": "(/(B;^(A;C)))","right": "(*(B;^(A;+(-(C)))))"},
+        {"left": "(*(B;^(A;+(-(C)))))","right": "(/(B;^(A;C)))"},
+        {"left": "(/(1;^(A;C)))","right": "(^(A;+(-(C))))"},
+        {"left": "(^(A;+(-(C))))","right": "(/(1;^(A;C)))"},
+        {"left": "(/(A;B))","right": "(^(/(B;A);+(-(1))))"},
+        {"left": "(^(/(B;A);+(-(1))))","right": "(/(A;B))"},
+
+        {"left": "(^(A;0))","right": "(1)"},
+
+        {"left": "(^(1;A))","right": "(1)"},
+        {"left": "(^(A;1))","right": "(A)"},
+        {"left": "(^(0;A))","right": "(0)"},
+
+        {"left": "(*(A;A))","right": "(^(A;2))"},
+        {"left": "(^(A;2))","right": "(*(A;A))"},
+
+        {"left": "(*(a;^(a;n)))","right": "(^(a;+(n;1)))"},
+        {"left": "(^(a;+(n;1)))","right": "(*(a;^(a;n)))"},
+        {"left": "(*(^(a;n);a))","right": "(^(a;+(1;n)))"},
+        {"left": "(^(a;+(1;n)))","right": "(*(^(a;n);a))"},
+
+        {"left": "(/(^(a;n);a))","right": "(^(a;+(n;-(1))))"},
+        {"left": "(^(a;+(n;-(1))))","right": "(/(^(a;n);a))"},
+
+        {"left": "(^(A;*(B;C)))","right": "(^(^(A;B);C))"},
+        {"left": "(^(^(A;B);C))","right": "(^(A;*(B;C)))"},
+
+        {"left": "(^(*(B;C);A))","right": "(*(^(B;A);^(C;A)))"},
+        {"left": "(*(^(B;A);^(C;A)))","right": "(^(*(B;C);A))"},
+        {"left": "(^(/(B;C);A))","right": "(/(^(B;A);^(C;A)))"},
+        {"left": "(/(^(B;A);^(C;A)))","right": "(^(/(B;C);A))"},
+
+        {"left": "(^(A;*(2;n)))","right": "(^(-(A);*(2;n)))"},
+        {"left": "(^(-(A);*(2;n)))","right": "(^(A;*(2;n)))"},
+        {"left": "(^(-(A);2))","right": "(^(A;2))"},
+
+        {"left": "(a)","right": "(^(^(a;2);/(1;2)))"},
+        {"left": "(a)","right": "(^(^(a;3);/(1;3)))"},
+        {"left": "(^(^(a;b);/(1;b)))","right": "(a)"}
+      ]
+    },
+    {
+      "name": "ShortMultiplication",
+      "type": "algebra",
+      "rules":[
+        {"left": "(+(^(a;2);-(^(b;2))))","right": "(*(+(a;-(b));+(a;b)))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;-(b));+(a;b)))","right": "(+(^(a;2);-(^(b;2))))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;b);2))","right": "(+(^(a;2);*(2;a;b);^(b;2)))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;2);*(2;a;b);^(b;2)))","right": "(^(+(a;b);2))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;-(b));2))","right": "(+(^(a;2);-(*(2;a;b));^(b;2)))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;2);-(*(2;a;b));^(b;2)))","right": "(^(+(a;-(b));2))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;b);3))","right": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))","right": "(^(+(a;b);3))", "matchJumbledAndNested": true},
+
+        {"left": "(^(+(a;-(b));3))","right": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))", "matchJumbledAndNested": true},
+        {"left": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))","right": "(^(+(a;-(b));3))", "matchJumbledAndNested": true},
+
+        {"left": "(+(^(a;3);-(^(b;3))))","right": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))","right": "(+(^(a;3);-(^(b;3))))", "matchJumbledAndNested": true},
+
+        {"left": "(+(^(a;3);^(b;3)))","right": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))", "matchJumbledAndNested": true},
+        {"left": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))","right": "(+(^(a;3);^(b;3)))", "matchJumbledAndNested": true}
+      ]
+    },
+    {
+      "name": "Trigonometry",
+      "type": "algebra",
+      "rules":[
+        {"left": "(+(^(sin(a);2);^(cos(a);2)))","right": "(1)", "matchJumbledAndNested": true},
+        {"left": "(+(1;-(^(sin(a);2))))","right": "(^(cos(a);2))", "matchJumbledAndNested": true},
+        {"left": "(^(cos(a);2))","right": "(+(1;-(^(sin(a);2))))", "matchJumbledAndNested": true},
+        {"left": "(cos(a))","right": "(^(+(1;-(^(sin(a);2)));0.5))", "matchJumbledAndNested": true},
+        {"left": "(+(1;-(^(cos(a);2))))","right": "(^(sin(a);2))", "matchJumbledAndNested": true},
+        {"left": "(^(sin(a);2))","right": "(+(1;-(^(cos(a);2))))", "matchJumbledAndNested": true},
+        {"left": "(sin(a))","right": "(^(+(1;-(^(cos(a);2)));0.5))", "matchJumbledAndNested": true},
+
+        {"left": "(/(1;^(cos(a);2)))","right": "(+(1;^(tg(a);2)))", "matchJumbledAndNested": true},
+        {"left": "(+(1;^(tg(a);2)))","right": "(/(1;^(cos(a);2)))", "matchJumbledAndNested": true},
+        {"left": "(/(1;^(sin(a);2)))","right": "(+(1;^(ctg(a);2)))", "matchJumbledAndNested": true},
+        {"left": "(+(1;^(ctg(a);2)))","right": "(/(1;^(sin(a);2)))", "matchJumbledAndNested": true},
+        {"left": "(/(1;+(1;^(tg(a);2))))","right": "(^(cos(a);2))", "matchJumbledAndNested": true},
+        {"left": "(^(cos(a);2))","right": "(/(1;+(1;^(tg(a);2))))", "matchJumbledAndNested": true},
+        {"left": "(/(1;+(1;^(ctg(a);2))))","right": "(^(sin(a);2))", "matchJumbledAndNested": true},
+        {"left": "(^(sin(a);2))","right": "(/(1;+(1;^(ctg(a);2))))", "matchJumbledAndNested": true},
+
+        {"left": "(*(tg(a);ctg(a)))","right": "(1)", "matchJumbledAndNested": true},
+        {"left": "(/(sin(a);cos(a)))","right": "(tg(a))"},
+        {"left": "(tg(a))","right": "(/(sin(a);cos(a)))"},
+        {"left": "(/(cos(a);sin(a)))","right": "(ctg(a))"},
+        {"left": "(ctg(a))","right": "(/(cos(a);sin(a)))"},
+        {"left": "(/(1;ctg(a)))","right": "(tg(a))"},
+        {"left": "(tg(a))","right": "(/(1;ctg(a)))"},
+        {"left": "(/(1;tg(a)))","right": "(ctg(a))"},
+        {"left": "(ctg(a))","right": "(/(1;tg(a)))"},
+
+        {"left": "(sin(+(a;b)))","right": "(+(*(sin(a);cos(b));*(sin(b);cos(a))))", "matchJumbledAndNested": true},
+        {"left": "(+(*(sin(a);cos(b));*(sin(b);cos(a))))","right": "(sin(+(a;b)))", "matchJumbledAndNested": true},
+
+        {"left": "(sin(+(a;-(b))))","right": "(+(*(sin(a);cos(b));-(*(sin(b);cos(a)))))", "matchJumbledAndNested": true},
+        {"left": "(+(*(sin(a);cos(b));-(*(sin(b);cos(a)))))","right": "(sin(+(a;-(b))))", "matchJumbledAndNested": true},
+
+        {"left": "(cos(+(a;b)))","right": "(+(*(cos(a);cos(b));-(*(sin(b);sin(a)))))", "matchJumbledAndNested": true},
+        {"left": "(+(*(cos(a);cos(b));-(*(sin(b);sin(a)))))","right": "(cos(+(a;b)))", "matchJumbledAndNested": true},
+
+        {"left": "(cos(+(a;-(b))))","right": "(+(*(cos(a);cos(b));*(sin(b);sin(a))))", "matchJumbledAndNested": true},
+        {"left": "(+(*(cos(a);cos(b));*(sin(b);sin(a))))","right": "(cos(+(a;-(b))))", "matchJumbledAndNested": true},
+
+        {"left": "(sin(*(2;a)))","right": "(*(2;sin(a);cos(a)))", "matchJumbledAndNested": true},
+        {"left": "(*(2;sin(a);cos(a)))","right": "(sin(*(2;a)))", "matchJumbledAndNested": true},
+
+        {"left": "(cos(*(2;a)))","right": "(+(^(cos(a);2);-(^(sin(a);2))))", "matchJumbledAndNested": true},
+        {"left": "(+(^(cos(a);2);-(^(sin(a);2))))","right": "(cos(*(2;a)))", "matchJumbledAndNested": true},
+        {"left": "(+(-(^(sin(a);2));^(cos(a);2)))","right": "(cos(*(2;a)))", "matchJumbledAndNested": true},
+
+        {"left": "(cos(*(2;a)))","right": "(+(1;-(*(2;^(sin(a);2)))))", "matchJumbledAndNested": true},
+        {"left": "(+(1;-(*(2;^(sin(a);2)))))","right": "(cos(*(2;a)))", "matchJumbledAndNested": true},
+        {"left": "(+(-(*(2;^(sin(a);2)));1))","right": "(cos(*(2;a)))", "matchJumbledAndNested": true},
+
+        {"left": "(cos(*(2;a)))","right": "(+(*(2;^(cos(a);2));-(1)))", "matchJumbledAndNested": true},
+        {"left": "(+(*(2;^(cos(a);2));-(1)))","right": "(cos(*(2;a)))", "matchJumbledAndNested": true},
+        {"left": "(+(-(1);*(2;^(cos(a);2))))","right": "(cos(*(2;a)))", "matchJumbledAndNested": true},
+
+
+        {"left": "(+(sin(a);sin(b)))","right": "(*(2;sin(/(+(a;b);2));cos(/(+(a;-(b));2))))", "matchJumbledAndNested": true},
+        {"left": "(+(sin(a);-(sin(b))))","right": "(*(2;sin(/(+(a;-(b));2));cos(/(+(a;b);2))))", "matchJumbledAndNested": true},
+        {"left": "(+(cos(a);cos(b)))","right": "(*(2;cos(/(+(a;b);2));cos(/(+(a;-(b));2))))", "matchJumbledAndNested": true},
+        {"left": "(+(cos(a);-(cos(b))))","right": "(*(2;sin(/(+(a;-(b));2));sin(/(+(a;b);2))))", "matchJumbledAndNested": true},
+
+        {"left": "(*(sin(a);sin(b)))","right": "(/(+(cos(+(a;-(b)));-(cos(+(a;b))));2))", "matchJumbledAndNested": true},
+        {"left": "(*(sin(a);cos(b)))","right": "(/(+(sin(+(a;-(b)));sin(+(a;b)));2))", "matchJumbledAndNested": true},
+        {"left": "(*(cos(a);cos(b)))","right": "(/(+(cos(+(a;-(b)));cos(+(a;b)));2))", "matchJumbledAndNested": true},
+
+
+        {"left": "(sin(+(-(a))))","right": "(+(-(sin(a))))"},
+        {"left": "(+(-(sin(a))))","right": "(sin(+(-(a))))"},
+        {"left": "(-(sin(a)))","right": "(sin(+(-(a))))"},
+        {"left": "(cos(+(-(a))))","right": "(cos(a))"},
+        {"left": "(cos(a))","right": "(cos(+(-(a))))"},
+
+        {"left": "(cos(+(π;a)))","right": "(+(-(cos(-(a)))))"},
+        {"left": "(cos(+(π;-(a))))","right": "(+(-(cos(a))))"},
+        {"left": "(+(-(cos(a))))","right": "(cos(+(π;-(a))))"},
+        {"left": "(-(cos(a)))","right": "(cos(+(π;-(a))))"},
+        {"left": "(sin(+(π;a)))","right": "(sin(+(-(a))))"},
+        {"left": "(sin(+(π;-(a))))","right": "(sin(a))"},
+        {"left": "(sin(a))","right": "(sin(+(π;-(a))))"},
+
+        {"left": "(sin(+(/(π;2);-(a))))","right": "(cos(a))"},
+        {"left": "(sin(+(/(π;2);a)))","right": "(cos(+(-(a))))"},
+        {"left": "(cos(a))","right": "(sin(+(/(π;2);-(a))))"},
+        {"left": "(cos(+(/(π;2);-(a))))","right": "(sin(a))"},
+        {"left": "(cos(+(/(π;2);a)))","right": "(sin(+(-(a))))"},
+        {"left": "(sin(a))","right": "(cos(+(/(π;2);-(a))))"},
+
+        {"left": "(sin(+(-(a))))","right": "(+(-(sin(a))))"},
+        {"left": "(sin(-(a)))","right": "(+(-(sin(a))))"},
+        {"left": "(+(-(sin(a))))","right": "(sin(+(-(a))))"},
+        {"left": "(-(sin(a)))","right": "(sin(+(-(a))))"},
+        {"left": "(sin(+(b;-(a))))","right": "(+(-(sin(+(a;-(b))))))"},
+        {"left": "(+(-(sin(+(a;-(b))))))","right": "(sin(+(b;-(a))))"},
+        {"left": "(cos(+(-(a))))","right": "(cos(a))"},
+        {"left": "(cos(-(a)))","right": "(cos(a))"},
+        {"left": "(cos(a))","right": "(cos(+(-(a))))"},
+        {"left": "(cos(+(a;-(b))))","right": "(cos(+(b;-(a))))"},
+
+        {"left": "(sin(0))","right": "(0)"},
+        {"left": "(0)","right": "(sin(0))"},
+        {"left": "(sin(π))","right": "(0)"},
+        {"left": "(0)","right": "(sin(π))"},
+        {"left": "(sin(/(π;2)))","right": "(1)"},
+        {"left": "(1)","right": "(sin(/(π;2)))"},
+        {"left": "(cos(0))","right": "(1)"},
+        {"left": "(1)","right": "(cos(0))"},
+        {"left": "(cos(π))","right": "(+(-(1)))"},
+        {"left": "(+(-(1)))","right": "(cos(π))"},
+        {"left": "(-(1))","right": "(cos(π))"},
+        {"left": "(cos(/(π;2)))","right": "(0)"},
+        {"left": "(0)","right": "(cos(/(π;2)))"},
+
+        {"left": "(sin(/(π;6)))","right": "(/(1;2))"},
+        {"left": "(0.5)","right": "(sin(/(π;6)))"},
+        {"left": "(sin(/(π;4)))","right": "(/(^(2;/(1;2));2))"},
+        {"left": "(/(^(2;0.5);2))","right": "(sin(/(π;4)))"},
+        {"left": "(sin(/(π;3)))","right": "(/(^(3;/(1;2));2))"},
+        {"left": "(/(^(3;0.5);2))","right": "(sin(/(π;3)))"},
+
+        {"left": "(cos(/(π;3)))","right": "(/(1;2))"},
+        {"left": "(0.5)","right": "(cos(/(π;3)))"},
+        {"left": "(cos(/(π;4)))","right": "(/(^(2;/(1;2));2))"},
+        {"left": "(/(^(2;0.5);2))","right": "(cos(/(π;4)))"},
+        {"left": "(cos(/(π;6)))","right": "(/(^(3;/(1;2));2))"},
+        {"left": "(/(^(3;0.5);2))","right": "(cos(/(π;6)))"},
+
+        {"left": "(tg(/(π;4)))","right": "(1)"},
+        {"left": "(1)","right": "(tg(/(π;4)))"},
+        {"left": "(ctg(/(π;4)))","right": "(1)"},
+        {"left": "(1)","right": "(ctg(/(π;4)))"},
+        {"left": "(tg(0))","right": "(0)"},
+        {"left": "(0)","right": "(tg(0))"},
+        {"left": "(ctg(/(π;2)))","right": "(0)"},
+        {"left": "(0)","right": "(ctg(/(π;2)))"},
+
+        {"left": "(sin(a))","right": "(+(-(sin(+(a;π)))))"},
+        {"left": "(sin(a))","right": "(+(-(sin(+(a;-(π))))))"},
+        {"left": "(cos(a))","right": "(+(-(cos(+(a;π)))))"},
+        {"left": "(cos(a))","right": "(+(-(cos(+(a;-(π))))))"}
+      ]
+    },
+    {
+      "name": "TrigonometryZk",
+      "type": "algebra",
+      "rules": [
+        {"left": "(sin(+(a;*(2;π;k))))","right": "(sin(a))"},
+        {"left": "(cos(+(a;*(2;π;k))))","right": "(cos(a))"}
+      ]
+    },
+    {
+      "name": "TrigonometryCompleteTgCtg",
+      "type": "algebra",
+      "rules": [
+        {"left": "(sin(*(2;a)))","right": "(/(*(2;tg(a));+(1;^(tg(a);2))))"},
+        {"left": "(/(*(2;tg(a));+(1;^(tg(a);2))))","right": "(sin(*(2;a)))"},
+        {"left": "(cos(*(2;a)))","right": "(/(+(1;-(^(tg(a);2)));+(1;^(tg(a);2))))"},
+        {"left": "(/(+(1;-(^(tg(a);2)));+(1;^(tg(a);2))))","right": "(cos(*(2;a)))"},
+
+        {"left": "(tg(+(a;b)))","right": "(/(+(tg(a);tg(b));+(1;-(*(tg(a);tg(b))))))"},
+        {"left": "(/(+(tg(a);tg(b));+(1;-(*(tg(a);tg(b))))))","right": "(tg(+(a;b)))"},
+        {"left": "(tg(+(a;-(b))))","right": "(/(+(tg(a);-(tg(b)));+(1;*(tg(a);tg(b)))))"},
+        {"left": "(/(+(tg(a);-(tg(b)));+(1;*(tg(a);tg(b)))))","right": "(tg(+(a;-(b))))"},
+
+        {"left": "(ctg(+(a;b)))","right": "(/(+(*(ctg(a);ctg(b));-(1));+(ctg(a);ctg(b))))"},
+        {"left": "(/(+(*(ctg(a);ctg(b));-(1));+(ctg(a);ctg(b))))","right": "(ctg(+(a;b)))"},
+        {"left": "(ctg(+(a;-(b))))","right": "(/(+(*(ctg(a);ctg(b));1);+(ctg(a);-(ctg(b)))))"},
+        {"left": "(/(+(*(ctg(a);ctg(b));1);+(ctg(a);-(ctg(b)))))","right": "(ctg(+(a;-(b))))"}
+      ]
+    }
+  ]
+}
