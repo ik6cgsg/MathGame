@@ -8,13 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONObject
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.AuthInfoObjectBase
-import mathhelper.games.matify.common.Logger
-import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.common.ThemeController
-import mathhelper.games.matify.common.RequestPage
-import mathhelper.games.matify.common.Request
-import mathhelper.games.matify.common.RequestData
+import mathhelper.games.matify.common.*
 
 class AccountActivity: AppCompatActivity() {
     private val TAG = "AccountActivity"
@@ -29,6 +23,7 @@ class AccountActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_account)
         loginView = findViewById(R.id.login)

@@ -14,6 +14,7 @@ import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.TypedArrayUtils.getText
 import androidx.core.text.getSpans
 import mathhelper.twf.api.findLowestSubtreeTopOfSelectedNodesInExpression
@@ -49,7 +50,7 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
         Logger.d(TAG, "setDefaults")
         val themeName = Storage.shared.theme()
         setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
-        typeface = Typeface.MONOSPACE
+        typeface = ResourcesCompat.getFont(context, R.font.roboto)
         textSize = Constants.simpleMathViewSize
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(

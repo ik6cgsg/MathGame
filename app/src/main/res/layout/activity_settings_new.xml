@@ -22,8 +22,7 @@
         android:onClick="back"
         android:text="@string/back"
         android:textColor="?attr/textColor"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="@+id/settings"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,7 +153,7 @@
                 android:duplicateParentState="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✏"
+                android:text="✏️"
                 android:textColor="@color/text_simple_disableable"
                 android:textSize="21sp"
                 android:typeface="monospace" />
@@ -465,7 +464,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⚠"
+                android:text="⚠️"
                 android:textColor="?attr/textColor"
                 android:textSize="21sp"
                 android:typeface="monospace" />

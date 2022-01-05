@@ -10,13 +10,7 @@ import org.json.JSONObject
 import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.AuthInfoObjectBase
-import mathhelper.games.matify.common.Logger
-import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.common.ThemeController
-import mathhelper.games.matify.common.RequestPage
-import mathhelper.games.matify.common.Request
-import mathhelper.games.matify.common.RequestData
+import mathhelper.games.matify.common.*
 
 class PasswordActivity: AppCompatActivity() {
     private val TAG = "PasswordActivity"
@@ -32,6 +26,7 @@ class PasswordActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_change_pass)
         oldPassView = findViewById(R.id.old_password)

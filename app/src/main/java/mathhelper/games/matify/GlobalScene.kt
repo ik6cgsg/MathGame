@@ -286,28 +286,33 @@ class GlobalScene {
         val tasksetsReqData = RequestData(RequestPage.TASKSETS_PREVIEW, method = RequestMethod.GET, securityToken = token)
         val base = "${tasksetsReqData.url}&code="
         GlobalScope.launch {
-            for (code in codesToUpdate) {
-                tasksetsReqData.url = base + code
-                val res = Request.doSyncRequest(tasksetsReqData)
-                if (res.returnValue != 200) {
-                    Logger.e(TAG, "failed to refresh game with code = $code")
-                    continue
-                    //throw Request.UserMessageException("Games refreshing failed. Try again later.")
-                }
-                val tasksets = GsonParser.parse<FilterTaskset>(res.body)?.tasksets
-                if (tasksets != null && tasksets.size == 1 && tasksets[0].has("code")) {
-                    val isDefault = code in defCodes
-                    Storage.shared.saveTaskset(tasksets[0].get("code").asString, tasksets[0], isDefault = isDefault)
-                    val info = TasksetInfo(taskset = tasksets[0], isDefault = isDefault)
-                    val loadedGame = Game.create(info, gamesActivity!!)
-                    if (loadedGame != null) {
-                        loadedGame.isPinned = loadedGame.code in pinned
-                        gameMap[loadedGame.code] = loadedGame
+            try {
+                for (code in codesToUpdate) {
+                    tasksetsReqData.url = base + code
+                    val res = Request.doSyncRequest(tasksetsReqData)
+                    if (res.returnValue != 200) {
+                        Logger.e(TAG, "failed to refresh game with code = $code")
+                        continue
+                        //throw Request.UserMessageException("Games refreshing failed. Try again later.")
+                    }
+                    val tasksets = GsonParser.parse<FilterTaskset>(res.body)?.tasksets
+                    if (tasksets != null && tasksets.size == 1 && tasksets[0].has("code")) {
+                        val isDefault = code in defCodes
+                        Storage.shared.saveTaskset(tasksets[0].get("code").asString, tasksets[0], isDefault = isDefault)
+                        val info = TasksetInfo(taskset = tasksets[0], isDefault = isDefault)
+                        val loadedGame = Game.create(info, gamesActivity!!)
+                        if (loadedGame != null) {
+                            loadedGame.isPinned = loadedGame.code in pinned
+                            gameMap[loadedGame.code] = loadedGame
+                        }
                     }
                 }
-            }
-            gamesActivity!!.runOnUiThread {
-                gamesActivity!!.generateList()
+            } catch (e: Exception) {
+                Logger.e(TAG, "failed to refresh game with exception = $e")
+            } finally {
+                gamesActivity!!.runOnUiThread {
+                    gamesActivity!!.generateList()
+                }
             }
         }
     }

@@ -57,6 +57,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
+        AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)

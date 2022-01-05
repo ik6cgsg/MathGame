@@ -15,7 +15,6 @@
         <item name="dividerColor">#8B8484</item>
         <item name="backgroundColor">#1F1F1F</item>
         <item name="instBackgroundColor">#C8016A60</item>
-
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <!-- enable window content transitions -->
@@ -39,7 +38,6 @@
         <item name="dividerColor">#8B8484</item>
         <item name="backgroundColor">#F4EEFF</item>
         <item name="instBackgroundColor">#6FBA97FF</item>
-
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <!-- enable window content transitions -->

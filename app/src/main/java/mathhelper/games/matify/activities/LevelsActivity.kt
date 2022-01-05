@@ -37,6 +37,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
