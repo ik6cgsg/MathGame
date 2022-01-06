@@ -173,6 +173,10 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
 
     @SuppressLint("ClickableViewAccessibility")
     fun generateList() {
+        if (GlobalScene.shared.gameOrder.isEmpty()) {
+            setLoading(false)
+            return
+        }
         gamesList.removeAllViews()
         GlobalScene.shared.gameOrder.forEachIndexed { i, code ->
             val gameView = GlobalScene.shared.gameMap[code]?.let { game ->

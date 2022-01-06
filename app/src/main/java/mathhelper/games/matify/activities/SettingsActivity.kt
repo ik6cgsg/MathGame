@@ -181,9 +181,6 @@ class SettingsActivity: AppCompatActivity() {
                     1 -> "en"
                     else -> "en"
                 }
-                /*val config = Configuration(resources.configuration)
-                config.locale = Locale(languageToChoose); //locale
-                resources.updateConfiguration(config, resources.displayMetrics)*/
                 Storage.shared.setLanguage(languageToChoose)
                 finishAffinity()
                 startActivity(Intent(this, SplashActivity::class.java))
