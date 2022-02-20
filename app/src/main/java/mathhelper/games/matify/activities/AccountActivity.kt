@@ -61,21 +61,22 @@ class AccountActivity: AppCompatActivity() {
     }
 
     fun save(v: View?) {
-        val passwordData = Storage.shared.getUserInfoBase().password
+        val passwordData = Storage.shared.getUserInfoBase().password?.ifBlank { loginView.text.toString() } ?: loginView.text.toString()
         val userData = AuthInfoObjectBase(
             login = loginView.text.toString(),
             name = nameView.text.toString(),
             fullName = fullNameView.text.toString(),
             additional = additionalView.text.toString(),
-            password = if (passwordData.isNullOrBlank()) loginView.text.toString() else passwordData
+            password = passwordData
         )
-        if (Storage.shared.serverToken().isBlank()){
+        if (Storage.shared.serverToken().isBlank()) {
             GlobalScene.shared.signUp(this, userData)
         } else {
             val requestRoot = JSONObject()
             requestRoot.put("login", loginView.text.toString())
+            requestRoot.put("password", passwordData)
             requestRoot.put("name", nameView.text.toString())
-            requestRoot.put("fullName", fullNameView.text.toString())
+            requestRoot.put("fullName", fullNameView.text.toString().ifBlank { null })
             requestRoot.put("additional", additionalView.text.toString())
             val req = RequestData(RequestPage.EDIT, Storage.shared.serverToken(), body = requestRoot.toString())
             GlobalScene.shared.asyncTask(this, background = {

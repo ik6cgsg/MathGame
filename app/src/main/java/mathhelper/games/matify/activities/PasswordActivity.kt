@@ -67,6 +67,7 @@ class PasswordActivity: AppCompatActivity() {
                 GlobalScene.shared.signUp(this, userData)
             } else {
                 val requestRoot = JSONObject()
+                requestRoot.put("login", Storage.shared.getUserInfoBase().login)
                 requestRoot.put("password", newPassView.text.toString())
                 val req = RequestData(RequestPage.EDIT, Storage.shared.serverToken(), body = requestRoot.toString())
                 GlobalScene.shared.asyncTask(this, background = {

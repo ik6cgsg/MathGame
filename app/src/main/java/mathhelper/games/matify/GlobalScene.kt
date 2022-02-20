@@ -171,7 +171,7 @@ class GlobalScene {
         return res
     }
 
-    fun signUp(context: Activity, userData: AuthInfoObjectBase) {
+    fun signUp(context: Activity, userData: AuthInfoObjectBase, afterFinish: (()->Unit)? = null) {
         val requestRoot = JSONObject()
         requestRoot.put("login", userData.login)
         requestRoot.put("password", userData.password)
@@ -192,6 +192,7 @@ class GlobalScene {
         }, foreground = {
             Statistics.logSign(context)
             context.finish()
+            afterFinish?.invoke()
         }, errorground = {
             Storage.shared.invalidateUser()
         })

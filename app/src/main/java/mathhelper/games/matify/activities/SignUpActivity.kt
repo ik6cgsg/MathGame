@@ -76,7 +76,9 @@ class SignUpActivity: AppCompatActivity() {
             additional = additionalView.text.toString()
         )
         Storage.shared.setUserInfo(userData)
-        GlobalScene.shared.signUp(this, userData)
+        GlobalScene.shared.signUp(this, userData, afterFinish = {
+            startActivity(Intent(this, GamesActivity::class.java))
+        })
     }
 
     fun cancel(v: View?) {
