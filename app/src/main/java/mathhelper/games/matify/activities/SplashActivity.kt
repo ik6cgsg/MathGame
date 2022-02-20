@@ -22,18 +22,9 @@ class SplashActivity: AppCompatActivity() {
     private val TAG = "SplashActivity"
     private val minSplashTime = 1000
 
-    private fun setLanguage() {
-        val locale = Locale(Storage.shared.language())
-        Locale.setDefault(locale)
-        val config = Configuration(resources.configuration)
-        config.locale = locale;
-        resources.updateConfiguration(config, resources.displayMetrics)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setLanguage()
         ThemeController.shared.init(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_splash)

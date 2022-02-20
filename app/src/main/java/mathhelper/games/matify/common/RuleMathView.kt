@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.widget.HorizontalScrollView
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import mathhelper.twf.api.expressionSubstitutionFromStructureStrings
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
@@ -52,7 +53,7 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         ruleView = TextView(context)
         ruleView.textSize = Constants.ruleDefaultSize
         ruleView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
-        ruleView.typeface = Typeface.MONOSPACE
+        ruleView.typeface = ResourcesCompat.getFont(context, R.font.roboto)
         ruleView.background = context.getDrawable(R.drawable.row_clickable)
         ruleView.isClickable = true
         ruleView.isFocusable = true

@@ -2,15 +2,15 @@
     <string name="app_name">Matify</string>
     <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆\n⬆ Long tap allows to select >1 places ⬆</string>
     <string name="end_expression_opened"><b><i>Goal:</i></b> %1$s</string>
-    <string name="previous" translatable="false">↶</string>
-    <string name="restart" translatable="false">↺</string>
-    <string name="back" translatable="false">←</string>
+    <string name="previous" translatable="false">↪️</string>
+    <string name="restart" translatable="false">🔁 </string>
+    <string name="back" translatable="false">⬅️</string>
     <string name="wrong_subs">❌ Can\'t do this ❌</string>
     <string name="time_out">😢Time out!😢</string>
     <string name="no_rules">🙅 No rules for this 🙅</string>
     <string name="levels">LEVELS</string>
-    <string name="gear" translatable="false">⚙</string>
-    <string name="settings">⚙ SETTINGS ⚙</string>
+    <string name="gear" translatable="false">⚙️</string>
+    <string name="settings">⚙️ SETTINGS ⚙️</string>
     <string name="rate_us">⭐ Rate us</string>
     <string name="version_view" translatable="false">Matify v</string>
     <string name="pointer" translatable="false">☝</string>
@@ -66,7 +66,7 @@
     <string name="send">Send</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="this_action_will_reset_all_your_achievements">This action will reset all your achievements</string>
-    <string name="i" translatable="false">i</string>
+    <string name="i" translatable="false">ℹ️</string>
     <string name="start_multiselect" translatable="false">≡</string>
     <string name="end_multiselect" translatable="false">≢</string>
     <string name="msg_on_start_multiselect">The multiselection mode. To cancel, press ≢</string>
@@ -164,9 +164,9 @@
     <string name="theme_dark">Dark</string>
     <string name="inst_fill_req">Fill required fields!</string>
     <string name="inst_enter">Enter instrument processing</string>
-    <string name="inst_rules_msg">☟ Instrument processing ☟</string>
+    <string name="inst_rules_msg">👇 Instrument processing 👇</string>
     <string name="no_rules_msg">No rules. Click somewhere in expression!</string>
-    <string name="rules_found_msg">☟ Rules found: ☟</string>
+    <string name="rules_found_msg">👇 Rules found: 👇</string>
     <string name="oppo_descr">Apply operator and inverse operator</string>
     <string name="var_descr">Introduce a new variable</string>
     <string name="bracket_descr">Group expression nodes</string>
@@ -207,5 +207,5 @@
     <string name="remove_game">🗑 remove 🗑</string>
     <string name="unpin_game">📌 unpin 📌</string>
     <string name="add_to_my_games">☝️ add to my games ☝️</string>
-    <string name="unsaved_data_banner">⚠ you have unsaved game data ⚠</string>
+    <string name="unsaved_data_banner">⚠️ you have unsaved game data ⚠️</string>
 </resources>

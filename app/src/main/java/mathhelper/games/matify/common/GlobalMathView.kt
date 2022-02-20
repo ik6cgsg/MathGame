@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import mathhelper.twf.api.findLowestSubtreeTopOfSelectedNodesInExpression
 import mathhelper.twf.api.structureStringToExpression
 import mathhelper.twf.expressiontree.ExpressionNode
@@ -57,7 +58,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         scaleDetector = ScaleGestureDetector(context, scaleListener)
         setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         includeFontPadding = false
-        typeface = Typeface.MONOSPACE
+        typeface = ResourcesCompat.getFont(context, R.font.roboto)
         textSize = Constants.centralExpressionDefaultSize
         setLineSpacing(0f, Constants.mathLineSpacing)
         //letterSpacing = 1.1f
@@ -248,6 +249,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     private fun setTextFromMathPair(animated: Boolean = false) {
+        typeface = ResourcesCompat.getFont(context, R.font.roboto_mono_regular)
         val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
         var parw = (parent as ConstraintLayout).width * 1f
         parw -= parw / 20

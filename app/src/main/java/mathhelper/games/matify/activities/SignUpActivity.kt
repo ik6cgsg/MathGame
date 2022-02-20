@@ -9,10 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.AuthInfoObjectBase
-import mathhelper.games.matify.common.Logger
-import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.common.ThemeController
+import mathhelper.games.matify.common.*
 
 class SignUpActivity: AppCompatActivity() {
     private val TAG = "SignUpActivity"
@@ -30,6 +27,7 @@ class SignUpActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_sign_up)
         loginView = findViewById(R.id.login)
@@ -78,7 +76,9 @@ class SignUpActivity: AppCompatActivity() {
             additional = additionalView.text.toString()
         )
         Storage.shared.setUserInfo(userData)
-        GlobalScene.shared.signUp(this, userData)
+        GlobalScene.shared.signUp(this, userData, afterFinish = {
+            startActivity(Intent(this, GamesActivity::class.java))
+        })
     }
 
     fun cancel(v: View?) {

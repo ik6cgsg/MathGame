@@ -31,6 +31,7 @@ import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.R
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.StateType
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -323,6 +324,15 @@ class AndroidUtil {
                 setBackground = false
             )
             return alertInfo
+        }
+
+        fun setLanguage(context: Context) {
+            val locale = Locale(Storage.shared.language())
+            Locale.setDefault(locale)
+            val config = context.resources.configuration
+            config.setLocale(locale)
+            context.createConfigurationContext(config)
+            context.resources.updateConfiguration(config, context.resources.displayMetrics)
         }
     }
 }

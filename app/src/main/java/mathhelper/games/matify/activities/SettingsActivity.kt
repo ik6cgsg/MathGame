@@ -37,6 +37,7 @@ class SettingsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_settings_new)
         val backView = findViewById<TextView>(R.id.back)
@@ -180,9 +181,6 @@ class SettingsActivity: AppCompatActivity() {
                     1 -> "en"
                     else -> "en"
                 }
-                /*val config = Configuration(resources.configuration)
-                config.locale = Locale(languageToChoose); //locale
-                resources.updateConfiguration(config, resources.displayMetrics)*/
                 Storage.shared.setLanguage(languageToChoose)
                 finishAffinity()
                 startActivity(Intent(this, SplashActivity::class.java))

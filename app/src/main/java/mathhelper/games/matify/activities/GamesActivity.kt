@@ -57,6 +57,7 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
+        AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
@@ -172,6 +173,10 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
 
     @SuppressLint("ClickableViewAccessibility")
     fun generateList() {
+        if (GlobalScene.shared.gameOrder.isEmpty()) {
+            setLoading(false)
+            return
+        }
         gamesList.removeAllViews()
         GlobalScene.shared.gameOrder.forEachIndexed { i, code ->
             val gameView = GlobalScene.shared.gameMap[code]?.let { game ->
