@@ -35,7 +35,7 @@ data class RequestData(
     val page: RequestPage,
     val securityToken: String = "",
     var method: RequestMethod = RequestMethod.POST,
-    var url: String = "https://mathhelper.space:8089${page.value}",
+    var url: String = "https://www.mathhelper.space:8089${page.value}",
     var body: String = "",
     var headers: Map<String, String> = mapOf(
         "Content-type" to "application/json; charset=UTF-8",

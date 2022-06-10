@@ -1,0 +1,3700 @@
+{
+  "taskset": {
+    "code": "global__BeginFromSimpleComputationalMix",
+    "version": 0,
+    "namespaceCode": "global",
+    "nameEn": "Computational Mix",
+    "nameRu": "Вычислительный микс",
+    "descriptionShortEn": "Varied tasks for smart computation",
+    "descriptionShortRu": "Разнообразные задачки на умное вычисление",
+    "descriptionEn": "Varied tasks for smart computation in different math subjects",
+    "descriptionRu": "Разнообразные задачки на умное вычисление в разных областях математики",
+    "subjectType": "standard_math",
+    "tags": [
+      "Mix"
+    ],
+    "tasks": [
+      {
+        "code": "global__BeginFromSimpleComputationalMix__1_UncanceledFraction",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Uncanceled Fraction",
+        "nameRu": "Несокращенная дробь",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '96/16'",
+        "descriptionRu": "Вычислить '96/16'",
+        "subjectType": "standard_math",
+        "tags": [
+          "Fraction",
+          "computation"
+        ],
+        "originalExpressionStructureString": "(/(96;16))",
+        "originalExpressionTex": "\\frac{96}{16}",
+        "originalExpressionPlainText": "96/16",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ArithmeticDivision"
+          }
+        ],
+        "difficulty": 1.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__2_UncomputedRoot",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Uncomputed Root",
+        "nameRu": "Невычисленный корень",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '27^(1/3)'",
+        "descriptionRu": "Вычислить '27^(1/3)'",
+        "subjectType": "standard_math",
+        "tags": [
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(^(27;/(1;3)))",
+        "originalExpressionTex": "{27^{\\frac{1}{3}}}",
+        "originalExpressionPlainText": "27^(1/3)",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ArithmeticExponentiation"
+          }
+        ],
+        "difficulty": 1.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__3_DifferenceOfSquares",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Difference of Squares",
+        "nameRu": "Разность квадратов",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '64^2-36^2'",
+        "descriptionRu": "Вычислить '64^2-36^2'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(+(^(64;2);-(^(36;2))))",
+        "originalExpressionTex": "{64^{2}} - {36^{2}}",
+        "originalExpressionPlainText": "64^2-36^2",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 2.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__4_SquareOfDifference",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Square of Difference",
+        "nameRu": "Квадрат разности",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '23^2-2*23*3+9'",
+        "descriptionRu": "Вычислить '23^2-2*23*3+9'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(+(^(23;2);-(*(2;23;3));9))",
+        "originalExpressionTex": "{23^{2}} - 2 \\cdot 23 \\cdot 3 + 9",
+        "originalExpressionPlainText": "23^2-2*23*3+9",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 2.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__5_Guess1",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Guess 1",
+        "nameRu": "Догадайся 1",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '16+2*64+16^2'",
+        "descriptionRu": "Вычислить '16+2*64+16^2'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(+(16;*(2;64);^(16;2)))",
+        "originalExpressionTex": "16 + 2 \\cdot 64 + {16^{2}}",
+        "originalExpressionPlainText": "16+2*64+16^2",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 2.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__6_Guess2",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Guess 2",
+        "nameRu": "Догадайся 2",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '(65^2-56^2)^0.5'",
+        "descriptionRu": "Вычислить '(65^2-56^2)^0.5'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(^(+(^(65;2);-(^(56;2)));0.5))",
+        "originalExpressionTex": "{\\left({65^{2}} - {56^{2}}\\right)^{0.5}}",
+        "originalExpressionPlainText": "(65^2-56^2)^0.5",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 2.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__7_SumOfCubes",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Sum of Cubes",
+        "nameRu": "Сумма кубов",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '8^3+12^3'",
+        "descriptionRu": "Вычислить '8^3+12^3'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(+(^(8;3);^(12;3)))",
+        "originalExpressionTex": "{8^{3}} + {12^{3}}",
+        "originalExpressionPlainText": "8^3+12^3",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__8_DifferenceOfCubes",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Difference of Cubes",
+        "nameRu": "Разность кубов",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '8^3-6^3'",
+        "descriptionRu": "Вычислить '8^3-6^3'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(+(^(8;3);-(^(6;3))))",
+        "originalExpressionTex": "{8^{3}} - {6^{3}}",
+        "originalExpressionPlainText": "8^3-6^3",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__9_CubeOfSum",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Cube of sum",
+        "nameRu": "Куб суммы",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '8+3*32+3*2*64+8^3'",
+        "descriptionRu": "Вычислить '8+3*32+3*2*64+8^3'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(+(8;*(3;32);*(3;2;64);^(8;3)))",
+        "originalExpressionTex": "8 + 3 \\cdot 32 + 3 \\cdot 2 \\cdot 64 + {8^{3}}",
+        "originalExpressionPlainText": "8+3*32+3*2*64+8^3",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__10_Guess3",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Guess 3",
+        "nameRu": "Догадайся 3",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '(4+53)*(16-4*53+53^2)+(4-53)*(4^2+4*53+53^2)'",
+        "descriptionRu": "Вычислить '(4+53)*(16-4*53+53^2)+(4-53)*(4^2+4*53+53^2)'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(+(*(+(4;53);+(16;-(*(4;53));^(53;2)));*(+(4;-(53));+(^(4;2);*(4;53);^(53;2)))))",
+        "originalExpressionTex": "\\left(4 + 53\\right) \\cdot \\left(16 - 4 \\cdot 53 + {53^{2}}\\right) + \\left(4 - 53\\right) \\cdot \\left({4^{2}} + 4 \\cdot 53 + {53^{2}}\\right)",
+        "originalExpressionPlainText": "(4+53)*(16-4*53+53^2)+(4-53)*(4^2+4*53+53^2)",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__11_Guess4",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Guess 4",
+        "nameRu": "Догадайся 4",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '(26^3+1+27*(-(26^2-26)))^(1/3)'",
+        "descriptionRu": "Вычислить '(26^3+1+27*(-(26^2-26)))^(1/3)'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^"
+        ],
+        "originalExpressionStructureString": "(^(+(^(26;3);1;*(27;+(-(+(^(26;2);-(26))))));/(1;3)))",
+        "originalExpressionTex": "{\\left({26^{3}} + 1 + 27 \\cdot \\left( - \\left({26^{2}} - 26\\right)\\right)\\right)^{\\frac{1}{3}}}",
+        "originalExpressionPlainText": "(26^3+1+27*(-(26^2-26)))^(1/3)",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__ShortMultiplication"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__12_Logarithm",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Logarithm",
+        "nameRu": "Логарифм",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '3*3^log(9,3)'",
+        "descriptionRu": "Вычислить '3*3^log(9,3)'",
+        "subjectType": "standard_math",
+        "tags": [
+          "ShortMultiplication",
+          "computation",
+          "^",
+          "log",
+          "Logarithm"
+        ],
+        "originalExpressionStructureString": "(*(3;^(3;log(9;3))))",
+        "originalExpressionTex": "3 \\cdot {3^{log _{3}{9}}}",
+        "originalExpressionPlainText": "3*3^log(9,3)",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__Logarithm"
+          }
+        ],
+        "difficulty": 2.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__13_DifferenceOfLogarithms",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Difference of logarithms",
+        "nameRu": "Разность логарифмов",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute 'log(72,3)-log(8,3)'",
+        "descriptionRu": "Вычислить 'log(72,3)-log(8,3)'",
+        "subjectType": "standard_math",
+        "tags": [
+          "computation",
+          "log",
+          "Logarithm"
+        ],
+        "originalExpressionStructureString": "(+(log(72;3);-(log(8;3))))",
+        "originalExpressionTex": "log _{3}{72} - log _{3}{8}",
+        "originalExpressionPlainText": "log(72,3)-log(8,3)",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__Logarithm"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__14_QuotientOfLogarithms",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Quotient of logarithms",
+        "nameRu": "Частное логарифмов",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute 'log(81,27)/log(9,27)'",
+        "descriptionRu": "Вычислить 'log(81,27)/log(9,27)'",
+        "subjectType": "standard_math",
+        "tags": [
+          "computation",
+          "log",
+          "Logarithm"
+        ],
+        "originalExpressionStructureString": "(/(log(81;27);log(9;27)))",
+        "originalExpressionTex": "\\frac{log _{27}{81}}{log _{27}{9}}",
+        "originalExpressionPlainText": "log(81,27)/log(9,27)",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__Logarithm"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__15_Guess5",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Guess 5",
+        "nameRu": "Догадайся 5",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute 'log(36,3)/(2+log(4,3))'",
+        "descriptionRu": "Вычислить 'log(36,3)/(2+log(4,3))'",
+        "subjectType": "standard_math",
+        "tags": [
+          "computation",
+          "log",
+          "Logarithm"
+        ],
+        "originalExpressionStructureString": "(/(log(36;3);+(2;log(4;3))))",
+        "originalExpressionTex": "\\frac{log _{3}{36}}{2 + log _{3}{4}}",
+        "originalExpressionPlainText": "log(36,3)/(2+log(4,3))",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__Logarithm"
+          }
+        ],
+        "difficulty": 3.0
+      },
+      {
+        "code": "global__BeginFromSimpleComputationalMix__16_Guess6",
+        "version": 0,
+        "namespaceCode": "global",
+        "nameEn": "Guess 6",
+        "nameRu": "Догадайся 6",
+        "descriptionShortEn": "Compute",
+        "descriptionShortRu": "Вычислить",
+        "descriptionEn": "Compute '16^log(32,4)/16^log(2,4)'",
+        "descriptionRu": "Вычислить '16^log(32,4)/16^log(2,4)'",
+        "subjectType": "standard_math",
+        "tags": [
+          "computation",
+          "^",
+          "log",
+          "Logarithm"
+        ],
+        "originalExpressionStructureString": "(/(^(16;log(32;4));^(16;log(2;4))))",
+        "originalExpressionTex": "\\frac{{16^{log _{4}{32}}}}{{16^{log _{4}{2}}}}",
+        "originalExpressionPlainText": "16^log(32,4)/16^log(2,4)",
+        "goalType": "computation",
+        "goalPattern": "?:0:?:?N",
+        "rulePacks": [
+          {
+            "namespaceCode": "global",
+            "rulePackCode": "global__Logarithm"
+          }
+        ],
+        "difficulty": 3.0
+      }
+    ]
+  },
+  "rulePacks": [
+    {
+      "code": "global__ArithmeticAddition",
+      "version": 0,
+      "namespaceCode": "global",
+      "nameEn": "Addition and Subtraction",
+      "nameRu": "Сложение и вычитание",
+      "descriptionShortEn": "Arithmetic Addition and Subtraction",
+      "descriptionShortRu": "Арифметическое сложение и вычитание",
+      "subjectType": "standard_math",
+      "rules": [
+        {
+          "code": "(+(a))__to__(a)",
+          "leftStructureString": "(+(a))",
+          "rightStructureString": "(a)",
+          "priority": 30,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(a;b))__to__(+(b;a))",
+          "leftStructureString": "(+(a;b))",
+          "rightStructureString": "(+(b;a))",
+          "priority": 20,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(a)__to__(+(a;0))",
+          "leftStructureString": "(a)",
+          "rightStructureString": "(+(a;0))",
+          "priority": 90,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(-(+(-(a)))))__to__(a)",
+          "leftStructureString": "(+(-(+(-(a)))))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(-(+(-(a))))__to__(a)",
+          "leftStructureString": "(-(+(-(a))))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(-(-(a)))__to__(a)",
+          "leftStructureString": "(-(-(a)))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(a)__to__(+(-(+(-(a)))))",
+          "leftStructureString": "(a)",
+          "rightStructureString": "(+(-(+(-(a)))))",
+          "priority": 95,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(a;-(a)))__to__(0)",
+          "leftStructureString": "(+(a;-(a)))",
+          "rightStructureString": "(0)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(-(a);a))__to__(0)",
+          "leftStructureString": "(+(-(a);a))",
+          "rightStructureString": "(0)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(a;+(-(a))))__to__(0)",
+          "leftStructureString": "(+(a;+(-(a))))",
+          "rightStructureString": "(0)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(+(-(a));a))__to__(0)",
+          "leftStructureString": "(+(+(-(a));a))",
+          "rightStructureString": "(0)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "SimpleComputation",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "ZeroComputation",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "NumberPlusMinus1",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 20,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "MinusInOutBrackets",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 31,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "ParentBracketsExpansion",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 30,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "ArgumentsSwap",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 40,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "ArgumentsPermutation",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 40,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "ArgumentsPermutationInOriginalOrder",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 41,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "AdditiveComplicatingExtension",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 92,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "global__ArithmeticMultiplication",
+      "version": 0,
+      "namespaceCode": "global",
+      "nameEn": "Addition Subtraction Multiplication",
+      "nameRu": "Сложение вычитание умножение",
+      "descriptionShortEn": "Arithmetic Addition, Subtraction and Multiplication",
+      "descriptionShortRu": "Арифметическое сложение, вычитание и уножение",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "global",
+          "rulePackCode": "global__ArithmeticAddition"
+        }
+      ],
+      "rules": [
+        {
+          "code": "(*(a;0))__to__(0)",
+          "leftStructureString": "(*(a;0))",
+          "rightStructureString": "(0)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(0;a))__to__(0)",
+          "leftStructureString": "(*(0;a))",
+          "rightStructureString": "(0)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(0)__to__(*(a;0))",
+          "leftStructureString": "(0)",
+          "rightStructureString": "(*(a;0))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(a;1))__to__(a)",
+          "leftStructureString": "(*(a;1))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(1;a))__to__(a)",
+          "leftStructureString": "(*(1;a))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(a)__to__(*(a;1))",
+          "leftStructureString": "(a)",
+          "rightStructureString": "(*(a;1))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(a;b))__to__(*(b;a))",
+          "leftStructureString": "(*(a;b))",
+          "rightStructureString": "(*(b;a))",
+          "priority": 20,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "OpeningBrackets",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 30,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "ReduceArithmetic",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 10,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "TwoSidesArithmeticReduce",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 10,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "MultiplicationFactorization",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 15,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(a;a))__to__(*(2;a))",
+          "leftStructureString": "(+(a;a))",
+          "rightStructureString": "(*(2;a))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(a;+(a)))__to__(*(2;a))",
+          "leftStructureString": "(+(a;+(a)))",
+          "rightStructureString": "(*(2;a))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(+(a);a))__to__(*(2;a))",
+          "leftStructureString": "(+(+(a);a))",
+          "rightStructureString": "(*(2;a))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(2;a))__to__(+(a;a))",
+          "leftStructureString": "(*(2;a))",
+          "rightStructureString": "(+(a;a))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(a;*(a;n)))__to__(*(a;+(n;1)))",
+          "leftStructureString": "(+(a;*(a;n)))",
+          "rightStructureString": "(*(a;+(n;1)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(a;+(n;1)))__to__(+(a;*(a;n)))",
+          "leftStructureString": "(*(a;+(n;1)))",
+          "rightStructureString": "(+(a;*(a;n)))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(*(a;n);a))__to__(*(a;+(1;n)))",
+          "leftStructureString": "(+(*(a;n);a))",
+          "rightStructureString": "(*(a;+(1;n)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(a;+(1;n)))__to__(+(*(a;n);a))",
+          "leftStructureString": "(*(a;+(1;n)))",
+          "rightStructureString": "(+(*(a;n);a))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(-(*(A;C)))__to__(*(+(-(A));C))",
+          "leftStructureString": "(-(*(A;C)))",
+          "rightStructureString": "(*(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(-(A);C))__to__(+(-(*(A;C))))",
+          "leftStructureString": "(*(-(A);C))",
+          "rightStructureString": "(+(-(*(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(-(*(A;C)))__to__(*(A;+(-(C))))",
+          "leftStructureString": "(-(*(A;C)))",
+          "rightStructureString": "(*(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(A;-(C)))__to__(+(-(*(A;C))))",
+          "leftStructureString": "(*(A;-(C)))",
+          "rightStructureString": "(+(-(*(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(A;-(C)))__to__(*(+(-(A));C))",
+          "leftStructureString": "(*(A;-(C)))",
+          "rightStructureString": "(*(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(-(A);C))__to__(*(A;+(-(C))))",
+          "leftStructureString": "(*(-(A);C))",
+          "rightStructureString": "(*(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(-(*(A;C))))__to__(*(+(-(A));C))",
+          "leftStructureString": "(+(-(*(A;C))))",
+          "rightStructureString": "(*(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(-(A));C))__to__(+(-(*(A;C))))",
+          "leftStructureString": "(*(+(-(A));C))",
+          "rightStructureString": "(+(-(*(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(-(*(A;C))))__to__(*(A;+(-(C))))",
+          "leftStructureString": "(+(-(*(A;C))))",
+          "rightStructureString": "(*(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(A;+(-(C))))__to__(+(-(*(A;C))))",
+          "leftStructureString": "(*(A;+(-(C))))",
+          "rightStructureString": "(+(-(*(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(A;+(-(C))))__to__(*(+(-(A));C))",
+          "leftStructureString": "(*(A;+(-(C))))",
+          "rightStructureString": "(*(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(-(A));C))__to__(*(A;+(-(C))))",
+          "leftStructureString": "(*(+(-(A));C))",
+          "rightStructureString": "(*(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(-(A);-(B)))__to__(*(A;B))",
+          "leftStructureString": "(*(-(A);-(B)))",
+          "rightStructureString": "(*(A;B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(A;B))__to__(*(+(-(A));+(-(B))))",
+          "leftStructureString": "(*(A;B))",
+          "rightStructureString": "(*(+(-(A));+(-(B))))",
+          "priority": 80,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(-(A));+(-(B))))__to__(*(A;B))",
+          "leftStructureString": "(*(+(-(A));+(-(B))))",
+          "rightStructureString": "(*(A;B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "global__ArithmeticDivision",
+      "version": 0,
+      "namespaceCode": "global",
+      "nameEn": "Rational Numbers",
+      "nameRu": "Рациональные числа",
+      "descriptionShortEn": "Addition, Subtraction, Multiplication and Division",
+      "descriptionShortRu": "Сложение, вычитание, уножение и деление",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "global",
+          "rulePackCode": "global__ArithmeticMultiplication"
+        }
+      ],
+      "rules": [
+        {
+          "code": "(/(0;a))__to__(0)",
+          "leftStructureString": "(/(0;a))",
+          "rightStructureString": "(0)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(a;1))__to__(a)",
+          "leftStructureString": "(/(a;1))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(a;a))__to__(1)",
+          "leftStructureString": "(/(a;a))",
+          "rightStructureString": "(1)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(/(1;a);a))__to__(1)",
+          "leftStructureString": "(*(/(1;a);a))",
+          "rightStructureString": "(1)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(1;/(1;a)))__to__(a)",
+          "leftStructureString": "(/(1;/(1;a)))",
+          "rightStructureString": "(a)",
+          "priority": 4,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(a)__to__(/(1;/(1;a)))",
+          "leftStructureString": "(a)",
+          "rightStructureString": "(/(1;/(1;a)))",
+          "priority": 90,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(0.5)__to__(/(1;2))",
+          "leftStructureString": "(0.5)",
+          "rightStructureString": "(/(1;2))",
+          "priority": 15,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": true,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(1;2))__to__(0.5)",
+          "leftStructureString": "(/(1;2))",
+          "rightStructureString": "(0.5)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": true,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(a;b))__to__(/(*(a;b);*(b;b)))",
+          "leftStructureString": "(/(a;b))",
+          "rightStructureString": "(/(*(a;b);*(b;b)))",
+          "priority": 90,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "MultiplicativeComplicatingExtension",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 92,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "ReduceFraction",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 10,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "DecimalToFraction",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 15,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(-(/(A;C)))__to__(/(+(-(A));C))",
+          "leftStructureString": "(-(/(A;C)))",
+          "rightStructureString": "(/(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(-(A);C))__to__(+(-(/(A;C))))",
+          "leftStructureString": "(/(-(A);C))",
+          "rightStructureString": "(+(-(/(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(-(/(A;C)))__to__(/(A;+(-(C))))",
+          "leftStructureString": "(-(/(A;C)))",
+          "rightStructureString": "(/(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;-(C)))__to__(+(-(/(A;C))))",
+          "leftStructureString": "(/(A;-(C)))",
+          "rightStructureString": "(+(-(/(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;-(C)))__to__(/(+(-(A));C))",
+          "leftStructureString": "(/(A;-(C)))",
+          "rightStructureString": "(/(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(-(A);C))__to__(/(A;+(-(C))))",
+          "leftStructureString": "(/(-(A);C))",
+          "rightStructureString": "(/(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(-(/(A;C))))__to__(/(+(-(A));C))",
+          "leftStructureString": "(+(-(/(A;C))))",
+          "rightStructureString": "(/(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(+(-(A));C))__to__(+(-(/(A;C))))",
+          "leftStructureString": "(/(+(-(A));C))",
+          "rightStructureString": "(+(-(/(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(-(/(A;C))))__to__(/(A;+(-(C))))",
+          "leftStructureString": "(+(-(/(A;C))))",
+          "rightStructureString": "(/(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;+(-(C))))__to__(+(-(/(A;C))))",
+          "leftStructureString": "(/(A;+(-(C))))",
+          "rightStructureString": "(+(-(/(A;C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;+(-(C))))__to__(/(+(-(A));C))",
+          "leftStructureString": "(/(A;+(-(C))))",
+          "rightStructureString": "(/(+(-(A));C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(+(-(A));C))__to__(/(A;+(-(C))))",
+          "leftStructureString": "(/(+(-(A));C))",
+          "rightStructureString": "(/(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(-(A);-(B)))__to__(/(A;B))",
+          "leftStructureString": "(/(-(A);-(B)))",
+          "rightStructureString": "(/(A;B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;B))__to__(/(+(-(A));+(-(B))))",
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(/(+(-(A));+(-(B))))",
+          "priority": 80,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(+(-(A));+(-(B))))__to__(/(A;B))",
+          "leftStructureString": "(/(+(-(A));+(-(B))))",
+          "rightStructureString": "(/(A;B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(/(B;C);/(A;D)))__to__(/(+(*(B;D);*(C;A));*(C;D)))",
+          "leftStructureString": "(+(/(B;C);/(A;D)))",
+          "rightStructureString": "(/(+(*(B;D);*(C;A));*(C;D)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 15.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(/(B;C);-(/(A;D))))__to__(/(+(*(B;D);-(*(C;A)));*(C;D)))",
+          "leftStructureString": "(+(/(B;C);-(/(A;D))))",
+          "rightStructureString": "(/(+(*(B;D);-(*(C;A)));*(C;D)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 15.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(A;/(B;A)))__to__(B)",
+          "leftStructureString": "(*(A;/(B;A)))",
+          "rightStructureString": "(B)",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(/(B;A);A))__to__(B)",
+          "leftStructureString": "(*(/(B;A);A))",
+          "rightStructureString": "(B)",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(A;/(B;C)))__to__(/(*(A;B);C))",
+          "leftStructureString": "(*(A;/(B;C)))",
+          "rightStructureString": "(/(*(A;B);C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(/(B;C);A))__to__(/(*(A;B);C))",
+          "leftStructureString": "(*(/(B;C);A))",
+          "rightStructureString": "(/(*(A;B);C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;B))__to__(/(1;/(B;A)))",
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(/(1;/(B;A)))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(1;/(B;A)))__to__(/(A;B))",
+          "leftStructureString": "(/(1;/(B;A)))",
+          "rightStructureString": "(/(A;B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(*(A;B);C))__to__(*(A;/(B;C)))",
+          "leftStructureString": "(/(*(A;B);C))",
+          "rightStructureString": "(*(A;/(B;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(/(B;C);A))__to__(/(B;*(A;C)))",
+          "leftStructureString": "(/(/(B;C);A))",
+          "rightStructureString": "(/(B;*(A;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(B;*(A;C)))__to__(/(/(B;C);A))",
+          "leftStructureString": "(/(B;*(A;C)))",
+          "rightStructureString": "(/(/(B;C);A))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;/(B;C)))__to__(/(*(A;C);B))",
+          "leftStructureString": "(/(A;/(B;C)))",
+          "rightStructureString": "(/(*(A;C);B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(*(A;C);B))__to__(/(A;/(B;C)))",
+          "leftStructureString": "(/(*(A;C);B))",
+          "rightStructureString": "(/(A;/(B;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;*(B;C)))__to__(*(/(A;B);/(1;C)))",
+          "leftStructureString": "(/(A;*(B;C)))",
+          "rightStructureString": "(*(/(A;B);/(1;C)))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;*(B;C)))__to__(*(/(1;B);/(A;C)))",
+          "leftStructureString": "(/(A;*(B;C)))",
+          "rightStructureString": "(*(/(1;B);/(A;C)))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(/(A;B);/(1;C)))__to__(/(A;*(B;C)))",
+          "leftStructureString": "(*(/(A;B);/(1;C)))",
+          "rightStructureString": "(/(A;*(B;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(/(1;B);/(A;C)))__to__(/(A;*(B;C)))",
+          "leftStructureString": "(*(/(1;B);/(A;C)))",
+          "rightStructureString": "(/(A;*(B;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(/(D;B);/(A;C)))__to__(/(*(D;A);*(B;C)))",
+          "leftStructureString": "(*(/(D;B);/(A;C)))",
+          "rightStructureString": "(/(*(D;A);*(B;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(*(D;A);*(B;C)))__to__(*(/(D;B);/(A;C)))",
+          "leftStructureString": "(/(*(D;A);*(B;C)))",
+          "rightStructureString": "(*(/(D;B);/(A;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(*(D;A);*(B;A)))__to__(/(D;B))",
+          "leftStructureString": "(/(*(D;A);*(B;A)))",
+          "rightStructureString": "(/(D;B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(*(D;A);*(D;C)))__to__(/(A;C))",
+          "leftStructureString": "(/(*(D;A);*(D;C)))",
+          "rightStructureString": "(/(A;C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(*(D;A);D))__to__(A)",
+          "leftStructureString": "(/(*(D;A);D))",
+          "rightStructureString": "(A)",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(*(A;D);D))__to__(A)",
+          "leftStructureString": "(/(*(A;D);D))",
+          "rightStructureString": "(A)",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "global__ArithmeticExponentiation",
+      "version": 0,
+      "namespaceCode": "global",
+      "nameEn": "Algebraic Numbers",
+      "nameRu": "Алгебраические числа",
+      "descriptionShortEn": "Pow, Ratio, Product, Difference, Sum",
+      "descriptionShortRu": "Степень, частное, умножение, разность, сумма",
+      "descriptionEn": "Pow, Division, Multiplication, Subtraction, Addition",
+      "descriptionRu": "Возведение в степень, деление, умножение, вычитание, сложение",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "global",
+          "rulePackCode": "global__ArithmeticDivision"
+        }
+      ],
+      "rules": [
+        {
+          "code": "(a)__to__(^(a;1))",
+          "leftStructureString": "(a)",
+          "rightStructureString": "(^(a;1))",
+          "priority": 95,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": true,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(1)__to__(^(1;2))",
+          "leftStructureString": "(1)",
+          "rightStructureString": "(^(1;2))",
+          "priority": 95,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": true,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(1)__to__(^(1;3))",
+          "leftStructureString": "(1)",
+          "rightStructureString": "(^(1;3))",
+          "priority": 95,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": true,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(1;a))__to__(^(a;+(-(1))))",
+          "leftStructureString": "(/(1;a))",
+          "rightStructureString": "(^(a;+(-(1))))",
+          "priority": 80,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;+(-(1))))__to__(/(1;a))",
+          "leftStructureString": "(^(a;+(-(1))))",
+          "rightStructureString": "(/(1;a))",
+          "priority": 40,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "PowFactorization",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 15,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;+(b;-(c))))__to__(/(^(a;b);^(a;c)))",
+          "leftStructureString": "(^(a;+(b;-(c))))",
+          "rightStructureString": "(/(^(a;b);^(a;c)))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(^(a;b);^(a;c)))__to__(^(a;+(b;-(c))))",
+          "leftStructureString": "(/(^(a;b);^(a;c)))",
+          "rightStructureString": "(^(a;+(b;-(c))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(B;^(A;C)))__to__(*(B;^(A;+(-(C)))))",
+          "leftStructureString": "(/(B;^(A;C)))",
+          "rightStructureString": "(*(B;^(A;+(-(C)))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(B;^(A;+(-(C)))))__to__(/(B;^(A;C)))",
+          "leftStructureString": "(*(B;^(A;+(-(C)))))",
+          "rightStructureString": "(/(B;^(A;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(1;^(A;C)))__to__(^(A;+(-(C))))",
+          "leftStructureString": "(/(1;^(A;C)))",
+          "rightStructureString": "(^(A;+(-(C))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(A;+(-(C))))__to__(/(1;^(A;C)))",
+          "leftStructureString": "(^(A;+(-(C))))",
+          "rightStructureString": "(/(1;^(A;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(A;B))__to__(^(/(B;A);+(-(1))))",
+          "leftStructureString": "(/(A;B))",
+          "rightStructureString": "(^(/(B;A);+(-(1))))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(/(B;A);+(-(1))))__to__(/(A;B))",
+          "leftStructureString": "(^(/(B;A);+(-(1))))",
+          "rightStructureString": "(/(A;B))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(A;0))__to__(1)",
+          "leftStructureString": "(^(A;0))",
+          "rightStructureString": "(1)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(1;A))__to__(1)",
+          "leftStructureString": "(^(1;A))",
+          "rightStructureString": "(1)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(A;1))__to__(A)",
+          "leftStructureString": "(^(A;1))",
+          "rightStructureString": "(A)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(0;A))__to__(0)",
+          "leftStructureString": "(^(0;A))",
+          "rightStructureString": "(0)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(a;a))__to__(^(a;2))",
+          "leftStructureString": "(*(a;a))",
+          "rightStructureString": "(^(a;2))",
+          "priority": 40,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": true,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;2))__to__(*(a;a))",
+          "leftStructureString": "(^(a;2))",
+          "rightStructureString": "(*(a;a))",
+          "priority": 40,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": true,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(a;^(a;n)))__to__(^(a;+(n;1)))",
+          "leftStructureString": "(*(a;^(a;n)))",
+          "rightStructureString": "(^(a;+(n;1)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;+(n;1)))__to__(*(a;^(a;n)))",
+          "leftStructureString": "(^(a;+(n;1)))",
+          "rightStructureString": "(*(a;^(a;n)))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(^(a;n);a))__to__(^(a;+(1;n)))",
+          "leftStructureString": "(*(^(a;n);a))",
+          "rightStructureString": "(^(a;+(1;n)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;+(1;n)))__to__(*(^(a;n);a))",
+          "leftStructureString": "(^(a;+(1;n)))",
+          "rightStructureString": "(*(^(a;n);a))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(^(a;n);a))__to__(^(a;+(n;-(1))))",
+          "leftStructureString": "(/(^(a;n);a))",
+          "rightStructureString": "(^(a;+(n;-(1))))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;+(n;-(1))))__to__(/(^(a;n);a))",
+          "leftStructureString": "(^(a;+(n;-(1))))",
+          "rightStructureString": "(/(^(a;n);a))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(A;*(B;C)))__to__(^(^(A;B);C))",
+          "leftStructureString": "(^(A;*(B;C)))",
+          "rightStructureString": "(^(^(A;B);C))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(^(A;B);C))__to__(^(A;*(B;C)))",
+          "leftStructureString": "(^(^(A;B);C))",
+          "rightStructureString": "(^(A;*(B;C)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(/(B;C);A))__to__(/(^(B;A);^(C;A)))",
+          "leftStructureString": "(^(/(B;C);A))",
+          "rightStructureString": "(/(^(B;A);^(C;A)))",
+          "priority": 35,
+          "isExtending": true,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(/(^(B;A);^(C;A)))__to__(^(/(B;C);A))",
+          "leftStructureString": "(/(^(B;A);^(C;A)))",
+          "rightStructureString": "(^(/(B;C);A))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(-(A);*(2;n)))__to__(^(A;*(2;n)))",
+          "leftStructureString": "(^(-(A);*(2;n)))",
+          "rightStructureString": "(^(A;*(2;n)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(-(A);2))__to__(^(A;2))",
+          "leftStructureString": "(^(-(A);2))",
+          "rightStructureString": "(^(A;2))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(+(-(A));*(2;n)))__to__(^(A;*(2;n)))",
+          "leftStructureString": "(^(+(-(A));*(2;n)))",
+          "rightStructureString": "(^(A;*(2;n)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(+(-(A));2))__to__(^(A;2))",
+          "leftStructureString": "(^(+(-(A));2))",
+          "rightStructureString": "(^(A;2))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;*(2;n)))__to__(^(+(-(a));*(2;n)))",
+          "leftStructureString": "(^(a;*(2;n)))",
+          "rightStructureString": "(^(+(-(a));*(2;n)))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(a;2))__to__(^(+(-(a));2))",
+          "leftStructureString": "(^(a;2))",
+          "rightStructureString": "(^(+(-(a));2))",
+          "priority": 35,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(^(a;b);/(1;b)))__to__(a)",
+          "leftStructureString": "(^(^(a;b);/(1;b)))",
+          "rightStructureString": "(a)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 0.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        }
+      ],
+      "otherCheckSolutionData": {
+        "nullWeightOperations": [
+          {
+            "name": "+",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "-",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "*",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "/",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          }
+        ],
+        "lightWeightOperations": [
+          {
+            "name": "+",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "-",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "*",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "/",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          }
+        ]
+      }
+    },
+    {
+      "code": "global__ShortMultiplication",
+      "version": 0,
+      "namespaceCode": "global",
+      "nameEn": "Short Multiplication",
+      "nameRu": "Сокращенное умножение",
+      "descriptionShortEn": "Short Multiplication Formulas",
+      "descriptionShortRu": "Формулы сокращенного умножения",
+      "descriptionEn": "Difference of Squares, Square of Sum, Square of Difference, Sum of Cubes, Difference of Cubes, Cube of Sum, Cube of Difference",
+      "descriptionRu": "Разность квадратов, квадрат суммы, квадрат разности, сумма кубов, разность кубов, куб суммы, куб разности",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "global",
+          "rulePackCode": "global__ArithmeticExponentiation"
+        }
+      ],
+      "rules": [
+        {
+          "code": "(+(^(a;2);-(^(b;2))))__to__(*(+(a;-(b));+(a;b)))",
+          "leftStructureString": "(+(^(a;2);-(^(b;2))))",
+          "rightStructureString": "(*(+(a;-(b));+(a;b)))",
+          "priority": 25,
+          "isExtending": true,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 20.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(a;-(b));+(a;b)))__to__(+(^(a;2);-(^(b;2))))",
+          "leftStructureString": "(*(+(a;-(b));+(a;b)))",
+          "rightStructureString": "(+(^(a;2);-(^(b;2))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(+(a;b);2))__to__(+(^(a;2);*(2;a;b);^(b;2)))",
+          "leftStructureString": "(^(+(a;b);2))",
+          "rightStructureString": "(+(^(a;2);*(2;a;b);^(b;2)))",
+          "priority": 25,
+          "isExtending": true,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 20.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;2);*(2;a;b);^(b;2)))__to__(^(+(a;b);2))",
+          "leftStructureString": "(+(^(a;2);*(2;a;b);^(b;2)))",
+          "rightStructureString": "(^(+(a;b);2))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;2);*(2;a);1))__to__(^(+(a;1);2))",
+          "leftStructureString": "(+(^(a;2);*(2;a);1))",
+          "rightStructureString": "(^(+(a;1);2))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(+(a;-(b));2))__to__(+(^(a;2);-(*(2;a;b));^(b;2)))",
+          "leftStructureString": "(^(+(a;-(b));2))",
+          "rightStructureString": "(+(^(a;2);-(*(2;a;b));^(b;2)))",
+          "priority": 25,
+          "isExtending": true,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 20.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;2);-(*(2;a;b));^(b;2)))__to__(^(+(a;-(b));2))",
+          "leftStructureString": "(+(^(a;2);-(*(2;a;b));^(b;2)))",
+          "rightStructureString": "(^(+(a;-(b));2))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;2);-(*(2;a));1))__to__(^(+(a;-(1));2))",
+          "leftStructureString": "(+(^(a;2);-(*(2;a));1))",
+          "rightStructureString": "(^(+(a;-(1));2))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(+(a;b);3))__to__(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))",
+          "leftStructureString": "(^(+(a;b);3))",
+          "rightStructureString": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))",
+          "priority": 25,
+          "isExtending": true,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 20.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))__to__(^(+(a;b);3))",
+          "leftStructureString": "(+(^(a;3);*(3;^(a;2);b);*(3;a;^(b;2));^(b;3)))",
+          "rightStructureString": "(^(+(a;b);3))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;3);*(3;^(a;2));*(3;a);1))__to__(^(+(a;1);3))",
+          "leftStructureString": "(+(^(a;3);*(3;^(a;2));*(3;a);1))",
+          "rightStructureString": "(^(+(a;1);3))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(^(+(a;-(b));3))__to__(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))",
+          "leftStructureString": "(^(+(a;-(b));3))",
+          "rightStructureString": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))",
+          "priority": 25,
+          "isExtending": true,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 20.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))__to__(^(+(a;-(b));3))",
+          "leftStructureString": "(+(^(a;3);-(*(3;^(a;2);b));*(3;a;^(b;2));-(^(b;3))))",
+          "rightStructureString": "(^(+(a;-(b));3))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;3);-(*(3;^(a;2)));*(3;a);-(1)))__to__(^(+(a;-(1));3))",
+          "leftStructureString": "(+(^(a;3);-(*(3;^(a;2)));*(3;a);-(1)))",
+          "rightStructureString": "(^(+(a;-(1));3))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;3);-(^(b;3))))__to__(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))",
+          "leftStructureString": "(+(^(a;3);-(^(b;3))))",
+          "rightStructureString": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))",
+          "priority": 25,
+          "isExtending": true,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 20.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))__to__(+(^(a;3);-(^(b;3))))",
+          "leftStructureString": "(*(+(a;-(b));+(^(a;2);*(a;b);^(b;2))))",
+          "rightStructureString": "(+(^(a;3);-(^(b;3))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(a;-(1));+(^(a;2);a;1)))__to__(+(^(a;3);-(^(1;3))))",
+          "leftStructureString": "(*(+(a;-(1));+(^(a;2);a;1)))",
+          "rightStructureString": "(+(^(a;3);-(^(1;3))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(+(^(a;3);^(b;3)))__to__(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))",
+          "leftStructureString": "(+(^(a;3);^(b;3)))",
+          "rightStructureString": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 20.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))__to__(+(^(a;3);^(b;3)))",
+          "leftStructureString": "(*(+(a;b);+(^(a;2);-(*(a;b));^(b;2))))",
+          "rightStructureString": "(+(^(a;3);^(b;3)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        },
+        {
+          "code": "(*(+(a;1);+(^(a;2);-(a);1)))__to__(+(^(a;3);^(1;3)))",
+          "leftStructureString": "(*(+(a;1);+(^(a;2);-(a);1)))",
+          "rightStructureString": "(+(^(a;3);^(1;3)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": true,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "normalizationType": "SORTED",
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 0.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": [
+            "BASIC_MATH"
+          ]
+        }
+      ],
+      "otherCheckSolutionData": {
+        "nullWeightOperations": [
+          {
+            "name": "+",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "-",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "*",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "/",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          }
+        ],
+        "lightWeightOperations": [
+          {
+            "name": "+",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "-",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "*",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "/",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          }
+        ]
+      }
+    },
+    {
+      "code": "global__Logarithm",
+      "version": 0,
+      "namespaceCode": "global",
+      "nameEn": "Logarithm",
+      "nameRu": "Логарифм",
+      "descriptionShortEn": "Basic Properties Without Regard to Domain",
+      "descriptionShortRu": "Основные свойства без учета области определения",
+      "subjectType": "standard_math",
+      "rulePacks": [
+        {
+          "namespaceCode": "global",
+          "rulePackCode": "global__ShortMultiplication"
+        }
+      ],
+      "rules": [
+        {
+          "code": "(^(a;log(b;a)))__to__(b)",
+          "leftStructureString": "(^(a;log(b;a)))",
+          "rightStructureString": "(b)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(1;A))__to__(0)",
+          "leftStructureString": "(log(1;A))",
+          "rightStructureString": "(0)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(A;A))__to__(1)",
+          "leftStructureString": "(log(A;A))",
+          "rightStructureString": "(1)",
+          "priority": 5,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(*(b;c);a))__to__(+(log(b;a);log(c;a)))",
+          "leftStructureString": "(log(*(b;c);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(+(log(b;a);log(c;a)))__to__(log(*(b;c);a))",
+          "leftStructureString": "(+(log(b;a);log(c;a)))",
+          "rightStructureString": "(log(*(b;c);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(*(b;c;d);a))__to__(+(log(b;a);log(c;a);log(d;a)))",
+          "leftStructureString": "(log(*(b;c;d);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a);log(d;a)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(+(log(b;a);log(c;a);log(d;a)))__to__(log(*(b;c;d);a))",
+          "leftStructureString": "(+(log(b;a);log(c;a);log(d;a)))",
+          "rightStructureString": "(log(*(b;c;d);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(*(b;c;d;e);a))__to__(+(log(b;a);log(c;a);log(d;a);log(e;a)))",
+          "leftStructureString": "(log(*(b;c;d;e);a))",
+          "rightStructureString": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))__to__(log(*(b;c;d;e);a))",
+          "leftStructureString": "(+(log(b;a);log(c;a);log(d;a);log(e;a)))",
+          "rightStructureString": "(log(*(b;c;d;e);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(/(b;c);a))__to__(+(log(b;a);-(log(c;a))))",
+          "leftStructureString": "(log(/(b;c);a))",
+          "rightStructureString": "(+(log(b;a);-(log(c;a))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(+(log(b;a);-(log(c;a))))__to__(log(/(b;c);a))",
+          "leftStructureString": "(+(log(b;a);-(log(c;a))))",
+          "rightStructureString": "(log(/(b;c);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(^(b;c);a))__to__(*(c;log(b;a)))",
+          "leftStructureString": "(log(^(b;c);a))",
+          "rightStructureString": "(*(c;log(b;a)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(*(c;log(b;a)))__to__(log(^(b;c);a))",
+          "leftStructureString": "(*(c;log(b;a)))",
+          "rightStructureString": "(log(^(b;c);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(*(log(b;a);c))__to__(log(^(b;c);a))",
+          "leftStructureString": "(*(log(b;a);c))",
+          "rightStructureString": "(log(^(b;c);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(b;^(a;k)))__to__(/(log(b;a);k))",
+          "leftStructureString": "(log(b;^(a;k)))",
+          "rightStructureString": "(/(log(b;a);k))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(/(log(b;a);k))__to__(log(b;^(a;k)))",
+          "leftStructureString": "(/(log(b;a);k))",
+          "rightStructureString": "(log(b;^(a;k)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(/(1;log(b;a)))__to__(log(a;b))",
+          "leftStructureString": "(/(1;log(b;a)))",
+          "rightStructureString": "(log(a;b))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(a;b))__to__(/(1;log(b;a)))",
+          "leftStructureString": "(log(a;b))",
+          "rightStructureString": "(/(1;log(b;a)))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(/(log(c;a);log(b;a)))__to__(log(c;b))",
+          "leftStructureString": "(/(log(c;a);log(b;a)))",
+          "rightStructureString": "(log(c;b))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(/(b;c);a))__to__(+(-(log(/(c;b);a))))",
+          "leftStructureString": "(log(/(b;c);a))",
+          "rightStructureString": "(+(-(log(/(c;b);a))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(+(-(log(/(c;b);a))))__to__(log(/(b;c);a))",
+          "leftStructureString": "(+(-(log(/(c;b);a))))",
+          "rightStructureString": "(log(/(b;c);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(b;a))__to__(+(-(log(/(1;b);a))))",
+          "leftStructureString": "(log(b;a))",
+          "rightStructureString": "(+(-(log(/(1;b);a))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(+(-(log(/(1;b);a))))__to__(log(b;a))",
+          "leftStructureString": "(+(-(log(/(1;b);a))))",
+          "rightStructureString": "(log(b;a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(log(/(1;b);a))__to__(+(-(log(b;a))))",
+          "leftStructureString": "(log(/(1;b);a))",
+          "rightStructureString": "(+(-(log(b;a))))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "(+(-(log(b;a))))__to__(log(/(1;b);a))",
+          "leftStructureString": "(+(-(log(b;a))))",
+          "rightStructureString": "(log(/(1;b);a))",
+          "priority": 25,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        },
+        {
+          "code": "LogExpComplicatingExtension",
+          "leftStructureString": "",
+          "rightStructureString": "",
+          "priority": 96,
+          "isExtending": false,
+          "matchJumbledAndNested": false,
+          "simpleAdditional": false,
+          "basedOnTaskContext": false,
+          "difficultyInTaskAutoGeneration": 1.0,
+          "weightInTaskAutoGeneration": 1.0,
+          "useWhenPostprocessGeneratedExpression": false,
+          "tagsForTaskGenerator": []
+        }
+      ],
+      "otherCheckSolutionData": {
+        "nullWeightOperations": [
+          {
+            "name": "+",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "-",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "*",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "/",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "^",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          }
+        ],
+        "lightWeightOperations": [
+          {
+            "name": "+",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "-",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "*",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "/",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          },
+          {
+            "name": "^",
+            "numberOfArguments": "-1",
+            "needRules": "false"
+          }
+        ]
+      }
+    }
+  ]
+}
