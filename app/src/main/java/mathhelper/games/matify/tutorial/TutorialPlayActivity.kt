@@ -41,6 +41,7 @@ class TutorialPlayActivity: AppCompatActivity() {
     private lateinit var pointerUndoView: TextView
     private lateinit var pointerInfoView: TextView
 
+    /*
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Logger.d(TAG, "onTouchEvent")
         scaleDetector.onTouchEvent(event)
@@ -52,6 +53,33 @@ class TutorialPlayActivity: AppCompatActivity() {
                 if (needClear) {
                     globalMathView.clearExpression()
                     TutorialScene.shared.clearRules()
+                }
+            }
+        }
+        return true
+    }
+    */
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        Logger.d(TAG, "onTouchEvent")
+        if (globalMathView.onTouchEvent(event)) {
+            needClear = false
+            return true
+        }
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                if (!globalMathView.multiselectionMode)
+                    needClear = true
+            }
+            MotionEvent.ACTION_UP -> {
+                if (needClear) {
+                    try {
+                        globalMathView.clearExpression()
+                        TutorialScene.shared.clearRules()
+                    } catch (e: Exception) {
+                        Logger.e(TAG, "Error while clearing rules on touch: ${e.message}")
+                        Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

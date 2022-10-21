@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
+    android:id="@+id/tutorial_activity_play"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
@@ -10,39 +10,20 @@
     android:clipToPadding="false"
     tools:context=".tutorial.TutorialPlayActivity">
 
-    <HorizontalScrollView
-        android:id="@+id/global_expression_view"
+    <mathhelper.games.matify.common.GlobalMathView
+        android:id="@+id/global_expression"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:animateLayoutChanges="true"
+        android:text=""
         android:background="#0000BCD4"
-        android:clickable="false"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:duplicateParentState="false"
-        android:fadeScrollbars="true"
-        android:fillViewport="true"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_expression_view"
-        app:layout_constraintVertical_bias="0.25">
-
-        <mathhelper.games.matify.common.GlobalMathView
-            android:id="@+id/global_expression"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:includeFontPadding="false" />
-    </HorizontalScrollView>
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/no_rules"
@@ -56,7 +37,7 @@
         android:textColor="?attr/textColor"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/global_expression_view"
+        app:layout_constraintTop_toBottomOf="@+id/global_expression"
         tools:layout_editor_absoluteX="8dp" />
 
     <ScrollView
@@ -80,7 +61,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/global_expression_view"
+        app:layout_constraintTop_toBottomOf="@+id/global_expression"
         app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
@@ -193,7 +174,7 @@
         android:textSize="16sp"
         android:typeface="monospace"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/global_expression_view"
+        app:layout_constraintBottom_toTopOf="@+id/global_expression"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_expression_view" />
@@ -245,7 +226,7 @@
         android:textColor="?attr/textColor"
         android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/global_expression_view"
+        app:layout_constraintBottom_toTopOf="@+id/global_expression"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
@@ -268,7 +249,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.683"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/global_expression_view" />
+        app:layout_constraintTop_toTopOf="@+id/global_expression" />
 
     <TextView
         android:id="@+id/pointer_end"

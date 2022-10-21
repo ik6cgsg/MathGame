@@ -288,7 +288,7 @@ class PlayScene {
     }
 
     fun clearRules() {
-        val activity = playActivity!!
+        val activity = playActivity ?: return
         activity.rulesScrollView.visibility = View.GONE
         activity.rulesMsg.text = activity.getString(R.string.no_rules_msg)
         if (!instrumetProcessing) {

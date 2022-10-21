@@ -409,8 +409,6 @@
                 android:background="?attr/dividerColor" />
         </TableRow>
 
-<!-- TODO: decide what to do with tutorial
-
         <TableRow
             android:layout_width="10dp"
             android:clickable="true"
@@ -450,17 +448,17 @@
                 android:layout_height="1dp"
                 android:background="?attr/dividerColor" />
         </TableRow>
--->
 
         <TableRow
-            android:layout_width="10dp"
-            android:clickable="true"
-            android:background="@drawable/row_clickable"
-            android:onClick="resetClick"
-            android:focusable="true"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="24dp">
+            android:background="@drawable/row_clickable"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="resetClick"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="16dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -468,17 +466,36 @@
                 android:textColor="?attr/textColor"
                 android:textSize="21sp"
                 android:typeface="monospace" />
+
             <Space android:layout_width="16dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
                 android:layout_weight="1"
+                android:singleLine="true"
                 android:text="@string/settings_reset"
                 android:textColor="@android:color/holo_red_light"
                 android:textSize="21sp"
                 android:typeface="monospace" />
+
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="24dp">
+
+            <Space android:layout_width="16dp" />
+
+            <Space android:layout_width="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/dividerColor" />
+        </TableRow>
+
     </TableLayout>
 
     <eightbitlab.com.blurview.BlurView

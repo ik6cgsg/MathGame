@@ -7,24 +7,29 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.util.Log
+import com.google.gson.Gson
 import mathhelper.twf.expressiontree.SimpleComputationRuleParams
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.common.*
+import mathhelper.games.matify.game.FullTaskset
 import mathhelper.games.matify.tutorial.TutorialPlayActivity
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
+import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.statistics.Statistics
 import mathhelper.games.matify.tutorial.TutorialGamesActivity
 import mathhelper.games.matify.tutorial.TutorialLevelsActivity
+import java.io.File
 
 class TutorialScene {
     companion object {
@@ -76,7 +81,7 @@ class TutorialScene {
             }
         }
 
-    fun getNotNullActivity () = if (tutorialGamesActivity != null) {
+    fun getNotNullActivity() = if (tutorialGamesActivity != null) {
         tutorialGamesActivity
     } else if (tutorialLevelsActivity != null) {
         tutorialLevelsActivity
@@ -84,7 +89,7 @@ class TutorialScene {
         tutorialPlayActivity
     } else null
 
-    fun getResourceString (id: Int) = getNotNullActivity()?.resources?.getString(id) ?: null
+    fun getResourceString(id: Int) = getNotNullActivity()?.resources?.getString(id) ?: null
 
     lateinit var tutorialLevel: Level
 
@@ -108,8 +113,13 @@ class TutorialScene {
 
     fun start(context: Context) {
         GlobalScene.shared.tutorialProcessing = true
-        tutorialGame = null//Game.create("tutorial.json", context)
+        val input = context.assets.open("tutorial.json")
+        val text = input.readBytes().toString(Charsets.UTF_8)
+        input.close()
+        val info = Gson().fromJson(text, TasksetInfo::class.java)
+        tutorialGame = Game.create(info, context)
         if (tutorialGame == null) {
+            Logger.d(TAG, "failed to load tutorial")
             return
         }
         context.startActivity(Intent(context, TutorialGamesActivity::class.java))
@@ -161,6 +171,7 @@ class TutorialScene {
     }
 
     fun nextStep() {
+        Logger.d(TAG, "nextStep")
         currentStep++
         if (currentStep == steps.size) {
             return
@@ -170,6 +181,7 @@ class TutorialScene {
     }
 
     fun prevStep() {
+        Logger.d(TAG, "prevStep")
         currentStep--
         if (currentStep == -1) {
             AndroidUtil.showDialog(leaveDialog!!)
@@ -179,7 +191,7 @@ class TutorialScene {
         }
     }
 
-    private fun stepToDisplay() = if (currentStep <=1 ) {
+    private fun stepToDisplay() = if (currentStep <= 1) {
         1
     } else if (currentStep > 3) {
         currentStep - 1
@@ -189,18 +201,25 @@ class TutorialScene {
         Logger.d(TAG, "loadLevel")
         val activity = tutorialPlayActivity!!
         clearRules()
-        activity.endExpressionView.text = if (tutorialLevel.goalPattern.isNullOrBlank()) {
-            when (tutorialLevel.subjectType) {
-                TaskType.SET.str -> MathResolver.resolveToPlain(tutorialLevel.endExpression!!, taskType = TaskType.SET).matrix
-                else -> MathResolver.resolveToPlain(tutorialLevel.endExpression!!).matrix
-            }
-        } else {
-            tutorialLevel.goalPattern
-        }
-        if (activity.endExpressionView.visibility != View.VISIBLE) {
+        activity.endExpressionViewLabel.text = tutorialLevel.getDescriptionByLanguage(
+            activity.resources.configuration.locale.language
+        )
+        activity.endExpressionViewLabel.visibility = View.VISIBLE
+
+        activity.endExpressionView.text = tutorialLevel.goalExpressionStructureString
+        activity.endExpressionView.visibility = View.VISIBLE
+        /*if (activity.endExpressionView.visibility != View.VISIBLE) {
             activity.showEndExpression(null)
-        }
-        tutorialPlayActivity!!.globalMathView.setExpression(tutorialLevel.startExpression.clone(), tutorialLevel.subjectType)
+        }*/
+
+
+        tutorialPlayActivity!!.globalMathView.setExpression(
+            tutorialLevel.startExpression.clone(),
+            tutorialLevel.subjectType,
+            true
+        )
+        tutorialPlayActivity!!.globalMathView.center()
+
     }
 
     fun onRuleClicked(ruleView: RuleMathView) {
@@ -230,7 +249,7 @@ class TutorialScene {
         }
         val activity = tutorialPlayActivity!!
         if (activity.globalMathView.currentAtoms.isNotEmpty()) {
-            val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
+            val substitutionApplication = tutorialLevel.getSubstitutionApplication(
                 activity.globalMathView.currentAtoms,
                 activity.globalMathView.expression!!
             )
@@ -241,9 +260,9 @@ class TutorialScene {
                 activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
             } else {
                 val rules =
-                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
+                    tutorialLevel.getRulesFromSubstitutionApplication(substitutionApplication)
                 activity.globalMathView.currentRulesToResult =
-                    LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
+                    tutorialLevel.getResultFromSubstitutionApplication(substitutionApplication)
 
                 activity.noRules.visibility = View.GONE
                 activity.rulesScrollView.visibility = View.VISIBLE
@@ -387,7 +406,7 @@ class TutorialScene {
         Logger.d(TAG, "createLeaveDialog")
         val builder = AlertDialog.Builder(
             context, ThemeController.shared.alertDialogTheme
-            )
+        )
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.wanna_leave)
