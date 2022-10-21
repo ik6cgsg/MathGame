@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.util.Log
+import android.widget.Toast
 import com.google.gson.Gson
 import mathhelper.twf.expressiontree.SimpleComputationRuleParams
 import mathhelper.twf.expressiontree.ExpressionSubstitution
@@ -76,8 +77,16 @@ class TutorialScene {
             if (value != null) {
                 tutorialDialog = value.tutorialDialog
                 leaveDialog = value.leaveDialog
-                loadLevel()
-                nextStep()
+                // TODO!: rethink this entire approach alongside similar uses of delaying
+                Handler().postDelayed({
+                    try {
+                        loadLevel()
+                    } catch (e: Exception) {
+                        Logger.e(TAG, "Error while loading a level")
+                        Toast.makeText(value, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
+                    }
+                    nextStep()
+                }, 100)
             }
         }
 

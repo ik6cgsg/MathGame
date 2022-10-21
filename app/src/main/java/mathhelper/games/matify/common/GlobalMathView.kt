@@ -253,11 +253,9 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
         var parw = (parent as ConstraintLayout).width * 1f
         parw -= parw / 20
-        /*
         if (curw > parw) {
             setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * parw / curw))
         }
-        */
         if (animated) {
             animate()
                 .alpha(0f)
