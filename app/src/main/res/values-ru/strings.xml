@@ -104,8 +104,9 @@
     <string name="tutorial_on_level_tap">👉 проверим как это работает! 👈\n1. Ткни рядом с плюсом в выражении 👇</string>
     <string name="tutorial_on_level_select">1. Ткни рядом с плюсом в выражении ✅\n2. Теперь 🔍 правило в списке ниже </string>
     <string name="tutorial_on_level_win">2. Правило применилось ✅\n3. Продолжай и выигрывай! 👏🏆</string>
-    <string name="tutorial_on_level_seems">Выглядит, будто ты все уже умеешь!\n</string>
+    <string name="tutorial_on_level_seems">Выглядит, будто ты все уже умеешь!\nМожешь выйти или продолжить и ознакомиться с инструментом \'Мультивыделение\'.\n</string>
     <string name="tutorial_on_level_i_am_pro">Ага, все ясно ☀😎</string>
+    <string name="tutorial_advanced_proceed">Давай!</string>
     <string name="no_i_am_pro">Не, я профи 😎</string>
 
     <string name="parsing_error">Ошибка загрузки выражения</string>

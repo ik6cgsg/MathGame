@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import mathhelper.games.matify.activities.GeneralPlayActivity
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.AndroidUtil
 import mathhelper.games.matify.common.ColorName
@@ -116,7 +118,7 @@ class InstrumentScene {
     private lateinit var paramView: SimpleMathView
 
 
-    fun init(bottomSheet: View, activity: PlayActivity) {
+    fun init(bottomSheet: View, activity: GeneralPlayActivity) {
         currentProcessingInstrument = null
         currentStep = null
         // Views
@@ -279,7 +281,7 @@ class InstrumentScene {
         currentDetail?.isSelected = false
         currentDetail = null
         currentEnteredText = ""
-        PlayScene.shared.instrumetProcessing = true
+        PlayScene.shared.instrumentProcessing = true
         PlayScene.shared.clearRules()
         //startStopMultiselectionMode.text = getText(R.string.end_multiselect)
         if (inst.type == InstrumentType.MULTI || inst.type == InstrumentType.BRACKET) {
@@ -302,7 +304,7 @@ class InstrumentScene {
         currentProcessingInstrument = null
         inst.button.setTextColor(ThemeController.shared.color(ColorName.PRIMARY_COLOR))
         PlayScene.shared.setMultiselectionMode(false)
-        PlayScene.shared.instrumetProcessing = false
+        PlayScene.shared.instrumentProcessing = false
         PlayScene.shared.playActivity?.globalMathView?.clearExpression()
         AndroidUtil.vibrate(context)
         PlayScene.shared.playActivity?.mainViewAnim?.reverseTransition(300)

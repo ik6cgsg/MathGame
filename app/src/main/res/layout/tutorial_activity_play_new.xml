@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    tools:context=".activities.PlayActivity">
+
+    <include layout="@layout/tutorial_activity_play" />
+    <include layout="@layout/rule_list_sheet" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

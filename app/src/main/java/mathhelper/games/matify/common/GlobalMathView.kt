@@ -113,10 +113,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     fun clearExpression() {
-        var animated = false
-        if (currentAtoms.isNotEmpty()) {
-            animated = true
-        }
+        val animated = currentAtoms.isNotEmpty()
         currentAtoms = arrayListOf()
         currentRulesToResult = null
         MatifySpan.clearSelected()

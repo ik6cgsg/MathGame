@@ -2,21 +2,21 @@ package mathhelper.games.matify.tutorial
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.*
 import android.widget.*
+import mathhelper.games.matify.InstrumentScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
+import mathhelper.games.matify.activities.GeneralPlayActivity
 import mathhelper.games.matify.common.*
 import kotlin.math.max
 import kotlin.math.min
 
-class TutorialPlayActivity: AppCompatActivity() {
+class TutorialPlayActivity : GeneralPlayActivity() {
     private val TAG = "TutorialPlayActivity"
     private var scale = 1.0f
-    private var needClear = false
     private var scaleListener = MathScaleListener()
 
     private lateinit var scaleDetector: ScaleGestureDetector
@@ -25,14 +25,8 @@ class TutorialPlayActivity: AppCompatActivity() {
     lateinit var tutorialDialog: AlertDialog
     lateinit var leaveDialog: AlertDialog
 
-    lateinit var globalMathView: GlobalMathView
-    lateinit var endExpressionView: TextView
-    lateinit var endExpressionViewLabel: TextView
-    lateinit var messageView: TextView
-    lateinit var rulesLinearLayout: LinearLayout
-    lateinit var rulesScrollView: ScrollView
-    lateinit var noRules: TextView
-    private lateinit var timerView: TextView
+    // lateinit var noRules: TextView
+    private lateinit var buttonTable: TableLayout
     private lateinit var pointerMsgView: TextView
     private lateinit var pointerEndView: TextView
     private lateinit var pointerCentralView: TextView
@@ -40,25 +34,6 @@ class TutorialPlayActivity: AppCompatActivity() {
     private lateinit var pointerRestartView: TextView
     private lateinit var pointerUndoView: TextView
     private lateinit var pointerInfoView: TextView
-
-    /*
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        Logger.d(TAG, "onTouchEvent")
-        scaleDetector.onTouchEvent(event)
-        when {
-            event.action == MotionEvent.ACTION_DOWN -> {
-                needClear = true
-            }
-            event.action == MotionEvent.ACTION_UP -> {
-                if (needClear) {
-                    globalMathView.clearExpression()
-                    TutorialScene.shared.clearRules()
-                }
-            }
-        }
-        return true
-    }
-    */
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Logger.d(TAG, "onTouchEvent")
@@ -88,12 +63,14 @@ class TutorialPlayActivity: AppCompatActivity() {
 
     private fun setViews() {
         globalMathView = findViewById(R.id.global_expression)
-        endExpressionView = findViewById(R.id.end_expression_view)
+        endExpressionMathView = findViewById(R.id.end_expression_math_view)
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
         messageView = findViewById(R.id.message_view)
-        rulesLinearLayout = findViewById(R.id.rules_linear_layout)
-        rulesScrollView = findViewById(R.id.rules_scroll_view)
-        noRules = findViewById(R.id.no_rules)
+        bottomSheet = findViewById(R.id.bottom_sheet)
+        rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
+        rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
+        rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
+        // noRules = findViewById(R.id.no_rules)
         timerView = findViewById(R.id.timer_view)
         pointerMsgView = findViewById(R.id.pointer_message)
         pointerEndView = findViewById(R.id.pointer_end)
@@ -102,13 +79,15 @@ class TutorialPlayActivity: AppCompatActivity() {
         pointerRestartView = findViewById(R.id.pointer_restart)
         pointerUndoView = findViewById(R.id.pointer_undo)
         pointerInfoView = findViewById(R.id.pointer_info)
+        buttonTable = bottomSheet.findViewById(R.id.account_table)
+        InstrumentScene.shared.init(bottomSheet, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setTheme(Storage.shared.themeInt())
-        setContentView(R.layout.tutorial_activity_play)
+        setContentView(R.layout.tutorial_activity_play_new)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
         leaveDialog = TutorialScene.shared.createLeaveDialog(this)
@@ -116,8 +95,20 @@ class TutorialPlayActivity: AppCompatActivity() {
         restartDialog = createRestartDialog()
         timerView.text = "⏰ 1:23"
         globalMathView.text = ""
-        endExpressionView.text = ""
+        endExpressionViewLabel.text = ""
+        buttonTable.visibility = View.GONE
+
         TutorialScene.shared.tutorialPlayActivity = this
+        // TODO!: rethink this entire approach alongside similar uses of delaying
+        Handler().postDelayed({
+            try {
+                TutorialScene.shared.loadLevel()
+            } catch (e: Exception) {
+                Logger.e(TAG, "Error while loading a level")
+                Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
+            }
+            TutorialScene.shared.nextStep()
+        }, 100)
     }
 
     override fun onBackPressed() {
@@ -213,8 +204,10 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_goal))
         pointerEndView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerEndView)
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_goal_explanation) +
-            resources.getString(R.string.tutorial_on_level_goal_toggle))
+        tutorialDialog.setMessage(
+            resources.getString(R.string.tutorial_on_level_goal_explanation) +
+                    resources.getString(R.string.tutorial_on_level_goal_toggle)
+        )
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
@@ -223,18 +216,42 @@ class TutorialPlayActivity: AppCompatActivity() {
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_main_element))
         pointerCentralView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerCentralView)
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_main_element_current) +
-            resources.getString(R.string.tutorial_on_level_main_element_to_win) +
-            resources.getString(R.string.tutorial_on_level_main_element_touch) +
-            resources.getString(R.string.tutorial_on_level_main_element_find_rule) +
-            resources.getString(R.string.tutorial_on_level_main_element_make_subst) +
-            resources.getString(R.string.tutorial_on_level_main_element_repeat) +
-            resources.getString(R.string.got_it))
+        tutorialDialog.setMessage(
+            resources.getString(R.string.tutorial_on_level_main_element_current) +
+                    resources.getString(R.string.tutorial_on_level_main_element_to_win) +
+                    resources.getString(R.string.tutorial_on_level_main_element_touch) +
+                    resources.getString(R.string.tutorial_on_level_main_element_find_rule) +
+                    resources.getString(R.string.tutorial_on_level_main_element_make_subst) +
+                    resources.getString(R.string.tutorial_on_level_main_element_repeat) +
+                    resources.getString(R.string.got_it)
+        )
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun startDynamicTutorial() {
+        buttonTable.visibility = View.GONE
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_tap))
+        TutorialScene.shared.wantedZoom = false
+        TutorialScene.shared.wantedClick = true
+    }
+
+    fun explainMultiselectTutorial() {
+        TutorialScene.shared.currentLevel = TutorialScene.shared.tutorialGame!!.levels[1]
+        TutorialScene.shared.loadLevel()
+        buttonTable.visibility = View.VISIBLE
+
+        Logger.d(TAG, "explainMultiselectTutorial")
+        TutorialScene.shared.showMessage("Сложное выражение!")
+        tutorialDialog.setMessage(
+                    "Мультиселект включается там-то и там-то\n" +
+                    "Он позволит тебе делать то-то и то-то\n" +
+                    "Понял?"
+        )
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+    }
+
+    fun startMultiselectTutorial() {
+        TutorialScene.shared.showMessage("")
         TutorialScene.shared.wantedZoom = false
         TutorialScene.shared.wantedClick = true
     }
@@ -258,12 +275,38 @@ class TutorialPlayActivity: AppCompatActivity() {
             this, ThemeController.shared.alertDialogTheme
         )
         builder
-            .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepsSize} / ${TutorialScene.shared.stepsSize}")
+            .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepToDisplay()} / ${TutorialScene.shared.stepsSize}")
             .setMessage(resources.getString(R.string.tutorial_on_level_seems))
-            .setPositiveButton(resources.getString(R.string.tutorial_on_level_i_am_pro)) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(resources.getString(R.string.tutorial_on_level_i_am_pro)) { _: DialogInterface, _: Int ->
                 TutorialScene.shared.leave()
             }
-            .setNegativeButton(R.string.step_back) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.step_back) { _: DialogInterface, _: Int ->
+                TutorialScene.shared.loadLevel()
+                TutorialScene.shared.prevStep()
+            }
+            .setNeutralButton(R.string.tutorial_advanced_proceed) { _: DialogInterface, _: Int ->
+                TutorialScene.shared.nextStep()
+            }
+            .setCancelable(false)
+        val dialog = builder.create()
+        AndroidUtil.showDialog(dialog, backMode = BackgroundMode.NONE)
+    }
+
+    fun bothLevelsPassed() {
+        Logger.d(TAG, "tutorial over")
+        TutorialScene.shared.showMessage(resources.getString(R.string.congratulations))
+        TutorialScene.shared.animateLeftUp(pointerCentralView)
+
+        val builder = AlertDialog.Builder(
+            this, ThemeController.shared.alertDialogTheme
+        )
+        builder
+            .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepsSize} / ${TutorialScene.shared.stepsSize}")
+            .setMessage(resources.getString(R.string.tutorial_on_level_seems))
+            .setPositiveButton(resources.getString(R.string.tutorial_on_level_i_am_pro)) { _: DialogInterface, _: Int ->
+                TutorialScene.shared.leave()
+            }
+            .setNegativeButton(R.string.step_back) { _: DialogInterface, _: Int ->
                 TutorialScene.shared.loadLevel()
                 TutorialScene.shared.prevStep()
             }
@@ -272,15 +315,24 @@ class TutorialPlayActivity: AppCompatActivity() {
         AndroidUtil.showDialog(dialog, backMode = BackgroundMode.NONE)
     }
 
-    inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    inner class MathScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             needClear = false
             scale *= detector.scaleFactor
             scale = max(
                 Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
-                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize))
+                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize)
+            )
             globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
             return true
         }
+    }
+
+    override fun showMessage(msg: String, flag: Boolean, ifFlagFalseMsg: String?) {
+        if (flag)
+            messageView.text = msg
+        else
+            messageView.text = ifFlagFalseMsg
+        messageView.visibility = View.VISIBLE
     }
 }

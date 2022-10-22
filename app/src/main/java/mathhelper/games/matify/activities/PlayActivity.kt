@@ -3,55 +3,36 @@ package mathhelper.games.matify.activities
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
-import android.util.Log
 import android.view.MotionEvent
-import android.view.ScaleGestureDetector
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.StateType
-import kotlin.math.max
-import kotlin.math.min
 
 
-class PlayActivity: AppCompatActivity(), ConnectionListener {
+class PlayActivity: GeneralPlayActivity(), ConnectionListener {
     private val TAG = "PlayActivity"
-    private var needClear = false
     private var loading = false
-    private lateinit var looseDialog: AlertDialog
+    private lateinit var loseDialog: AlertDialog
     private lateinit var winDialog: AlertDialog
     private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
 
     lateinit var mainView: ConstraintLayout
     lateinit var mainViewAnim: TransitionDrawable
-    lateinit var globalMathView: GlobalMathView
-    lateinit var endExpressionViewLabel: TextView
-    lateinit var endExpressionMathView: SimpleMathView
-    lateinit var messageView: TextView
-    lateinit var rulesLinearLayout: LinearLayout
-    lateinit var rulesScrollView: ScrollView
-    lateinit var timerView: TextView
+
+
     lateinit var blurView: BlurView
-    lateinit var bottomSheet: LinearLayout
-    lateinit var rulesMsg: TextView
     lateinit var offline: TextView
 
     private lateinit var restart: TextView
@@ -152,7 +133,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         setContentView(R.layout.activity_play_new)
         setViews()
         messageView.visibility = View.GONE
-        looseDialog = createLooseDialog()
+        loseDialog = createLooseDialog()
         winDialog = createWinDialog()
         continueDialog = createContinueDialog()
         PlayScene.shared.playActivity = this
@@ -273,7 +254,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         }
     }
 
-    fun showMessage(msg: String, flag: Boolean = true, ifFlagFalseMsg: String? = null) {
+    override fun showMessage(msg: String, flag: Boolean, ifFlagFalseMsg: String?) {
         if (flag)
             messageView.text = msg
         else
@@ -318,7 +299,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
     }
 
     fun onLoose() {
-        AndroidUtil.showDialog(looseDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
+        AndroidUtil.showDialog(loseDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
     }
 
     fun collapseBottomSheet() {

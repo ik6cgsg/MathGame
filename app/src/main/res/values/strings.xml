@@ -3,7 +3,7 @@
     <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆</string>
     <string name="end_expression_opened"><b><i>Goal:</i></b> %1$s</string>
     <string name="previous" translatable="false">↪️</string>
-    <string name="restart" translatable="false">🔁 </string>
+    <string name="restart" translatable="false">🔁</string>
     <string name="back" translatable="false">⬅️</string>
     <string name="wrong_subs">❌ Can\'t do this ❌</string>
     <string name="time_out">😢Time out!😢</string>
@@ -116,8 +116,9 @@
     <string name="tutorial_on_level_tap">👉 Let\'s check it out! 👈\n1. Tap near plus in the expression 👇</string>
     <string name="tutorial_on_level_select">1. Tap near plus in the expression ✅\n2. Now 🔍 rule from a list below</string>
     <string name="tutorial_on_level_win">2. Rule applied ✅\n3. Continue and win! 👏🏆</string>
-    <string name="tutorial_on_level_seems">Seems you got it all!\n</string>
+    <string name="tutorial_on_level_seems">Seems you got it all!\nExit now or proceed to familiarize yourself with \'multiselect\' feature.\n</string>
     <string name="tutorial_on_level_i_am_pro">Yep, now I\'m PRO too 😎</string>
+    <string name="tutorial_advanced_proceed">Bring it!</string>
     <string name="no_i_am_pro">No, I\'m PRO 😎</string>
 
     <string name="parsing_error">parsing error</string>

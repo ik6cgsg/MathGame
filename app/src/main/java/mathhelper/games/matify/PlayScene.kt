@@ -5,21 +5,15 @@ import android.content.Context
 import android.os.Handler
 import android.text.Html
 import android.text.SpannedString
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.text.HtmlCompat
-import mathhelper.twf.api.expressionToStructureString
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import kotlinx.android.synthetic.main.activity_play.*
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.*
-import mathhelper.games.matify.mathResolver.MathResolver
-import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.statistics.Statistics
 
 class PlayScene {
@@ -38,7 +32,7 @@ class PlayScene {
             }
         }
     /** GAME STATE */
-    var instrumetProcessing: Boolean = false
+    var instrumentProcessing: Boolean = false
     var currentRuleView: RuleMathView? = null
     fun setCurrentRuleView(context: Context, value: RuleMathView?) {
         currentRuleView = value
@@ -117,7 +111,7 @@ class PlayScene {
             return
         }
         val activity = playActivity!!
-        if (instrumetProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
+        if (instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
             InstrumentScene.shared.choosenAtom(activity.globalMathView.currentAtoms)
         } else if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             if (activity.globalMathView.multiselectionMode) {
@@ -153,7 +147,7 @@ class PlayScene {
         val activity = playActivity!!
         clearRules()
         cancelTimers()
-        val text = activity.getString(R.string.end_expression_opened, currentLevel.getDescriptionByLanguage(languageCode))
+        // val text = activity.getString(R.string.end_expression_opened, currentLevel.getDescriptionByLanguage(languageCode))
         activity.endExpressionViewLabel.text = Html.fromHtml(
             String.format(
                 Html.toHtml(SpannedString(activity.getText(R.string.end_expression_opened))),
@@ -210,7 +204,7 @@ class PlayScene {
 
     fun previousStep() {
         Logger.d(TAG, "previousStep")
-        if (instrumetProcessing) {
+        if (instrumentProcessing) {
             InstrumentScene.shared.turnOffCurrentInstrument(playActivity!!)
         } else {
             val state = history.getPreviousStep()
@@ -291,7 +285,7 @@ class PlayScene {
         val activity = playActivity ?: return
         activity.rulesScrollView.visibility = View.GONE
         activity.rulesMsg.text = activity.getString(R.string.no_rules_msg)
-        if (!instrumetProcessing) {
+        if (!instrumentProcessing) {
             activity.collapseBottomSheet()
         }
     }
