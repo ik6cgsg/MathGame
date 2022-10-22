@@ -33,12 +33,14 @@
         app:layout_constraintEnd_toStartOf="@id/end_expression_detail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/offline">
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@drawable/background"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/end_expression_label"
                 android:layout_width="wrap_content"
@@ -53,8 +55,8 @@
                 android:text="@string/end_expression_opened"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                android:typeface="monospace"
-                />
+                android:typeface="monospace" />
+
             <mathhelper.games.matify.common.SimpleMathView
                 android:id="@+id/end_expression_math_view"
                 android:layout_width="wrap_content"
@@ -63,10 +65,10 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginBottom="0dp"
-                android:includeFontPadding="false"
-                android:visibility="visible"
                 android:background="@drawable/rect_bordered"
-                android:text=""/>
+                android:includeFontPadding="false"
+                android:text=""
+                android:visibility="visible" />
         </LinearLayout>
 
     </HorizontalScrollView>
@@ -122,7 +124,7 @@
     <LinearLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:background="?attr/shapeBackground"
         android:weightSum="1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,25 +134,27 @@
         <TextView
             android:id="@+id/back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_weight="0.12"
+            android:gravity="center"
             android:onClick="back"
             android:text="@string/back"
-            android:textAlignment="viewStart"
+            android:textAlignment="center"
             android:textColor="@color/light_click"
             android:textSize="25sp"
             android:typeface="monospace"
-            app:layout_constraintBottom_toBottomOf="@+id/timer_view"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <TextView
             android:id="@+id/info"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.12"
             android:background="@android:color/transparent"
+            android:gravity="center"
             android:onClick="info"
             android:text="@string/i"
             android:textAlignment="center"
@@ -165,7 +169,7 @@
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.11"></Space>
+            android:layout_weight="0.11" />
 
         <TextView
             android:id="@+id/timer_view"
@@ -184,16 +188,17 @@
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.11"></Space>
+            android:layout_weight="0.11" />
 
         <TextView
             android:id="@+id/restart"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.08"
+            android:layout_height="match_parent"
+            android:layout_weight="0.12"
+            android:gravity="center"
             android:onClick="restart"
             android:text="@string/restart"
-            android:textAlignment="viewEnd"
+            android:textAlignment="center"
             android:textColor="@color/light_click"
             android:textSize="25sp"
             android:typeface="monospace"
@@ -204,11 +209,13 @@
         <TextView
             android:id="@+id/previous"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.08"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0.12"
+            android:gravity="center"
             android:onClick="previous"
             android:text="@string/previous"
-            android:textAlignment="viewEnd"
+            android:textAlignment="center"
             android:textColor="@color/text_action_disableable"
             android:textSize="25sp"
             android:typeface="monospace"

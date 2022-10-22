@@ -56,7 +56,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
 
     private lateinit var restart: TextView
     private lateinit var back: TextView
-    private lateinit var info: Button
+    private lateinit var info: TextView
     private lateinit var previous: TextView
 
     private val messageTimer = MessageTimer()
