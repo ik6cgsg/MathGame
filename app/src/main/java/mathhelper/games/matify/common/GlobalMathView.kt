@@ -58,7 +58,9 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         scaleDetector = ScaleGestureDetector(context, scaleListener)
         setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         includeFontPadding = false
-        typeface = ResourcesCompat.getFont(context, R.font.roboto)
+        if (!isInEditMode) {
+            typeface = ResourcesCompat.getFont(context, R.font.roboto)
+        }
         textSize = Constants.centralExpressionDefaultSize
         setLineSpacing(0f, Constants.mathLineSpacing)
         //letterSpacing = 1.1f

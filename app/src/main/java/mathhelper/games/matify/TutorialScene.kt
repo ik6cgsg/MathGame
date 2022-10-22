@@ -173,7 +173,9 @@ class TutorialScene {
             {
                 tutorialPlayActivity!!.undoTutorial()
             },
-            { tutorialPlayActivity!!.startDynamicTutorial() }
+            {
+                tutorialPlayActivity!!.startDynamicTutorial()
+            }
         )
         stepsSize = steps.size - 2
         currentStep = -1
