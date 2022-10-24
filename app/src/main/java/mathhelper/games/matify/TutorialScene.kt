@@ -84,6 +84,7 @@ class TutorialScene {
 
     lateinit var currentLevel: Level
     var currLevelIndex = 0
+    var instrumentProcessing: Boolean = false
 
     var tutorialDialog: AlertDialog? = null
     var leaveDialog: AlertDialog? = null
@@ -201,7 +202,7 @@ class TutorialScene {
     fun loadLevel() {
         Logger.d(TAG, "loadLevel")
         val activity = tutorialPlayActivity!!
-        clearRules()
+        activity.clearRules()
 
         activity.endExpressionViewLabel.text = Html.fromHtml(
             String.format(
@@ -240,7 +241,7 @@ class TutorialScene {
                         activity.bothLevelsPassed()
                     }
                 }
-                clearRules()
+                activity.clearRules()
             } else {
                 showMessage(activity.resources.getString(R.string.wrong_subs))
             }
@@ -261,8 +262,10 @@ class TutorialScene {
 
             if (substitutionApplication == null) {
                 showMessage(activity.getString(R.string.no_rules_try_another))
-                clearRules()
-                activity.globalMathView.recolorCurrentAtom(Color.RED)
+                activity.clearRules()
+                if (!activity.globalMathView.multiselectionMode) {
+                    activity.globalMathView.recolorCurrentAtom(Color.RED)
+                }
             } else {
                 val rules =
                     currentLevel.getRulesFromSubstitutionApplication(substitutionApplication)
@@ -282,21 +285,22 @@ class TutorialScene {
     }
 
 
-    fun clearRules() {
-        val activity = tutorialPlayActivity ?: return
-        activity.rulesScrollView.visibility = View.GONE
-        // activity.noRules.visibility = View.VISIBLE
-    }
-
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
         Logger.d(TAG, "redrawRules")
         val activity = tutorialPlayActivity!!
         activity.rulesLinearLayout.removeAllViews()
         for (r in rules) {
-            val rule = RuleMathView(activity)
-            rule.setSubst(r, currentLevel.subjectType)
-            activity.rulesLinearLayout.addView(rule)
+            try {
+                val rule = RuleMathView(activity)
+                rule.setSubst(r, currentLevel.subjectType)
+                activity.rulesLinearLayout.addView(rule)
+            } catch (e: Exception) {
+                Logger.e(TAG, "Rule draw Error: $e")
+            }
         }
+        activity.halfExpandBottomSheet()
+        activity.rulesMsg.text = if (rules.isEmpty()) activity.getString(R.string.no_rules_msg)
+        else activity.getString(R.string.rules_found_msg)
     }
 
     fun showMessage(msg: String) {

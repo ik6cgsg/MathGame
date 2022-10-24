@@ -32,7 +32,6 @@ class PlayScene {
             }
         }
     /** GAME STATE */
-    var instrumentProcessing: Boolean = false
     var currentRuleView: RuleMathView? = null
     fun setCurrentRuleView(context: Context, value: RuleMathView?) {
         currentRuleView = value
@@ -49,7 +48,7 @@ class PlayScene {
     }
     var stepsCount: Double = 0.0
     var currentTime: Long = 0
-    private lateinit var history: History
+    lateinit var history: History
     /** TIMERS */
     private val messageTimer = MessageTimer()
     var downTimer: MathDownTimer? = null
@@ -91,7 +90,7 @@ class PlayScene {
 
                     onWin(context)
                 }
-                clearRules()
+                activity.clearRules()
                 activity.globalMathView.currentRulesToResult = null
             } else {
                 showMessage(activity.getString(R.string.wrong_subs))
@@ -111,7 +110,7 @@ class PlayScene {
             return
         }
         val activity = playActivity!!
-        if (instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
+        if (activity.instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
             InstrumentScene.shared.choosenAtom(activity.globalMathView.currentAtoms)
         } else if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             if (activity.globalMathView.multiselectionMode) {
@@ -123,7 +122,7 @@ class PlayScene {
             )
             if (substitutionApplication == null) {
                 showMessage(activity.getString(R.string.no_rules))
-                clearRules()
+                activity.clearRules()
                 if (!activity.globalMathView.multiselectionMode) {
                     activity.globalMathView.clearExpression()
                 }
@@ -145,7 +144,7 @@ class PlayScene {
         Logger.d(TAG, "loadLevel")
         val currentLevel = LevelScene.shared.currentLevel!!
         val activity = playActivity!!
-        clearRules()
+        activity.clearRules()
         cancelTimers()
         // val text = activity.getString(R.string.end_expression_opened, currentLevel.getDescriptionByLanguage(languageCode))
         activity.endExpressionViewLabel.text = Html.fromHtml(
@@ -204,7 +203,7 @@ class PlayScene {
 
     fun previousStep() {
         Logger.d(TAG, "previousStep")
-        if (instrumentProcessing) {
+        if (playActivity!!.instrumentProcessing) {
             InstrumentScene.shared.turnOffCurrentInstrument(playActivity!!)
         } else {
             val state = history.getPreviousStep()
@@ -212,7 +211,7 @@ class PlayScene {
             val oldExpression = activity.globalMathView.expression!!
             val oldSteps = stepsCount
             if (state != null) {
-                clearRules()
+                activity.clearRules()
                 val currentLevel = LevelScene.shared.currentLevel!!
                 activity.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
                 //val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
@@ -228,18 +227,6 @@ class PlayScene {
         }
     }
 
-    fun setMultiselectionMode(multi: Boolean) {
-        playActivity?.previous?.isEnabled = !history.empty
-        if (multi) {
-            playActivity?.globalMathView?.multiselectionMode = true
-            playActivity?.globalMathView?.recolorCurrentAtom(ThemeController.shared.color(ColorName.MULTISELECTION_COLOR))
-        } else {
-            clearRules()
-            playActivity?.globalMathView?.clearExpression()
-            playActivity?.globalMathView?.multiselectionMode = false
-        }
-    }
-
     fun restart(context: Context, languageCode: String) {
         Logger.d(TAG, "restart")
         val activity = playActivity!!
@@ -250,7 +237,7 @@ class PlayScene {
     fun menu(logAndSave: Boolean = true) {
         Logger.d(TAG, "menu")
         val activity = playActivity!!
-        setMultiselectionMode(false)
+        activity.setMultiselectionMode(false)
         if (logAndSave) { // TODO: && stepsCount > 0 (server is now saving state even if stepsCount == 0)
             history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
             Statistics.logInterim(stepsCount, activity.globalMathView.expression!!)
@@ -279,15 +266,6 @@ class PlayScene {
         val alert = builder.create()
         AndroidUtil.showDialog(alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
             blurView = playActivity!!.blurView, activity = playActivity!!)
-    }
-
-    fun clearRules() {
-        val activity = playActivity ?: return
-        activity.rulesScrollView.visibility = View.GONE
-        activity.rulesMsg.text = activity.getString(R.string.no_rules_msg)
-        if (!instrumentProcessing) {
-            activity.collapseBottomSheet()
-        }
     }
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {

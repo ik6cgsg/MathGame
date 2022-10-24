@@ -5,7 +5,7 @@
     android:id="@+id/tutorial_activity_play"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/backgroundColor"
+    android:background="@drawable/background"
     android:clipChildren="false"
     android:clipToPadding="false"
     tools:context=".tutorial.TutorialPlayActivity">

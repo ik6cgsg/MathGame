@@ -10,12 +10,14 @@ import android.view.ScaleGestureDetector
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import mathhelper.games.matify.GlobalScene
 import mathhelper.twf.api.findLowestSubtreeTopOfSelectedNodesInExpression
 import mathhelper.twf.api.structureStringToExpression
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
+import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
 import mathhelper.games.matify.mathResolver.MatifySpan
@@ -220,7 +222,11 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
             }
         }
         if (currentAtoms.isEmpty()) {
-            PlayScene.shared.clearRules()
+            if (GlobalScene.shared.tutorialProcessing) {
+                TutorialScene.shared.tutorialPlayActivity?.clearRules()
+            } else {
+                PlayScene.shared.playActivity?.clearRules()
+            }
         }
     }
 
@@ -233,7 +239,11 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         setTextFromMathPair(true)
         PlayScene.shared.onAtomClicked()
         if (currentAtoms.isEmpty()) {
-            PlayScene.shared.clearRules()
+            if (GlobalScene.shared.tutorialProcessing) {
+                TutorialScene.shared.tutorialPlayActivity?.clearRules()
+            } else {
+                PlayScene.shared.playActivity?.clearRules()
+            }
         }
     }
 

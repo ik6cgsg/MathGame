@@ -116,9 +116,11 @@ class InstrumentScene {
     // MathViews
     private lateinit var placeView: SimpleMathView
     private lateinit var paramView: SimpleMathView
+    private lateinit var activity: GeneralPlayActivity
 
 
-    fun init(bottomSheet: View, activity: GeneralPlayActivity) {
+    fun init(bottomSheet: View, newActivity: GeneralPlayActivity) {
+        activity = newActivity
         currentProcessingInstrument = null
         currentStep = null
         // Views
@@ -209,7 +211,7 @@ class InstrumentScene {
     }
 
     fun clickDetail(v: Button) {
-        AndroidUtil.vibrateLight(PlayScene.shared.playActivity!!)
+        AndroidUtil.vibrateLight(activity)
         if (currentStep != InstrumentStep.DETAIL || currentDetail == v) return
         if (currentDetail != null) {
             currentDetail?.isSelected = false
@@ -221,7 +223,7 @@ class InstrumentScene {
     }
 
     fun clickKeyboard(v: Button) {
-        AndroidUtil.vibrateLight(PlayScene.shared.playActivity!!)
+        AndroidUtil.vibrateLight(activity)
         if (currentStep != InstrumentStep.PARAM || currentProcessingInstrument?.type == InstrumentType.PERMUTE) return
         if (v.tag is String && v.tag.toString() == "delete") {
             currentEnteredText = ""
@@ -242,7 +244,7 @@ class InstrumentScene {
         when (currentStep) {
             InstrumentStep.PLACE -> {
                 if (currentProcessingInstrument?.type == InstrumentType.BRACKET) {
-                    placeView.text = if (nodes.isEmpty()) "" else PlayScene.shared.playActivity!!.globalMathView.text
+                    placeView.text = if (nodes.isEmpty()) "" else activity.globalMathView.text
                 } else {
                     placeView.setExpression(expressionToStructureString(nodes[0]), null)
                 }
@@ -281,19 +283,19 @@ class InstrumentScene {
         currentDetail?.isSelected = false
         currentDetail = null
         currentEnteredText = ""
-        PlayScene.shared.instrumentProcessing = true
-        PlayScene.shared.clearRules()
+        activity.instrumentProcessing = true
+        activity.clearRules()
         //startStopMultiselectionMode.text = getText(R.string.end_multiselect)
         if (inst.type == InstrumentType.MULTI || inst.type == InstrumentType.BRACKET) {
-            PlayScene.shared.setMultiselectionMode(true)
+            activity.setMultiselectionMode(true)
         } else {
-            PlayScene.shared.setMultiselectionMode(false)
+            activity.setMultiselectionMode(false)
         }
         inst.button.setTextColor(Color.RED)
-        PlayScene.shared.playActivity?.showMessage(context.getString(R.string.inst_enter))
-        PlayScene.shared.playActivity?.rulesMsg?.text = context.getString(R.string.inst_rules_msg)
+        activity.showMessage(context.getString(R.string.inst_enter))
+        activity.rulesMsg.text = context.getString(R.string.inst_rules_msg)
         AndroidUtil.vibrate(context)
-        PlayScene.shared.playActivity?.mainViewAnim?.startTransition(300)
+        activity.mainViewAnim.startTransition(300)
         setInstrumentHandleView(inst, context)
     }
 
@@ -303,14 +305,14 @@ class InstrumentScene {
         inst.isProcessing = false
         currentProcessingInstrument = null
         inst.button.setTextColor(ThemeController.shared.color(ColorName.PRIMARY_COLOR))
-        PlayScene.shared.setMultiselectionMode(false)
-        PlayScene.shared.instrumentProcessing = false
-        PlayScene.shared.playActivity?.globalMathView?.clearExpression()
+        activity.setMultiselectionMode(false)
+        activity.instrumentProcessing = false
+        activity.globalMathView.clearExpression()
         AndroidUtil.vibrate(context)
-        PlayScene.shared.playActivity?.mainViewAnim?.reverseTransition(300)
+        activity.mainViewAnim.reverseTransition(300)
         if (collapse) {
-            PlayScene.shared.playActivity?.collapseBottomSheet()
-            PlayScene.shared.clearRules()
+            activity.collapseBottomSheet()
+            activity.clearRules()
         }
     }
 
@@ -338,7 +340,7 @@ class InstrumentScene {
         steps[InstrumentStep.PLACE]?.toggle()
         placeView.text = ""
         paramView.text = ""
-        PlayScene.shared.playActivity?.halfExpandBottomSheet()
+        activity.halfExpandBottomSheet()
     }
 
     fun apply(context: Context) {

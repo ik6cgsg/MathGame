@@ -25,7 +25,7 @@
                     "computation"
                 ],
                 "originalExpressionStructureString": "(*(+(2;2);2))",
-                "originalExpressionTex": "(2 + 2) \\cdot 2)",
+                "originalExpressionTex": "(2 + 2) \\cdot 2",
                 "originalExpressionPlainTex": "(2+2)*2",
                 "goalType": "computation",
                 "goalPattern": "?:0:?:?N",
@@ -34,6 +34,43 @@
                     {
                         "namespaceCode": "",
                         "rulePackCode": "tutorial"
+                    }
+                ],
+                "difficulty": 0.0
+            },
+            {
+                "code": "tutorial__01",
+                "version": 0,
+                "namespaceCode": "",
+                "nameEn": "Tutorial for MS",
+                "nameRu": "Обучение MS",
+                "descriptionShortEn": "Simplify",
+                "descriptionShortRu": "Упростить",
+                "descriptionEn": "Simplify '12.34+x-12.34'",
+                "descriptionRu": "Упростить '12.34+x-12.34'",
+                "subjectType": "standard_math",
+                "tags": [],
+                "originalExpressionStructureString": "(+(12.34;x;-(12.34)))",
+                "originalExpressionTex": "12.34+x-12.34",
+                "originalExpressionPlainTex": "12.34+x-12.34",
+                "goalType": "SIMPLIFICATION",
+                "goalExpressionStructureString": "(x)",
+                "rulePacks": [
+                    {
+                        "namespaceCode": "global",
+                        "rulePackCode": "global__ArithmeticAddition"
+                    }
+                ],
+                "rules": [
+                    {
+                        "code": "(+(0;x))__to__(x)",
+                        "leftStructureString": "(+(0;x))",
+                        "rightStructureString": "(x)"
+                    },
+                    {
+                        "code": "(+(x;0))__to__(x)",
+                        "leftStructureString": "(+(x;0))",
+                        "rightStructureString": "(x)"
                     }
                 ],
                 "difficulty": 0.0
@@ -99,42 +136,42 @@
                     "rightStructureString": "(*(x;y))"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(+(2;2))_to__",
+                    "code": "(+(4;-(1);1))__to__(+(2;2))",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(+(2;2))"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(4)_to__",
+                    "code": "(+(4;-(1);1))__to__(4)",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(4)"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(*(2;2))_to__",
+                    "code": "(+(4;-(1);1))__to__(*(2;2))",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(*(2;2))"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(^(2;2))_to__",
+                    "code": "(+(4;-(1);1))__to__(^(2;2))",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(^(2;2))"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(^(4;1))_to__",
+                    "code": "(+(4;-(1);1))__to__(^(4;1))",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(^(4;1))"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(+(1;1;1;1))_to__",
+                    "code": "(+(4;-(1);1))__to__(+(1;1;1;1))",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(+(1;1;1;1))"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(*(^(2;1);^(2;1)))_to__",
+                    "code": "(+(4;-(1);1))__to__(*(^(2;1);^(2;1)))",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(*(^(2;1);^(2;1)))"
                 },
                 {
-                    "code": "(+(4;-(1);1))_(+(3;1))_to__",
+                    "code": "(+(4;-(1);1))__to__(+(3;1))",
                     "leftStructureString": "(+(4;-(1);1))",
                     "rightStructureString": "(+(3;1))"
                 },
@@ -259,82 +296,82 @@
                     "rightStructureString": "(+(3;1))"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(+(2;2))to__",
+                    "code": "(+(1;1;1;1))__to__(+(2;2))",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(+(2;2))"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(4)to__",
+                    "code": "(+(1;1;1;1))__to__(4)",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(4)"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(+(4;-(1);1))to__",
+                    "code": "(+(1;1;1;1))__to__(+(4;-(1);1))",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(+(4;-(1);1))"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(*(2;2))to__",
+                    "code": "(+(1;1;1;1))__to__(*(2;2))",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(*(2;2))"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(^(2;2))to__",
+                    "code": "(+(1;1;1;1))__to__(^(2;2))",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(^(2;2))"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(^(4;1))to__",
+                    "code": "(+(1;1;1;1))__to__(^(4;1))",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(^(4;1))"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(*(^(2;1);^(2;1)))to__",
+                    "code": "(+(1;1;1;1))__to__(*(^(2;1);^(2;1)))",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(*(^(2;1);^(2;1)))"
                 },
                 {
-                    "code": "(+(1;1;1;1))__(+(3;1))to__",
+                    "code": "(+(1;1;1;1))__to__(+(3;1))",
                     "leftStructureString": "(+(1;1;1;1))",
                     "rightStructureString": "(+(3;1))"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(+(2;2))1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(2;2))",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(+(2;2))"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(4)1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(4)",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(4)"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(+(4;-(1);1))1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(4;-(1);1))",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(+(4;-(1);1))"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(*(2;2))1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(*(2;2))",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(*(2;2))"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(^(2;2))1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(^(2;2))",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(^(2;2))"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(^(4;1))1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(^(4;1))",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(^(4;1))"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(+(1;1;1;1))1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(1;1;1;1))",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(+(1;1;1;1))"
                 },
                 {
-                    "code": "(*(^(2;1);^(2;(+(3;1))1)))__to__",
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(3;1))",
                     "leftStructureString": "(*(^(2;1);^(2;1)))",
                     "rightStructureString": "(+(3;1))"
                 },

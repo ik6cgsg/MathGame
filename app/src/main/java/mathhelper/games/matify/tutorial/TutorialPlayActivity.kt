@@ -2,11 +2,13 @@ package mathhelper.games.matify.tutorial
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
 import android.widget.*
 import mathhelper.games.matify.InstrumentScene
+import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.activities.GeneralPlayActivity
@@ -50,7 +52,7 @@ class TutorialPlayActivity : GeneralPlayActivity() {
                 if (needClear) {
                     try {
                         globalMathView.clearExpression()
-                        TutorialScene.shared.clearRules()
+                        clearRules()
                     } catch (e: Exception) {
                         Logger.e(TAG, "Error while clearing rules on touch: ${e.message}")
                         Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
@@ -61,17 +63,12 @@ class TutorialPlayActivity : GeneralPlayActivity() {
         return true
     }
 
-    private fun setViews() {
-        globalMathView = findViewById(R.id.global_expression)
-        endExpressionMathView = findViewById(R.id.end_expression_math_view)
-        endExpressionViewLabel = findViewById(R.id.end_expression_label)
-        messageView = findViewById(R.id.message_view)
-        bottomSheet = findViewById(R.id.bottom_sheet)
-        rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
-        rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
-        rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
+    override fun setViews() {
+        super.setViews()
+        mainView = findViewById(R.id.tutorial_activity_play)
+        mainViewAnim = mainView.background as TransitionDrawable
+
         // noRules = findViewById(R.id.no_rules)
-        timerView = findViewById(R.id.timer_view)
         pointerMsgView = findViewById(R.id.pointer_message)
         pointerEndView = findViewById(R.id.pointer_end)
         pointerCentralView = findViewById(R.id.pointer_central)
@@ -80,7 +77,6 @@ class TutorialPlayActivity : GeneralPlayActivity() {
         pointerUndoView = findViewById(R.id.pointer_undo)
         pointerInfoView = findViewById(R.id.pointer_info)
         buttonTable = bottomSheet.findViewById(R.id.account_table)
-        InstrumentScene.shared.init(bottomSheet, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -286,6 +282,7 @@ class TutorialPlayActivity : GeneralPlayActivity() {
             }
             .setNeutralButton(R.string.tutorial_advanced_proceed) { _: DialogInterface, _: Int ->
                 TutorialScene.shared.nextStep()
+                TutorialScene.shared.currLevelIndex += 1
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -334,5 +331,20 @@ class TutorialPlayActivity : GeneralPlayActivity() {
         else
             messageView.text = ifFlagFalseMsg
         messageView.visibility = View.VISIBLE
+    }
+
+    fun instrumentClick(v: View) {
+        InstrumentScene.shared.clickInstrument(v.tag.toString(), this)
+    }
+
+    override fun setMultiselectionMode(multi: Boolean) {
+        if (multi) {
+            globalMathView.multiselectionMode = true
+            globalMathView.recolorCurrentAtom(ThemeController.shared.color(ColorName.MULTISELECTION_COLOR))
+        } else {
+            clearRules()
+            globalMathView.clearExpression()
+            globalMathView.multiselectionMode = false
+        }
     }
 }
