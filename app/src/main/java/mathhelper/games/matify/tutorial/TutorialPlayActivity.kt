@@ -232,16 +232,21 @@ class TutorialPlayActivity : GeneralPlayActivity() {
     }
 
     fun explainMultiselectTutorial() {
-        TutorialScene.shared.currentLevel = TutorialScene.shared.tutorialGame!!.levels[1]
-        TutorialScene.shared.loadLevel()
         buttonTable.visibility = View.VISIBLE
 
         Logger.d(TAG, "explainMultiselectTutorial")
-        TutorialScene.shared.showMessage("Сложное выражение!")
-        tutorialDialog.setMessage(
-                    "Мультиселект включается там-то и там-то\n" +
-                    "Он позволит тебе делать то-то и то-то\n" +
-                    "Понял?"
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_multiselect_expression))
+        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_multiselect_explanation)
+        )
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+    }
+
+    fun actionMultiselectTutorial() {
+        buttonTable.visibility = View.VISIBLE
+
+        Logger.d(TAG, "actionMultiselectTutorial")
+        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_multiselect_action))
+        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_multiselect_details)
         )
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
@@ -272,17 +277,13 @@ class TutorialPlayActivity : GeneralPlayActivity() {
         )
         builder
             .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepToDisplay()} / ${TutorialScene.shared.stepsSize}")
-            .setMessage(resources.getString(R.string.tutorial_on_level_seems))
-            .setPositiveButton(resources.getString(R.string.tutorial_on_level_i_am_pro)) { _: DialogInterface, _: Int ->
-                TutorialScene.shared.leave()
+            .setMessage(resources.getString(R.string.tutorial_on_level_basic_finished))
+            .setPositiveButton(resources.getString(R.string.tutorial_advanced_proceed)) { _: DialogInterface, _: Int ->
+                TutorialScene.shared.nextStep()
             }
             .setNegativeButton(R.string.step_back) { _: DialogInterface, _: Int ->
                 TutorialScene.shared.loadLevel()
                 TutorialScene.shared.prevStep()
-            }
-            .setNeutralButton(R.string.tutorial_advanced_proceed) { _: DialogInterface, _: Int ->
-                TutorialScene.shared.nextStep()
-                TutorialScene.shared.currLevelIndex += 1
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -325,13 +326,7 @@ class TutorialPlayActivity : GeneralPlayActivity() {
         }
     }
 
-    override fun showMessage(msg: String, flag: Boolean, ifFlagFalseMsg: String?) {
-        if (flag)
-            messageView.text = msg
-        else
-            messageView.text = ifFlagFalseMsg
-        messageView.visibility = View.VISIBLE
-    }
+    override fun showMessage(msg: String, flag: Boolean, ifFlagFalseMsg: String?) {}
 
     fun instrumentClick(v: View) {
         InstrumentScene.shared.clickInstrument(v.tag.toString(), this)

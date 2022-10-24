@@ -116,7 +116,12 @@
     <string name="tutorial_on_level_tap">👉 Let\'s check it out! 👈\n1. Tap near plus in the expression 👇</string>
     <string name="tutorial_on_level_select">1. Tap near plus in the expression ✅\n2. Now 🔍 rule from a list below</string>
     <string name="tutorial_on_level_win">2. Rule applied ✅\n3. Continue and win! 👏🏆</string>
-    <string name="tutorial_on_level_seems">Seems you got it all!\nExit now or proceed to familiarize yourself with \'multiselect\' feature.\n</string>
+    <string name="tutorial_on_level_basic_finished">Nicely done!\nOnly one last thing to learn.</string>
+    <string name="tutorial_on_level_multiselect_expression">A trickier expression!</string>
+    <string name="tutorial_on_level_multiselect_explanation">\'Multiselect\' button helps you find conversions relating to specific parts of the expression.\n</string>
+    <string name="tutorial_on_level_multiselect_action">To simplify the expression below go into \'multiselect\' mode, select both numbers and cancel them out.\n</string>
+    <string name="tutorial_on_level_multiselect_details">In the \'multiselect\' mode background changes color.\n</string>
+    <string name="tutorial_on_level_seems">Seems you got it all!\n</string>
     <string name="tutorial_on_level_i_am_pro">Yep, now I\'m PRO too 😎</string>
     <string name="tutorial_advanced_proceed">Bring it!</string>
     <string name="no_i_am_pro">No, I\'m PRO 😎</string>

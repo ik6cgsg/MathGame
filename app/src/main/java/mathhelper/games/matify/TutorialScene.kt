@@ -158,11 +158,23 @@ class TutorialScene {
                 tutorialPlayActivity!!.undoTutorial()
             },
             {
+                if (currLevelIndex != 0) {
+                    currLevelIndex = 0
+                    currentLevel = tutorialGame!!.levels[currLevelIndex]
+                    loadLevel()
+                }
                 tutorialPlayActivity!!.startDynamicTutorial()
             },
-            // Play layout, advanced
             {
+                if (currLevelIndex != 1) {
+                    currLevelIndex = 1
+                    currentLevel = tutorialGame!!.levels[currLevelIndex]
+                    loadLevel()
+                }
                 tutorialPlayActivity!!.explainMultiselectTutorial()
+            },
+            {
+                tutorialPlayActivity!!.actionMultiselectTutorial()
             },
             {
                 tutorialPlayActivity!!.startMultiselectTutorial()
