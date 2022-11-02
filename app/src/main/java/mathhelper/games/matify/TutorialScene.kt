@@ -98,7 +98,7 @@ class TutorialScene {
     var wantedRule = false
 
     private var currentAnim: AnimatorSet? = null
-    private var currentAnimView: View? = null
+    private var currentAnimViewRef: WeakReference<View> = WeakReference(null)
 
     lateinit var steps: ArrayList<() -> Any>
     var stepsSize = 0
@@ -352,7 +352,7 @@ class TutorialScene {
         set.duration = duration
         set.start()
         currentAnim = set
-        currentAnimView = view
+        currentAnimViewRef = WeakReference(view)
     }
 
     fun animateUp(view: View) {
@@ -364,7 +364,7 @@ class TutorialScene {
         set.duration = duration
         set.start()
         currentAnim = set
-        currentAnimView = view
+        currentAnimViewRef = WeakReference(view)
     }
 
     fun stopAnimation() {
@@ -373,9 +373,10 @@ class TutorialScene {
             currentAnim!!.end()
             currentAnim!!.cancel()
             currentAnim = null
-            currentAnimView!!.translationY = 0f
-            currentAnimView!!.translationX = 0f
-            currentAnimView!!.visibility = View.GONE
+            val currentAnimView = currentAnimViewRef.get()!!
+            currentAnimView.translationY = 0f
+            currentAnimView.translationX = 0f
+            currentAnimView.visibility = View.GONE
         }
     }
 

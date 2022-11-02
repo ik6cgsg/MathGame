@@ -116,11 +116,11 @@ class InstrumentScene {
     private lateinit var instruments: HashMap<String, InstrumentInfo>
     private lateinit var steps: HashMap<InstrumentStep, StepInfo>
     // Global view
-    private lateinit var instrumentHandleView: View
+    private var instrumentHandleViewRef: WeakReference<View> = WeakReference(null)
     // Current
     var currentProcessingInstrument: InstrumentInfo? = null
     private var currentStep: InstrumentStep? = null
-    private var currentDetail: Button? = null
+    private var currentDetailRef: WeakReference<Button> = WeakReference(null)
     private var currentEnteredText = ""
     // MathViews
     private lateinit var placeView: SimpleMathView
@@ -138,8 +138,9 @@ class InstrumentScene {
         val varInstrumentView = bottomSheet.findViewById<Button>(R.id.var_inst)
         val bracketInstrumentView = bottomSheet.findViewById<Button>(R.id.bracket_inst)
         val permuteInstrumentView = bottomSheet.findViewById<Button>(R.id.permute_inst)
-        instrumentHandleView = bottomSheet.findViewById(R.id.instrument_handle)
-        instrumentHandleView.visibility = View.GONE
+        val instHView: View = bottomSheet.findViewById(R.id.instrument_handle)
+        instrumentHandleViewRef = WeakReference(instHView)
+        instHView.visibility = View.GONE
         placeView = bottomSheet.findViewById(R.id.inst_step_place)
         placeView.text = ""
         paramView = bottomSheet.findViewById(R.id.inst_step_param)
@@ -221,12 +222,11 @@ class InstrumentScene {
 
     fun clickDetail(v: Button) {
         activityRef.get()?.let { AndroidUtil.vibrateLight(it as Context) }
+        val currentDetail = currentDetailRef.get()
         if (currentStep != InstrumentStep.DETAIL || currentDetail == v) return
-        if (currentDetail != null) {
-            currentDetail?.isSelected = false
-        }
+        currentDetail?.isSelected = false
         v.isSelected = true
-        currentDetail = v
+        currentDetailRef = WeakReference(v)
         currentProcessingInstrument?.detail = v.tag.toString()
         steps[InstrumentStep.DETAIL]?.setPassed()
     }
@@ -289,8 +289,8 @@ class InstrumentScene {
         inst.isProcessing = true
         currentProcessingInstrument = inst
         currentStep = null
-        currentDetail?.isSelected = false
-        currentDetail = null
+        currentDetailRef.get()?.isSelected = false
+        currentDetailRef = WeakReference(null)
         currentEnteredText = ""
 
         inst.button.setTextColor(Color.RED)
@@ -301,7 +301,7 @@ class InstrumentScene {
 
     fun turnOffInstrument(inst: InstrumentInfo?, collapse: Boolean = true) {
         if (inst == null) return
-        instrumentHandleView.visibility = View.GONE
+        instrumentHandleViewRef.get()?.visibility = View.GONE
         inst.isProcessing = false
         currentProcessingInstrument = null
         inst.button.setTextColor(ThemeController.shared.color(ColorName.PRIMARY_COLOR))
@@ -315,7 +315,7 @@ class InstrumentScene {
 
     fun setInstrumentHandleView(inst: InstrumentInfo, context: Context) {
         if (inst.type == InstrumentType.MULTI) return
-        instrumentHandleView.visibility = View.VISIBLE
+        instrumentHandleViewRef.get()!!.visibility = View.VISIBLE
         steps[InstrumentStep.DETAIL]?.set(inst.detailRequired) {
             AndroidUtil.vibrateLight(context)
             activateStep(InstrumentStep.DETAIL)

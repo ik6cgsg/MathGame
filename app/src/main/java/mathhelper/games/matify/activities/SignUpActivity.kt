@@ -39,7 +39,7 @@ class SignUpActivity: AppCompatActivity() {
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
         signButton = findViewById(R.id.sign_up)
-        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
+        GlobalScene.shared.loadingElementRef = findViewById(R.id.progress)
     }
 
     override fun onResume() {

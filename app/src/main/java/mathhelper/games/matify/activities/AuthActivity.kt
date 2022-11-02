@@ -23,6 +23,7 @@ import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.statistics.Statistics
+import java.lang.ref.WeakReference
 
 class AuthActivity: AppCompatActivity(), ConnectionListener {
     private val TAG = "AuthActivity"
@@ -53,7 +54,7 @@ class AuthActivity: AppCompatActivity(), ConnectionListener {
         offline = findViewById(R.id.offline)
         offline.visibility = View.GONE
         blurView = findViewById(R.id.blurView)
-        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
+        GlobalScene.shared.loadingElementRef = WeakReference(findViewById(R.id.progress))
         ConnectionChecker.shared.subscribe(this)
     }
 
@@ -88,7 +89,7 @@ class AuthActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun finish() {
-        GlobalScene.shared.loadingElement = null
+        GlobalScene.shared.loadingElementRef.clear()
         super.finish()
     }
 

@@ -43,7 +43,7 @@ class PasswordActivity: AppCompatActivity() {
             newPassInputLayout.visibility = View.VISIBLE
             repeatPassInputLayout.visibility = View.VISIBLE
         }
-        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
+        GlobalScene.shared.loadingElementRef = findViewById(R.id.progress)
     }
 
     fun back(v: View?) {

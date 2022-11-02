@@ -20,6 +20,7 @@ import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.statistics.*
 import org.json.JSONObject
 import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -73,7 +74,7 @@ class GlobalScene {
         }
     var currentGame: Game? = null
         private set
-    var loadingElement: ProgressBar? = null
+    var loadingElementRef: WeakReference<ProgressBar> = WeakReference(null)
     private val activeJobs = arrayListOf<Job>()
 
     fun init() {
@@ -96,7 +97,7 @@ class GlobalScene {
         errorground: () -> (Unit),
         toastError: Boolean = true
     ) {
-        loadingElement?.visibility = View.VISIBLE
+        loadingElementRef.get()?.visibility = View.VISIBLE
         val task = GlobalScope.launch {
             try {
                 background()
@@ -124,7 +125,7 @@ class GlobalScene {
                 }
             } finally {
                 context.runOnUiThread {
-                    loadingElement?.visibility = View.INVISIBLE
+                    loadingElementRef.get()?.visibility = View.INVISIBLE
                 }
             }
         }
