@@ -87,7 +87,7 @@
     <string name="games_activity_tutorial">🍀 Добро пожаловать! 🍀\nЗдесь можно:\n* Искать игру среди установленных \n* Выбрать одну и играть!\n\n🙃 Понятно? 🙃</string>
     <string name="level_activity_tutorial">А здесь нужно выбрать уровень!\n\n🙃 Понятно? 🙃</string>
     <string name="tutorial_on_level_info">🍀 Приветствую на уровне! 🍀\nЭто место для коротких\nважных (и веселых) сообщений</string>
-    <string name="tutorial_on_level_to_menu">← Это чтобы вернутьтся в меню… ←\nТекущий прогресс будет сохранен 💾</string>
+    <string name="tutorial_on_level_to_menu">← Это чтобы вернуться в меню… ←\nТекущий прогресс будет сохранен 💾</string>
     <string name="tutorial_on_level_short_info">i Ткни чтобы увидеть\nинфу про уровень i</string>
     <string name="tutorial_on_level_restart">↺ Перезапуск уровня ↺</string>
     <string name="tutorial_on_level_undo">↶ Отменить последнее преобразование (UNDO) ↶</string>
