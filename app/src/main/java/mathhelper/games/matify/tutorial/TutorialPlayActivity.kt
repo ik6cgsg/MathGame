@@ -1,22 +1,22 @@
 package mathhelper.games.matify.tutorial
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
 import android.widget.*
-import mathhelper.games.matify.InstrumentScene
-import mathhelper.games.matify.PlayScene
-import mathhelper.games.matify.R
-import mathhelper.games.matify.TutorialScene
-import mathhelper.games.matify.activities.GeneralPlayActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
 import kotlin.math.max
 import kotlin.math.min
 
-class TutorialPlayActivity : GeneralPlayActivity() {
+class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlaySceneListener {
     private val TAG = "TutorialPlayActivity"
     private var scale = 1.0f
     private var scaleListener = MathScaleListener()
@@ -27,6 +27,18 @@ class TutorialPlayActivity : GeneralPlayActivity() {
     lateinit var tutorialDialog: AlertDialog
     lateinit var leaveDialog: AlertDialog
 
+    override lateinit var globalMathView: GlobalMathView
+    override lateinit var endExpressionViewLabel: TextView
+    override lateinit var endExpressionMathView: SimpleMathView
+    override lateinit var messageView: TextView
+    override lateinit var rulesLinearLayout: LinearLayout
+    override lateinit var rulesScrollView: ScrollView
+    override lateinit var rulesMsg: TextView
+    lateinit var mainView: ConstraintLayout
+    lateinit var mainViewAnim: TransitionDrawable
+    lateinit var bottomSheet: LinearLayout
+    lateinit var timerView: TextView
+
     // lateinit var noRules: TextView
     private lateinit var buttonTable: TableLayout
     private lateinit var pointerMsgView: TextView
@@ -36,6 +48,9 @@ class TutorialPlayActivity : GeneralPlayActivity() {
     private lateinit var pointerRestartView: TextView
     private lateinit var pointerUndoView: TextView
     private lateinit var pointerInfoView: TextView
+
+    private var needClear: Boolean = false
+    override var instrumentProcessing: Boolean = false
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Logger.d(TAG, "onTouchEvent")
@@ -63,8 +78,21 @@ class TutorialPlayActivity : GeneralPlayActivity() {
         return true
     }
 
-    override fun setViews() {
-        super.setViews()
+    fun setViews() {
+        globalMathView = findViewById(R.id.global_expression)
+        endExpressionMathView = findViewById(R.id.end_expression_math_view)
+        endExpressionViewLabel = findViewById(R.id.end_expression_label)
+        endExpressionViewLabel.visibility = View.GONE
+        endExpressionMathView.visibility = View.GONE
+        bottomSheet = findViewById(R.id.bottom_sheet)
+        messageView = findViewById(R.id.message_view)
+        timerView = findViewById(R.id.timer_view)
+
+        rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
+        rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
+        rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
+        InstrumentScene.shared.init(bottomSheet, this)
+
         mainView = findViewById(R.id.tutorial_activity_play)
         mainViewAnim = mainView.background as TransitionDrawable
 
@@ -94,7 +122,7 @@ class TutorialPlayActivity : GeneralPlayActivity() {
         endExpressionViewLabel.text = ""
         buttonTable.visibility = View.GONE
 
-        TutorialScene.shared.tutorialPlayActivity = this
+        TutorialScene.shared.initTPA(this)
         // TODO!: rethink this entire approach alongside similar uses of delaying
         Handler().postDelayed({
             try {
@@ -112,8 +140,8 @@ class TutorialPlayActivity : GeneralPlayActivity() {
     }
 
     override fun finish() {
-        TutorialScene.shared.tutorialPlayActivity = null
-        TutorialScene.shared.leaveDialog = TutorialScene.shared.tutorialLevelsActivity!!.leave
+        TutorialScene.shared.playActivityRef.clear()
+        TutorialScene.shared.leaveDialog = TutorialScene.shared.levelsActivityRef.get()!!.leave
         super.finish()
     }
 
@@ -236,7 +264,8 @@ class TutorialPlayActivity : GeneralPlayActivity() {
 
         Logger.d(TAG, "explainMultiselectTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_multiselect_expression))
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_multiselect_explanation)
+        tutorialDialog.setMessage(
+            resources.getString(R.string.tutorial_on_level_multiselect_explanation)
         )
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
@@ -246,7 +275,8 @@ class TutorialPlayActivity : GeneralPlayActivity() {
 
         Logger.d(TAG, "actionMultiselectTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_multiselect_action))
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_multiselect_details)
+        tutorialDialog.setMessage(
+            resources.getString(R.string.tutorial_on_level_multiselect_details)
         )
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
@@ -329,7 +359,7 @@ class TutorialPlayActivity : GeneralPlayActivity() {
     override fun showMessage(msg: String, flag: Boolean, ifFlagFalseMsg: String?) {}
 
     fun instrumentClick(v: View) {
-        InstrumentScene.shared.clickInstrument(v.tag.toString(), this)
+        InstrumentScene.shared.clickInstrument(v.tag.toString())
     }
 
     override fun setMultiselectionMode(multi: Boolean) {
@@ -340,6 +370,44 @@ class TutorialPlayActivity : GeneralPlayActivity() {
             clearRules()
             globalMathView.clearExpression()
             globalMathView.multiselectionMode = false
+        }
+    }
+
+    fun collapseBottomSheet() {
+        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    override fun halfExpandBottomSheet() {
+        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_HALF_EXPANDED
+    }
+
+    override fun clearRules() {
+        rulesScrollView.visibility = View.GONE
+        rulesMsg.text = getString(R.string.no_rules_msg)
+        if (!instrumentProcessing) {
+            collapseBottomSheet()
+        }
+    }
+
+    override fun startInstrumentProcessing(setMSMode: Boolean) {
+        instrumentProcessing = true
+        clearRules()
+        showMessage(getString(R.string.inst_enter))
+        setMultiselectionMode(setMSMode)
+        rulesMsg.text = getString(R.string.inst_rules_msg)
+        AndroidUtil.vibrate(this)
+        mainViewAnim.startTransition(300)
+    }
+
+    override fun endInstrumentProcessing(collapse: Boolean) {
+        instrumentProcessing = false
+        setMultiselectionMode(false)
+        globalMathView.clearExpression()
+        AndroidUtil.vibrate(this)
+        mainViewAnim.reverseTransition(300)
+        if (collapse) {
+            collapseBottomSheet()
+            clearRules()
         }
     }
 }

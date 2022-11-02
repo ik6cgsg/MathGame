@@ -48,10 +48,11 @@ class LevelScene {
                     field = value
                     currentLevel = levels[value]
                     Handler().postDelayed({
-                        if (PlayScene.shared.playActivity == null) {
+                        val activity = PlayScene.shared.activityRef.get()
+                        if (activity == null) {
                             levelsActivity?.startActivity(Intent(levelsActivity, PlayActivity::class.java))
                         } else {
-                            PlayScene.shared.playActivity!!.startCreatingLevelUI()
+                            (activity as PlayActivity).startCreatingLevelUI()
                         }
                     }, 100)
                 }

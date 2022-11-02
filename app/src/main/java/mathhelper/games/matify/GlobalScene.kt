@@ -361,4 +361,20 @@ class GlobalScene {
         }
         activity.generateList()
     }
+
+    fun getPlayInterface(): PlaySceneListener? {
+        if (tutorialProcessing) {
+            return TutorialScene.shared.playActivityRef.get()
+        } else {
+            return PlayScene.shared.activityRef.get()
+        }
+    }
+
+    fun onAtomClicked() {
+        if (tutorialProcessing) {
+            TutorialScene.shared.onAtomClicked()
+        } else {
+            PlayScene.shared.onAtomClicked()
+        }
+    }
 }

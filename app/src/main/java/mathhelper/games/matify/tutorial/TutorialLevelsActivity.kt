@@ -37,7 +37,7 @@ class TutorialLevelsActivity: AppCompatActivity() {
         button.visibility = View.GONE
         progress = findViewById(R.id.progress)
         loading = true
-        TutorialScene.shared.tutorialLevelsActivity = this
+        TutorialScene.shared.initTLA(this)
     }
 
     override fun onBackPressed() {
@@ -45,8 +45,8 @@ class TutorialLevelsActivity: AppCompatActivity() {
     }
 
     override fun finish() {
-        TutorialScene.shared.tutorialLevelsActivity = null
-        TutorialScene.shared.leaveDialog = TutorialScene.shared.tutorialGamesActivity!!.leave
+        TutorialScene.shared.levelsActivityRef.clear()
+        TutorialScene.shared.leaveDialog = TutorialScene.shared.gamesActivityRef.get()!!.leave
         super.finish()
     }
 

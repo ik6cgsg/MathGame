@@ -12,6 +12,7 @@ import android.os.Handler
 import android.text.Html
 import android.text.SpannedString
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import kotlinx.coroutines.GlobalScope
@@ -23,6 +24,7 @@ import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.tutorial.TutorialGamesActivity
 import mathhelper.games.matify.tutorial.TutorialLevelsActivity
+import java.lang.ref.WeakReference
 
 class TutorialScene {
     companion object {
@@ -32,52 +34,54 @@ class TutorialScene {
         private const val translate = -30f
     }
 
-    var tutorialGamesActivity: TutorialGamesActivity? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                tutorialDialog = value.dialog
-                leaveDialog = value.leave
-                currentStep = -1
-                nextStep()
-            }
+    var gamesActivityRef: WeakReference<TutorialGamesActivity> = WeakReference(null)
+    fun initTGA(tga: TutorialGamesActivity?) {
+        gamesActivityRef = WeakReference(tga)
+        if (tga != null) {
+            tutorialDialog = tga.dialog
+            leaveDialog = tga.leave
+            currentStep = -1
+            nextStep()
         }
-    var tutorialLevelsActivity: TutorialLevelsActivity? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                tutorialDialog = value.dialog
-                leaveDialog = value.leave
-                GlobalScope.launch {
-                    val job = async {
-                        val loaded = tutorialGame!!.load(value)
-                        value.runOnUiThread {
-                            if (loaded) {
-                                value.onLoad()
-                                currentLevel = tutorialGame!!.levels[0]
-                                nextStep()
-                            }
+    }
+
+    var levelsActivityRef: WeakReference<TutorialLevelsActivity> = WeakReference(null)
+    fun initTLA(tla: TutorialLevelsActivity?) {
+        levelsActivityRef = WeakReference(tla)
+        if (tla != null) {
+            tutorialDialog = tla.dialog
+            leaveDialog = tla.leave
+            GlobalScope.launch {
+                val job = async {
+                    val loaded = tutorialGame!!.load(tla)
+                    tla.runOnUiThread {
+                        if (loaded) {
+                            tla.onLoad()
+                            currentLevel = tutorialGame!!.levels[0]
+                            nextStep()
                         }
                     }
-                    job.await()
                 }
+                job.await()
             }
         }
-    var tutorialPlayActivity: TutorialPlayActivity? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                tutorialDialog = value.tutorialDialog
-                leaveDialog = value.leaveDialog
-            }
-        }
+    }
 
-    private fun getNotNullActivity() = if (tutorialGamesActivity != null) {
-        tutorialGamesActivity
-    } else if (tutorialLevelsActivity != null) {
-        tutorialLevelsActivity
-    } else if (tutorialPlayActivity != null) {
-        tutorialPlayActivity
+    var playActivityRef: WeakReference<PlaySceneListener> = WeakReference(null)
+    fun initTPA(tpa: TutorialPlayActivity?) {
+        playActivityRef = WeakReference(tpa)
+        if (tpa != null) {
+            tutorialDialog = tpa.tutorialDialog
+            leaveDialog = tpa.leaveDialog
+        }
+    }
+
+    private fun getNotNullActivity(): AppCompatActivity? = if (gamesActivityRef.get() != null) {
+        gamesActivityRef.get()
+    } else if (levelsActivityRef.get() != null) {
+        levelsActivityRef.get()
+    } else if (playActivityRef.get() != null) {
+        playActivityRef.get() as? AppCompatActivity
     } else null
 
     fun getResourceString(id: Int) = getNotNullActivity()?.resources?.getString(id)
@@ -119,43 +123,43 @@ class TutorialScene {
         steps = arrayListOf(
             // Games Layout
             {
-                tutorialGamesActivity!!.tellAboutGameLayout()
+                gamesActivityRef.get()!!.tellAboutGameLayout()
             },
             {
-                tutorialGamesActivity!!.waitForGameClick()
+                gamesActivityRef.get()!!.waitForGameClick()
             },
             // Levels layout
             {
                 shouldFinishLevelsActivity = true
-                tutorialLevelsActivity!!.tellAboutLevelLayout()
+                levelsActivityRef.get()!!.tellAboutLevelLayout()
             },
             {
                 shouldFinishLevelsActivity = false
-                tutorialLevelsActivity!!.waitForLevelClick()
+                levelsActivityRef.get()!!.waitForLevelClick()
             },
             // Play layout, basic
             {
                 shouldFinishPlayActivity = true
-                tutorialPlayActivity!!.messageTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).messageTutorial()
             },
             {
                 shouldFinishPlayActivity = false
-                tutorialPlayActivity!!.endExpressionTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).endExpressionTutorial()
             },
             {
-                tutorialPlayActivity!!.centralExpressionTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).centralExpressionTutorial()
             },
             {
-                tutorialPlayActivity!!.backTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).backTutorial()
             },
             {
-                tutorialPlayActivity!!.infoTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).infoTutorial()
             },
             {
-                tutorialPlayActivity!!.restartTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).restartTutorial()
             },
             {
-                tutorialPlayActivity!!.undoTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).undoTutorial()
             },
             {
                 if (currLevelIndex != 0) {
@@ -163,7 +167,7 @@ class TutorialScene {
                     currentLevel = tutorialGame!!.levels[currLevelIndex]
                     loadLevel()
                 }
-                tutorialPlayActivity!!.startDynamicTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).startDynamicTutorial()
             },
             {
                 if (currLevelIndex != 1) {
@@ -171,13 +175,13 @@ class TutorialScene {
                     currentLevel = tutorialGame!!.levels[currLevelIndex]
                     loadLevel()
                 }
-                tutorialPlayActivity!!.explainMultiselectTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).explainMultiselectTutorial()
             },
             {
-                tutorialPlayActivity!!.actionMultiselectTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).actionMultiselectTutorial()
             },
             {
-                tutorialPlayActivity!!.startMultiselectTutorial()
+                (playActivityRef.get() as TutorialPlayActivity).startMultiselectTutorial()
             }
         )
         stepsSize = steps.size - 2
@@ -213,7 +217,7 @@ class TutorialScene {
 
     fun loadLevel() {
         Logger.d(TAG, "loadLevel")
-        val activity = tutorialPlayActivity!!
+        val activity = (playActivityRef.get() as TutorialPlayActivity)
         activity.clearRules()
 
         activity.endExpressionViewLabel.text = Html.fromHtml(
@@ -229,17 +233,17 @@ class TutorialScene {
             activity.endExpressionMathView.visibility = View.VISIBLE
         }
 
-        tutorialPlayActivity!!.globalMathView.setExpression(
+        activity.globalMathView.setExpression(
             currentLevel.startExpression.clone(),
             currentLevel.subjectType,
             true
         )
-        tutorialPlayActivity!!.globalMathView.center()
+        activity.globalMathView.center()
     }
 
     fun onRuleClicked(ruleView: RuleMathView) {
         Logger.d(TAG, "onRuleClicked")
-        val activity = tutorialPlayActivity!!
+        val activity = (playActivityRef.get() as TutorialPlayActivity)
         if (ruleView.subst != null) {
             val res = activity.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
             if (res != null) {
@@ -265,7 +269,7 @@ class TutorialScene {
         if (wantedZoom) {
             return
         }
-        val activity = tutorialPlayActivity!!
+        val activity = (playActivityRef.get() as TutorialPlayActivity)
         if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = currentLevel.getSubstitutionApplication(
                 activity.globalMathView.currentAtoms,
@@ -299,11 +303,11 @@ class TutorialScene {
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
         Logger.d(TAG, "redrawRules")
-        val activity = tutorialPlayActivity!!
+        val activity = playActivityRef.get()!!
         activity.rulesLinearLayout.removeAllViews()
         for (r in rules) {
             try {
-                val rule = RuleMathView(activity)
+                val rule = RuleMathView(activity as Context)
                 rule.setSubst(r, currentLevel.subjectType)
                 activity.rulesLinearLayout.addView(rule)
             } catch (e: Exception) {
@@ -316,31 +320,22 @@ class TutorialScene {
     }
 
     fun showMessage(msg: String) {
-        val activity = tutorialPlayActivity!!
+        val activity = playActivityRef.get()!!
         activity.messageView.text = msg
         activity.messageView.visibility = View.VISIBLE
     }
 
     fun leave() {
         GlobalScene.shared.tutorialProcessing = false
-        if (tutorialPlayActivity != null) {
-            tutorialPlayActivity!!.finish()
-        }
-        if (tutorialLevelsActivity != null) {
-            tutorialLevelsActivity!!.finish()
-        }
-        if (tutorialGamesActivity != null) {
-            tutorialGamesActivity!!.finish()
-        }
+
+        playActivityRef.get()?.let { (it as TutorialPlayActivity).finish() }
+        levelsActivityRef.get()?.finish()
+        gamesActivityRef.get()?.finish()
     }
 
     fun restart() {
-        if (tutorialPlayActivity != null) {
-            tutorialPlayActivity!!.finish()
-        }
-        if (tutorialLevelsActivity != null) {
-            tutorialLevelsActivity!!.finish()
-        }
+        playActivityRef.get()?.let { (it as TutorialPlayActivity).finish() }
+        levelsActivityRef.get()?.finish()
         currentStep = -1
         nextStep()
     }
@@ -400,13 +395,17 @@ class TutorialScene {
             }
             .setNegativeButton(R.string.step_back) { dialog: DialogInterface, id: Int ->
                 stopAnimation()
-                if (shouldFinishPlayActivity && tutorialPlayActivity != null) {
-                    tutorialPlayActivity!!.finish()
-                    currentStep--
+                playActivityRef.get()?.let {
+                    if (shouldFinishPlayActivity) {
+                        (it as TutorialPlayActivity).finish()
+                        currentStep--
+                    }
                 }
-                if (shouldFinishLevelsActivity && tutorialLevelsActivity != null) {
-                    tutorialLevelsActivity!!.finish()
-                    currentStep--
+                levelsActivityRef.get()?.let {
+                    if (shouldFinishLevelsActivity) {
+                        it.finish()
+                        currentStep--
+                    }
                 }
                 Handler().postDelayed({
                     prevStep()

@@ -6,15 +6,35 @@ import android.os.Handler
 import android.text.Html
 import android.text.SpannedString
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
-import kotlinx.android.synthetic.main.activity_play.*
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.*
 import mathhelper.games.matify.statistics.Statistics
+import java.lang.ref.WeakReference
+
+interface PlaySceneListener {
+    // layout elements
+    var rulesLinearLayout: LinearLayout
+    var endExpressionMathView: SimpleMathView
+    var endExpressionViewLabel: TextView
+    var rulesScrollView: ScrollView
+    var globalMathView: GlobalMathView
+    var rulesMsg: TextView
+    var messageView: TextView
+
+    var instrumentProcessing: Boolean
+
+    fun clearRules()
+    fun getString(id: Int): String
+    fun getText(id: Int): CharSequence
+    fun halfExpandBottomSheet()
+}
 
 class PlayScene {
     companion object {
@@ -23,14 +43,8 @@ class PlayScene {
         val shared: PlayScene = PlayScene()
     }
 
-    var playActivity: PlayActivity? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                //tutorialProcessing = false
-                history = History()
-            }
-        }
+    var activityRef: WeakReference<PlaySceneListener> = WeakReference(null)
+
     /** GAME STATE */
     var currentRuleView: RuleMathView? = null
     fun setCurrentRuleView(context: Context, value: RuleMathView?) {
@@ -41,14 +55,18 @@ class PlayScene {
                     onRuleClicked(context)
                 } catch (e: java.lang.Exception) {
                     Logger.e(TAG, "Error during rule usage: ${e.message}")
-                    Toast.makeText(playActivity, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+                    activityRef.get()?.let {
+                        Toast.makeText(it as Context, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+                    }
                 }
             }, 100)
         }
     }
+
     var stepsCount: Double = 0.0
     var currentTime: Long = 0
     lateinit var history: History
+
     /** TIMERS */
     private val messageTimer = MessageTimer()
     var downTimer: MathDownTimer? = null
@@ -62,10 +80,7 @@ class PlayScene {
             TutorialScene.shared.onRuleClicked(currentRuleView!!)
             return
         }
-        if (playActivity == null) {
-            return
-        }
-        val activity = playActivity!!
+        val activity = activityRef.get() as PlayActivity
         val prev = activity.globalMathView.expression!!.clone()
         val places: List<ExpressionNode> = activity.globalMathView.currentAtoms.toList()
         val oldSteps = stepsCount
@@ -88,7 +103,7 @@ class PlayScene {
                         places
                     )
 
-                    onWin(context)
+                    onWin()
                 }
                 activity.clearRules()
                 activity.globalMathView.currentRulesToResult = null
@@ -98,20 +113,18 @@ class PlayScene {
 
         }
         if (!levelPassed) {
-            Statistics.logRule(oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
-                currentRuleView!!.subst, places)
+            Statistics.logRule(
+                oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
+                currentRuleView!!.subst, places
+            )
         }
     }
 
     fun onAtomClicked() {
         Logger.d(TAG, "onAtomClicked")
-        if (GlobalScene.shared.tutorialProcessing) {
-            TutorialScene.shared.onAtomClicked()
-            return
-        }
-        val activity = playActivity!!
+        val activity = activityRef.get() as PlayActivity
         if (activity.instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
-            InstrumentScene.shared.choosenAtom(activity.globalMathView.currentAtoms)
+            InstrumentScene.shared.choosenAtom(activity.globalMathView.currentAtoms, activity.globalMathView.text)
         } else if (activity.globalMathView.currentAtoms.isNotEmpty()) {
             if (activity.globalMathView.multiselectionMode) {
                 activity.previous.isEnabled = true
@@ -143,7 +156,7 @@ class PlayScene {
     fun loadLevel(context: Context, continueGame: Boolean, languageCode: String): Boolean {
         Logger.d(TAG, "loadLevel")
         val currentLevel = LevelScene.shared.currentLevel!!
-        val activity = playActivity!!
+        val activity = activityRef.get()?:return false
         activity.clearRules()
         cancelTimers()
         // val text = activity.getString(R.string.end_expression_opened, currentLevel.getDescriptionByLanguage(languageCode))
@@ -173,8 +186,9 @@ class PlayScene {
 
     private fun loadFinite() {
         val currentLevel = LevelScene.shared.currentLevel!!
-        playActivity!!.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
-        playActivity!!.globalMathView.center()
+        val activity = activityRef.get()!!
+        activity.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
+        activity.globalMathView.center()
         stepsCount = 0.0
         currentTime = 0
         downTimer = MathDownTimer(currentLevel.time, 1)
@@ -182,10 +196,11 @@ class PlayScene {
     }
 
     private fun loadEndless(context: Context, continueGame: Boolean) {
-        val activity = playActivity!!
+        val activity = activityRef.get()!!
         val currentLevel = LevelScene.shared.currentLevel!!
         if (continueGame && currentLevel.lastResult != null &&
-            currentLevel.lastResult!!.state == StateType.PAUSED) {
+            currentLevel.lastResult!!.state == StateType.PAUSED
+        ) {
             stepsCount = currentLevel.lastResult!!.steps
             currentTime = currentLevel.lastResult!!.time
             activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.subjectType)
@@ -203,11 +218,11 @@ class PlayScene {
 
     fun previousStep() {
         Logger.d(TAG, "previousStep")
-        if (playActivity!!.instrumentProcessing) {
-            InstrumentScene.shared.turnOffCurrentInstrument(playActivity!!)
+        val activity = activityRef.get() as PlayActivity
+        if (activity.instrumentProcessing) {
+            InstrumentScene.shared.turnOffCurrentInstrument(activity as Context)
         } else {
             val state = history.getPreviousStep()
-            val activity = playActivity!!
             val oldExpression = activity.globalMathView.expression!!
             val oldSteps = stepsCount
             if (state != null) {
@@ -229,14 +244,13 @@ class PlayScene {
 
     fun restart(context: Context, languageCode: String) {
         Logger.d(TAG, "restart")
-        val activity = playActivity!!
+        val activity = activityRef.get()!!
         Statistics.logRestart(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
-        loadLevel(context,false, languageCode)
+        loadLevel(context, false, languageCode)
     }
 
-    fun menu(logAndSave: Boolean = true) {
+    fun menu(activity: PlayActivity, logAndSave: Boolean = true) {
         Logger.d(TAG, "menu")
-        val activity = playActivity!!
         activity.setMultiselectionMode(false)
         if (logAndSave) { // TODO: && stepsCount > 0 (server is now saving state even if stepsCount == 0)
             history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
@@ -245,36 +259,40 @@ class PlayScene {
         Statistics.logMenu(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
-    fun info(languageCode: String) {
+    fun info(languageCode: String, activity: PlayActivity) {
         val currentLevel = LevelScene.shared.currentLevel!!
-        val multi = playActivity!!.globalMathView.multiselectionMode
+        val multi = activity.globalMathView.multiselectionMode
         val builder = AlertDialog.Builder(
-            playActivity, ThemeController.shared.alertDialogTheme
+            activity as Context, ThemeController.shared.alertDialogTheme
         )
-        val v = playActivity!!.layoutInflater.inflate(R.layout.level_info, null)
+        val v = activity.layoutInflater.inflate(R.layout.level_info, null)
         v.findViewById<TextView>(R.id.game)?.text = currentLevel.game.getNameByLanguage(languageCode)
         v.findViewById<TextView>(R.id.name)?.text = currentLevel.getNameByLanguage(languageCode)
         v.findViewById<TextView>(R.id.description)?.text = currentLevel.getDescriptionByLanguage(languageCode)
         if (!currentLevel.goalExpressionStructureString.isNullOrBlank()) {
-            v.findViewById<SimpleMathView>(R.id.info_end_math_view).setExpression(currentLevel.goalExpressionStructureString!!, null)
+            v.findViewById<SimpleMathView>(R.id.info_end_math_view)
+                .setExpression(currentLevel.goalExpressionStructureString!!, null)
             v.findViewById<View>(R.id.info_end_math_view_row).visibility = View.VISIBLE
         }
         v.findViewById<TextView>(R.id.steps)?.text = stepsCount.toInt().toString()
-        v.findViewById<TextView>(R.id.mode)?.text = if (multi) playActivity!!.getString(R.string.multiselection_mode_is_on)
-            else playActivity!!.getString(R.string.multiselection_mode_is_off)
+        v.findViewById<TextView>(R.id.mode)?.text =
+            if (multi) activity.getString(R.string.multiselection_mode_is_on)
+            else activity.getString(R.string.multiselection_mode_is_off)
         builder.setView(v)
         val alert = builder.create()
-        AndroidUtil.showDialog(alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
-            blurView = playActivity!!.blurView, activity = playActivity!!)
+        AndroidUtil.showDialog(
+            alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
+            blurView = activity.blurView, activity = activity
+        )
     }
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
         Logger.d(TAG, "redrawRules")
-        val activity = playActivity!!
+        val activity = activityRef.get()!!
         activity.rulesLinearLayout.removeAllViews()
         for (r in rules) {
             try {
-                val rule = RuleMathView(activity)
+                val rule = RuleMathView(activity as Context)
                 rule.setSubst(r, LevelScene.shared.currentLevel!!.subjectType)
                 activity.rulesLinearLayout.addView(rule)
             } catch (e: Exception) {
@@ -283,12 +301,12 @@ class PlayScene {
         }
         activity.halfExpandBottomSheet()
         activity.rulesMsg.text = if (rules.isEmpty()) activity.getString(R.string.no_rules_msg)
-            else activity.getString(R.string.rules_found_msg)
+        else activity.getString(R.string.rules_found_msg)
     }
 
-    fun onWin(context: Context) {
+    fun onWin() {
         Logger.d(TAG, "onWin")
-        val activity = playActivity!!
+        val activity = activityRef.get() as PlayActivity
         val currentLevel = LevelScene.shared.currentLevel!!
         //val award = currentLevel.getAward(context, currentTime, stepsCount)
         val newRes = LevelResult(stepsCount, currentTime, StateType.DONE)
@@ -299,15 +317,15 @@ class PlayScene {
         Statistics.logWin(stepsCount, activity.globalMathView.expression!!)
     }
 
-    fun onLoose() {
-        Logger.d(TAG, "onLoose")
-        val activity = playActivity!!
-        activity.onLoose()
+    fun onLose() {
+        Logger.d(TAG, "onLose")
+        val activity = activityRef.get()!! as PlayActivity
+        activity.onLose()
         Statistics.logLoose(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
 
     private fun showMessage(msg: String) {
-        val activity = playActivity!!
+        val activity = activityRef.get()!!
         activity.messageView.text = msg
         activity.messageView.visibility = View.VISIBLE
         messageTimer.cancel()

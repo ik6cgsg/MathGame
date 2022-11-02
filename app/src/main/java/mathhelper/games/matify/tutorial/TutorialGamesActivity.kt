@@ -28,7 +28,7 @@ class TutorialGamesActivity: AppCompatActivity() {
         pointer = findViewById(R.id.pointer_game)
         dialog = TutorialScene.shared.createTutorialDialog(this)
         leave = TutorialScene.shared.createLeaveDialog(this)
-        TutorialScene.shared.tutorialGamesActivity = this
+        TutorialScene.shared.initTGA(this)
     }
 
     override fun onBackPressed() {
@@ -36,7 +36,7 @@ class TutorialGamesActivity: AppCompatActivity() {
     }
 
     override fun finish() {
-        TutorialScene.shared.tutorialGamesActivity = null
+        TutorialScene.shared.gamesActivityRef.clear()
         super.finish()
     }
 

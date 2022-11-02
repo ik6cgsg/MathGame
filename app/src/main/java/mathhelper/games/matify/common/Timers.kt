@@ -8,18 +8,18 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.View
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.common.Request
+import mathhelper.games.matify.activities.PlayActivity
 import java.util.*
 
 class MessageTimer: CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {
     override fun onTick(m: Long) {}
     override fun onFinish() {
-        PlayScene.shared.playActivity?.messageView?.visibility = View.GONE
+        val play = PlayScene.shared.activityRef.get() as PlayActivity
+        play.messageView.visibility = View.GONE
     }
 }
 
@@ -43,14 +43,16 @@ class MathDownTimer(time: Int, interval: Long):
                 StyleSpan(Typeface.BOLD), start.length,
                 text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
         }
-        PlayScene.shared.playActivity!!.timerView.text = text
+        val activity = PlayScene.shared.activityRef.get()!!
+        val play = activity as PlayActivity
+        play.timerView.text = text
     }
 
     override fun onFinish() {
         Logger.d(TAG, "onFinish")
-        val activity = PlayScene.shared.playActivity!!
+        val activity = PlayScene.shared.activityRef.get() as PlayActivity
         activity.timerView.text = activity.getString(R.string.time_out)
-        PlayScene.shared.onLoose()
+        PlayScene.shared.onLose()
     }
 }
 
@@ -75,7 +77,7 @@ class MathUpTimer(val interval: Long) {
                 //val award = LevelScene.shared.currentLevel!!.getAward(context, PlayScene.shared.currentTime, steps)
                 /*text.setSpan(ForegroundColorSpan(award.color), start.length,
                     text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)*/
-                val activity = PlayScene.shared.playActivity!!
+                val activity = PlayScene.shared.activityRef.get() as PlayActivity
                 activity.runOnUiThread {
                     activity.timerView.text = text
                 }

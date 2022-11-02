@@ -216,17 +216,13 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                     currentAtoms.add(atom)
                 }
                 setTextFromMathPair()
-                PlayScene.shared.onAtomClicked()
+                GlobalScene.shared.onAtomClicked()
             } else if(!multiselectionMode) {
                 clearExpression()
             }
         }
         if (currentAtoms.isEmpty()) {
-            if (GlobalScene.shared.tutorialProcessing) {
-                TutorialScene.shared.tutorialPlayActivity?.clearRules()
-            } else {
-                PlayScene.shared.playActivity?.clearRules()
-            }
+            GlobalScene.shared.getPlayInterface()?.clearRules()
         }
     }
 
@@ -237,13 +233,9 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
             mathPair!!.deleteSpanForAtom(atom)
         }
         setTextFromMathPair(true)
-        PlayScene.shared.onAtomClicked()
+        GlobalScene.shared.onAtomClicked()
         if (currentAtoms.isEmpty()) {
-            if (GlobalScene.shared.tutorialProcessing) {
-                TutorialScene.shared.tutorialPlayActivity?.clearRules()
-            } else {
-                PlayScene.shared.playActivity?.clearRules()
-            }
+            GlobalScene.shared.getPlayInterface()?.clearRules()
         }
     }
 
