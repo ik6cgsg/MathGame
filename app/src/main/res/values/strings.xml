@@ -3,7 +3,7 @@
     <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆</string>
     <string name="end_expression_opened"><b><i>Goal:</i></b> %1$s</string>
     <string name="previous" translatable="false">↪️</string>
-    <string name="restart" translatable="false">🔁</string>
+    <string name="restart" translatable="false">🔄</string>
     <string name="back" translatable="false">⬅️</string>
     <string name="wrong_subs">❌ Can\'t do this ❌</string>
     <string name="time_out">😢Time out!😢</string>
