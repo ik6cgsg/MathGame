@@ -88,7 +88,6 @@ class TutorialScene {
 
     lateinit var currentLevel: Level
     var currLevelIndex = 0
-    var instrumentProcessing: Boolean = false
 
     var tutorialDialog: AlertDialog? = null
     var leaveDialog: AlertDialog? = null

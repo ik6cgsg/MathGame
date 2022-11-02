@@ -309,7 +309,7 @@ class InstrumentScene {
         activity.endInstrumentProcessing(collapse)
     }
 
-    fun turnOffCurrentInstrument(context: Context) {
+    fun turnOffCurrentInstrument() {
         turnOffInstrument(currentProcessingInstrument)
     }
 

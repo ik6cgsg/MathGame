@@ -132,9 +132,7 @@ class GlobalScene {
     }
 
     fun resetAll(success: () -> Unit, error: () -> Unit) {
-        if (LevelScene.shared.levelsActivity != null) {
-            LevelScene.shared.back()
-        }
+        LevelScene.shared.levelsActivityRef.get()?.let { LevelScene.shared.back() }
         asyncTask(gamesActivity!!, background = {
             val token = Storage.shared.serverToken()
             Request.resetHistory(RequestData(RequestPage.USER_HISTORY, token, RequestMethod.DELETE))
@@ -147,9 +145,7 @@ class GlobalScene {
     }
 
     fun logout() {
-        if (LevelScene.shared.levelsActivity != null) {
-            LevelScene.shared.back()
-        }
+        LevelScene.shared.levelsActivityRef.get()?.let { LevelScene.shared.back() }
         Storage.shared.resetResults()
         Storage.shared.clearUserInfo()
         Storage.shared.clearAllGames()

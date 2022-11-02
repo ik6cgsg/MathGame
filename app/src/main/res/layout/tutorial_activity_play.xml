@@ -26,21 +26,6 @@
         app:layout_constraintTop_toBottomOf="@+id/end_expression_scroll"
         app:layout_constraintVertical_bias="0.25" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/no_rules"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="64dp"-->
-<!--        android:layout_marginBottom="16dp"-->
-<!--        android:clickable="false"-->
-<!--        android:text="@string/tap_on_some_place_in_expression"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textColor="?attr/textColor"-->
-<!--        android:typeface="monospace"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/global_expression"-->
-<!--        tools:layout_editor_absoluteX="8dp" />-->
-
     <HorizontalScrollView
         android:id="@+id/end_expression_scroll"
         android:layout_width="0dp"

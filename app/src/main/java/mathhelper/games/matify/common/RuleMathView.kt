@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.widget.HorizontalScrollView
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import mathhelper.twf.api.expressionSubstitutionFromStructureStrings
 import mathhelper.twf.expressiontree.ExpressionSubstitution
@@ -46,7 +47,7 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     private fun setDefaults(context: Context) {
         scrollBarSize = 20
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            horizontalScrollbarThumbDrawable = context.getDrawable(R.drawable.alert_shape)
+            horizontalScrollbarThumbDrawable = ContextCompat.getDrawable(context, R.drawable.alert_shape)
         }
         isScrollbarFadingEnabled = false
         isFillViewport = true
@@ -54,7 +55,7 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         ruleView.textSize = Constants.ruleDefaultSize
         ruleView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         ruleView.typeface = ResourcesCompat.getFont(context, R.font.roboto)
-        ruleView.background = context.getDrawable(R.drawable.row_clickable)
+        ruleView.background = ContextCompat.getDrawable(context, R.drawable.row_clickable)
         ruleView.isClickable = true
         ruleView.isFocusable = true
         ruleView.setOnClickListener {

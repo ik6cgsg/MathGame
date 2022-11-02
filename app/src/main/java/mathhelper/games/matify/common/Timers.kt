@@ -18,8 +18,8 @@ import java.util.*
 class MessageTimer: CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {
     override fun onTick(m: Long) {}
     override fun onFinish() {
-        val play = PlayScene.shared.activityRef.get() as PlayActivity
-        play.messageView.visibility = View.GONE
+        val play = PlayScene.shared.activityRef.get() as? PlayActivity
+        play?.messageView?.visibility = View.GONE
     }
 }
 

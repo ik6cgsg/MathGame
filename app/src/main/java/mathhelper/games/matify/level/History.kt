@@ -19,18 +19,18 @@ class History {
         Logger.d(TAG, "saveState")
         val state = State(expression, LevelResult(steps, time, StateType.PAUSED, expressionToStructureString(expression)))
         states.add(state)
-        LevelScene.shared.levelsActivity?.updateResult(state.result)
+        LevelScene.shared.levelsActivityRef.get()?.updateResult(state.result)
     }
 
     fun getPreviousStep(): State? {
         Logger.d(TAG, "getPreviousStep")
         if (states.size < 1) {
-            LevelScene.shared.levelsActivity?.updateResult(null)
+            LevelScene.shared.levelsActivityRef.get()?.updateResult(null)
             return null
         }
         val res = states[states.size - 1]
         states.removeAt(states.size - 1)
-        LevelScene.shared.levelsActivity?.updateResult(res.result)
+        LevelScene.shared.levelsActivityRef.get()?.updateResult(res.result)
         return res
     }
 

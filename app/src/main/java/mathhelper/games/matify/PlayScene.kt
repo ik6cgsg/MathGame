@@ -206,7 +206,7 @@ class PlayScene {
             activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.subjectType)
             activity.globalMathView.center()
         } else {
-            LevelScene.shared.levelsActivity?.updateResult(null)
+            LevelScene.shared.levelsActivityRef.get()?.updateResult(null)
             activity.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
             activity.globalMathView.center()
             stepsCount = 0.0
@@ -220,7 +220,7 @@ class PlayScene {
         Logger.d(TAG, "previousStep")
         val activity = activityRef.get() as PlayActivity
         if (activity.instrumentProcessing) {
-            InstrumentScene.shared.turnOffCurrentInstrument(activity as Context)
+            InstrumentScene.shared.turnOffCurrentInstrument()
         } else {
             val state = history.getPreviousStep()
             val oldExpression = activity.globalMathView.expression!!
@@ -311,7 +311,7 @@ class PlayScene {
         //val award = currentLevel.getAward(context, currentTime, stepsCount)
         val newRes = LevelResult(stepsCount, currentTime, StateType.DONE)
         if (newRes.isBetter(currentLevel.lastResult)) {
-            LevelScene.shared.levelsActivity!!.updateResult(newRes)
+            LevelScene.shared.levelsActivityRef.get()!!.updateResult(newRes)
         }
         activity.onWin(stepsCount, currentTime, StateType.DONE)
         Statistics.logWin(stepsCount, activity.globalMathView.expression!!)
