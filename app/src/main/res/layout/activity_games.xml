@@ -9,55 +9,63 @@
     android:focusableInTouchMode="true"
     tools:context=".activities.GamesActivity">
 
-    <TextView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:onClick="search"
-        android:text="🔍"
-        android:textColor="?attr/textColor"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:typeface="monospace"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/games"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/games"
-        android:textColor="?attr/textColor"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:typeface="monospace"
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="settings"
-        android:text="@string/gear"
-        android:textColor="?attr/textColor"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/games"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.12"
+            android:gravity="center"
+            android:onClick="search"
+            android:text="@string/magnifying_glass"
+            android:textAlignment="center"
+            android:textColor="?attr/textColor"
+            android:textSize="25sp"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/games"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.48"
+            android:gravity="center"
+            android:text="@string/games"
+            android:textAlignment="center"
+            android:textColor="?attr/textColor"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0.12"
+            android:gravity="center"
+            android:onClick="settings"
+            android:text="@string/gear"
+            android:textColor="?attr/textColor"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/previous"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 
     <EditText
-        android:visibility="gone"
         android:id="@+id/search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -79,9 +87,10 @@
         android:textColor="?attr/textColor"
         android:textColorHint="?attr/colorHint"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/games" />
+        app:layout_constraintTop_toBottomOf="@id/top_bar" />
 
     <View
         android:id="@+id/divider"

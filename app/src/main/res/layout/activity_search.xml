@@ -9,53 +9,58 @@
     android:focusableInTouchMode="true"
     tools:context=".activities.SearchActivity">
 
-    <TextView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:onClick="back"
-        android:text="@string/back"
-        android:textColor="?attr/textColor"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:typeface="monospace"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.widget.SearchView
-        android:id="@+id/search"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:iconifiedByDefault="false"
-        android:paddingHorizontal="0dp"
-        android:queryBackground="?attr/backgroundColor"
-        android:queryHint="@string/search_hint"
-        android:searchHintIcon="@null"
-        android:searchIcon="@null"
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/back"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <requestFocus />
-    </android.widget.SearchView>
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:width="48dp"
+            android:gravity="center"
+            android:onClick="back"
+            android:text="@string/back"
+            android:textColor="@color/light_click"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <android.widget.SearchView
+            android:id="@+id/search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:iconifiedByDefault="false"
+            android:paddingHorizontal="0dp"
+            android:queryBackground="?attr/backgroundColor"
+            android:queryHint="@string/search_hint"
+            android:searchHintIcon="@null"
+            android:searchIcon="@null">
+
+            <requestFocus />
+        </android.widget.SearchView>
+
+    </LinearLayout>
 
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
         android:layout_marginEnd="8dp"
         android:background="?attr/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search" />
+        app:layout_constraintTop_toBottomOf="@id/top_bar" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -63,8 +68,8 @@
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="42dp"
         android:elevation="5dp"
         android:indeterminate="true"
         android:visibility="visible"
@@ -81,7 +86,7 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:tabSelectedTextColor="?attr/colorPrimary"
         app:tabTextColor="?attr/textColor">
 
