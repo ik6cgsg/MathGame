@@ -192,7 +192,9 @@ class TutorialScene {
             }),
             Step({
                 (playActivityRef.get() as TutorialPlayActivity).startMultiselectTutorial()
-            }, {})
+            }, {
+                InstrumentScene.shared.turnOffCurrentInstrument()
+            })
         )
         stepsSize = steps.size - 2
         currentStep = -1
