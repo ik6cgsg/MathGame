@@ -62,6 +62,7 @@ class TutorialLevelsActivity: AppCompatActivity() {
     }
 
     fun startLevel(v: View?) {
+        TutorialScene.shared.stopAnimation()
         startActivity(Intent(this, TutorialPlayActivity::class.java))
     }
 
@@ -73,7 +74,6 @@ class TutorialLevelsActivity: AppCompatActivity() {
 
     fun waitForLevelClick() {
         Logger.d(TAG, "waitForLevelClick")
-        pointer.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointer)
     }
 }

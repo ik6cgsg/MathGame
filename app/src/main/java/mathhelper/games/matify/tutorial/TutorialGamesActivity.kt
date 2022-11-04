@@ -41,6 +41,7 @@ class TutorialGamesActivity: AppCompatActivity() {
     }
 
     fun startTutorial(v: View?) {
+        TutorialScene.shared.stopAnimation()
         startActivity(Intent(this, TutorialLevelsActivity::class.java))
     }
 

@@ -48,6 +48,7 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
     private lateinit var pointerRestartView: TextView
     private lateinit var pointerUndoView: TextView
     private lateinit var pointerInfoView: TextView
+    private lateinit var pointerMultiselectView: TextView
 
     private var needClear: Boolean = false
     override var instrumentProcessing: Boolean = false
@@ -104,6 +105,7 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
         pointerRestartView = findViewById(R.id.pointer_restart)
         pointerUndoView = findViewById(R.id.pointer_undo)
         pointerInfoView = findViewById(R.id.pointer_info)
+        pointerMultiselectView = findViewById(R.id.pointer_multiselect)
         buttonTable = bottomSheet.findViewById(R.id.account_table)
     }
 
@@ -182,15 +184,14 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
     fun messageTutorial() {
         Logger.d(TAG, "messageTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_info))
-        pointerMsgView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerMsgView)
+        tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun backTutorial() {
         Logger.d(TAG, "backTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_to_menu))
-        pointerBackView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerBackView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -199,7 +200,6 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
     fun infoTutorial() {
         Logger.d(TAG, "infoTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_short_info))
-        pointerInfoView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerInfoView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -208,16 +208,14 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
     fun restartTutorial() {
         Logger.d(TAG, "restartTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_restart))
-        pointerRestartView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerRestartView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun undoTutorial() {
-        Logger.d(TAG, "restartTutorial")
+        Logger.d(TAG, "undoTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_undo))
-        pointerUndoView.visibility = View.VISIBLE
         TutorialScene.shared.animateUp(pointerUndoView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -226,11 +224,10 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
     fun endExpressionTutorial() {
         Logger.d(TAG, "endExpressionTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_goal))
-        pointerEndView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerEndView)
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_goal_explanation) +
-                    resources.getString(R.string.tutorial_on_level_goal_toggle)
+                    resources.getString(R.string.got_it)
         )
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
@@ -238,7 +235,6 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
     fun centralExpressionTutorial() {
         Logger.d(TAG, "centralExpressionTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_main_element))
-        pointerCentralView.visibility = View.VISIBLE
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_main_element_current) +
@@ -267,17 +263,17 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_multiselect_explanation)
         )
+        TutorialScene.shared.animateUp(pointerMultiselectView)
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun actionMultiselectTutorial() {
-        buttonTable.visibility = View.VISIBLE
-
         Logger.d(TAG, "actionMultiselectTutorial")
         TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_multiselect_action))
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_multiselect_details)
         )
+        TutorialScene.shared.animateUp(pointerMultiselectView)
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
@@ -289,40 +285,36 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
 
     fun expressionClickSucceeded() {
         TutorialScene.shared.wantedClick = false
-        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_select))
+        if (TutorialScene.shared.currLevelIndex == 0) {
+            TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_select))
+        } else {
+            TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_multiselect_select))
+        }
         TutorialScene.shared.wantedRule = true
     }
 
     fun ruleClickSucceeded() {
-        TutorialScene.shared.wantedRule = true
-        TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_win))
+        TutorialScene.shared.wantedRule = false
+        if (TutorialScene.shared.currLevelIndex == 0) {
+            TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_win))
+        } else {
+            TutorialScene.shared.showMessage(resources.getString(R.string.tutorial_on_level_multiselect_click))
+        }
     }
 
     fun levelPassed() {
         Logger.d(TAG, "levelPassed")
         TutorialScene.shared.showMessage(resources.getString(R.string.congratulations))
+        globalMathView.center()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
-        val builder = AlertDialog.Builder(
-            this, ThemeController.shared.alertDialogTheme
-        )
-        builder
-            .setTitle("${resources.getString(R.string.tutorial)}: ${TutorialScene.shared.stepToDisplay()} / ${TutorialScene.shared.stepsSize}")
-            .setMessage(resources.getString(R.string.tutorial_on_level_basic_finished))
-            .setPositiveButton(resources.getString(R.string.tutorial_advanced_proceed)) { _: DialogInterface, _: Int ->
-                TutorialScene.shared.nextStep()
-            }
-            .setNegativeButton(R.string.step_back) { _: DialogInterface, _: Int ->
-                TutorialScene.shared.loadLevel()
-                TutorialScene.shared.prevStep()
-            }
-            .setCancelable(false)
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog, backMode = BackgroundMode.NONE)
+        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_basic_finished))
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     fun bothLevelsPassed() {
         Logger.d(TAG, "tutorial over")
         TutorialScene.shared.showMessage(resources.getString(R.string.congratulations))
+        globalMathView.center()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
 
         val builder = AlertDialog.Builder(
@@ -335,6 +327,7 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
                 TutorialScene.shared.leave()
             }
             .setNegativeButton(R.string.step_back) { _: DialogInterface, _: Int ->
+                TutorialScene.shared.stopAnimation()
                 TutorialScene.shared.loadLevel()
                 TutorialScene.shared.prevStep()
             }

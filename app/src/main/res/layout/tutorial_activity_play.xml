@@ -10,22 +10,6 @@
     android:clipToPadding="false"
     tools:context=".tutorial.TutorialPlayActivity">
 
-    <mathhelper.games.matify.common.GlobalMathView
-        android:id="@+id/global_expression"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="#0000BCD4"
-        android:text=""
-        app:fontFamily="@font/roboto"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_expression_scroll"
-        app:layout_constraintVertical_bias="0.25" />
-
     <HorizontalScrollView
         android:id="@+id/end_expression_scroll"
         android:layout_width="0dp"
@@ -74,6 +58,19 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+
+    <mathhelper.games.matify.common.GlobalMathView
+        android:id="@+id/global_expression"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:typeface="normal"
+        app:fontFamily="@font/roboto"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/end_expression_scroll"
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/message_view"
@@ -231,6 +228,22 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar" />
+
+    <TextView
+        android:id="@+id/pointer_multiselect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="135dp"
+        android:clickable="false"
+        android:rotation="180"
+        android:text="@string/pointer"
+        android:textColor="?attr/textColor"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/pointer_message"

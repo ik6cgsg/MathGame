@@ -73,6 +73,10 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionStr: String, type: String?) {
         Logger.d(TAG, "setExpression from str")
+        if (centerX == null || centerY == null) {
+            centerX = x
+            centerY = y
+        }
         if (expressionStr.isNotEmpty()) {
             expression = structureStringToExpression(expressionStr)
             setExpression(expression!!, type, true)
@@ -81,6 +85,10 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
         Logger.d(TAG, "setExpression from node")
+        if (centerX == null || centerY == null) {
+            centerX = x
+            centerY = y
+        }
         this.type = type
         expression = expressionNode
         if (resetSize) {
@@ -125,10 +133,6 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     /** TextView OVERRIDES **/
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Logger.d(TAG, "onTouchEvent")
-        if (centerX == null || centerY == null) {
-            centerX = x
-            centerY = y
-        }
         var res = false
         scaleDetector.onTouchEvent(event)
         when (event.action) {
@@ -172,9 +176,12 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun center() {
         if (centerX != null && centerY != null) {
+            Logger.d(TAG, "center")
             animate()
                 .x(centerX!!)
                 .y(centerY!!)
+                .translationX(0F)
+                .translationY(0F)
                 .setDuration(100)
                 .start()
         }
