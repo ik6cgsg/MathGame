@@ -11,6 +11,7 @@ import mathhelper.games.matify.AuthStatus
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.*
+import java.lang.ref.WeakReference
 
 class PasswordActivity: AppCompatActivity() {
     private val TAG = "PasswordActivity"
@@ -43,7 +44,7 @@ class PasswordActivity: AppCompatActivity() {
             newPassInputLayout.visibility = View.VISIBLE
             repeatPassInputLayout.visibility = View.VISIBLE
         }
-        GlobalScene.shared.loadingElementRef = findViewById(R.id.progress)
+        GlobalScene.shared.loadingElementRef = WeakReference(findViewById(R.id.progress))
     }
 
     fun back(v: View?) {
@@ -61,7 +62,7 @@ class PasswordActivity: AppCompatActivity() {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
             }
         } else if (newPassView.text.toString() == repeatPassView.text.toString()) {
-            if (Storage.shared.serverToken().isNullOrBlank()){
+            if (Storage.shared.serverToken().isBlank()){
                 val userData = Storage.shared.getUserInfoBase()
                 userData.password = newPassView.text.toString()
                 GlobalScene.shared.signUp(this, userData)

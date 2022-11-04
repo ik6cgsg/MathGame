@@ -290,7 +290,7 @@ class InstrumentScene {
         currentProcessingInstrument = inst
         currentStep = null
         currentDetailRef.get()?.isSelected = false
-        currentDetailRef = WeakReference(null)
+        currentDetailRef.clear()
         currentEnteredText = ""
 
         inst.button.setTextColor(Color.RED)

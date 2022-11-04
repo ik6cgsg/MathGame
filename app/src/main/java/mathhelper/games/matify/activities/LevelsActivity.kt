@@ -117,7 +117,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun finish() {
-        LevelScene.shared.setLA(this)
+        LevelScene.shared.setLA(null)
         super.finish()
     }
 
