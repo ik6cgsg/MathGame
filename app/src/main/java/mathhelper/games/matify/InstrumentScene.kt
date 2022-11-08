@@ -125,11 +125,11 @@ class InstrumentScene {
     // MathViews
     private lateinit var placeView: SimpleMathView
     private lateinit var paramView: SimpleMathView
-    private lateinit var activityRef: WeakReference<InstrumentSceneListener>
+    private lateinit var listenerRef: WeakReference<InstrumentSceneListener>
 
 
     fun init(bottomSheet: View, activity: InstrumentSceneListener) {
-        activityRef = WeakReference(activity)
+        listenerRef = WeakReference(activity)
         currentProcessingInstrument = null
         currentStep = null
         // Views
@@ -221,7 +221,7 @@ class InstrumentScene {
     }
 
     fun clickDetail(v: Button) {
-        activityRef.get()?.let { AndroidUtil.vibrateLight(it as Context) }
+        listenerRef.get()?.let { AndroidUtil.vibrateLight(it as Context) }
         val currentDetail = currentDetailRef.get()
         if (currentStep != InstrumentStep.DETAIL || currentDetail == v) return
         currentDetail?.isSelected = false
@@ -232,7 +232,7 @@ class InstrumentScene {
     }
 
     fun clickKeyboard(v: Button) {
-        activityRef.get()?.let { AndroidUtil.vibrateLight(it as Context) }
+        listenerRef.get()?.let { AndroidUtil.vibrateLight(it as Context) }
         if (currentStep != InstrumentStep.PARAM || currentProcessingInstrument?.type == InstrumentType.PERMUTE) return
         if (v.tag is String && v.tag.toString() == "delete") {
             currentEnteredText = ""
@@ -294,7 +294,7 @@ class InstrumentScene {
         currentEnteredText = ""
 
         inst.button.setTextColor(Color.RED)
-        val activity = activityRef.get()?:return
+        val activity = listenerRef.get()?:return
         activity.startInstrumentProcessing(inst.type == InstrumentType.MULTI || inst.type == InstrumentType.BRACKET)
         setInstrumentHandleView(inst, activity as Context)
     }
@@ -305,7 +305,7 @@ class InstrumentScene {
         inst.isProcessing = false
         currentProcessingInstrument = null
         inst.button.setTextColor(ThemeController.shared.color(ColorName.PRIMARY_COLOR))
-        activityRef.get()?.endInstrumentProcessing(collapse)
+        listenerRef.get()?.endInstrumentProcessing(collapse)
     }
 
     fun turnOffCurrentInstrument() {
@@ -332,7 +332,7 @@ class InstrumentScene {
         steps[InstrumentStep.PLACE]?.toggle()
         placeView.text = ""
         paramView.text = ""
-        activityRef.get()!!.halfExpandBottomSheet()
+        listenerRef.get()!!.halfExpandBottomSheet()
     }
 
     fun apply(context: Context) {
