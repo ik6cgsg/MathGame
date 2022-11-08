@@ -28,8 +28,9 @@ class History {
             LevelScene.shared.updateResult(null)
             return null
         }
-        val res = states[states.size - 1]
+        Logger.d(TAG, "$states")
         states.removeAt(states.size - 1)
+        val res = states[states.size - 1]
         LevelScene.shared.updateResult(res.result)
         return res
     }
@@ -37,5 +38,9 @@ class History {
     fun clear() {
         Logger.d(TAG, "clear")
         states.clear()
+    }
+
+    fun isUndoable(): Boolean {
+        return states.size > 1
     }
 }

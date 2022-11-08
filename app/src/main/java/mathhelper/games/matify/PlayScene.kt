@@ -10,6 +10,8 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.activities.PlayActivity
@@ -50,16 +52,14 @@ class PlayScene {
     fun setCurrentRuleView(context: Context, value: RuleMathView?) {
         currentRuleView = value
         if (value != null) {
-            Handler().postDelayed({
-                try {
-                    onRuleClicked(context)
-                } catch (e: java.lang.Exception) {
-                    Logger.e(TAG, "Error during rule usage: ${e.message}")
-                    activityRef.get()?.let {
-                        Toast.makeText(it as Context, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
-                    }
+            try {
+                onRuleClicked(context)
+            } catch (e: java.lang.Exception) {
+                Logger.e(TAG, "Error during rule usage: ${e.message}")
+                activityRef.get()?.let {
+                    Toast.makeText(it as Context, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
                 }
-            }, 100)
+            }
         }
     }
 
@@ -148,7 +148,7 @@ class PlayScene {
                 redrawRules(rules)
             }
         } else {
-            activity.previous.isEnabled = !history.empty
+            activity.previous.isEnabled = history.isUndoable()
         }
         Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
     }
@@ -177,6 +177,7 @@ class PlayScene {
             loadFinite()
         }
         history.clear()
+        history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
         showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40")
         Statistics.setStartTime()
         Statistics.logStart()
@@ -219,11 +220,13 @@ class PlayScene {
     fun previousStep() {
         Logger.d(TAG, "previousStep")
         val activity = activityRef.get() as PlayActivity
+
         if (activity.instrumentProcessing) {
             InstrumentScene.shared.turnOffCurrentInstrument()
         } else {
             val state = history.getPreviousStep()
             val oldExpression = activity.globalMathView.expression!!
+            Logger.d(TAG, "${state?.expression} $oldExpression")
             val oldSteps = stepsCount
             if (state != null) {
                 activity.clearRules()
@@ -231,7 +234,7 @@ class PlayScene {
                 activity.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
                 //val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
                 //stepsCount = stepsCount - 1 + penalty
-                if (history.empty) {
+                if (!history.isUndoable()) {
                     activity.previous.isEnabled = false
                 }
             }

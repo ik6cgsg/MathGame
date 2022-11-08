@@ -15,9 +15,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import mathhelper.twf.expressiontree.ExpressionSubstitution
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.tutorial.TutorialPlayActivity
 import mathhelper.games.matify.game.Game

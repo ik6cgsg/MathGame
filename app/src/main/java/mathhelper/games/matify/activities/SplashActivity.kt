@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +29,7 @@ class SplashActivity: AppCompatActivity() {
         ThemeController.shared.init(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_splash)
-        GlobalScope.launch {
+        lifecycleScope.launch {
             initialWork()
         }
     }

@@ -67,9 +67,7 @@ class GlobalScene {
             }
             currentGame = gameMap[gameOrder[value]]
             if (currentGame != null) {
-                Handler().postDelayed({
-                    gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
-                }, 100)
+                gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
             }
         }
     var currentGame: Game? = null

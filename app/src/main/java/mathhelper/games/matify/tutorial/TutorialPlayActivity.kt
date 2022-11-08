@@ -1,16 +1,16 @@
 package mathhelper.games.matify.tutorial
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.launch
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
 import kotlin.math.max
@@ -125,16 +125,16 @@ class TutorialPlayActivity : AppCompatActivity(), InstrumentSceneListener, PlayS
         buttonTable.visibility = View.GONE
 
         TutorialScene.shared.initTPA(this)
-        // TODO!: rethink this entire approach alongside similar uses of delaying
-        Handler().postDelayed({
+        val tla = this
+        lifecycleScope.launch {
             try {
                 TutorialScene.shared.loadLevel()
             } catch (e: Exception) {
                 Logger.e(TAG, "Error while loading a level")
-                Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
+                Toast.makeText(tla, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
             }
             TutorialScene.shared.nextStep()
-        }, 100)
+        }
     }
 
     override fun onBackPressed() {

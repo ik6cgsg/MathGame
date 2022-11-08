@@ -154,9 +154,7 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         continueDialog = createContinueDialog()
         PlayScene.shared.activityRef = WeakReference(this)
         PlayScene.shared.history = History()
-        Handler().postDelayed({
-            startCreatingLevelUI()
-        }, 100)
+        startCreatingLevelUI()
         setLongClick()
     }
 
@@ -399,7 +397,7 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
     }
 
     override fun setMultiselectionMode(multi: Boolean) {
-        previous.isEnabled = !PlayScene.shared.history.empty
+        previous.isEnabled = PlayScene.shared.history.isUndoable()
         if (multi) {
             globalMathView.multiselectionMode = true
             globalMathView.recolorCurrentAtom(ThemeController.shared.color(ColorName.MULTISELECTION_COLOR))

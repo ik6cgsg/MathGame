@@ -55,6 +55,22 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         setDefaults(context)
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        Logger.d(TAG, "onSizeChanged")
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (w == 0 || h == 0 || oldw > 0 || oldh > 0) {
+            return
+        }
+        centerX = x
+        centerY = y
+        val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
+        var parw = (parent as ConstraintLayout).width * 1f
+        parw -= parw / 20
+        if (curw > parw) {
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * parw / curw))
+        }
+    }
+
     private fun setDefaults(context: Context) {
         Logger.d(TAG, "setDefaults")
         scaleDetector = ScaleGestureDetector(context, scaleListener)
@@ -84,10 +100,6 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
         Logger.d(TAG, "setExpression from node")
-        if (centerX == null || centerY == null) {
-            centerX = x
-            centerY = y
-        }
         this.type = type
         expression = expressionNode
         if (resetSize) {
@@ -248,12 +260,6 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     private fun setTextFromMathPair(animated: Boolean = false) {
         typeface = ResourcesCompat.getFont(context, R.font.roboto_mono_regular)
-        val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
-        var parw = (parent as ConstraintLayout).width * 1f
-        parw -= parw / 20
-        if (curw > parw) {
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * parw / curw))
-        }
         if (animated) {
             animate()
                 .alpha(0f)
