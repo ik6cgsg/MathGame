@@ -3,12 +3,13 @@ package mathhelper.games.matify.tutorial
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.AndroidUtil
@@ -75,5 +76,20 @@ class TutorialLevelsActivity: AppCompatActivity() {
     fun waitForLevelClick() {
         Logger.d(TAG, "waitForLevelClick")
         TutorialScene.shared.animateLeftUp(pointer)
+    }
+
+    fun loadGame() {
+        val tla = this
+        lifecycleScope.launch {
+            val game = TutorialScene.shared.tutorialGame!!
+            val loaded = game.load(tla)
+            runOnUiThread {
+                if (loaded) {
+                    onLoad()
+                    TutorialScene.shared.currentLevel = game.levels[0]
+                    TutorialScene.shared.nextStep()
+                }
+            }
+        }
     }
 }

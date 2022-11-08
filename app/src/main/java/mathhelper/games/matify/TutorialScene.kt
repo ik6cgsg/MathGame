@@ -51,19 +51,7 @@ class TutorialScene {
         if (tla != null) {
             tutorialDialog = tla.dialog
             leaveDialog = tla.leave
-            GlobalScope.launch {
-                val job = async {
-                    val loaded = tutorialGame!!.load(tla)
-                    tla.runOnUiThread {
-                        if (loaded) {
-                            tla.onLoad()
-                            currentLevel = tutorialGame!!.levels[0]
-                            nextStep()
-                        }
-                    }
-                }
-                job.await()
-            }
+            tla.loadGame()
         }
     }
 

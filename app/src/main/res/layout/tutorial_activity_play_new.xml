@@ -10,6 +10,7 @@
     tools:context=".activities.PlayActivity">
 
     <include layout="@layout/tutorial_activity_play" />
+
     <include layout="@layout/rule_list_sheet" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

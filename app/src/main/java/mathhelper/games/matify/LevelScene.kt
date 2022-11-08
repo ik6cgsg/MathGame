@@ -21,11 +21,12 @@ class LevelScene {
     var levelsActivityRef: WeakReference<LevelsActivity> = WeakReference(null)
     fun setLA(la: LevelsActivity?) {
         levelsActivityRef = WeakReference(la)
-        if (la != null && GlobalScene.shared.currentGame != null) {
-            GlobalScene.shared.requestGameForPlay(GlobalScene.shared.currentGame!!, success = {
-                levels = GlobalScene.shared.currentGame!!.levels
-                levelsPassed = GlobalScene.shared.currentGame!!.lastResult?.levelsPassed ?: 0
-                levelsPaused = GlobalScene.shared.currentGame!!.lastResult?.levelsPaused ?: 0
+        val curGame = GlobalScene.shared.currentGame
+        if (la != null && curGame != null) {
+            GlobalScene.shared.requestGameForPlay(curGame, success = {
+                levels = curGame.levels
+                levelsPassed = curGame.lastResult?.levelsPassed ?: 0
+                levelsPaused = curGame.lastResult?.levelsPaused ?: 0
                 la.onLevelsLoaded()
             }, error = {
                 la.setLoading(false)
@@ -100,5 +101,9 @@ class LevelScene {
             Logger.e(TAG, "Error while LevelsActivity initializing")
             activity.finish()
         })
+    }
+
+    fun updateResult(result: LevelResult?) {
+        levelsActivityRef.get()?.updateResult(result)
     }
 }

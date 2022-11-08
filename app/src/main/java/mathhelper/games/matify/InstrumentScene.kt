@@ -305,8 +305,7 @@ class InstrumentScene {
         inst.isProcessing = false
         currentProcessingInstrument = null
         inst.button.setTextColor(ThemeController.shared.color(ColorName.PRIMARY_COLOR))
-        val activity = activityRef.get()?:return
-        activity.endInstrumentProcessing(collapse)
+        activityRef.get()?.endInstrumentProcessing(collapse)
     }
 
     fun turnOffCurrentInstrument() {
@@ -337,14 +336,15 @@ class InstrumentScene {
     }
 
     fun apply(context: Context) {
-        if (currentProcessingInstrument == null) return
-        if (currentProcessingInstrument!!.detailRequired && currentProcessingInstrument!!.detail == null ||
-            currentProcessingInstrument!!.placeRequired && currentProcessingInstrument!!.place == null ||
-            currentProcessingInstrument!!.paramRequired && currentProcessingInstrument!!.param == null
-        ) {
-            Toast.makeText(context, context.getString(R.string.inst_fill_req), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "Ready to apply!!!", Toast.LENGTH_SHORT).show()
+        currentProcessingInstrument?.let {
+            if (it.detailRequired && it.detail == null ||
+                it.placeRequired && it.place == null ||
+                it.paramRequired && it.param == null
+            ) {
+                Toast.makeText(context, context.getString(R.string.inst_fill_req), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Ready to apply!!!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

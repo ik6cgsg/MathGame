@@ -78,8 +78,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
             centerY = y
         }
         if (expressionStr.isNotEmpty()) {
-            expression = structureStringToExpression(expressionStr)
-            setExpression(expression!!, type, true)
+            setExpression(structureStringToExpression(expressionStr), type, true)
         }
     }
 
@@ -175,16 +174,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     fun center() {
-        if (centerX != null && centerY != null) {
-            Logger.d(TAG, "center")
-            animate()
-                .x(centerX!!)
-                .y(centerY!!)
-                .translationX(0F)
-                .translationY(0F)
-                .setDuration(100)
-                .start()
-        }
+
     }
 
     /** View OVERRIDES **/

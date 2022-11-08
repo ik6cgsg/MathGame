@@ -159,7 +159,6 @@ class PlayScene {
         val activity = activityRef.get()?:return false
         activity.clearRules()
         cancelTimers()
-        // val text = activity.getString(R.string.end_expression_opened, currentLevel.getDescriptionByLanguage(languageCode))
         activity.endExpressionViewLabel.text = Html.fromHtml(
             String.format(
                 Html.toHtml(SpannedString(activity.getText(R.string.end_expression_opened))),
@@ -198,12 +197,13 @@ class PlayScene {
     private fun loadEndless(context: Context, continueGame: Boolean) {
         val activity = activityRef.get()!!
         val currentLevel = LevelScene.shared.currentLevel!!
-        if (continueGame && currentLevel.lastResult != null &&
-            currentLevel.lastResult!!.state == StateType.PAUSED
+        val lastRes = currentLevel.lastResult
+        if (continueGame && lastRes != null &&
+            lastRes.state == StateType.PAUSED
         ) {
-            stepsCount = currentLevel.lastResult!!.steps
-            currentTime = currentLevel.lastResult!!.time
-            activity.globalMathView.setExpression(currentLevel.lastResult!!.expression, currentLevel.subjectType)
+            stepsCount = lastRes.steps
+            currentTime = lastRes.time
+            activity.globalMathView.setExpression(lastRes.expression, currentLevel.subjectType)
             activity.globalMathView.center()
         } else {
             LevelScene.shared.levelsActivityRef.get()?.updateResult(null)
