@@ -1,9 +1,7 @@
 package mathhelper.games.matify.common
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -11,11 +9,11 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import mathhelper.games.matify.GlobalScene
+import mathhelper.games.matify.PlayScene
 import mathhelper.twf.api.findLowestSubtreeTopOfSelectedNodesInExpression
 import mathhelper.twf.api.structureStringToExpression
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
-import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.mathResolver.MathResolver
@@ -225,13 +223,13 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                     currentAtoms.add(atom)
                 }
                 setTextFromMathPair()
-                GlobalScene.shared.onAtomClicked()
+                onAtomClickedRouter()
             } else if(!multiselectionMode) {
                 clearExpression()
             }
         }
         if (currentAtoms.isEmpty()) {
-            GlobalScene.shared.getPlayInterface()?.clearRules()
+            clearRulesRouter()
         }
     }
 
@@ -242,10 +240,8 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
             mathPair!!.deleteSpanForAtom(atom)
         }
         setTextFromMathPair(true)
-        GlobalScene.shared.onAtomClicked()
-        if (currentAtoms.isEmpty()) {
-            GlobalScene.shared.getPlayInterface()?.clearRules()
-        }
+        onAtomClickedRouter()
+        clearRulesRouter()
     }
 
     private fun setTextFromExpression() {
@@ -296,6 +292,23 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                     .start()
             }
             return true
+        }
+    }
+
+    // TODO: implement a mediator for inter-scene interactions like this
+    private fun onAtomClickedRouter() {
+        if (GlobalScene.shared.tutorialProcessing) {
+            TutorialScene.shared.onAtomClicked()
+        } else {
+            PlayScene.shared.onAtomClicked()
+        }
+    }
+
+    private fun clearRulesRouter() {
+        if (GlobalScene.shared.tutorialProcessing) {
+            TutorialScene.shared.listenerRef.get()?.clearRules()
+        } else {
+            PlayScene.shared.listenerRef.get()?.clearRules()
         }
     }
 }

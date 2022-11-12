@@ -32,7 +32,6 @@ class Statistics {
             currSteps: Double, nextSteps: Double, currExpr: ExpressionNode, nextExpr: ExpressionNode,
             currRule: ExpressionSubstitution?, places: List<ExpressionNode>
         ) {
-            val activity = PlayScene.shared.activityRef.get()
             val rule: MutableMap<String, String>? = if (currRule == null) { null } else {
                 mutableMapOf(
                     "left" to expressionToStructureString(currRule.left),
@@ -48,7 +47,8 @@ class Statistics {
                 selectedPlace = (places.map { expressionToStructureString(it) }).toString()
             )
             activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.RULE)
-            sendLog(activityLog, activity as Context)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logPlace(currSteps: Double, currExpr: ExpressionNode, places: List<ExpressionNode>) {
@@ -60,9 +60,9 @@ class Statistics {
                 nextExpression = currExprStr,
                 selectedPlace = (places.map { expressionToStructureString(it) }).toString()
             )
-            val activity = PlayScene.shared.activityRef.get()
             activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.PLACE)
-            sendLog(activityLog, activity as Context)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logInterim(currSteps: Double, currExpr: ExpressionNode) {
@@ -73,9 +73,9 @@ class Statistics {
                 currExpression = currExprStr,
                 nextExpression = currExprStr
             )
-            val activity = PlayScene.shared.activityRef.get()
             activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.INTERIM)
-            sendLog(activityLog, activity as Context)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logStart() {
@@ -86,9 +86,9 @@ class Statistics {
                 currExpression = exprStr,
                 nextExpression = exprStr
             )
-            val activity = PlayScene.shared.activityRef.get()
             activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.START)
-            sendLog(activityLog, activity as Context)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logUndo(
@@ -109,13 +109,12 @@ class Statistics {
                 nextExpression = next,
                 selectedPlace = places.toString()
             )
-            val activity = PlayScene.shared.activityRef.get()
             activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.UNDO)
-            sendLog(activityLog, activity as Context)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logRestart(currSteps: Double, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
-            val activity = PlayScene.shared.activityRef.get()
             val curr = expressionToStructureString(currExpr)
             val next = expressionToStructureString(LevelScene.shared.currentLevel!!.startExpression)
             val places = if (currPlaces.isEmpty()) {
@@ -130,13 +129,13 @@ class Statistics {
                 nextExpression = next,
                 selectedPlace = places.toString()
             )
-            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.RESTART)
-            sendLog(activityLog, activity as Context)
             startTime = 0
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.RESTART)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logMenu(currSteps: Double, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
-            val activity = PlayScene.shared.activityRef.get()
             val curr = expressionToStructureString(currExpr)
             val places = if (currPlaces.isEmpty()) {
                 listOf("")
@@ -150,9 +149,10 @@ class Statistics {
                 nextExpression = curr,
                 selectedPlace = places.toString()
             )
-            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.MENU)
-            sendLog(activityLog, activity as Context)
             startTime = 0
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.MENU)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logWin(currSteps: Double, currExpr: ExpressionNode/*, award: Award*/) {
@@ -163,10 +163,10 @@ class Statistics {
                 currExpression = exprStr,
                 nextExpression = exprStr
             )
-            val activity = PlayScene.shared.activityRef.get()
-            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.WIN)
-            sendLog(activityLog, activity as Context)
             startTime = 0
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.WIN)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         fun logLoose(currSteps: Double, currExpr: ExpressionNode, currPlaces: List<ExpressionNode>) {
@@ -183,10 +183,10 @@ class Statistics {
                 nextExpression = exprStr,
                 selectedPlace = places.toString()
             )
-            val activity = PlayScene.shared.activityRef.get()
-            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.LOOSE)
-            sendLog(activityLog, activity as Context)
             startTime = 0
+            activityLog.additionalFrom(LevelScene.shared.currentLevel!!, Action.LOOSE)
+            val activity = PlayScene.shared.listenerRef.get()?:return
+            sendLog(activityLog, activity.ctx)
         }
 
         private fun getHwInfo(): String {

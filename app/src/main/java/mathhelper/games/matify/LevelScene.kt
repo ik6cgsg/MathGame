@@ -1,7 +1,6 @@
 package mathhelper.games.matify
 
 import android.content.Intent
-import android.os.Handler
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.ConnectionChecker
@@ -44,11 +43,11 @@ class LevelScene {
                 value >= 0 && value < levels.size -> {
                     field = value
                     currentLevel = levels[value]
-                    val activity = PlayScene.shared.activityRef.get()
+                    val activity = PlayScene.shared.listenerRef.get()
                     if (activity == null) {
                         levelsActivityRef.get()?.let { it.startActivity(Intent(it, PlayActivity::class.java)) }
                     } else {
-                        (activity as PlayActivity).startCreatingLevelUI()
+                        activity.startCreatingLevelUI()
                     }
                 }
                 value < 0 -> {

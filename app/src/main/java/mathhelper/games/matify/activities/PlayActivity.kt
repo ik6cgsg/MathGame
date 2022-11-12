@@ -3,101 +3,38 @@ package mathhelper.games.matify.activities
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
-import android.view.MotionEvent
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.History
 import mathhelper.games.matify.level.StateType
 import java.lang.ref.WeakReference
 
-class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneListener, PlaySceneListener {
-    private val TAG = "PlayActivity"
+class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneListener, InstrumentSceneListener,
+    TimerListener {
+    override val TAG = "PlayActivity"
     private var loading = false
     private lateinit var loseDialog: AlertDialog
     private lateinit var winDialog: AlertDialog
     private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
 
-    override lateinit var globalMathView: GlobalMathView
-    override lateinit var endExpressionViewLabel: TextView
-    override lateinit var endExpressionMathView: SimpleMathView
-    override lateinit var rulesScrollView: ScrollView
-    override lateinit var rulesLinearLayout: LinearLayout
-    override lateinit var rulesMsg: TextView
-    override lateinit var messageView: TextView
-    lateinit var mainView: ConstraintLayout
-    lateinit var mainViewAnim: TransitionDrawable
-    lateinit var bottomSheet: LinearLayout
-    lateinit var timerView: TextView
-
-    lateinit var blurView: BlurView
     lateinit var offline: TextView
 
     lateinit var back: TextView
     lateinit var info: TextView
     lateinit var restart: TextView
-    lateinit var previous: TextView
+    override lateinit var previous: TextView
 
-    private var needClear: Boolean = false
-    override var instrumentProcessing: Boolean = false
+    private val messageTimer = MessageTimer(this)
 
-    private val messageTimer = MessageTimer()
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        Logger.d(TAG, "onTouchEvent")
-        if (globalMathView.onTouchEvent(event)) {
-            needClear = false
-            return true
-        }
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                if (!globalMathView.multiselectionMode)
-                    needClear = true
-            }
-            MotionEvent.ACTION_UP -> {
-                if (needClear) {
-                    try {
-                        globalMathView.clearExpression()
-                        clearRules()
-                    } catch (e: Exception) {
-                        Logger.e(TAG, "Error while clearing rules on touch: ${e.message}")
-                        Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-        return true
-    }
-
-    fun setViews() {
-        globalMathView = findViewById(R.id.global_expression)
-        endExpressionMathView = findViewById(R.id.end_expression_math_view)
-        endExpressionViewLabel = findViewById(R.id.end_expression_label)
-        endExpressionViewLabel.visibility = View.GONE
-        endExpressionMathView.visibility = View.GONE
-        bottomSheet = findViewById(R.id.bottom_sheet)
-        messageView = findViewById(R.id.message_view)
-        timerView = findViewById(R.id.timer_view)
-
-        rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
-        rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
-        rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
-        InstrumentScene.shared.init(bottomSheet, this)
-
-        mainView = findViewById(R.id.activity_play)
-        mainViewAnim = mainView.background as TransitionDrawable
+    override fun setViews() {
+        super.setViews()
 
         back = findViewById(R.id.back)
         restart = findViewById(R.id.restart)
@@ -105,10 +42,15 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         previous.isEnabled = false
         info = findViewById(R.id.info)
         progress = findViewById(R.id.progress)
-        blurView = findViewById(R.id.blurView)
         offline = findViewById(R.id.offline)
         offline.visibility = View.GONE
         ConnectionChecker.shared.subscribe(this)
+    }
+
+    override fun showMessage(msg: String) {
+        super.showMessage(msg)
+        messageTimer.cancel()
+        messageTimer.start()
     }
 
     private fun setLongClick() {
@@ -118,9 +60,10 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         }
         previous.setOnLongClickListener {
             showMessage(
-                getString(R.string.previous_multiselect_info),
-                globalMathView.multiselectionMode,
-                getString(R.string.previous_info)
+                if (globalMathView.multiselectionMode)
+                    getString(R.string.previous_multiselect_info)
+                else
+                    getString(R.string.previous_info)
             )
             true
         }
@@ -152,7 +95,7 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         loseDialog = createLooseDialog()
         winDialog = createWinDialog()
         continueDialog = createContinueDialog()
-        PlayScene.shared.activityRef = WeakReference(this)
+        PlayScene.shared.listenerRef = WeakReference(this)
         PlayScene.shared.history = History()
         startCreatingLevelUI()
         setLongClick()
@@ -174,7 +117,7 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
 
     override fun finish() {
         PlayScene.shared.cancelTimers()
-        PlayScene.shared.activityRef.clear()
+        PlayScene.shared.listenerRef.clear()
         super.finish()
     }
 
@@ -201,7 +144,7 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         ConnectionChecker.shared.connectionButtonClick(this, v)
     }
 
-    fun startCreatingLevelUI() {
+    override fun startCreatingLevelUI() {
         if (LevelScene.shared.wasLevelPaused()) {
             AndroidUtil.showDialog(continueDialog)
         } else {
@@ -247,10 +190,6 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         }
     }
 
-    fun instrumentClick(v: View) {
-        InstrumentScene.shared.clickInstrument(v.tag.toString())
-    }
-
     fun detailClick(v: View) {
         InstrumentScene.shared.clickDetail(v as Button)
     }
@@ -269,41 +208,12 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         }
     }
 
-    override fun showMessage(msg: String, flag: Boolean, ifFlagFalseMsg: String?) {
-        if (flag)
-            messageView.text = msg
-        else
-            messageView.text = ifFlagFalseMsg
-        messageView.visibility = View.VISIBLE
-        messageTimer.cancel()
-        messageTimer.start()
-    }
-
     private fun returnToMenu() {
         PlayScene.shared.menu(this)
         finish()
     }
 
-    fun showEndExpression(v: View?) {
-        val builder = AlertDialog.Builder(this, ThemeController.shared.alertDialogTheme)
-        builder
-            .setTitle(getString(R.string.goal_description))
-            .setMessage(
-                LevelScene.shared.currentLevel!!.getDescriptionByLanguage(
-                    resources.configuration.locale.language,
-                    true
-                )
-            )
-            .setOnCancelListener { }
-            .setCancelable(true)
-        val alert = builder.create()
-        AndroidUtil.showDialog(
-            alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
-            blurView = blurView, activity = this
-        )
-    }
-
-    fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
+    override fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
         Logger.d(TAG, "onWin")
         val msgTitle = resources.getString(R.string.you_finished_level_with)
         val steps = "\n\t${resources.getString(R.string.steps)}: ${stepsCount.toInt()}"
@@ -324,7 +234,7 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
         AndroidUtil.showDialog(winDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
     }
 
-    fun onLose() {
+    override fun onLose() {
         AndroidUtil.showDialog(loseDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
     }
 
@@ -398,51 +308,26 @@ class PlayActivity : AppCompatActivity(), ConnectionListener, InstrumentSceneLis
 
     override fun setMultiselectionMode(multi: Boolean) {
         previous.isEnabled = PlayScene.shared.history.isUndoable()
-        if (multi) {
-            globalMathView.multiselectionMode = true
-            globalMathView.recolorCurrentAtom(ThemeController.shared.color(ColorName.MULTISELECTION_COLOR))
-        } else {
-            clearRules()
-            globalMathView.clearExpression()
-            globalMathView.multiselectionMode = false
-        }
+        super.setMultiselectionMode(multi)
     }
 
-    fun collapseBottomSheet() {
-        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
-    }
+    override fun showEndExpression(v: View?) {
+        val builder = AlertDialog.Builder(this, ThemeController.shared.alertDialogTheme)
+        builder
+            .setTitle(getString(R.string.goal_description))
+            .setMessage(
+                LevelScene.shared.currentLevel!!.getDescriptionByLanguage(
+                    resources.configuration.locale.language,
+                    true
+                )
+            )
+            .setOnCancelListener { }
+            .setCancelable(true)
+        val alert = builder.create()
+        AndroidUtil.showDialog(
+            alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
+            blurView = blurView, activity = this
+        )
 
-    override fun halfExpandBottomSheet() {
-        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_HALF_EXPANDED
-    }
-
-    override fun clearRules() {
-        rulesScrollView.visibility = View.GONE
-        rulesMsg.text = getString(R.string.no_rules_msg)
-        if (!instrumentProcessing) {
-            collapseBottomSheet()
-        }
-    }
-
-    override fun startInstrumentProcessing(setMSMode: Boolean) {
-        instrumentProcessing = true
-        clearRules()
-        showMessage(getString(R.string.inst_enter))
-        setMultiselectionMode(setMSMode)
-        rulesMsg.text = getString(R.string.inst_rules_msg)
-        AndroidUtil.vibrate(this)
-        mainViewAnim.startTransition(300)
-    }
-
-    override fun endInstrumentProcessing(collapse: Boolean) {
-        instrumentProcessing = false
-        setMultiselectionMode(false)
-        globalMathView.clearExpression()
-        AndroidUtil.vibrate(this)
-        mainViewAnim.reverseTransition(300)
-        if (collapse) {
-            collapseBottomSheet()
-            clearRules()
-        }
     }
 }

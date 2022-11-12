@@ -10,7 +10,19 @@
     tools:context=".activities.PlayActivity">
 
     <include layout="@layout/tutorial_activity_play" />
-
     <include layout="@layout/rule_list_sheet" />
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp"
+        android:visibility="gone"
+        app:blurOverlayColor="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </eightbitlab.com.blurview.BlurView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

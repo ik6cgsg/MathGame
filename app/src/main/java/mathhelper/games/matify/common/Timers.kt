@@ -9,23 +9,34 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
+import android.widget.TextView
+import kotlinx.coroutines.Runnable
 import mathhelper.games.matify.LevelScene
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.activities.PlayActivity
+import java.lang.ref.WeakReference
 import java.util.*
 
-class MessageTimer: CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {
+interface TimerListener {
+    var messageView: TextView
+    var timerView: TextView
+
+    fun runOnUiThread(code: Runnable)
+}
+
+class MessageTimer(listener: TimerListener): CountDownTimer(PlayScene.messageTime, PlayScene.messageTime) {
+    private var listenerRef = WeakReference(listener)
     override fun onTick(m: Long) {}
     override fun onFinish() {
-        val play = PlayScene.shared.activityRef.get() as? PlayActivity
-        play?.messageView?.visibility = View.GONE
+        listenerRef.get()?.messageView?.visibility = View.GONE
     }
 }
 
-class MathDownTimer(time: Int, interval: Long):
+class MathDownTimer(listener: TimerListener, time: Int, interval: Long):
     CountDownTimer(time.toLong() * 1000, interval * 1000) {
     private val TAG = "MathDownTimer"
+    private var listenerRef = WeakReference(listener)
     private val panicTime = 10
 
     override fun onTick(millisUntilFinished: Long) {
@@ -43,21 +54,20 @@ class MathDownTimer(time: Int, interval: Long):
                 StyleSpan(Typeface.BOLD), start.length,
                 text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
         }
-        val activity = PlayScene.shared.activityRef.get()!!
-        val play = activity as PlayActivity
-        play.timerView.text = text
+        listenerRef.get()?.timerView?.text = text
     }
 
     override fun onFinish() {
         Logger.d(TAG, "onFinish")
-        val activity = PlayScene.shared.activityRef.get() as PlayActivity
+        val activity = PlayScene.shared.listenerRef.get() as PlayActivity
         activity.timerView.text = activity.getString(R.string.time_out)
         PlayScene.shared.onLose()
     }
 }
 
-class MathUpTimer(val interval: Long) {
+class MathUpTimer(listener: TimerListener, val interval: Long) {
     private val TAG = "MathUpTimer"
+    private var listenerRef = WeakReference(listener)
     private lateinit var timer: Timer
 
     fun start(context: Context) {
@@ -77,9 +87,10 @@ class MathUpTimer(val interval: Long) {
                 //val award = LevelScene.shared.currentLevel!!.getAward(context, PlayScene.shared.currentTime, steps)
                 /*text.setSpan(ForegroundColorSpan(award.color), start.length,
                     text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)*/
-                val activity = PlayScene.shared.activityRef.get() as PlayActivity
-                activity.runOnUiThread {
-                    activity.timerView.text = text
+                listenerRef.get()?.let {
+                    it.runOnUiThread {
+                        it.timerView.text = text
+                    }
                 }
             }
         }, 0, interval * 1000)

@@ -2,13 +2,13 @@ package mathhelper.games.matify
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Handler
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.gson.Gson
 import kotlinx.coroutines.*
+import mathhelper.games.matify.activities.AbstractPlayableActivity
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.SplashActivity
@@ -355,21 +355,5 @@ class GlobalScene {
             gameOrder.add(code)
         }
         activity.generateList()
-    }
-
-    fun getPlayInterface(): PlaySceneListener? {
-        if (tutorialProcessing) {
-            return TutorialScene.shared.playActivityRef.get()
-        } else {
-            return PlayScene.shared.activityRef.get()
-        }
-    }
-
-    fun onAtomClicked() {
-        if (tutorialProcessing) {
-            TutorialScene.shared.onAtomClicked()
-        } else {
-            PlayScene.shared.onAtomClicked()
-        }
     }
 }
