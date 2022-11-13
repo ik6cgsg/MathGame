@@ -3,6 +3,7 @@ package mathhelper.games.matify.activities
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -35,6 +36,8 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
 
     override fun setViews() {
         super.setViews()
+        mainView = findViewById(R.id.activity_play)
+        mainViewAnim = mainView.background as TransitionDrawable
 
         back = findViewById(R.id.back)
         restart = findViewById(R.id.restart)

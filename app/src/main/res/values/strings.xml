@@ -122,9 +122,11 @@
     <string name="tutorial_on_level_multiselect_explanation">≡ \'Multiselect\' button helps you find conversions related to specific parts of the expression. ≡\n</string>
     <string name="tutorial_on_level_multiselect_action">To simplify the expression below go into \'multiselect\' ≡ mode, select both numbers and cancel them out 💥.\n</string>
     <string name="tutorial_on_level_multiselect_details">🎨 In the \'multiselect\' mode background changes color. 🎨\n</string>
-    <string name="tutorial_on_level_multiselect_click">Correct!\nNow get rid of remaining 0 using multiselect or normal node.</string>
+    <string name="tutorial_on_level_multiselect_button">Press the \'multiselect\' button at the bottom of the screen</string>
+    <string name="tutorial_on_level_multiselect_partial_select">\nSelect 6.</string>
     <string name="tutorial_on_level_multiselect_digit">Now select the other number</string>
     <string name="tutorial_on_level_multiselect_select">Cancel them out!</string>
+    <string name="tutorial_on_level_multiselect_click">Correct!\nNow get rid of remaining 0 using multiselect or normal node.</string>
     <string name="tutorial_on_level_seems">Seems you got it all!\n</string>
     <string name="tutorial_on_level_i_am_pro">Yep, now I\'m PRO too 😎</string>
     <string name="tutorial_advanced_proceed">Bring it!</string>

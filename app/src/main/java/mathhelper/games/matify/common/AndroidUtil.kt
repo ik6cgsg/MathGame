@@ -131,6 +131,8 @@ class AndroidUtil {
             }
             if (bottomGravity) {
                 dialog.window!!.setGravity(Gravity.BOTTOM)
+            } else {
+                dialog.window!!.setGravity(Gravity.NO_GRAVITY)
             }
             dialog.window!!.attributes.verticalMargin = 0.05f
             dialog.show()

@@ -38,6 +38,8 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun setViews() {
         super.setViews()
+        mainView = findViewById(R.id.tutorial_activity_play)
+        mainViewAnim = mainView.background as TransitionDrawable
 
         // noRules = findViewById(R.id.no_rules)
         pointerMsgView = findViewById(R.id.pointer_message)
@@ -191,12 +193,12 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
         buttonTable.visibility = View.VISIBLE
 
         Logger.d(TAG, "explainMultiselectTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_multiselect_expression))
+        showMessage(resources.getString(R.string.tutorial_on_level_multiselect_explanation))
         tutorialDialog.setMessage(
-            resources.getString(R.string.tutorial_on_level_multiselect_explanation)
+            resources.getString(R.string.tutorial_on_level_multiselect_expression)
         )
         TutorialScene.shared.animateUp(pointerMultiselectView)
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+        AndroidUtil.showDialog(tutorialDialog, bottomGravity = false, backMode = BackgroundMode.NONE)
     }
 
     override fun actionMultiselectTutorial() {
@@ -206,11 +208,11 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
             resources.getString(R.string.tutorial_on_level_multiselect_details)
         )
         TutorialScene.shared.animateUp(pointerMultiselectView)
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+        AndroidUtil.showDialog(tutorialDialog, bottomGravity = false, backMode = BackgroundMode.NONE)
     }
 
     override fun startMultiselectTutorial() {
-        showMessage("")
+        showMessage(resources.getString(R.string.tutorial_on_level_multiselect_button))
         TutorialScene.shared.wantedZoom = false
         TutorialScene.shared.wantedClick = true
     }
@@ -295,5 +297,10 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
             alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
             blurView = blurView, activity = this
         )
+    }
+
+    override fun startInstrumentProcessing(setMSMode: Boolean) {
+        super.startInstrumentProcessing(setMSMode)
+        showMessage(getString(R.string.inst_enter) + getString(R.string.tutorial_on_level_multiselect_partial_select))
     }
 }

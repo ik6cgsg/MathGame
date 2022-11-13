@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.os.Handler
 import android.text.Html
 import android.text.SpannedString
+import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -38,6 +39,7 @@ interface TutorialSceneListener {
     var messageView: TextView
 
     var tutorialDialog: AlertDialog
+    var bottomSheet: LinearLayout
 
     var instrumentProcessing: Boolean
     val ctx: Context
@@ -163,19 +165,19 @@ class TutorialScene {
         steps = arrayListOf(
             // Games Layout
             Step({
-                gamesActivityRef.get()!!.tellAboutGameLayout()
+                gamesActivityRef.get()?.tellAboutGameLayout()
             }, {}),
             Step({
-                gamesActivityRef.get()!!.waitForGameClick()
+                gamesActivityRef.get()?.waitForGameClick()
             }, {}),
             // Levels layout
             Step({
                 shouldFinishLevelsActivity = true
-                levelsActivityRef.get()!!.tellAboutLevelLayout()
+                levelsActivityRef.get()?.tellAboutLevelLayout()
             }, {}),
             Step({
                 shouldFinishLevelsActivity = false
-                levelsActivityRef.get()!!.waitForLevelClick()
+                levelsActivityRef.get()?.waitForLevelClick()
             }, {}),
             // Play layout, basic
             Step({
@@ -199,6 +201,7 @@ class TutorialScene {
                 listenerRef.get()?.restartTutorial()
             }, {}),
             Step({
+                loadLevel()
                 listenerRef.get()?.undoTutorial()
             }, {}),
             Step({
@@ -215,18 +218,12 @@ class TutorialScene {
                     currentLevel = tutorialGame!!.levels[currLevelIndex]
                     loadLevel()
                 }
-                val activity = listenerRef.get()!!
-                activity.tutorialDialog.window!!.attributes.y += 500
-                activity.explainMultiselectTutorial()
+                listenerRef.get()?.explainMultiselectTutorial()
             }, {
-                listenerRef.get()?.tutorialDialog?.window!!.attributes.y -= 500
             }),
             Step({
-                val activity = listenerRef.get()!!
-                activity.tutorialDialog.window!!.attributes.y += 500
-                activity.actionMultiselectTutorial()
+                listenerRef.get()?.actionMultiselectTutorial()
             }, {
-                listenerRef.get()?.tutorialDialog?.window!!.attributes.y -= 500
             }),
             Step({
                 listenerRef.get()?.startMultiselectTutorial()
@@ -298,23 +295,22 @@ class TutorialScene {
     fun onRuleClicked(ruleView: RuleMathView) {
         Logger.d(TAG, "onRuleClicked")
         val activity = listenerRef.get() ?: return
-        if (ruleView.subst != null) {
-            val res = activity.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
-            if (res != null) {
-                if (wantedRule) {
-                    activity.ruleClickSucceeded()
-                }
-                if (currentLevel.checkEnd(res)) {
-                    if (currLevelIndex == 0) {
-                        activity.levelPassed()
-                    } else if (currLevelIndex == 1) {
-                        activity.bothLevelsPassed()
-                    }
-                }
-                activity.clearRules()
-            } else {
-                activity.showMessage(activity.getString(R.string.wrong_subs))
+        val subst = ruleView.subst ?: return
+        val res = activity.globalMathView.performSubstitutionForMultiselect(subst)
+        if (res != null) {
+            if (wantedRule) {
+                activity.ruleClickSucceeded()
             }
+            if (currentLevel.checkEnd(res)) {
+                if (currLevelIndex == 0) {
+                    activity.levelPassed()
+                } else if (currLevelIndex == 1) {
+                    activity.bothLevelsPassed()
+                }
+            }
+            activity.clearRules()
+        } else {
+            activity.showMessage(activity.getString(R.string.wrong_subs))
         }
     }
 
@@ -429,7 +425,7 @@ class TutorialScene {
             it.end()
             it.cancel()
             currentAnim = null
-            val currentAnimView = currentAnimViewRef.get()!!
+            val currentAnimView = currentAnimViewRef.get() ?: return
             currentAnimView.translationY = 0f
             currentAnimView.translationX = 0f
             currentAnimView.visibility = View.GONE

@@ -78,8 +78,6 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
         rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
         rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
         InstrumentScene.shared.init(bottomSheet, this)
-        mainView = findViewById(R.id.activity_play)
-        mainViewAnim = mainView.background as TransitionDrawable
         blurView = findViewById(R.id.blurView)
     }
 
