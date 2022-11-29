@@ -1,26 +1,16 @@
 package mathhelper.games.matify.common
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
-import android.text.TextUtils
-import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
-import android.util.Log
-import android.view.MotionEvent
 import android.widget.HorizontalScrollView
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import mathhelper.games.matify.GlobalScene
 import mathhelper.twf.api.expressionSubstitutionFromStructureStrings
 import mathhelper.twf.expressiontree.ExpressionSubstitution
-import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
-import mathhelper.games.matify.TutorialScene
+import mathhelper.games.matify.activities.AbstractPlayableActivity
 import mathhelper.games.matify.mathResolver.MathResolver
-import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.mathResolver.VariableStyle
 import java.lang.Exception
 
@@ -32,10 +22,12 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     lateinit var ruleView: TextView
     private var needClick = false
     private var moveCnt = 0
+    lateinit var activity: AbstractPlayableActivity
 
     /** INITIALIZATION **/
-    constructor(context: Context): super(context) {
-        setDefaults(context)
+    constructor(activity: AbstractPlayableActivity): super(activity) {
+        this.activity = activity
+        setDefaults(activity)
     }
 
     constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
@@ -60,14 +52,8 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         ruleView.background = ContextCompat.getDrawable(context, R.drawable.row_clickable)
         ruleView.isClickable = true
         ruleView.isFocusable = true
-        if (GlobalScene.shared.tutorialProcessing) {
-            ruleView.setOnClickListener {
-                TutorialScene.shared.onRuleClicked(this)
-            }
-        } else {
-            ruleView.setOnClickListener {
-                PlayScene.shared.onRuleClicked(this)
-            }
+        ruleView.setOnClickListener {
+            activity.onRuleClicked(this)
         }
         ruleView.setLineSpacing(0f, Constants.mathLineSpacing)
         ruleView.setPadding(

@@ -20,7 +20,13 @@ import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
 import mathhelper.games.matify.mathResolver.MatifySpan
 import mathhelper.games.matify.mathResolver.TaskType
+import java.lang.ref.WeakReference
 import kotlin.math.*
+
+interface GlobalMathViewListener {
+    fun onAtomClicked()
+    fun clearRules()
+}
 
 class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "GlobalMathView"
@@ -41,6 +47,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     private lateinit var scaleDetector: ScaleGestureDetector
     private var ignoreUpAfterDrag = 0
     private var dragged = 0f
+    var listenerRef: WeakReference<GlobalMathViewListener> = WeakReference(null)
 
     /** INITIALIZATION **/
     constructor(context: Context): super(context) {
@@ -223,13 +230,13 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                     currentAtoms.add(atom)
                 }
                 setTextFromMathPair()
-                onAtomClickedRouter()
+                listenerRef.get()?.onAtomClicked()
             } else if(!multiselectionMode) {
                 clearExpression()
             }
         }
         if (currentAtoms.isEmpty()) {
-            clearRulesRouter()
+            listenerRef.get()?.clearRules()
         }
     }
 
@@ -240,8 +247,9 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
             mathPair!!.deleteSpanForAtom(atom)
         }
         setTextFromMathPair(true)
-        onAtomClickedRouter()
-        clearRulesRouter()
+
+        listenerRef.get()?.onAtomClicked()
+        listenerRef.get()?.clearRules()
     }
 
     private fun setTextFromExpression() {
@@ -292,23 +300,6 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                     .start()
             }
             return true
-        }
-    }
-
-    // TODO: implement a mediator for inter-scene interactions like this
-    private fun onAtomClickedRouter() {
-        if (GlobalScene.shared.tutorialProcessing) {
-            TutorialScene.shared.onAtomClicked()
-        } else {
-            PlayScene.shared.onAtomClicked()
-        }
-    }
-
-    private fun clearRulesRouter() {
-        if (GlobalScene.shared.tutorialProcessing) {
-            TutorialScene.shared.listenerRef.get()?.clearRules()
-        } else {
-            PlayScene.shared.listenerRef.get()?.clearRules()
         }
     }
 }

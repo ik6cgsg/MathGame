@@ -14,6 +14,8 @@ import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.History
 import mathhelper.games.matify.level.StateType
+import mathhelper.games.matify.statistics.Statistics
+import mathhelper.twf.expressiontree.ExpressionNode
 import java.lang.ref.WeakReference
 
 class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneListener, InstrumentSceneListener,
@@ -88,7 +90,6 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
@@ -332,5 +333,81 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
             blurView = blurView, activity = this
         )
 
+    }
+
+    override fun onRuleClicked(ruleView: RuleMathView) {
+        Logger.d(TAG, "onRuleClicked")
+        try {
+            val prev = globalMathView.expression!!.clone()
+            val places: List<ExpressionNode> = globalMathView.currentAtoms.toList()
+            val oldSteps = PlayScene.shared.stepsCount
+            var levelPassed = false
+            val res = globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
+            if (res != null) {
+                PlayScene.shared.stepsCount++
+                PlayScene.shared.history.saveState(PlayScene.shared.stepsCount, PlayScene.shared.currentTime, globalMathView.expression!!)
+                previous.isEnabled = true
+                if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
+                    levelPassed = true
+
+                    Statistics.logRule(
+                        oldSteps,
+                        PlayScene.shared.stepsCount,
+                        prev,
+                        globalMathView.expression!!,
+                        ruleView.subst,
+                        places
+                    )
+
+                    PlayScene.shared.onWin()
+                }
+                clearRules()
+                globalMathView.currentRulesToResult = null
+            } else {
+                showMessage(R.string.wrong_subs)
+            }
+
+            if (!levelPassed) {
+                Statistics.logRule(
+                    oldSteps, PlayScene.shared.stepsCount, prev, globalMathView.expression!!,
+                    ruleView.subst, places
+                )
+            }
+        } catch (e: java.lang.Exception) {
+            Logger.e(TAG, "Error during rule usage: ${e.message}")
+            Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onAtomClicked() {
+        Logger.d(TAG, "onAtomClicked")
+        if (instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
+            InstrumentScene.shared.choosenAtom(globalMathView.currentAtoms, globalMathView.text)
+        } else if (globalMathView.currentAtoms.isNotEmpty()) {
+            val curLvl = LevelScene.shared.currentLevel ?: return
+            if (globalMathView.multiselectionMode) {
+                previous.isEnabled = true
+            }
+            val substitutionApplication = curLvl.getSubstitutionApplication(
+                globalMathView.currentAtoms,
+                globalMathView.expression!!
+            )
+            if (substitutionApplication == null) {
+                showMessage(R.string.no_rules)
+                clearRules()
+                if (!globalMathView.multiselectionMode) {
+                    globalMathView.clearExpression()
+                }
+            } else {
+                val rules =
+                    curLvl.getRulesFromSubstitutionApplication(substitutionApplication)
+                globalMathView.currentRulesToResult =
+                    curLvl.getResultFromSubstitutionApplication(substitutionApplication)
+                redrawRules(rules, LevelScene.shared.currentLevel!!.subjectType)
+            }
+        } else {
+            previous.isEnabled = PlayScene.shared.history.isUndoable()
+        }
+        Statistics.logPlace(PlayScene.shared.stepsCount, globalMathView.expression!!, globalMathView.currentAtoms)
     }
 }

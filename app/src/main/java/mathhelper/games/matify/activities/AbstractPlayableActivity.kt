@@ -2,6 +2,7 @@ package mathhelper.games.matify.activities
 
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
+import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
@@ -15,11 +16,11 @@ import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.InstrumentScene
 import mathhelper.games.matify.InstrumentSceneListener
 import mathhelper.games.matify.R
-import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
 import mathhelper.twf.expressiontree.ExpressionSubstitution
+import java.lang.ref.WeakReference
 
-abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneListener {
+abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneListener, GlobalMathViewListener {
     protected abstract val TAG: String
 
     // layout elements
@@ -41,6 +42,11 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
     protected var needClear: Boolean = false
 
     override val ctx: Context get() = this
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Logger.d(TAG, "onCreate")
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Logger.d(TAG, "onTouchEvent")
@@ -70,6 +76,7 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
 
     open fun setViews() {
         globalMathView = findViewById(R.id.global_expression)
+        globalMathView.listenerRef = WeakReference(this)
         endExpressionMathView = findViewById(R.id.end_expression_math_view)
         endExpressionViewLabel = findViewById(R.id.end_expression_label)
         endExpressionViewLabel.visibility = View.GONE
@@ -84,7 +91,7 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
         blurView = findViewById(R.id.blurView)
     }
 
-    fun clearRules() {
+    override fun clearRules() {
         rulesScrollView.visibility = View.GONE
         rulesMsg.text = getString(R.string.no_rules_msg)
         if (!instrumentProcessing) {
@@ -102,6 +109,10 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
     }
 
     abstract fun showEndExpression(v: View?)
+
+    abstract fun onRuleClicked(ruleView: RuleMathView)
+
+    abstract override fun onAtomClicked()
 
     override fun halfExpandBottomSheet() {
         BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_HALF_EXPANDED

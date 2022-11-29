@@ -5,10 +5,7 @@ import android.content.Context
 import android.text.Html
 import android.text.SpannedString
 import android.view.View
-import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
-import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.*
@@ -56,84 +53,6 @@ class PlayScene {
         private set
     var upTimer: MathUpTimer? = null
         private set
-
-    fun onRuleClicked(ruleView: RuleMathView) {
-        Logger.d(TAG, "onRuleClicked")
-        val listener = listenerRef.get() ?: return
-        try {
-            val prev = listener.globalMathView.expression!!.clone()
-            val places: List<ExpressionNode> = listener.globalMathView.currentAtoms.toList()
-            val oldSteps = stepsCount
-            var levelPassed = false
-            val res = listener.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
-            if (res != null) {
-                stepsCount++
-                history.saveState(stepsCount, currentTime, listener.globalMathView.expression!!)
-                listener.previous.isEnabled = true
-                if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
-                    levelPassed = true
-
-                    Statistics.logRule(
-                        oldSteps,
-                        stepsCount,
-                        prev,
-                        listener.globalMathView.expression!!,
-                        ruleView.subst,
-                        places
-                    )
-
-                    onWin()
-                }
-                listener.clearRules()
-                listener.globalMathView.currentRulesToResult = null
-            } else {
-                listener.showMessage(R.string.wrong_subs)
-            }
-
-            if (!levelPassed) {
-                Statistics.logRule(
-                    oldSteps, stepsCount, prev, listener.globalMathView.expression!!,
-                    ruleView.subst, places
-                )
-            }
-        } catch (e: java.lang.Exception) {
-            Logger.e(TAG, "Error during rule usage: ${e.message}")
-            Toast.makeText(listener.ctx, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
-        }
-    }
-
-    fun onAtomClicked() {
-        Logger.d(TAG, "onAtomClicked")
-        val listener = listenerRef.get() ?: return
-        if (listener.instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
-            InstrumentScene.shared.choosenAtom(listener.globalMathView.currentAtoms, listener.globalMathView.text)
-        } else if (listener.globalMathView.currentAtoms.isNotEmpty()) {
-            val curLvl = LevelScene.shared.currentLevel ?: return
-            if (listener.globalMathView.multiselectionMode) {
-                listener.previous.isEnabled = true
-            }
-            val substitutionApplication = curLvl.getSubstitutionApplication(
-                listener.globalMathView.currentAtoms,
-                listener.globalMathView.expression!!
-            )
-            if (substitutionApplication == null) {
-                listener.showMessage(R.string.no_rules)
-                listener.clearRules()
-                if (!listener.globalMathView.multiselectionMode) {
-                    listener.globalMathView.clearExpression()
-                }
-            } else {
-                val rules =
-                    curLvl.getRulesFromSubstitutionApplication(substitutionApplication)
-                listener.globalMathView.currentRulesToResult =
-                    curLvl.getResultFromSubstitutionApplication(substitutionApplication)
-                listener.redrawRules(rules, LevelScene.shared.currentLevel!!.subjectType)
-            }
-        } else {
-            listener.previous.isEnabled = history.isUndoable()
-        }
-        Statistics.logPlace(stepsCount, listener.globalMathView.expression!!, listener.globalMathView.currentAtoms)
-    }
 
     fun loadLevel(listener: PlaySceneListener, continueGame: Boolean, languageCode: String): Boolean {
         Logger.d(TAG, "loadLevel")
