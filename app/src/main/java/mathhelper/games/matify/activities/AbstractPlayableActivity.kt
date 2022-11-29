@@ -15,7 +15,9 @@ import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.InstrumentScene
 import mathhelper.games.matify.InstrumentSceneListener
 import mathhelper.games.matify.R
+import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
+import mathhelper.twf.expressiontree.ExpressionSubstitution
 
 abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneListener {
     protected abstract val TAG: String
@@ -140,5 +142,23 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
             collapseBottomSheet()
             clearRules()
         }
+    }
+
+    fun redrawRules(rules: List<ExpressionSubstitution>, subjectType: String) {
+        Logger.d(TAG, "redrawRules")
+        rulesScrollView.visibility = View.VISIBLE
+        rulesLinearLayout.removeAllViews()
+        for (r in rules) {
+            try {
+                val rule = RuleMathView(this)
+                rule.setSubst(r, subjectType)
+                rulesLinearLayout.addView(rule)
+            } catch (e: Exception) {
+                Logger.e(TAG, "Rule draw Error: $e")
+            }
+        }
+        halfExpandBottomSheet()
+        rulesMsg.text = if (rules.isEmpty()) getString(R.string.no_rules_msg)
+        else getString(R.string.rules_found_msg)
     }
 }

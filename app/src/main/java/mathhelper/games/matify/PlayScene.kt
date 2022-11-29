@@ -5,7 +5,6 @@ import android.content.Context
 import android.text.Html
 import android.text.SpannedString
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,12 +17,9 @@ import mathhelper.games.matify.statistics.Statistics
 import java.lang.ref.WeakReference
 
 interface PlaySceneListener : TimerListener {
-    var rulesLinearLayout: LinearLayout
     var endExpressionMathView: SimpleMathView
     var endExpressionViewLabel: TextView
-    var rulesScrollView: ScrollView
     var globalMathView: GlobalMathView
-    var rulesMsg: TextView
 
     var previous: TextView
 
@@ -31,10 +27,10 @@ interface PlaySceneListener : TimerListener {
     val ctx: Context
 
     fun clearRules()
-    fun halfExpandBottomSheet()
     fun showMessage(varDescr: Int)
     fun getString(int: Int): String
     fun getText(int: Int): CharSequence
+    fun redrawRules(rules: List<ExpressionSubstitution>, subjectType: String)
 
     fun onWin(stepsCount: Double, currentTime: Long, state: StateType)
     fun onLose()
@@ -147,8 +143,7 @@ class PlayScene {
                     curLvl.getRulesFromSubstitutionApplication(substitutionApplication)
                 listener.globalMathView.currentRulesToResult =
                     curLvl.getResultFromSubstitutionApplication(substitutionApplication)
-                listener.rulesScrollView.visibility = View.VISIBLE
-                redrawRules(listener, rules)
+                listener.redrawRules(rules, LevelScene.shared.currentLevel!!.subjectType)
             }
         } else {
             listener.previous.isEnabled = history.isUndoable()
@@ -286,23 +281,6 @@ class PlayScene {
             alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
             blurView = activity.blurView, activity = activity
         )
-    }
-
-    private fun redrawRules(listener: PlaySceneListener, rules: List<ExpressionSubstitution>) {
-        Logger.d(TAG, "redrawRules")
-        listener.rulesLinearLayout.removeAllViews()
-        for (r in rules) {
-            try {
-                val rule = RuleMathView(listener.ctx)
-                rule.setSubst(r, LevelScene.shared.currentLevel!!.subjectType)
-                listener.rulesLinearLayout.addView(rule)
-            } catch (e: Exception) {
-                Logger.e(TAG, "Rule draw Error: $e")
-            }
-        }
-        listener.halfExpandBottomSheet()
-        listener.rulesMsg.text = if (rules.isEmpty()) listener.getString(R.string.no_rules_msg)
-        else listener.getString(R.string.rules_found_msg)
     }
 
     fun onWin() {

@@ -13,7 +13,6 @@ import android.text.Html
 import android.text.SpannedString
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -29,13 +28,9 @@ import mathhelper.games.matify.tutorial.TutorialLevelsActivity
 import java.lang.ref.WeakReference
 
 interface TutorialSceneListener {
-    var rulesLinearLayout: LinearLayout
     var endExpressionMathView: SimpleMathView
     var endExpressionViewLabel: TextView
-    var rulesScrollView: ScrollView
     var globalMathView: GlobalMathView
-    var rulesMsg: TextView
-    var messageView: TextView
 
     var tutorialDialog: AlertDialog
     var bottomSheet: LinearLayout
@@ -44,11 +39,11 @@ interface TutorialSceneListener {
     val ctx: Context
 
     fun clearRules()
-    fun halfExpandBottomSheet()
     fun showMessage(varDescr: Int)
     fun getString(int: Int): String
     fun getText(int: Int): CharSequence
     fun finish()
+    fun redrawRules(rules: List<ExpressionSubstitution>, subjectType: String)
 
     fun messageTutorial()
     fun backTutorial()
@@ -343,34 +338,14 @@ class TutorialScene {
                 listener.globalMathView.currentRulesToResult =
                     currentLevel.getResultFromSubstitutionApplication(substitutionApplication)
 
-                listener.rulesScrollView.visibility = View.VISIBLE
                 if (wantedClick) {
                     listener.expressionClickSucceeded()
                 } else {
                     listener.showMessage(R.string.a_good_choice)
                 }
-                redrawRules(rules)
+                listener.redrawRules(rules, currentLevel.subjectType)
             }
         }
-    }
-
-
-    private fun redrawRules(rules: List<ExpressionSubstitution>) {
-        Logger.d(TAG, "redrawRules")
-        val listener = listenerRef.get() ?: return
-        listener.rulesLinearLayout.removeAllViews()
-        for (r in rules) {
-            try {
-                val rule = RuleMathView(listener.ctx)
-                rule.setSubst(r, currentLevel.subjectType)
-                listener.rulesLinearLayout.addView(rule)
-            } catch (e: Exception) {
-                Logger.e(TAG, "Rule draw Error: $e")
-            }
-        }
-        listener.halfExpandBottomSheet()
-        listener.rulesMsg.text = if (rules.isEmpty()) listener.getString(R.string.no_rules_msg)
-        else listener.getString(R.string.rules_found_msg)
     }
 
     fun leave() {
