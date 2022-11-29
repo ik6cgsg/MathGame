@@ -17,7 +17,7 @@ import mathhelper.games.matify.level.*
 import mathhelper.games.matify.statistics.Statistics
 import java.lang.ref.WeakReference
 
-interface PlaySceneListener: TimerListener {
+interface PlaySceneListener : TimerListener {
     var rulesLinearLayout: LinearLayout
     var endExpressionMathView: SimpleMathView
     var endExpressionViewLabel: TextView
@@ -32,7 +32,7 @@ interface PlaySceneListener: TimerListener {
 
     fun clearRules()
     fun halfExpandBottomSheet()
-    fun showMessage(msg: String)
+    fun showMessage(varDescr: Int)
     fun getString(int: Int): String
     fun getText(int: Int): CharSequence
 
@@ -110,7 +110,7 @@ class PlayScene {
                 activity.clearRules()
                 activity.globalMathView.currentRulesToResult = null
             } else {
-                activity.showMessage(activity.getString(R.string.wrong_subs))
+                activity.showMessage(R.string.wrong_subs)
             }
 
         }
@@ -137,7 +137,7 @@ class PlayScene {
                 activity.globalMathView.expression!!
             )
             if (substitutionApplication == null) {
-                activity.showMessage(activity.getString(R.string.no_rules))
+                activity.showMessage(R.string.no_rules)
                 activity.clearRules()
                 if (!activity.globalMathView.multiselectionMode) {
                     activity.globalMathView.clearExpression()
@@ -180,7 +180,7 @@ class PlayScene {
         }
         history.clear()
         history.saveState(stepsCount, currentTime, listener.globalMathView.expression!!)
-        listener.showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40")
+        // listener.showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40")
         Statistics.setStartTime()
         Statistics.logStart()
         return true

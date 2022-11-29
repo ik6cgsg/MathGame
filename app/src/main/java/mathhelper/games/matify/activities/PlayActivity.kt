@@ -50,32 +50,32 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         ConnectionChecker.shared.subscribe(this)
     }
 
-    override fun showMessage(msg: String) {
-        super.showMessage(msg)
+    override fun showMessage(varDescr: Int) {
+        super.showMessage(varDescr)
         messageTimer.cancel()
         messageTimer.start()
     }
 
     private fun setLongClick() {
         back.setOnLongClickListener {
-            showMessage(getString(R.string.back_info))
+            showMessage(R.string.back_info)
             true
         }
         previous.setOnLongClickListener {
             showMessage(
                 if (globalMathView.multiselectionMode)
-                    getString(R.string.previous_multiselect_info)
+                    R.string.previous_multiselect_info
                 else
-                    getString(R.string.previous_info)
+                    R.string.previous_info
             )
             true
         }
         restart.setOnLongClickListener {
-            showMessage(getString(R.string.restart_info))
+            showMessage(R.string.restart_info)
             true
         }
         info.setOnLongClickListener {
-            showMessage(getString(R.string.i_info))
+            showMessage(R.string.i_info)
             true
         }
         globalMathView.setOnLongClickListener {

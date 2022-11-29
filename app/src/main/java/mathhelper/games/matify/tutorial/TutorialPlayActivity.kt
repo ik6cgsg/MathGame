@@ -117,7 +117,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun messageTutorial() {
         Logger.d(TAG, "messageTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_info))
+        showMessage(R.string.tutorial_on_level_info)
         TutorialScene.shared.animateLeftUp(pointerMsgView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -125,7 +125,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun backTutorial() {
         Logger.d(TAG, "backTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_to_menu))
+        showMessage(R.string.tutorial_on_level_to_menu)
         TutorialScene.shared.animateLeftUp(pointerBackView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -133,7 +133,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun infoTutorial() {
         Logger.d(TAG, "infoTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_short_info))
+        showMessage(R.string.tutorial_on_level_short_info)
         TutorialScene.shared.animateLeftUp(pointerInfoView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -141,7 +141,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun restartTutorial() {
         Logger.d(TAG, "restartTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_restart))
+        showMessage(R.string.tutorial_on_level_restart)
         TutorialScene.shared.animateUp(pointerRestartView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -149,7 +149,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun undoTutorial() {
         Logger.d(TAG, "undoTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_undo))
+        showMessage(R.string.tutorial_on_level_undo)
         TutorialScene.shared.animateUp(pointerUndoView)
         tutorialDialog.setMessage(resources.getString(R.string.got_it))
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
@@ -157,7 +157,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun endExpressionTutorial() {
         Logger.d(TAG, "endExpressionTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_goal))
+        showMessage(R.string.tutorial_on_level_goal)
         TutorialScene.shared.animateLeftUp(pointerEndView)
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_goal_explanation) +
@@ -168,7 +168,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun centralExpressionTutorial() {
         Logger.d(TAG, "centralExpressionTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_main_element))
+        showMessage(R.string.tutorial_on_level_main_element)
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_main_element_current) +
@@ -184,7 +184,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun startDynamicTutorial() {
         buttonTable.visibility = View.GONE
-        showMessage(resources.getString(R.string.tutorial_on_level_tap))
+        showMessage(R.string.tutorial_on_level_tap)
         TutorialScene.shared.wantedZoom = false
         TutorialScene.shared.wantedClick = true
     }
@@ -193,7 +193,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
         buttonTable.visibility = View.VISIBLE
 
         Logger.d(TAG, "explainMultiselectTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_multiselect_explanation))
+        showMessage(R.string.tutorial_on_level_multiselect_explanation)
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_multiselect_expression)
         )
@@ -203,7 +203,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun actionMultiselectTutorial() {
         Logger.d(TAG, "actionMultiselectTutorial")
-        showMessage(resources.getString(R.string.tutorial_on_level_multiselect_action))
+        showMessage(R.string.tutorial_on_level_multiselect_action)
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_multiselect_details)
         )
@@ -212,7 +212,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
     }
 
     override fun startMultiselectTutorial() {
-        showMessage(resources.getString(R.string.tutorial_on_level_multiselect_button))
+        showMessage(R.string.tutorial_on_level_multiselect_button)
         TutorialScene.shared.wantedZoom = false
         TutorialScene.shared.wantedClick = true
     }
@@ -220,9 +220,9 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
     override fun expressionClickSucceeded() {
         TutorialScene.shared.wantedClick = false
         if (TutorialScene.shared.currLevelIndex == 0) {
-            showMessage(resources.getString(R.string.tutorial_on_level_select))
+            showMessage(R.string.tutorial_on_level_select)
         } else {
-            showMessage(resources.getString(R.string.tutorial_on_level_multiselect_select))
+            showMessage(R.string.tutorial_on_level_multiselect_select)
         }
         TutorialScene.shared.wantedRule = true
     }
@@ -230,15 +230,15 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
     override fun ruleClickSucceeded() {
         TutorialScene.shared.wantedRule = false
         if (TutorialScene.shared.currLevelIndex == 0) {
-            showMessage(resources.getString(R.string.tutorial_on_level_win))
+            showMessage(R.string.tutorial_on_level_win)
         } else {
-            showMessage(resources.getString(R.string.tutorial_on_level_multiselect_click))
+            showMessage(R.string.tutorial_on_level_multiselect_click)
         }
     }
 
     override fun levelPassed() {
         Logger.d(TAG, "levelPassed")
-        showMessage(resources.getString(R.string.congratulations))
+        showMessage(R.string.congratulations)
         globalMathView.center()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_basic_finished))
@@ -247,7 +247,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun bothLevelsPassed() {
         Logger.d(TAG, "tutorial over")
-        showMessage(resources.getString(R.string.congratulations))
+        showMessage(R.string.congratulations)
         globalMathView.center()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
 
@@ -301,6 +301,6 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener, 
 
     override fun startInstrumentProcessing(setMSMode: Boolean) {
         super.startInstrumentProcessing(setMSMode)
-        showMessage(getString(R.string.inst_enter) + getString(R.string.tutorial_on_level_multiselect_partial_select))
+        showMessage(R.string.tutorial_on_level_multiselect_partial_select)
     }
 }

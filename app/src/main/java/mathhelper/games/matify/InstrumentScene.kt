@@ -99,7 +99,7 @@ interface InstrumentSceneListener {
     fun startInstrumentProcessing(setMSMode: Boolean)
     fun endInstrumentProcessing(collapse: Boolean)
 
-    fun showMessage(msg: String)
+    fun showMessage(varDescr: Int)
     fun setMultiselectionMode(multi: Boolean)
     fun halfExpandBottomSheet()
 }
@@ -116,13 +116,16 @@ class InstrumentScene {
     private lateinit var permuteInstrument: InstrumentInfo
     private lateinit var instruments: HashMap<String, InstrumentInfo>
     private lateinit var steps: HashMap<InstrumentStep, StepInfo>
+
     // Global view
     private var instrumentHandleViewRef: WeakReference<View> = WeakReference(null)
+
     // Current
     var currentProcessingInstrument: InstrumentInfo? = null
     private var currentStep: InstrumentStep? = null
     private var currentDetailRef: WeakReference<Button> = WeakReference(null)
     private var currentEnteredText = ""
+
     // MathViews
     private lateinit var placeView: SimpleMathView
     private lateinit var paramView: SimpleMathView
@@ -165,46 +168,51 @@ class InstrumentScene {
         startStopMultiselectionMode.setOnLongClickListener {
             listener.showMessage(
                 if (listener.globalMathView.multiselectionMode)
-                    listener.getString(R.string.end_multiselect_info)
+                    R.string.end_multiselect_info
                 else
-                    listener.getString(R.string.start_multiselect_info)
+                    R.string.start_multiselect_info
             )
             true
         }
         oppoInstrumentView.setOnLongClickListener {
-            listener.showMessage(listener.getString(R.string.oppo_descr))
+            listener.showMessage(R.string.oppo_descr)
             true
         }
         varInstrumentView.setOnLongClickListener {
-            listener.showMessage(listener.getString(R.string.var_descr))
+            listener.showMessage(R.string.var_descr)
             true
         }
         bracketInstrumentView.setOnLongClickListener {
-            listener.showMessage(listener.getString(R.string.bracket_descr))
+            listener.showMessage(R.string.bracket_descr)
             true
         }
         permuteInstrumentView.setOnLongClickListener {
-            listener.showMessage(listener.getString(R.string.permute_descr))
+            listener.showMessage(R.string.permute_descr)
             true
         }
         // Instruments
-        multiInstrument = InstrumentInfo(InstrumentType.MULTI,
+        multiInstrument = InstrumentInfo(
+            InstrumentType.MULTI,
             detailRequired = false, placeRequired = false, paramRequired = false,
             button = startStopMultiselectionMode
         )
-        oppoInstrument = InstrumentInfo(InstrumentType.OPPO,
+        oppoInstrument = InstrumentInfo(
+            InstrumentType.OPPO,
             detailRequired = true, placeRequired = true, paramRequired = true,
             button = oppoInstrumentView
         )
-        varInstrument = InstrumentInfo(InstrumentType.VAR,
+        varInstrument = InstrumentInfo(
+            InstrumentType.VAR,
             detailRequired = false, placeRequired = true, paramRequired = true,
             button = varInstrumentView
         )
-        bracketInstrument = InstrumentInfo(InstrumentType.BRACKET,
+        bracketInstrument = InstrumentInfo(
+            InstrumentType.BRACKET,
             detailRequired = false, placeRequired = true, paramRequired = false,
             button = bracketInstrumentView
         )
-        permuteInstrument = InstrumentInfo(InstrumentType.PERMUTE,
+        permuteInstrument = InstrumentInfo(
+            InstrumentType.PERMUTE,
             detailRequired = false, placeRequired = true, paramRequired = true,
             button = permuteInstrumentView
         )
@@ -296,7 +304,7 @@ class InstrumentScene {
         currentEnteredText = ""
 
         inst.button.setTextColor(Color.RED)
-        val activity = listenerRef.get()?:return
+        val activity = listenerRef.get() ?: return
         activity.startInstrumentProcessing(inst.type == InstrumentType.MULTI || inst.type == InstrumentType.BRACKET)
         setInstrumentHandleView(inst, activity.ctx)
     }

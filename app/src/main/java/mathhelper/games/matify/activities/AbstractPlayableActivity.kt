@@ -19,6 +19,7 @@ import mathhelper.games.matify.common.*
 
 abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneListener {
     protected abstract val TAG: String
+
     // layout elements
     lateinit var rulesLinearLayout: LinearLayout
     lateinit var endExpressionMathView: SimpleMathView
@@ -93,8 +94,8 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
         InstrumentScene.shared.clickInstrument(v.tag.toString())
     }
 
-    override fun showMessage(msg: String) {
-        messageView.text = msg
+    override fun showMessage(varDescr: Int) {
+        messageView.text = getString(varDescr)
         messageView.visibility = View.VISIBLE
     }
 
@@ -122,7 +123,7 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
     override fun startInstrumentProcessing(setMSMode: Boolean) {
         instrumentProcessing = true
         clearRules()
-        showMessage(getString(R.string.inst_enter))
+        showMessage(R.string.inst_enter)
         setMultiselectionMode(setMSMode)
         rulesMsg.text = getString(R.string.inst_rules_msg)
         AndroidUtil.vibrate(this)

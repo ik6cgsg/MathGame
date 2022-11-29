@@ -46,7 +46,7 @@ interface TutorialSceneListener {
 
     fun clearRules()
     fun halfExpandBottomSheet()
-    fun showMessage(msg: String)
+    fun showMessage(varDescr: Int)
     fun getString(int: Int): String
     fun getText(int: Int): CharSequence
     fun finish()
@@ -310,7 +310,7 @@ class TutorialScene {
             }
             activity.clearRules()
         } else {
-            activity.showMessage(activity.getString(R.string.wrong_subs))
+            activity.showMessage(R.string.wrong_subs)
         }
     }
 
@@ -330,9 +330,9 @@ class TutorialScene {
                 val atoms = activity.globalMathView.currentAtoms
                 val inMS = activity.globalMathView.multiselectionMode
                 if (currLevelIndex == 1 && atoms.size == 1 && atoms[0].toString() == "6" && inMS) {
-                    activity.showMessage(activity.getString(R.string.tutorial_on_level_multiselect_digit))
+                    activity.showMessage(R.string.tutorial_on_level_multiselect_digit)
                 } else {
-                    activity.showMessage(activity.getString(R.string.no_rules_try_another))
+                    activity.showMessage(R.string.no_rules_try_another)
                     if (!activity.globalMathView.multiselectionMode) {
                         activity.globalMathView.recolorCurrentAtom(Color.RED)
                     }
@@ -348,7 +348,7 @@ class TutorialScene {
                 if (wantedClick) {
                     activity.expressionClickSucceeded()
                 } else {
-                    activity.showMessage(activity.getString(R.string.a_good_choice))
+                    activity.showMessage(R.string.a_good_choice)
                 }
                 redrawRules(rules)
             }
