@@ -47,21 +47,6 @@ class PlayScene {
     var listenerRef: WeakReference<PlaySceneListener> = WeakReference(null)
 
     /** GAME STATE */
-    var currentRuleView: RuleMathView? = null
-    fun setCurrentRuleView(context: Context, value: RuleMathView?) {
-        currentRuleView = value
-        if (value != null) {
-            try {
-                onRuleClicked(context)
-            } catch (e: java.lang.Exception) {
-                Logger.e(TAG, "Error during rule usage: ${e.message}")
-                listenerRef.get()?.let {
-                    Toast.makeText(it.ctx, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-    }
-
     var stepsCount: Double = 0.0
     var currentTime: Long = 0
     lateinit var history: History
@@ -72,19 +57,15 @@ class PlayScene {
     var upTimer: MathUpTimer? = null
         private set
 
-    private fun onRuleClicked(context: Context) {
+    fun onRuleClicked(ruleView: RuleMathView) {
         Logger.d(TAG, "onRuleClicked")
-        if (GlobalScene.shared.tutorialProcessing) {
-            TutorialScene.shared.onRuleClicked(currentRuleView!!)
-            return
-        }
         val listener = listenerRef.get() ?: return
-        val prev = listener.globalMathView.expression!!.clone()
-        val places: List<ExpressionNode> = listener.globalMathView.currentAtoms.toList()
-        val oldSteps = stepsCount
-        var levelPassed = false
-        currentRuleView?.let {
-            val res = listener.globalMathView.performSubstitutionForMultiselect(it.subst!!)
+        try {
+            val prev = listener.globalMathView.expression!!.clone()
+            val places: List<ExpressionNode> = listener.globalMathView.currentAtoms.toList()
+            val oldSteps = stepsCount
+            var levelPassed = false
+            val res = listener.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
             if (res != null) {
                 stepsCount++
                 history.saveState(stepsCount, currentTime, listener.globalMathView.expression!!)
@@ -97,7 +78,7 @@ class PlayScene {
                         stepsCount,
                         prev,
                         listener.globalMathView.expression!!,
-                        it.subst,
+                        ruleView.subst,
                         places
                     )
 
@@ -109,12 +90,15 @@ class PlayScene {
                 listener.showMessage(R.string.wrong_subs)
             }
 
-        }
-        if (!levelPassed) {
-            Statistics.logRule(
-                oldSteps, stepsCount, prev, listener.globalMathView.expression!!,
-                currentRuleView!!.subst, places
-            )
+            if (!levelPassed) {
+                Statistics.logRule(
+                    oldSteps, stepsCount, prev, listener.globalMathView.expression!!,
+                    ruleView.subst, places
+                )
+            }
+        } catch (e: java.lang.Exception) {
+            Logger.e(TAG, "Error during rule usage: ${e.message}")
+            Toast.makeText(listener.ctx, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -124,7 +108,7 @@ class PlayScene {
         if (listener.instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
             InstrumentScene.shared.choosenAtom(listener.globalMathView.currentAtoms, listener.globalMathView.text)
         } else if (listener.globalMathView.currentAtoms.isNotEmpty()) {
-            val curLvl = LevelScene.shared.currentLevel?: return
+            val curLvl = LevelScene.shared.currentLevel ?: return
             if (listener.globalMathView.multiselectionMode) {
                 listener.previous.isEnabled = true
             }

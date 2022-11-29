@@ -13,10 +13,12 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import mathhelper.games.matify.GlobalScene
 import mathhelper.twf.api.expressionSubstitutionFromStructureStrings
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
+import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.mathResolver.VariableStyle
@@ -58,8 +60,14 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         ruleView.background = ContextCompat.getDrawable(context, R.drawable.row_clickable)
         ruleView.isClickable = true
         ruleView.isFocusable = true
-        ruleView.setOnClickListener {
-            PlayScene.shared.setCurrentRuleView(context, this)
+        if (GlobalScene.shared.tutorialProcessing) {
+            ruleView.setOnClickListener {
+                TutorialScene.shared.onRuleClicked(this)
+            }
+        } else {
+            ruleView.setOnClickListener {
+                PlayScene.shared.onRuleClicked(this)
+            }
         }
         ruleView.setLineSpacing(0f, Constants.mathLineSpacing)
         ruleView.setPadding(
