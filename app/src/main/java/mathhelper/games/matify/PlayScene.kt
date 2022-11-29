@@ -82,17 +82,17 @@ class PlayScene {
             TutorialScene.shared.onRuleClicked(currentRuleView!!)
             return
         }
-        val activity = listenerRef.get() ?: return
-        val prev = activity.globalMathView.expression!!.clone()
-        val places: List<ExpressionNode> = activity.globalMathView.currentAtoms.toList()
+        val listener = listenerRef.get() ?: return
+        val prev = listener.globalMathView.expression!!.clone()
+        val places: List<ExpressionNode> = listener.globalMathView.currentAtoms.toList()
         val oldSteps = stepsCount
         var levelPassed = false
         currentRuleView?.let {
-            val res = activity.globalMathView.performSubstitutionForMultiselect(it.subst!!)
+            val res = listener.globalMathView.performSubstitutionForMultiselect(it.subst!!)
             if (res != null) {
                 stepsCount++
-                history.saveState(stepsCount, currentTime, activity.globalMathView.expression!!)
-                activity.previous.isEnabled = true
+                history.saveState(stepsCount, currentTime, listener.globalMathView.expression!!)
+                listener.previous.isEnabled = true
                 if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
                     levelPassed = true
 
@@ -100,23 +100,23 @@ class PlayScene {
                         oldSteps,
                         stepsCount,
                         prev,
-                        activity.globalMathView.expression!!,
+                        listener.globalMathView.expression!!,
                         it.subst,
                         places
                     )
 
                     onWin()
                 }
-                activity.clearRules()
-                activity.globalMathView.currentRulesToResult = null
+                listener.clearRules()
+                listener.globalMathView.currentRulesToResult = null
             } else {
-                activity.showMessage(R.string.wrong_subs)
+                listener.showMessage(R.string.wrong_subs)
             }
 
         }
         if (!levelPassed) {
             Statistics.logRule(
-                oldSteps, stepsCount, prev, activity.globalMathView.expression!!,
+                oldSteps, stepsCount, prev, listener.globalMathView.expression!!,
                 currentRuleView!!.subst, places
             )
         }
@@ -124,36 +124,36 @@ class PlayScene {
 
     fun onAtomClicked() {
         Logger.d(TAG, "onAtomClicked")
-        val activity = listenerRef.get() ?: return
-        if (activity.instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
-            InstrumentScene.shared.choosenAtom(activity.globalMathView.currentAtoms, activity.globalMathView.text)
-        } else if (activity.globalMathView.currentAtoms.isNotEmpty()) {
-            val curLvl = LevelScene.shared.currentLevel!!
-            if (activity.globalMathView.multiselectionMode) {
-                activity.previous.isEnabled = true
+        val listener = listenerRef.get() ?: return
+        if (listener.instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
+            InstrumentScene.shared.choosenAtom(listener.globalMathView.currentAtoms, listener.globalMathView.text)
+        } else if (listener.globalMathView.currentAtoms.isNotEmpty()) {
+            val curLvl = LevelScene.shared.currentLevel?: return
+            if (listener.globalMathView.multiselectionMode) {
+                listener.previous.isEnabled = true
             }
             val substitutionApplication = curLvl.getSubstitutionApplication(
-                activity.globalMathView.currentAtoms,
-                activity.globalMathView.expression!!
+                listener.globalMathView.currentAtoms,
+                listener.globalMathView.expression!!
             )
             if (substitutionApplication == null) {
-                activity.showMessage(R.string.no_rules)
-                activity.clearRules()
-                if (!activity.globalMathView.multiselectionMode) {
-                    activity.globalMathView.clearExpression()
+                listener.showMessage(R.string.no_rules)
+                listener.clearRules()
+                if (!listener.globalMathView.multiselectionMode) {
+                    listener.globalMathView.clearExpression()
                 }
             } else {
                 val rules =
                     curLvl.getRulesFromSubstitutionApplication(substitutionApplication)
-                activity.globalMathView.currentRulesToResult =
+                listener.globalMathView.currentRulesToResult =
                     curLvl.getResultFromSubstitutionApplication(substitutionApplication)
-                activity.rulesScrollView.visibility = View.VISIBLE
-                redrawRules(activity, rules)
+                listener.rulesScrollView.visibility = View.VISIBLE
+                redrawRules(listener, rules)
             }
         } else {
-            activity.previous.isEnabled = history.isUndoable()
+            listener.previous.isEnabled = history.isUndoable()
         }
-        Statistics.logPlace(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
+        Statistics.logPlace(stepsCount, listener.globalMathView.expression!!, listener.globalMathView.currentAtoms)
     }
 
     fun loadLevel(listener: PlaySceneListener, continueGame: Boolean, languageCode: String): Boolean {
@@ -219,28 +219,28 @@ class PlayScene {
 
     fun previousStep() {
         Logger.d(TAG, "previousStep")
-        val activity = listenerRef.get() ?: return
+        val listener = listenerRef.get() ?: return
 
-        if (activity.instrumentProcessing) {
+        if (listener.instrumentProcessing) {
             InstrumentScene.shared.turnOffCurrentInstrument()
         } else {
             val state = history.getPreviousStep()
-            val oldExpression = activity.globalMathView.expression!!
+            val oldExpression = listener.globalMathView.expression!!
             Logger.d(TAG, "${state?.expression} $oldExpression")
             val oldSteps = stepsCount
             if (state != null) {
-                activity.clearRules()
+                listener.clearRules()
                 val currentLevel = LevelScene.shared.currentLevel!!
-                activity.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
+                listener.globalMathView.setExpression(state.expression, currentLevel.subjectType, false)
                 //val penalty = UndoPolicyHandler.getPenalty(currentLevel.undoPolicy, state.depth)
                 //stepsCount = stepsCount - 1 + penalty
                 if (!history.isUndoable()) {
-                    activity.previous.isEnabled = false
+                    listener.previous.isEnabled = false
                 }
             }
             Statistics.logUndo(
                 oldSteps, stepsCount, oldExpression,
-                activity.globalMathView.expression!!, activity.globalMathView.currentAtoms
+                listener.globalMathView.expression!!, listener.globalMathView.currentAtoms
             )
         }
     }
@@ -307,22 +307,22 @@ class PlayScene {
 
     fun onWin() {
         Logger.d(TAG, "onWin")
-        val activity = listenerRef.get() ?: return
+        val listener = listenerRef.get() ?: return
         val currentLevel = LevelScene.shared.currentLevel!!
         //val award = currentLevel.getAward(context, currentTime, stepsCount)
         val newRes = LevelResult(stepsCount, currentTime, StateType.DONE)
         if (newRes.isBetter(currentLevel.lastResult)) {
             LevelScene.shared.levelsActivityRef.get()!!.updateResult(newRes)
         }
-        activity.onWin(stepsCount, currentTime, StateType.DONE)
-        Statistics.logWin(stepsCount, activity.globalMathView.expression!!)
+        listener.onWin(stepsCount, currentTime, StateType.DONE)
+        Statistics.logWin(stepsCount, listener.globalMathView.expression!!)
     }
 
     fun onLose() {
         Logger.d(TAG, "onLose")
-        val activity = listenerRef.get() ?: return
-        activity.onLose()
-        Statistics.logLoose(stepsCount, activity.globalMathView.expression!!, activity.globalMathView.currentAtoms)
+        val listener = listenerRef.get() ?: return
+        listener.onLose()
+        Statistics.logLoose(stepsCount, listener.globalMathView.expression!!, listener.globalMathView.currentAtoms)
     }
 
     fun cancelTimers() {

@@ -11,7 +11,6 @@ import android.graphics.Color
 import android.os.Handler
 import android.text.Html
 import android.text.SpannedString
-import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -268,49 +267,49 @@ class TutorialScene {
 
     fun loadLevel() {
         Logger.d(TAG, "loadLevel")
-        val activity = listenerRef.get() ?: return
-        activity.clearRules()
+        val listener = listenerRef.get() ?: return
+        listener.clearRules()
 
-        activity.endExpressionViewLabel.text = Html.fromHtml(
+        listener.endExpressionViewLabel.text = Html.fromHtml(
             String.format(
-                Html.toHtml(SpannedString(activity.getText(R.string.end_expression_opened))),
-                currentLevel.getDescriptionByLanguage(activity.ctx.resources.configuration.locale.language)
+                Html.toHtml(SpannedString(listener.getText(R.string.end_expression_opened))),
+                currentLevel.getDescriptionByLanguage(listener.ctx.resources.configuration.locale.language)
             )
         )
-        activity.endExpressionViewLabel.visibility = View.VISIBLE
-        activity.endExpressionMathView.visibility = View.GONE
+        listener.endExpressionViewLabel.visibility = View.VISIBLE
+        listener.endExpressionMathView.visibility = View.GONE
         if (!currentLevel.goalExpressionStructureString.isNullOrBlank()) {
-            activity.endExpressionMathView.setExpression(currentLevel.goalExpressionStructureString!!, null)
-            activity.endExpressionMathView.visibility = View.VISIBLE
+            listener.endExpressionMathView.setExpression(currentLevel.goalExpressionStructureString!!, null)
+            listener.endExpressionMathView.visibility = View.VISIBLE
         }
 
-        activity.globalMathView.setExpression(
+        listener.globalMathView.setExpression(
             currentLevel.startExpression.clone(),
             currentLevel.subjectType,
             true
         )
-        activity.globalMathView.center()
+        listener.globalMathView.center()
     }
 
     fun onRuleClicked(ruleView: RuleMathView) {
         Logger.d(TAG, "onRuleClicked")
-        val activity = listenerRef.get() ?: return
+        val listener = listenerRef.get() ?: return
         val subst = ruleView.subst ?: return
-        val res = activity.globalMathView.performSubstitutionForMultiselect(subst)
+        val res = listener.globalMathView.performSubstitutionForMultiselect(subst)
         if (res != null) {
             if (wantedRule) {
-                activity.ruleClickSucceeded()
+                listener.ruleClickSucceeded()
             }
             if (currentLevel.checkEnd(res)) {
                 if (currLevelIndex == 0) {
-                    activity.levelPassed()
+                    listener.levelPassed()
                 } else if (currLevelIndex == 1) {
-                    activity.bothLevelsPassed()
+                    listener.bothLevelsPassed()
                 }
             }
-            activity.clearRules()
+            listener.clearRules()
         } else {
-            activity.showMessage(R.string.wrong_subs)
+            listener.showMessage(R.string.wrong_subs)
         }
     }
 
@@ -319,36 +318,36 @@ class TutorialScene {
         if (wantedZoom) {
             return
         }
-        val activity = listenerRef.get() ?: return
-        if (activity.globalMathView.currentAtoms.isNotEmpty()) {
+        val listener = listenerRef.get() ?: return
+        if (listener.globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = currentLevel.getSubstitutionApplication(
-                activity.globalMathView.currentAtoms,
-                activity.globalMathView.expression!!
+                listener.globalMathView.currentAtoms,
+                listener.globalMathView.expression!!
             )
 
             if (substitutionApplication == null) {
-                val atoms = activity.globalMathView.currentAtoms
-                val inMS = activity.globalMathView.multiselectionMode
+                val atoms = listener.globalMathView.currentAtoms
+                val inMS = listener.globalMathView.multiselectionMode
                 if (currLevelIndex == 1 && atoms.size == 1 && atoms[0].toString() == "6" && inMS) {
-                    activity.showMessage(R.string.tutorial_on_level_multiselect_digit)
+                    listener.showMessage(R.string.tutorial_on_level_multiselect_digit)
                 } else {
-                    activity.showMessage(R.string.no_rules_try_another)
-                    if (!activity.globalMathView.multiselectionMode) {
-                        activity.globalMathView.recolorCurrentAtom(Color.RED)
+                    listener.showMessage(R.string.no_rules_try_another)
+                    if (!listener.globalMathView.multiselectionMode) {
+                        listener.globalMathView.recolorCurrentAtom(Color.RED)
                     }
                 }
-                activity.clearRules()
+                listener.clearRules()
             } else {
                 val rules =
                     currentLevel.getRulesFromSubstitutionApplication(substitutionApplication)
-                activity.globalMathView.currentRulesToResult =
+                listener.globalMathView.currentRulesToResult =
                     currentLevel.getResultFromSubstitutionApplication(substitutionApplication)
 
-                activity.rulesScrollView.visibility = View.VISIBLE
+                listener.rulesScrollView.visibility = View.VISIBLE
                 if (wantedClick) {
-                    activity.expressionClickSucceeded()
+                    listener.expressionClickSucceeded()
                 } else {
-                    activity.showMessage(R.string.a_good_choice)
+                    listener.showMessage(R.string.a_good_choice)
                 }
                 redrawRules(rules)
             }
@@ -358,20 +357,20 @@ class TutorialScene {
 
     private fun redrawRules(rules: List<ExpressionSubstitution>) {
         Logger.d(TAG, "redrawRules")
-        val activity = listenerRef.get() ?: return
-        activity.rulesLinearLayout.removeAllViews()
+        val listener = listenerRef.get() ?: return
+        listener.rulesLinearLayout.removeAllViews()
         for (r in rules) {
             try {
-                val rule = RuleMathView(activity.ctx)
+                val rule = RuleMathView(listener.ctx)
                 rule.setSubst(r, currentLevel.subjectType)
-                activity.rulesLinearLayout.addView(rule)
+                listener.rulesLinearLayout.addView(rule)
             } catch (e: Exception) {
                 Logger.e(TAG, "Rule draw Error: $e")
             }
         }
-        activity.halfExpandBottomSheet()
-        activity.rulesMsg.text = if (rules.isEmpty()) activity.getString(R.string.no_rules_msg)
-        else activity.getString(R.string.rules_found_msg)
+        listener.halfExpandBottomSheet()
+        listener.rulesMsg.text = if (rules.isEmpty()) listener.getString(R.string.no_rules_msg)
+        else listener.getString(R.string.rules_found_msg)
     }
 
     fun leave() {
