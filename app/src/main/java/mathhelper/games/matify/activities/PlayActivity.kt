@@ -58,6 +58,13 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         messageTimer.start()
     }
 
+    override fun showMessage(str: String) {
+        messageView.text = str
+        messageView.visibility = View.VISIBLE
+        messageTimer.cancel()
+        messageTimer.start()
+    }
+
     private fun setLongClick() {
         back.setOnLongClickListener {
             showMessage(R.string.back_info)
@@ -96,7 +103,7 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         setContentView(R.layout.activity_play_new)
         setViews()
         messageView.visibility = View.GONE
-        loseDialog = createLooseDialog()
+        loseDialog = createLoseDialog()
         winDialog = createWinDialog()
         continueDialog = createContinueDialog()
         PlayScene.shared.listenerRef = WeakReference(this)
@@ -275,17 +282,17 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         return dialog
     }
 
-    private fun createLooseDialog(): AlertDialog {
+    private fun createLoseDialog(): AlertDialog {
         Logger.d(TAG, "createLooseDialog")
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.time_out)
-            .setPositiveButton(R.string.restart) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.restart) { _: DialogInterface, _: Int ->
                 restart(null)
             }
-            .setNegativeButton(R.string.menu) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.menu) { _: DialogInterface, _: Int ->
                 back(null)
             }
             .setCancelable(false)
@@ -300,10 +307,10 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         builder
             .setTitle(R.string.welkome_back)
             .setMessage(R.string.continue_from_where_you_stopped)
-            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
                 createLevelUI(true)
             }
-            .setNegativeButton(R.string.no) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.no) { _: DialogInterface, _: Int ->
                 createLevelUI(false)
             }
             .setCancelable(false)

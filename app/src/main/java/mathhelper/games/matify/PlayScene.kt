@@ -25,6 +25,7 @@ interface PlaySceneListener : TimerListener {
 
     fun clearRules()
     fun showMessage(varDescr: Int)
+    fun showMessage(str: String)
     fun getString(int: Int): String
     fun getText(int: Int): CharSequence
     fun redrawRules(rules: List<ExpressionSubstitution>, subjectType: String)
@@ -78,7 +79,7 @@ class PlayScene {
         }
         history.clear()
         history.saveState(stepsCount, currentTime, listener.globalMathView.expression!!)
-        // listener.showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40")
+        listener.showMessage("\uD83C\uDF40 ${currentLevel.getNameByLanguage(languageCode)} \uD83C\uDF40")
         Statistics.setStartTime()
         Statistics.logStart()
         return true

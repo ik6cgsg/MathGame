@@ -16,6 +16,7 @@ import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.tutorial.TutorialGamesActivity
 import mathhelper.games.matify.tutorial.TutorialLevelsActivity
+import mathhelper.games.matify.tutorial.TutorialMultiselectActivity
 import java.lang.ref.WeakReference
 
 interface TutorialSceneListener {
@@ -34,19 +35,22 @@ class TutorialScene {
 
     var listenerRef: WeakReference<TutorialSceneListener> = WeakReference(null)
 
-    val listenerClasses = arrayOf(
+    private val listenerClasses = arrayOf(
         TutorialGamesActivity::class.java,
         TutorialLevelsActivity::class.java,
-        TutorialPlayActivity::class.java
+        TutorialPlayActivity::class.java,
+        TutorialMultiselectActivity::class.java
     )
     var currentStep = -1
     private var currentListener = -1
+    var currentlyAdvancing = true
 
     lateinit var currentLevel: Level
     var currLevelIndex = 0
 
     var tutorialDialog: AlertDialog? = null
     var leaveDialog: AlertDialog? = null
+    var restartDialog: AlertDialog? = null
     var tutorialGame: Game? = null
 
     private var currentAnim: AnimatorSet? = null
@@ -69,6 +73,7 @@ class TutorialScene {
 
     fun nextStep(context: Context) {
         Logger.d(TAG, "nextStep")
+        currentlyAdvancing = true
         currentStep++
         if (currentListener == -1) {
             currentListener = 0
@@ -82,17 +87,20 @@ class TutorialScene {
         if (listener.nextStep()) {
             return
         }
-        listenerRef.clear()
         currentListener++
         if (currentListener != listenerClasses.size) {
+            listenerRef.clear()
             context.startActivity(Intent(context, listenerClasses[currentListener]))
+            listener.finish()
             // activity must call its nextStep() upon creation itself
             // and write itself into listenerRef
+        } else {
+            leave()
         }
-        listener.finish()
     }
 
     fun prevStep(context: Context) {
+        currentlyAdvancing = false
         Logger.d(TAG, "prevStep")
         currentStep--
         if (currentListener == listenerClasses.size) {
@@ -105,16 +113,14 @@ class TutorialScene {
         if (listener.prevStep()) {
             return
         }
-        listenerRef.clear()
         currentListener--
         if (currentListener != -1) {
+            listenerRef.clear()
             context.startActivity(Intent(context, listenerClasses[currentListener]))
+            listener.finish()
+        } else {
+            leave()
         }
-        listener.finish()
-    }
-
-    fun totalSteps(): Int {
-        return TutorialPlayActivity.totalSteps + TutorialGamesActivity.totalSteps + TutorialLevelsActivity.totalSteps
     }
 
     fun leave() {
@@ -130,6 +136,12 @@ class TutorialScene {
         currentStep = -1
         currentListener = -1
         nextStep(context)
+    }
+
+    fun switchLevel(num: Int) {
+        currLevelIndex = num
+        val game = tutorialGame?:return
+        currentLevel = game.levels[num]
     }
 
     fun animateLeftUp(view: View) {
@@ -182,17 +194,17 @@ class TutorialScene {
         builder
             .setTitle("")
             .setMessage(R.string.got_it)
-            .setPositiveButton(R.string.yep) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.yep) { _: DialogInterface, _: Int ->
                 Handler().postDelayed({
                     nextStep(context)
                 }, 100)
             }
-            .setNegativeButton(R.string.step_back) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.step_back) { _: DialogInterface, _: Int ->
                 Handler().postDelayed({
                     prevStep(context)
                 }, 100)
             }
-            .setNeutralButton(R.string.leave) { dialog: DialogInterface, id: Int ->
+            .setNeutralButton(R.string.leave) { _: DialogInterface, _: Int ->
                 if (leaveDialog != null) {
                     AndroidUtil.showDialog(leaveDialog!!)
                 } else {
@@ -211,12 +223,41 @@ class TutorialScene {
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.wanna_leave)
-            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
-                leave()
+            .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+                Handler().postDelayed({
+                    leave()
+                }, 100)
             }
-            .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
             }
         leaveDialog = builder.create()
+    }
+
+    fun createRestartDialog(context: Context) {
+        Logger.d(TAG, "createRestartDialog")
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.alertDialogTheme
+        )
+        builder
+            .setTitle(R.string.attention)
+            .setMessage(R.string.restart_tutorial)
+            .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+                Handler().postDelayed({
+                    restart(context)
+                }, 100)
+            }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
+            }
+        restartDialog = builder.create()
+    }
+
+    private fun totalSteps(): Int {
+        var res = 0
+        res += TutorialGamesActivity.totalSteps
+        res += TutorialLevelsActivity.totalSteps
+        res += TutorialPlayActivity.totalSteps
+        res += TutorialMultiselectActivity.totalSteps
+        return res
     }
 
     fun updateDialog(tutorialStr: String) {

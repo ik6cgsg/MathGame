@@ -35,9 +35,10 @@ class TutorialGamesActivity : AppCompatActivity(), TutorialSceneListener {
         pointer = findViewById(R.id.pointer_game)
         TutorialScene.shared.createLeaveDialog(this)
         TutorialScene.shared.createTutorialDialog(this)
-        currentStep = -1
 
         TutorialScene.shared.listenerRef = WeakReference(this)
+        TutorialScene.shared.currentStep = 0
+        currentStep = -1
         nextStep()
     }
 

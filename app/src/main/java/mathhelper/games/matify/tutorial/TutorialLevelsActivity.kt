@@ -25,7 +25,7 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
     var loading = false
 
     companion object {
-        val totalSteps = 2
+        const val totalSteps = 2
     }
     val steps = arrayOf(
         this::tellAboutLevelLayout,
@@ -47,7 +47,6 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
         loading = true
 
         val tla = this
-        currentStep = -1
         lifecycleScope.launch {
             val game = TutorialScene.shared.tutorialGame!!
             if (game.load(tla)) {
@@ -55,6 +54,7 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
                     tla.onLoad()
                     TutorialScene.shared.currentLevel = game.levels[0]
                     TutorialScene.shared.listenerRef = WeakReference(tla)
+                    currentStep = -1
                     nextStep()
                 }
             }
@@ -93,7 +93,7 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
         }
     }
 
-    fun onLoad() {
+    private fun onLoad() {
         progress.visibility = View.GONE
         button.visibility = View.VISIBLE
     }
@@ -102,7 +102,7 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
         TutorialScene.shared.nextStep(this)
     }
 
-    fun tellAboutLevelLayout() {
+    private fun tellAboutLevelLayout() {
         Logger.d(TAG, "tellAboutLevelLayout")
         TutorialScene.shared.tutorialDialog?.let {
             it.setMessage(resources.getString(R.string.level_activity_tutorial))
@@ -110,7 +110,7 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
         }
     }
 
-    fun waitForLevelClick() {
+    private fun waitForLevelClick() {
         Logger.d(TAG, "waitForLevelClick")
         TutorialScene.shared.animateLeftUp(pointer)
     }

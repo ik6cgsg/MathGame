@@ -18,39 +18,28 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
-    override val TAG = "TutorialPlayActivity"
+class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneListener, InstrumentSceneListener {
+    override val TAG = "TutorialMultiselectActivity"
     private var scale = 1.0f
     private var scaleListener = MathScaleListener()
 
     private lateinit var scaleDetector: ScaleGestureDetector
 
-    // lateinit var noRules: TextView
-    private lateinit var pointerMsgView: TextView
-    private lateinit var pointerEndView: TextView
+    private lateinit var buttonTable: TableLayout
     private lateinit var pointerCentralView: TextView
-    private lateinit var pointerBackView: TextView
-    private lateinit var pointerRestartView: TextView
-    private lateinit var pointerUndoView: TextView
-    private lateinit var pointerInfoView: TextView
+    private lateinit var pointerMultiselectView: TextView
 
     companion object {
-        const val totalSteps = 8
+        const val totalSteps = 3
     }
 
     private val steps: Array<() -> Unit> = arrayOf(
-        this::messageTutorial,
-        this::endExpressionTutorial,
-        this::centralExpressionTutorial,
-        this::backTutorial,
-        this::infoTutorial,
-        this::restartTutorial,
-        this::undoTutorial,
-        this::startDynamicTutorial
+        this::explainMultiselectTutorial,
+        this::actionMultiselectTutorial,
+        this::startMultiselectTutorial,
     )
     private var currentStep = -1
 
-    var wantedZoom = false
     var wantedClick = false
     var wantedRule = false
 
@@ -60,13 +49,9 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         mainViewAnim = mainView.background as TransitionDrawable
 
         // noRules = findViewById(R.id.no_rules)
-        pointerMsgView = findViewById(R.id.pointer_message)
-        pointerEndView = findViewById(R.id.pointer_end)
         pointerCentralView = findViewById(R.id.pointer_central)
-        pointerBackView = findViewById(R.id.pointer_back)
-        pointerRestartView = findViewById(R.id.pointer_restart)
-        pointerUndoView = findViewById(R.id.pointer_undo)
-        pointerInfoView = findViewById(R.id.pointer_info)
+        pointerMultiselectView = findViewById(R.id.pointer_multiselect)
+        buttonTable = bottomSheet.findViewById(R.id.account_table)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +60,6 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         setContentView(R.layout.tutorial_activity_play_new)
         scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
-        val button: TableLayout = bottomSheet.findViewById(R.id.account_table)
-        button.visibility = View.GONE
         TutorialScene.shared.createLeaveDialog(this)
         TutorialScene.shared.createTutorialDialog(this)
         TutorialScene.shared.createRestartDialog(this)
@@ -84,7 +67,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         globalMathView.text = ""
         endExpressionViewLabel.text = ""
 
-        TutorialScene.shared.switchLevel(0)
+        TutorialScene.shared.switchLevel(1)
 
         TutorialScene.shared.listenerRef = WeakReference(this)
         loadLevel()
@@ -159,104 +142,62 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         return true
     }
 
-    private fun messageTutorial() {
-        Logger.d(TAG, "messageTutorial")
-        showMessage(R.string.tutorial_on_level_info)
-        TutorialScene.shared.animateLeftUp(pointerMsgView)
-        val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
-    }
+    private fun explainMultiselectTutorial() {
+        buttonTable.visibility = View.VISIBLE
 
-    private fun backTutorial() {
-        Logger.d(TAG, "backTutorial")
-        showMessage(R.string.tutorial_on_level_to_menu)
-        TutorialScene.shared.animateLeftUp(pointerBackView)
-        val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
-    }
-
-    private fun infoTutorial() {
-        Logger.d(TAG, "infoTutorial")
-        showMessage(R.string.tutorial_on_level_short_info)
-        TutorialScene.shared.animateLeftUp(pointerInfoView)
-        val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
-    }
-
-    private fun restartTutorial() {
-        Logger.d(TAG, "restartTutorial")
-        showMessage(R.string.tutorial_on_level_restart)
-        TutorialScene.shared.animateUp(pointerRestartView)
-        val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
-    }
-
-    private fun undoTutorial() {
-        Logger.d(TAG, "undoTutorial")
-        showMessage(R.string.tutorial_on_level_undo)
-        TutorialScene.shared.animateUp(pointerUndoView)
-        val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.got_it))
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
-    }
-
-    private fun endExpressionTutorial() {
-        Logger.d(TAG, "endExpressionTutorial")
-        showMessage(R.string.tutorial_on_level_goal)
-        TutorialScene.shared.animateLeftUp(pointerEndView)
+        Logger.d(TAG, "explainMultiselectTutorial")
+        showMessage(R.string.tutorial_on_level_multiselect_explanation)
+        TutorialScene.shared.animateUp(pointerMultiselectView)
         val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
         tutorialDialog.setMessage(
-            resources.getString(R.string.tutorial_on_level_goal_explanation) +
-                    resources.getString(R.string.got_it)
+            resources.getString(R.string.tutorial_on_level_multiselect_expression)
         )
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+        AndroidUtil.showDialog(tutorialDialog, bottomGravity = false, backMode = BackgroundMode.NONE)
     }
 
-    private fun centralExpressionTutorial() {
-        Logger.d(TAG, "centralExpressionTutorial")
-        showMessage(R.string.tutorial_on_level_main_element)
-        TutorialScene.shared.animateLeftUp(pointerCentralView)
+    private fun actionMultiselectTutorial() {
+        Logger.d(TAG, "actionMultiselectTutorial")
+        showMessage(R.string.tutorial_on_level_multiselect_action)
+        TutorialScene.shared.animateUp(pointerMultiselectView)
         val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
         tutorialDialog.setMessage(
-            resources.getString(R.string.tutorial_on_level_main_element_current) +
-                    resources.getString(R.string.tutorial_on_level_main_element_to_win) +
-                    resources.getString(R.string.tutorial_on_level_main_element_touch) +
-                    resources.getString(R.string.tutorial_on_level_main_element_find_rule) +
-                    resources.getString(R.string.tutorial_on_level_main_element_make_subst) +
-                    resources.getString(R.string.tutorial_on_level_main_element_repeat) +
-                    resources.getString(R.string.got_it)
+            resources.getString(R.string.tutorial_on_level_multiselect_details)
         )
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+        AndroidUtil.showDialog(tutorialDialog, bottomGravity = false, backMode = BackgroundMode.NONE)
     }
 
-    private fun startDynamicTutorial() {
-        showMessage(R.string.tutorial_on_level_tap)
-        wantedZoom = false
+    private fun startMultiselectTutorial() {
+        showMessage(R.string.tutorial_on_level_multiselect_button)
         wantedClick = true
     }
 
     private fun expressionClickSucceeded() {
         wantedClick = false
-        showMessage(R.string.tutorial_on_level_select)
+        showMessage(R.string.tutorial_on_level_multiselect_select)
         wantedRule = true
     }
 
     private fun ruleClickSucceeded() {
         wantedRule = false
-        showMessage(R.string.tutorial_on_level_win)
+        showMessage(R.string.tutorial_on_level_multiselect_click)
     }
 
     private fun levelPassed() {
-        Logger.d(TAG, "levelPassed")
+        Logger.d(TAG, "tutorial over")
         showMessage(R.string.congratulations)
         globalMathView.center()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
+
         val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_basic_finished))
+        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_seems))
+        tutorialDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE,
+            resources.getString(R.string.tutorial_on_level_i_am_pro)
+        ) { _: DialogInterface, _: Int ->
+            Handler().postDelayed({
+                TutorialScene.shared.nextStep(this)
+            }, 100)
+        }
         tutorialDialog.setButton(
             AlertDialog.BUTTON_NEGATIVE,
             resources.getString(R.string.step_back)
@@ -268,6 +209,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         }
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
+
 
     inner class MathScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
@@ -298,6 +240,11 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         )
     }
 
+    override fun startInstrumentProcessing(setMSMode: Boolean) {
+        super.startInstrumentProcessing(setMSMode)
+        showMessage(R.string.tutorial_on_level_multiselect_partial_select)
+    }
+
     override fun onRuleClicked(ruleView: RuleMathView) {
         Logger.d(TAG, "onRuleClicked")
         val subst = ruleView.subst ?: return
@@ -317,9 +264,6 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
 
     override fun onAtomClicked() {
         Logger.d(TAG, "onAtomClicked")
-        if (wantedZoom) {
-            return
-        }
         if (globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = TutorialScene.shared.currentLevel.getSubstitutionApplication(
                 globalMathView.currentAtoms,
@@ -327,9 +271,15 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
             )
 
             if (substitutionApplication == null) {
-                showMessage(R.string.no_rules_try_another)
-                if (!globalMathView.multiselectionMode) {
-                    globalMathView.recolorCurrentAtom(Color.RED)
+                val atoms = globalMathView.currentAtoms
+                val inMS = globalMathView.multiselectionMode
+                if (atoms.size == 1 && atoms[0].toString() == "6" && inMS) {
+                    showMessage(R.string.tutorial_on_level_multiselect_digit)
+                } else {
+                    showMessage(R.string.no_rules_try_another)
+                    if (!globalMathView.multiselectionMode) {
+                        globalMathView.recolorCurrentAtom(Color.RED)
+                    }
                 }
                 clearRules()
             } else {
