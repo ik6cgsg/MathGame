@@ -170,7 +170,7 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         endExpressionViewLabel.text = ""
         progress.visibility = View.VISIBLE
         try {
-            PlayScene.shared.loadLevel(this, continueGame, resources.configuration.locale.language)
+            PlayScene.shared.loadLevel(continueGame, resources.configuration.locale.language)
         } catch (e: Exception) {
             Logger.e(TAG, "Error while level loading")
             Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
@@ -197,7 +197,7 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
     fun restart(v: View?) {
         if (!loading) {
             globalMathView.scale = 1f
-            PlayScene.shared.restart(this, resources.configuration.locale.language)
+            PlayScene.shared.restart(resources.configuration.locale.language)
         }
     }
 
@@ -264,7 +264,7 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
             }
             .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
                 globalMathView.scale = 1f
-                PlayScene.shared.restart(this, resources.configuration.locale.language)
+                PlayScene.shared.restart(resources.configuration.locale.language)
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -352,7 +352,11 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
             val res = globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
             if (res != null) {
                 PlayScene.shared.stepsCount++
-                PlayScene.shared.history.saveState(PlayScene.shared.stepsCount, PlayScene.shared.currentTime, globalMathView.expression!!)
+                PlayScene.shared.history.saveState(
+                    PlayScene.shared.stepsCount,
+                    PlayScene.shared.currentTime,
+                    globalMathView.expression!!
+                )
                 previous.isEnabled = true
                 if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
                     levelPassed = true

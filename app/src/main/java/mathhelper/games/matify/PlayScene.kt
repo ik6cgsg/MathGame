@@ -55,8 +55,9 @@ class PlayScene {
     var upTimer: MathUpTimer? = null
         private set
 
-    fun loadLevel(listener: PlaySceneListener, continueGame: Boolean, languageCode: String): Boolean {
+    fun loadLevel(continueGame: Boolean, languageCode: String): Boolean {
         Logger.d(TAG, "loadLevel")
+        val listener = listenerRef.get() ?: return false
         val currentLevel = LevelScene.shared.currentLevel!!
         listener.clearRules()
         cancelTimers()
@@ -73,9 +74,9 @@ class PlayScene {
             listener.endExpressionMathView.visibility = View.VISIBLE
         }
         if (currentLevel.endless) {
-            loadEndless(listener, continueGame)
+            loadEndless(continueGame)
         } else {
-            loadFinite(listener)
+            loadFinite()
         }
         history.clear()
         history.saveState(stepsCount, currentTime, listener.globalMathView.expression!!)
@@ -85,7 +86,8 @@ class PlayScene {
         return true
     }
 
-    private fun loadFinite(listener: PlaySceneListener) {
+    private fun loadFinite() {
+        val listener = listenerRef.get() ?: return
         val currentLevel = LevelScene.shared.currentLevel!!
         listener.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
         listener.globalMathView.center()
@@ -95,7 +97,8 @@ class PlayScene {
         downTimer!!.start()
     }
 
-    private fun loadEndless(listener: PlaySceneListener, continueGame: Boolean) {
+    private fun loadEndless(continueGame: Boolean) {
+        val listener = listenerRef.get() ?: return
         val currentLevel = LevelScene.shared.currentLevel!!
         val lastRes = currentLevel.lastResult
         if (continueGame && lastRes != null &&
@@ -144,10 +147,11 @@ class PlayScene {
         }
     }
 
-    fun restart(listener: PlaySceneListener, languageCode: String) {
+    fun restart(languageCode: String) {
         Logger.d(TAG, "restart")
+        val listener = listenerRef.get() ?: return
         Statistics.logRestart(stepsCount, listener.globalMathView.expression!!, listener.globalMathView.currentAtoms)
-        loadLevel(listener, false, languageCode)
+        loadLevel(false, languageCode)
     }
 
     fun menu(activity: PlayActivity, logAndSave: Boolean = true) {
