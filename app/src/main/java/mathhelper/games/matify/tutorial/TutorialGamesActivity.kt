@@ -37,7 +37,6 @@ class TutorialGamesActivity : AppCompatActivity(), TutorialSceneListener {
         TutorialScene.shared.createTutorialDialog(this)
 
         TutorialScene.shared.listenerRef = WeakReference(this)
-        TutorialScene.shared.currentStep = 0
         currentStep = -1
         nextStep()
     }

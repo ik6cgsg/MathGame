@@ -67,6 +67,7 @@ class TutorialScene {
             Logger.d(TAG, "failed to load tutorial")
             return
         }
+        currentStep = -1
         currentListener = -1
         nextStep(context)
     }
