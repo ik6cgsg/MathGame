@@ -8,14 +8,11 @@ import android.view.ScaleGestureDetector
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
-import mathhelper.games.matify.GlobalScene
-import mathhelper.games.matify.PlayScene
 import mathhelper.twf.api.findLowestSubtreeTopOfSelectedNodesInExpression
 import mathhelper.twf.api.structureStringToExpression
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.R
-import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.MathResolverPair
 import mathhelper.games.matify.mathResolver.MatifySpan
@@ -41,8 +38,8 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     private var type: String? = ""
     private var dX = 0f
     private var dY = 0f
-    private var centerX: Float? = null
-    private var centerY: Float? = null
+    private var centerX = 0f
+    private var centerY = 0f
     private var scaleListener = MathScaleListener()
     private lateinit var scaleDetector: ScaleGestureDetector
     private var ignoreUpAfterDrag = 0
@@ -66,8 +63,6 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         if (w == 0 || h == 0 || oldw > 0 || oldh > 0) {
             return
         }
-        centerX = x
-        centerY = y
         val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
         var parw = (parent as ConstraintLayout).width * 1f
         parw -= parw / 20
@@ -94,7 +89,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionStr: String, type: String?) {
         Logger.d(TAG, "setExpression from str")
-        if (centerX == null || centerY == null) {
+        if (centerX == 0f && centerY == 0f) {
             centerX = x
             centerY = y
         }
@@ -105,6 +100,10 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
         Logger.d(TAG, "setExpression from node")
+        if (centerX == 0f && centerY == 0f) {
+            centerX = x
+            centerY = y
+        }
         this.type = type
         expression = expressionNode
         if (resetSize) {
@@ -191,7 +190,17 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     fun center() {
-
+        Logger.d(TAG, "center")
+        scale = 1f
+        animate()
+            .scaleX(scale)
+            .scaleY(scale)
+            .x(centerX)
+            .y(centerY)
+            .translationX(0f)
+            .translationY(0f)
+            .setDuration(100)
+            .start()
     }
 
     /** View OVERRIDES **/
