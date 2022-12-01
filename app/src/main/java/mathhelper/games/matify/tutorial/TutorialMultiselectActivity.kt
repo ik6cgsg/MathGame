@@ -20,10 +20,6 @@ import kotlin.math.min
 
 class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneListener, InstrumentSceneListener {
     override val TAG = "TutorialMultiselectActivity"
-    private var scale = 1.0f
-    private var scaleListener = MathScaleListener()
-
-    private lateinit var scaleDetector: ScaleGestureDetector
 
     private lateinit var buttonTable: TableLayout
     private lateinit var pointerCentralView: TextView
@@ -58,7 +54,6 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
         super.onCreate(savedInstanceState)
         setTheme(Storage.shared.themeInt())
         setContentView(R.layout.tutorial_activity_play_new)
-        scaleDetector = ScaleGestureDetector(this, scaleListener)
         setViews()
         TutorialScene.shared.createLeaveDialog(this)
         TutorialScene.shared.createTutorialDialog(this)
@@ -208,20 +203,6 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
             }, 100)
         }
         AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
-    }
-
-
-    inner class MathScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            needClear = false
-            scale *= detector.scaleFactor
-            scale = max(
-                Constants.ruleDefaultSize / Constants.centralExpressionDefaultSize,
-                min(scale, Constants.centralExpressionMaxSize / Constants.centralExpressionDefaultSize)
-            )
-            globalMathView.textSize = Constants.centralExpressionDefaultSize * scale
-            return true
-        }
     }
 
     override fun showEndExpression(v: View?) {
