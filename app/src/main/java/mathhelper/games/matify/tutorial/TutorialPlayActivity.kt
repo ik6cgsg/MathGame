@@ -14,8 +14,6 @@ import mathhelper.games.matify.*
 import mathhelper.games.matify.activities.AbstractPlayableActivity
 import mathhelper.games.matify.common.*
 import java.lang.ref.WeakReference
-import kotlin.math.max
-import kotlin.math.min
 
 
 class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
@@ -29,6 +27,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
     private lateinit var pointerRestartView: TextView
     private lateinit var pointerUndoView: TextView
     private lateinit var pointerInfoView: TextView
+    private lateinit var pointerView: TrackingMathPointer
 
     companion object {
         const val totalSteps = 8
@@ -63,6 +62,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         pointerRestartView = findViewById(R.id.pointer_restart)
         pointerUndoView = findViewById(R.id.pointer_undo)
         pointerInfoView = findViewById(R.id.pointer_info)
+        pointerView = findViewById(R.id.pointer)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -230,6 +230,10 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
 
     private fun startDynamicTutorial() {
         showMessage(R.string.tutorial_on_level_tap)
+        val pluses = globalMathView.getNodesByString("+")
+        if (pluses.isNotEmpty()) {
+            pointerView.setTrackerToExpression(pluses[0], globalMathView)
+        }
         wantedZoom = false
         wantedClick = true
     }
@@ -241,8 +245,18 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
     }
 
     private fun ruleClickSucceeded() {
-        wantedRule = false
         showMessage(R.string.tutorial_on_level_win)
+        Handler().postDelayed({
+            val pluses = globalMathView.getNodesByString("+")
+            if (pluses.isNotEmpty()) {
+                pointerView.setTrackerToExpression(pluses[0], globalMathView)
+            } else {
+                val stars = globalMathView.getNodesByString("*")
+                if (stars.isNotEmpty()) {
+                    pointerView.setTrackerToExpression(stars[0], globalMathView)
+                }
+            }
+        }, 400)
     }
 
     private fun levelPassed() {
@@ -280,16 +294,22 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         )
     }
 
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        super.onTouchEvent(event)
+        pointerView.followNode(globalMathView)
+        return true
+    }
+
     override fun onRuleClicked(ruleView: RuleMathView) {
         Logger.d(TAG, "onRuleClicked")
+        pointerView.resetTracker()
         val subst = ruleView.subst ?: return
         val res = globalMathView.performSubstitutionForMultiselect(subst)
         if (res != null) {
-            if (wantedRule) {
-                ruleClickSucceeded()
-            }
             if (TutorialScene.shared.currentLevel.checkEnd(res)) {
                 levelPassed()
+            } else if (wantedRule) {
+                ruleClickSucceeded()
             }
             clearRules()
         } else {

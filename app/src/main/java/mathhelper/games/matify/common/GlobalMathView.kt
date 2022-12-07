@@ -13,10 +13,7 @@ import mathhelper.twf.api.structureStringToExpression
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import mathhelper.games.matify.R
-import mathhelper.games.matify.mathResolver.MathResolver
-import mathhelper.games.matify.mathResolver.MathResolverPair
-import mathhelper.games.matify.mathResolver.MatifySpan
-import mathhelper.games.matify.mathResolver.TaskType
+import mathhelper.games.matify.mathResolver.*
 import java.lang.ref.WeakReference
 import kotlin.math.*
 
@@ -85,6 +82,14 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         /*setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
             Constants.defaultPadding, Constants.defaultPadding)*/
+    }
+
+    fun getNodesByString(expressionStr: String): ArrayList<MathResolverNodeBase> {
+        val nodes: ArrayList<MathResolverNodeBase> = arrayListOf()
+        mathPair?.let {
+            it.findNodesByString(it.tree, expressionStr, nodes)
+        }
+        return nodes
     }
 
     fun setExpression(expressionStr: String, type: String?) {
@@ -204,11 +209,11 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     }
 
     /** View OVERRIDES **/
-    private fun getMathViewCoord(event: MotionEvent): Pair<Int, Int> {
+    fun getMathViewCoord(coordX: Float, coordY: Float): Pair<Int, Int> {
         val loc = IntArray(2)
         getLocationInWindow(loc)
-        val evx = event.x - loc[0]
-        val evy = event.y - loc[1]
+        val evx = coordX - loc[0]
+        val evy = coordY - loc[1]
         val x = floor(evx / (MatifySpan.widthGlobal * scale)).toInt()
         val n = mathPair!!.height + 1f
         val msh = MatifySpan.heightGlobal
@@ -218,10 +223,23 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         return Pair(x, y)
     }
 
+    fun getGlobalCoord(mvx: Int, mvy: Int): Pair<Int, Int> {
+        val n = mathPair!!.height + 1f
+        val msh = MatifySpan.heightGlobal
+        val offset = (n * msh - height) / ((n - 1) * msh * 2)
+        val spacing = 1 - 2 * offset
+        val loc = IntArray(2)
+        getLocationInWindow(loc)
+
+        val globalX = (scale * MatifySpan.widthGlobal * mvx + loc[0]).toInt()
+        val globalY = ((mvy * spacing + offset) * MatifySpan.heightGlobal * scale + loc[1]).toInt()
+        return Pair(globalX, globalY)
+    }
+
     private fun selectCurrentAtom(event: MotionEvent) {
         Logger.d(TAG, "selectCurrentAtom")
         if (layout != null) {
-            val (x, y) = getMathViewCoord(event)
+            val (x, y) = getMathViewCoord(event.x, event.y)
             val atomColor = ThemeController.shared.color(ColorName.TEXT_HIGHLIGHT_COLOR)
             val atomMultiColor = ThemeController.shared.color(ColorName.MULTISELECTION_COLOR)
             val atom = mathPair!!.getColoredAtom(x, y, multiselectionMode, atomColor)

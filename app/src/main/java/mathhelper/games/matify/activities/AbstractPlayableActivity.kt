@@ -39,7 +39,7 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
     lateinit var blurView: BlurView
 
     var instrumentProcessing: Boolean = false
-    protected var needClear: Boolean = false
+    private var needClear: Boolean = false
 
     override val ctx: Context get() = this
 

@@ -257,12 +257,12 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         builder
             .setTitle(R.string.congratulations)
             .setMessage("")
-            .setPositiveButton(R.string.next) { dialog: DialogInterface, id: Int -> }
-            .setNeutralButton(R.string.menu) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.next) { _: DialogInterface, _: Int -> }
+            .setNeutralButton(R.string.menu) { _: DialogInterface, _: Int ->
                 PlayScene.shared.menu(this, false)
                 finish()
             }
-            .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.restart_label) { _: DialogInterface, _: Int ->
                 globalMathView.scale = 1f
                 PlayScene.shared.restart(resources.configuration.locale.language)
             }

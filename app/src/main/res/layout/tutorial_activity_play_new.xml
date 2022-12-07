@@ -10,6 +10,7 @@
     tools:context=".activities.PlayActivity">
 
     <include layout="@layout/tutorial_activity_play" />
+
     <include layout="@layout/rule_list_sheet" />
 
     <eightbitlab.com.blurview.BlurView
@@ -22,7 +23,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </eightbitlab.com.blurview.BlurView>
+        app:layout_constraintTop_toTopOf="parent"></eightbitlab.com.blurview.BlurView>
+
+
+    <mathhelper.games.matify.common.TrackingMathPointer
+        android:id="@+id/pointer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/round_pointer" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

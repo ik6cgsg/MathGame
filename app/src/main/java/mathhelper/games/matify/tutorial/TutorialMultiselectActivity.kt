@@ -13,9 +13,8 @@ import android.widget.*
 import mathhelper.games.matify.*
 import mathhelper.games.matify.activities.AbstractPlayableActivity
 import mathhelper.games.matify.common.*
+import mathhelper.games.matify.mathResolver.MathResolverNodeBase
 import java.lang.ref.WeakReference
-import kotlin.math.max
-import kotlin.math.min
 
 
 class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneListener, InstrumentSceneListener {
@@ -24,6 +23,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
     private lateinit var buttonTable: TableLayout
     private lateinit var pointerCentralView: TextView
     private lateinit var pointerMultiselectView: TextView
+    private lateinit var pointerView: TrackingMathPointer
 
     companion object {
         const val totalSteps = 3
@@ -47,6 +47,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
         // noRules = findViewById(R.id.no_rules)
         pointerCentralView = findViewById(R.id.pointer_central)
         pointerMultiselectView = findViewById(R.id.pointer_multiselect)
+        pointerView = findViewById(R.id.pointer)
         buttonTable = bottomSheet.findViewById(R.id.account_table)
     }
 
@@ -163,6 +164,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
 
     private fun startMultiselectTutorial() {
         showMessage(R.string.tutorial_on_level_multiselect_button)
+        pointerView.pointToStaticView(buttonTable)
         wantedClick = true
     }
 
@@ -175,6 +177,12 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
     private fun ruleClickSucceeded() {
         wantedRule = false
         showMessage(R.string.tutorial_on_level_multiselect_click)
+        Handler().postDelayed({
+            val plus = globalMathView.getNodesByString("+")
+            if (plus.isNotEmpty()) {
+                pointerView.setTrackerToExpression(plus[0], globalMathView)
+            }
+        }, 100)
     }
 
     private fun levelPassed() {
@@ -224,10 +232,20 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
     override fun startInstrumentProcessing(setMSMode: Boolean) {
         super.startInstrumentProcessing(setMSMode)
         showMessage(R.string.tutorial_on_level_multiselect_partial_select)
+        findFirstNotSelectedSix()?.let {
+            pointerView.setTrackerToExpression(it, globalMathView)
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        super.onTouchEvent(event)
+        pointerView.followNode(globalMathView)
+        return true
     }
 
     override fun onRuleClicked(ruleView: RuleMathView) {
         Logger.d(TAG, "onRuleClicked")
+        pointerView.resetTracker()
         val subst = ruleView.subst ?: return
         val res = globalMathView.performSubstitutionForMultiselect(subst)
         if (res != null) {
@@ -245,6 +263,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
 
     override fun onAtomClicked() {
         Logger.d(TAG, "onAtomClicked")
+        pointerView.resetTracker()
         if (globalMathView.currentAtoms.isNotEmpty()) {
             val substitutionApplication = TutorialScene.shared.currentLevel.getSubstitutionApplication(
                 globalMathView.currentAtoms,
@@ -256,6 +275,9 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
                 val inMS = globalMathView.multiselectionMode
                 if (atoms.size == 1 && atoms[0].toString() == "6" && inMS) {
                     showMessage(R.string.tutorial_on_level_multiselect_digit)
+                    findFirstNotSelectedSix()?.let {
+                        pointerView.setTrackerToExpression(it, globalMathView)
+                    }
                 } else {
                     showMessage(R.string.no_rules_try_another)
                     if (!globalMathView.multiselectionMode) {
@@ -277,5 +299,15 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
                 redrawRules(rules, TutorialScene.shared.currentLevel.subjectType)
             }
         }
+    }
+
+    private fun findFirstNotSelectedSix(): MathResolverNodeBase? {
+        val sixes = globalMathView.getNodesByString("6")
+        for (node in sixes) {
+            if (!globalMathView.currentAtoms.contains(node.origin)) {
+                return node
+            }
+        }
+        return null
     }
 }
