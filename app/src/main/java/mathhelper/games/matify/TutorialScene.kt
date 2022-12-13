@@ -11,12 +11,8 @@ import android.os.Handler
 import android.view.View
 import com.google.gson.Gson
 import mathhelper.games.matify.common.*
-import mathhelper.games.matify.tutorial.TutorialPlayActivity
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
-import mathhelper.games.matify.tutorial.TutorialGamesActivity
-import mathhelper.games.matify.tutorial.TutorialLevelsActivity
-import mathhelper.games.matify.tutorial.TutorialMultiselectActivity
 import java.lang.ref.WeakReference
 
 interface TutorialSceneListener {
@@ -35,12 +31,8 @@ class TutorialScene {
 
     var listenerRef: WeakReference<TutorialSceneListener> = WeakReference(null)
 
-    private val listenerClasses = arrayOf(
-        TutorialGamesActivity::class.java,
-        TutorialLevelsActivity::class.java,
-        TutorialPlayActivity::class.java,
-        TutorialMultiselectActivity::class.java
-    )
+    private var currentSession: Array<out Class<*>> = arrayOf()
+    var totalSteps: Int = 0
     var currentStep = -1
     private var currentListener = -1
     var currentlyAdvancing = true
@@ -56,8 +48,8 @@ class TutorialScene {
     private var currentAnim: AnimatorSet? = null
     private var currentAnimViewRef: WeakReference<View> = WeakReference(null)
 
-    fun start(context: Context) {
-        GlobalScene.shared.tutorialProcessing = true
+    fun loadTutorialLevels(context: Context) {
+        Logger.d(TAG, "loadTutorialLevels")
         val input = context.assets.open("tutorial.json")
         val text = input.readBytes().toString(Charsets.UTF_8)
         input.close()
@@ -67,6 +59,13 @@ class TutorialScene {
             Logger.d(TAG, "failed to load tutorial")
             return
         }
+        tutorialGame?.load(context)
+    }
+
+    fun startSession(context: Context, stepsInSession: Int, vararg activitiesToLaunch: Class<*>) {
+        leave()
+        totalSteps = stepsInSession
+        currentSession = activitiesToLaunch
         currentStep = -1
         currentListener = -1
         nextStep(context)
@@ -78,7 +77,7 @@ class TutorialScene {
         currentStep++
         if (currentListener == -1) {
             currentListener = 0
-            context.startActivity(Intent(context, listenerClasses[currentListener]))
+            context.startActivity(Intent(context, currentSession[currentListener]))
             // activity must call its nextStep() upon creation itself
             // and write itself into listenerRef
             return
@@ -89,9 +88,9 @@ class TutorialScene {
             return
         }
         currentListener++
-        if (currentListener != listenerClasses.size) {
+        if (currentListener != currentSession.size) {
             listenerRef.clear()
-            context.startActivity(Intent(context, listenerClasses[currentListener]))
+            context.startActivity(Intent(context, currentSession[currentListener]))
             listener.finish()
             // activity must call its nextStep() upon creation itself
             // and write itself into listenerRef
@@ -104,9 +103,9 @@ class TutorialScene {
         currentlyAdvancing = false
         Logger.d(TAG, "prevStep")
         currentStep--
-        if (currentListener == listenerClasses.size) {
+        if (currentListener == currentSession.size) {
             currentListener--
-            context.startActivity(Intent(context, listenerClasses[currentListener]))
+            context.startActivity(Intent(context, currentSession[currentListener]))
             return
         }
         val listener = listenerRef.get() ?: return
@@ -117,7 +116,7 @@ class TutorialScene {
         currentListener--
         if (currentListener != -1) {
             listenerRef.clear()
-            context.startActivity(Intent(context, listenerClasses[currentListener]))
+            context.startActivity(Intent(context, currentSession[currentListener]))
             listener.finish()
         } else {
             leave()
@@ -125,8 +124,6 @@ class TutorialScene {
     }
 
     fun leave() {
-        GlobalScene.shared.tutorialProcessing = false
-
         listenerRef.get()?.finish()
         listenerRef.clear()
     }
@@ -252,18 +249,9 @@ class TutorialScene {
         restartDialog = builder.create()
     }
 
-    private fun totalSteps(): Int {
-        var res = 0
-        res += TutorialGamesActivity.totalSteps
-        res += TutorialLevelsActivity.totalSteps
-        res += TutorialPlayActivity.totalSteps
-        res += TutorialMultiselectActivity.totalSteps
-        return res
-    }
-
     fun updateDialog(tutorialStr: String) {
         tutorialDialog?.setTitle(
-            "${tutorialStr}: ${currentStep + 1} / ${totalSteps()}"
+            "${tutorialStr}: ${currentStep + 1} / ${totalSteps}"
         )
     }
 }

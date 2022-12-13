@@ -43,6 +43,9 @@
         <activity android:name="mathhelper.games.matify.activities.PlayActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="mathhelper.games.matify.tutorial.TutorialChapterSelectActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name="mathhelper.games.matify.tutorial.TutorialMultiselectActivity"
             android:screenOrientation="portrait">
         </activity>

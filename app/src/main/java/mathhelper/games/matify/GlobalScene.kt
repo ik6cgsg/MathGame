@@ -48,7 +48,6 @@ class GlobalScene {
 
     var authStatus = AuthStatus.GUEST
     var googleSignInClient: GoogleSignInClient? = null
-    var tutorialProcessing = false
     var gameMap = hashMapOf<String, Game>()
     var gameOrder = arrayListOf<String>()
     //private var games: ArrayList<Game> = ArrayList()
@@ -77,7 +76,6 @@ class GlobalScene {
 
     fun init() {
         Request.startWorkCycle()
-        tutorialProcessing = false
         gameMap = hashMapOf()
         gameOrder = arrayListOf()
         authStatus = Storage.shared.authStatus()

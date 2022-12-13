@@ -182,7 +182,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
             if (plus.isNotEmpty()) {
                 pointerView.setTrackerToExpression(plus[0], globalMathView)
             }
-        }, 100)
+        }, 600)
     }
 
     private fun levelPassed() {

@@ -39,7 +39,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
-        divider = findViewById(R.id.divider)
+        divider = findViewById(R.id.divider_bottom)
         offline = findViewById(R.id.offline)
         offline.visibility = View.GONE
         setLoading(true)

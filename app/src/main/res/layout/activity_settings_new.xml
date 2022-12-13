@@ -80,7 +80,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/divider_bottom"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
@@ -150,7 +150,7 @@
         app:layout_constraintTop_toBottomOf="@+id/account_label">
 
         <TableRow
-            android:id="@+id/edit_account"
+            android:id="@+id/overview"
             android:layout_width="10dp"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -194,7 +194,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/pass_change"
+            android:id="@+id/playable"
             android:layout_width="10dp"
             android:clickable="true"
             android:background="@drawable/row_clickable"
@@ -237,7 +237,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/logout"
+            android:id="@+id/multiselect"
             android:layout_width="10dp"
             android:clickable="true"
             android:background="@drawable/row_clickable"

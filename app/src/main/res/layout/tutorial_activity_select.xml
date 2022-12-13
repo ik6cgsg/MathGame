@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor">
+
+        <LinearLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="0.12"
+                android:gravity="center"
+                android:onClick="back"
+                android:text="@string/back"
+                android:textColor="?attr/textColor"
+                android:textSize="25sp"
+                android:typeface="monospace" />
+
+            <TextView
+                android:id="@+id/chapters"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:text="@string/tutorial_chapters"
+                android:textColor="?attr/textColor"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:typeface="monospace" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="0.2" />
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/divider_top"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_bar" />
+
+        <TableLayout
+            android:id="@+id/chapter_table"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="20dp"
+            android:stretchColumns="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_top"
+            tools:layout_editor_absoluteY="82dp">
+
+            <TableRow
+                android:id="@+id/overview"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/row_clickable"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="startOverviewTutorial"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:id="@+id/overview_completed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:text="✅"
+                    android:textColor="@color/text_simple_disableable"
+                    android:textSize="21sp"
+                    android:typeface="monospace"
+                    android:visibility="invisible" />
+
+                <Space android:layout_width="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:duplicateParentState="true"
+                    android:singleLine="true"
+                    android:text="@string/tutorial_navigation"
+                    android:textColor="@color/text_simple_disableable"
+                    android:textSize="21sp"
+                    android:typeface="monospace" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp">
+
+                <Space android:layout_width="16dp" />
+
+                <Space android:layout_width="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/dividerColor" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/playable"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/row_clickable"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="startPlayableActivityTutorial"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:id="@+id/playable_completed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:text="✅"
+                    android:textColor="@color/text_simple_disableable"
+                    android:textSize="21sp"
+                    android:typeface="monospace"
+                    android:visibility="invisible" />
+
+                <Space android:layout_width="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:duplicateParentState="true"
+                    android:singleLine="true"
+                    android:text="@string/tutorial_how_to_play"
+                    android:textColor="@color/text_simple_disableable"
+                    android:textSize="21sp"
+                    android:typeface="monospace" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp">
+
+                <Space android:layout_width="16dp" />
+
+                <Space android:layout_width="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/dividerColor" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/multiselect"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/row_clickable"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="startMultiselectTutorial"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:id="@+id/multiselect_completed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:text="✅"
+                    android:textColor="?attr/textColor"
+                    android:textSize="21sp"
+                    android:typeface="monospace"
+                    android:visibility="invisible" />
+
+                <Space android:layout_width="16dp" />
+
+                <TextView
+                    android:id="@+id/logout_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:duplicateParentState="true"
+                    android:singleLine="true"
+                    android:text="@string/tutorial_multiselect"
+                    android:textColor="@color/text_simple_disableable"
+                    android:textSize="21sp"
+                    android:typeface="monospace" />
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

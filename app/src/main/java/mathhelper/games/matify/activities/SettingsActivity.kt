@@ -5,20 +5,16 @@ import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.play.core.review.ReviewManagerFactory
 import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
+import mathhelper.games.matify.tutorial.TutorialChapterSelectActivity
 import java.util.*
 
 
@@ -45,8 +41,8 @@ class SettingsActivity: AppCompatActivity() {
         resetDialog = createResetAlert()
         changeThemeDialog = createChangeThemeAlert()
         changeLanguageDialog = createChangeLanguageAlert()
-        changePassword = findViewById(R.id.pass_change)
-        editAccount = findViewById(R.id.edit_account)
+        changePassword = findViewById(R.id.playable)
+        editAccount = findViewById(R.id.overview)
         logoutText = findViewById(R.id.logout_text)
         if (Build.VERSION.SDK_INT < 24) {
             val settings = findViewById<TextView>(R.id.settings)
@@ -105,7 +101,7 @@ class SettingsActivity: AppCompatActivity() {
     }
 
     fun startTutorialClick(v: View?) {
-        TutorialScene.shared.start(this)
+        startActivity(Intent(this, TutorialChapterSelectActivity::class.java))
     }
 
     fun back(v: View?) {
