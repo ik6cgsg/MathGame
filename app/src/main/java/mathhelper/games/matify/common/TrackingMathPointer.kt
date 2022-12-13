@@ -64,6 +64,7 @@ class TrackingMathPointer : androidx.appcompat.widget.AppCompatImageView {
     }
 
     fun pointToStaticView(v: View, adaptSizeToView: Boolean = false) {
+        Logger.d(TAG, "pointToStaticView")
         mode = TRACKING_STATIC
         visibility = View.VISIBLE
         val loc = IntArray(2)

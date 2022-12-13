@@ -264,18 +264,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         showMessage(R.string.congratulations)
         globalMathView.center()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
-        val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_basic_finished))
-        tutorialDialog.setButton(
-            AlertDialog.BUTTON_NEGATIVE,
-            resources.getString(R.string.step_back)
-        ) { _: DialogInterface, _: Int ->
-            Handler().postDelayed({
-                loadLevel()
-                TutorialScene.shared.prevStep(this)
-            }, 100)
-        }
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+        TutorialScene.shared.nextStep(this)
     }
 
     override fun showEndExpression(v: View?) {

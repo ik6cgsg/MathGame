@@ -71,6 +71,7 @@
 
     <string name="tutorial">Туториал</string>
     <string name="tutorial_chapters">Главы обучения</string>
+    <string name="tutorial_chapter_finished">Глава завершена</string>
     <string name="tutorial_navigation">Навигация</string>
     <string name="tutorial_how_to_play">Как играть</string>
     <string name="tutorial_multiselect">Мультивыбор</string>

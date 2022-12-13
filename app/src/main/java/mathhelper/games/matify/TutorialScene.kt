@@ -78,8 +78,6 @@ class TutorialScene {
         if (currentListener == -1) {
             currentListener = 0
             context.startActivity(Intent(context, currentSession[currentListener]))
-            // activity must call its nextStep() upon creation itself
-            // and write itself into listenerRef
             return
         }
         val listener = listenerRef.get() ?: return
@@ -90,12 +88,10 @@ class TutorialScene {
         currentListener++
         if (currentListener != currentSession.size) {
             listenerRef.clear()
-            context.startActivity(Intent(context, currentSession[currentListener]))
             listener.finish()
-            // activity must call its nextStep() upon creation itself
-            // and write itself into listenerRef
+            context.startActivity(Intent(context, currentSession[currentListener]))
         } else {
-            leave()
+            AndroidUtil.showDialog(createFinishDialog(context), backMode = BackgroundMode.NONE)
         }
     }
 
@@ -247,6 +243,23 @@ class TutorialScene {
             .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
             }
         restartDialog = builder.create()
+    }
+
+    fun createFinishDialog(context: Context): AlertDialog {
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.alertDialogTheme
+        )
+        builder
+            .setTitle(R.string.tutorial_chapter_finished)
+            .setMessage(R.string.tutorial_on_level_seems)
+            .setPositiveButton(R.string.tutorial_on_level_i_am_pro) { _: DialogInterface, _: Int ->
+                leave()
+            }
+            .setNegativeButton(R.string.restart_info) { _: DialogInterface, _: Int ->
+                restart(context)
+            }
+            .setCancelable(false)
+        return builder.create()
     }
 
     fun updateDialog(tutorialStr: String) {

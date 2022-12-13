@@ -1,7 +1,6 @@
 package mathhelper.games.matify.tutorial
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
@@ -22,7 +21,6 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
 
     private lateinit var buttonTable: TableLayout
     private lateinit var pointerCentralView: TextView
-    private lateinit var pointerMultiselectView: TextView
     private lateinit var pointerView: TrackingMathPointer
 
     companion object {
@@ -46,7 +44,6 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
 
         // noRules = findViewById(R.id.no_rules)
         pointerCentralView = findViewById(R.id.pointer_central)
-        pointerMultiselectView = findViewById(R.id.pointer_multiselect)
         pointerView = findViewById(R.id.pointer)
         buttonTable = bottomSheet.findViewById(R.id.account_table)
     }
@@ -56,6 +53,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
         setTheme(Storage.shared.themeInt())
         setContentView(R.layout.tutorial_activity_play_new)
         setViews()
+        pointerView.visibility = View.INVISIBLE
         TutorialScene.shared.createLeaveDialog(this)
         TutorialScene.shared.createTutorialDialog(this)
         TutorialScene.shared.createRestartDialog(this)
@@ -143,23 +141,21 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
 
         Logger.d(TAG, "explainMultiselectTutorial")
         showMessage(R.string.tutorial_on_level_multiselect_explanation)
-        TutorialScene.shared.animateUp(pointerMultiselectView)
         val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_multiselect_expression)
         )
-        AndroidUtil.showDialog(tutorialDialog, bottomGravity = false, backMode = BackgroundMode.NONE)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     private fun actionMultiselectTutorial() {
         Logger.d(TAG, "actionMultiselectTutorial")
         showMessage(R.string.tutorial_on_level_multiselect_action)
-        TutorialScene.shared.animateUp(pointerMultiselectView)
         val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
         tutorialDialog.setMessage(
             resources.getString(R.string.tutorial_on_level_multiselect_details)
         )
-        AndroidUtil.showDialog(tutorialDialog, bottomGravity = false, backMode = BackgroundMode.NONE)
+        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
     }
 
     private fun startMultiselectTutorial() {
@@ -190,27 +186,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
         showMessage(R.string.congratulations)
         globalMathView.center()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
-
-        val tutorialDialog = TutorialScene.shared.tutorialDialog ?: return
-        tutorialDialog.setMessage(resources.getString(R.string.tutorial_on_level_seems))
-        tutorialDialog.setButton(
-            AlertDialog.BUTTON_POSITIVE,
-            resources.getString(R.string.tutorial_on_level_i_am_pro)
-        ) { _: DialogInterface, _: Int ->
-            Handler().postDelayed({
-                TutorialScene.shared.nextStep(this)
-            }, 100)
-        }
-        tutorialDialog.setButton(
-            AlertDialog.BUTTON_NEGATIVE,
-            resources.getString(R.string.step_back)
-        ) { _: DialogInterface, _: Int ->
-            Handler().postDelayed({
-                loadLevel()
-                TutorialScene.shared.prevStep(this)
-            }, 100)
-        }
-        AndroidUtil.showDialog(tutorialDialog, backMode = BackgroundMode.NONE)
+        TutorialScene.shared.nextStep(this)
     }
 
     override fun showEndExpression(v: View?) {

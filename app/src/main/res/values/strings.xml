@@ -84,6 +84,7 @@
 
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_chapters">Tutorial chapters</string>
+    <string name="tutorial_chapter_finished">Chapter finished</string>
     <string name="tutorial_navigation">Navigation</string>
     <string name="tutorial_how_to_play">How to play</string>
     <string name="tutorial_multiselect">Multiselect</string>
