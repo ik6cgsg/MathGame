@@ -20,7 +20,8 @@ import mathhelper.games.matify.common.*
 import mathhelper.twf.expressiontree.ExpressionSubstitution
 import java.lang.ref.WeakReference
 
-abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneListener, GlobalMathViewListener {
+abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneListener, GlobalMathViewListener,
+    RuleMathViewListener {
     protected abstract val TAG: String
 
     // layout elements
@@ -110,7 +111,7 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
 
     abstract fun showEndExpression(v: View?)
 
-    abstract fun onRuleClicked(ruleView: RuleMathView)
+    abstract override fun onRuleClicked(ruleView: RuleMathView)
 
     abstract override fun onAtomClicked()
 

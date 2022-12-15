@@ -22,21 +22,21 @@ interface GlobalMathViewListener {
     fun clearRules()
 }
 
-class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
+class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "GlobalMathView"
     var expression: ExpressionNode? = null
         private set
     var currentAtoms: MutableList<ExpressionNode> = mutableListOf()
         private set
     var multiselectionMode = false
-    var currentRulesToResult : Map<ExpressionSubstitution, ExpressionNode>? = null
+    var currentRulesToResult: Map<ExpressionSubstitution, ExpressionNode>? = null
     var scale = 1.0f
     private var mathPair: MathResolverPair? = null
     private var type: String? = ""
     private var dX = 0f
     private var dY = 0f
-    private var centerX = 0f
-    private var centerY = 0f
+    private var centerX: Float? = null
+    private var centerY: Float? = null
     private var scaleListener = MathScaleListener()
     private lateinit var scaleDetector: ScaleGestureDetector
     private var ignoreUpAfterDrag = 0
@@ -44,12 +44,12 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     var listenerRef: WeakReference<GlobalMathViewListener> = WeakReference(null)
 
     /** INITIALIZATION **/
-    constructor(context: Context): super(context) {
+    constructor(context: Context) : super(context) {
         Logger.d(TAG, "constructor from context")
         setDefaults(context)
     }
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         Logger.d(TAG, "constructor from attrs")
         setDefaults(context)
     }
@@ -94,7 +94,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionStr: String, type: String?) {
         Logger.d(TAG, "setExpression from str")
-        if (centerX == 0f && centerY == 0f) {
+        if (centerX == null && centerY == null) {
             centerX = x
             centerY = y
         }
@@ -105,7 +105,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
         Logger.d(TAG, "setExpression from node")
-        if (centerX == 0f && centerY == 0f) {
+        if (centerX == null || centerY == null) {
             centerX = x
             centerY = y
         }
@@ -170,7 +170,8 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                     val newx = x + difX
                     val newy = y + difY
                     if (abs(newx - x) < 100 && abs(newy - y) < 100 &&
-                        AndroidUtil.insideParentWithOffset(this, difX, difY)) {
+                        AndroidUtil.insideParentWithOffset(this, difX, difY)
+                    ) {
                         animate()
                             .x(newx)
                             .y(newy)
@@ -200,8 +201,8 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         animate()
             .scaleX(scale)
             .scaleY(scale)
-            .x(centerX)
-            .y(centerY)
+            .x(centerX ?: return)
+            .y(centerY ?: return)
             .translationX(0f)
             .translationY(0f)
             .setDuration(100)
@@ -251,14 +252,18 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
                         currentAtoms.add(atom)
                     }
                     val topNode = findLowestSubtreeTopOfSelectedNodesInExpression(expression!!, currentAtoms)
-                    mathPair!!.recolorExpressionInMultiSelectionMode(currentAtoms, topNode, atomMultiColor)//, atomSecondColor)
+                    mathPair!!.recolorExpressionInMultiSelectionMode(
+                        currentAtoms,
+                        topNode,
+                        atomMultiColor
+                    )//, atomSecondColor)
                 } else {
                     currentAtoms.clear()
                     currentAtoms.add(atom)
                 }
                 setTextFromMathPair()
                 listenerRef.get()?.onAtomClicked()
-            } else if(!multiselectionMode) {
+            } else if (!multiselectionMode) {
                 clearExpression()
             }
         }
@@ -282,7 +287,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
     private fun setTextFromExpression() {
         Logger.d(TAG, "setTextFromExpression")
         MatifySpan.clearSelected()
-        mathPair = when(type) {
+        mathPair = when (type) {
             TaskType.SET.str -> MathResolver.resolveToPlain(expression!!, taskType = TaskType.SET)
             else -> MathResolver.resolveToPlain(expression!!)
         }
@@ -308,7 +313,7 @@ class GlobalMathView: androidx.appcompat.widget.AppCompatTextView {
         }
     }
 
-    inner class MathScaleListener: ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    inner class MathScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             scale *= detector.scaleFactor
             scale = min(max(scale, 0.3f), 7f)

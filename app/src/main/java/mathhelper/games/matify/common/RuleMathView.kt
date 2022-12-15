@@ -13,8 +13,14 @@ import mathhelper.games.matify.activities.AbstractPlayableActivity
 import mathhelper.games.matify.mathResolver.MathResolver
 import mathhelper.games.matify.mathResolver.VariableStyle
 import java.lang.Exception
+import java.lang.ref.WeakReference
 
-class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatTextView {
+interface RuleMathViewListener {
+    fun onRuleClicked(ruleView: RuleMathView)
+}
+
+class RuleMathView : HorizontalScrollView {
+    //androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "RuleMathView"
     private val moveTreshold = 10
     var subst: ExpressionSubstitution? = null
@@ -22,15 +28,15 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     lateinit var ruleView: TextView
     private var needClick = false
     private var moveCnt = 0
-    lateinit var activity: AbstractPlayableActivity
+    lateinit var listenerRef: WeakReference<RuleMathViewListener>
 
     /** INITIALIZATION **/
-    constructor(activity: AbstractPlayableActivity): super(activity) {
-        this.activity = activity
+    constructor(activity: AbstractPlayableActivity) : super(activity) {
+        this.listenerRef = WeakReference(activity)
         setDefaults(activity)
     }
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         val params = context.obtainStyledAttributes(attrs, R.styleable.RuleMathView)
         val substFrom = params.getString(R.styleable.RuleMathView_substFrom)
         val substTo = params.getString(R.styleable.RuleMathView_substTo)
@@ -53,12 +59,13 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         ruleView.isClickable = true
         ruleView.isFocusable = true
         ruleView.setOnClickListener {
-            activity.onRuleClicked(this)
+            listenerRef.get()?.onRuleClicked(this)
         }
         ruleView.setLineSpacing(0f, Constants.mathLineSpacing)
         ruleView.setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
-            Constants.defaultPadding, Constants.defaultPadding)
+            Constants.defaultPadding, Constants.defaultPadding
+        )
         ruleView.includeFontPadding = false
         /*setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
