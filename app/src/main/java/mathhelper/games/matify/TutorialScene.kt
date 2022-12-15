@@ -31,7 +31,7 @@ class TutorialScene {
 
     var listenerRef: WeakReference<TutorialSceneListener> = WeakReference(null)
 
-    private var currentSession: Array<out Class<*>> = arrayOf()
+    private var currentSession: Array<out Class<out TutorialSceneListener>> = arrayOf()
     var totalSteps: Int = 0
     var currentStep = -1
     private var currentListener = -1
@@ -62,7 +62,7 @@ class TutorialScene {
         tutorialGame?.load(context)
     }
 
-    fun startSession(context: Context, stepsInSession: Int, vararg activitiesToLaunch: Class<*>) {
+    fun startSession(context: Context, stepsInSession: Int, vararg activitiesToLaunch: Class<out TutorialSceneListener>) {
         leave()
         totalSteps = stepsInSession
         currentSession = activitiesToLaunch
