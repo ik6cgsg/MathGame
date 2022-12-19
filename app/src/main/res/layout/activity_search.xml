@@ -32,21 +32,20 @@
             android:textStyle="bold"
             android:typeface="monospace" />
 
-        <android.widget.SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/search"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:iconifiedByDefault="false"
-            android:paddingHorizontal="0dp"
-            android:queryBackground="?attr/backgroundColor"
-            android:queryHint="@string/search_hint"
-            android:searchHintIcon="@null"
-            android:searchIcon="@null">
+            app:iconifiedByDefault="false"
+            app:queryBackground="?attr/backgroundColor"
+            app:queryHint="@string/search_hint"
+            app:searchHintIcon="@null"
+            app:searchIcon="@null">
 
             <requestFocus />
-        </android.widget.SearchView>
+        </androidx.appcompat.widget.SearchView>
 
     </LinearLayout>
 
@@ -239,7 +238,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></eightbitlab.com.blurview.BlurView>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

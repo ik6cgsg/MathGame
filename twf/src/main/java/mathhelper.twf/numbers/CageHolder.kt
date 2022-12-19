@@ -53,8 +53,8 @@ class CageHolder(private val minPoint : ArrayList<Double>, private val maxPoint 
             }
 
             for (i in 0..dimension) {
-                intersectionMinPoint.add(domains.maxBy { it.minPoint[i] }?.minPoint!![i])
-                intersectionMaxPoint.add(domains.minBy { it.maxPoint[i] }?.maxPoint!![i])
+                intersectionMinPoint.add(domains.maxByOrNull { it.minPoint[i] }?.minPoint!![i])
+                intersectionMaxPoint.add(domains.minByOrNull { it.maxPoint[i] }?.maxPoint!![i])
             }
 
             for (i in 0..dimension) {

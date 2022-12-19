@@ -9,6 +9,7 @@ import org.json.JSONObject
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.*
+import java.lang.ref.WeakReference
 
 class AccountActivity: AppCompatActivity() {
     private val TAG = "AccountActivity"
@@ -32,7 +33,7 @@ class AccountActivity: AppCompatActivity() {
         nameView = findViewById(R.id.name)
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
-        GlobalScene.shared.loadingElementRef = findViewById(R.id.progress)
+        GlobalScene.shared.loadingElementRef = WeakReference(findViewById(R.id.progress))
     }
 
     override fun onResume() {

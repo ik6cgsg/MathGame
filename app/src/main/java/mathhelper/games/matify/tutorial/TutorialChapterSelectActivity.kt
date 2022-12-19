@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
+import mathhelper.games.matify.common.Storage
 
 class TutorialChapterSelectActivity: AppCompatActivity() {
     private val TAG = "TutorialChapterSelectActivity"
@@ -21,6 +22,7 @@ class TutorialChapterSelectActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+        setTheme(Storage.shared.themeInt())
         setContentView(R.layout.tutorial_activity_select)
         setViews()
 

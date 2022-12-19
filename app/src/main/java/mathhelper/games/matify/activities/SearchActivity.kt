@@ -16,9 +16,9 @@ import mathhelper.games.matify.SearchType
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.game.Game
 
-class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, ConnectionListener {
+class SearchActivity: AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener, ConnectionListener {
     private val TAG = "SearchActivity"
-    private lateinit var searchView: SearchView
+    private lateinit var searchView: androidx.appcompat.widget.SearchView
     private lateinit var divider: View
     private lateinit var progress: ProgressBar
     private lateinit var localGamesList: LinearLayout

@@ -215,7 +215,7 @@ class FactComporator(
                                            transformations: Collection<FactSubstitution>,
                                            maxTransformationWeight: Double = compiledConfiguration.comparisonSettings.maxTransformationWeight,
                                            maxBustCount: Int = compiledConfiguration.comparisonSettings.maxBustCount,
-                                           minPossibleTransformationWeight: Double = transformations.minBy { it.weight }?.weight
+                                           minPossibleTransformationWeight: Double = transformations.minByOrNull { it.weight }?.weight
                                                    ?: 1.0,
                                            additionalFactsSortedIdentifiers: List<String> = additionalFacts.map { it.computeOutIdentifier(true) }.sorted(),
                                            additionalFactUsed: MutableList<Boolean>): Boolean {

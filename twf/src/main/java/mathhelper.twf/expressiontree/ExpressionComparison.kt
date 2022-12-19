@@ -334,7 +334,7 @@ class ExpressionComporator(
     fun compareWithTreeTransformationRules(leftOriginal: ExpressionNode, rightOriginal: ExpressionNode, transformations: Collection<ExpressionSubstitution>,
                                            maxTransformationWeight: Double = compiledConfiguration.comparisonSettings.maxExpressionTransformationWeight,
                                            maxBustCount: Int = compiledConfiguration.comparisonSettings.maxExpressionBustCount,
-                                           minTransformationWeight: Double = transformations.minBy { it.weight }?.weight
+                                           minTransformationWeight: Double = transformations.minByOrNull { it.weight }?.weight
                                                    ?: 1.0,
                                            expressionChainComparisonType: ComparisonType = ComparisonType.EQUAL,
                                            maxDistBetweenDiffSteps: Double = 1.0): Boolean {
@@ -358,7 +358,7 @@ class ExpressionComporator(
     fun compareWithTreeTransformationRulesInternal(leftOriginal: ExpressionNode, rightOriginal: ExpressionNode, transformations: Collection<ExpressionSubstitution>,
                                                    maxTransformationWeight: Double = compiledConfiguration.comparisonSettings.maxExpressionTransformationWeight,
                                                    maxBustCount: Int = compiledConfiguration.comparisonSettings.maxExpressionBustCount,
-                                                   minTransformationWeight: Double = transformations.minBy { it.weight }?.weight
+                                                   minTransformationWeight: Double = transformations.minByOrNull { it.weight }?.weight
                                                            ?: 1.0,
                                                    expressionChainComparisonType: ComparisonType = ComparisonType.EQUAL,
                                                    sortOperands: Boolean = false,

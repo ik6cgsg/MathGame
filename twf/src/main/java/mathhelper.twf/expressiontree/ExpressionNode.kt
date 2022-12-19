@@ -602,7 +602,7 @@ data class ExpressionNode(
         if (nodeType == NodeType.VARIABLE) {
             return 1
         } else {
-            val maxMinNumberOfPointsForEquality = children.map { it.getMaxMinNumberOfPointsForEquality() }.max() ?: 1
+            val maxMinNumberOfPointsForEquality = children.map { it.getMaxMinNumberOfPointsForEquality() }.maxOrNull() ?: 1
             return max(
                     maxMinNumberOfPointsForEquality, functionStringDefinition?.function?.minNumberOfPointsForEquality
                     ?: 1
