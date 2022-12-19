@@ -32,7 +32,7 @@ class AccountActivity: AppCompatActivity() {
         nameView = findViewById(R.id.name)
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
-        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
+        GlobalScene.shared.loadingElementRef = findViewById(R.id.progress)
     }
 
     override fun onResume() {

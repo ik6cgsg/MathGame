@@ -2,15 +2,14 @@ package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.GlobalScene
@@ -20,7 +19,6 @@ import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.Level
 import mathhelper.games.matify.level.LevelResult
 import mathhelper.games.matify.level.StateType
-import org.w3c.dom.Text
 import kotlin.collections.ArrayList
 
 class LevelsActivity: AppCompatActivity(), ConnectionListener {
@@ -41,7 +39,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_levels)
         progress = findViewById(R.id.progress)
-        divider = findViewById(R.id.divider)
+        divider = findViewById(R.id.divider_bottom)
         offline = findViewById(R.id.offline)
         offline.visibility = View.GONE
         setLoading(true)
@@ -55,7 +53,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
         val title = findViewById<TextView>(R.id.levels)
         title.text = GlobalScene.shared.currentGame?.getNameByLanguage(resources.configuration.locale.language) ?: title.text
         initSwipeRefresher()
-        LevelScene.shared.levelsActivity = this
+        LevelScene.shared.setLA(this)
         ConnectionChecker.shared.subscribe(this)
     }
 
@@ -119,7 +117,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun finish() {
-        LevelScene.shared.levelsActivity = null
+        LevelScene.shared.setLA(null)
         super.finish()
     }
 
@@ -187,7 +185,7 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
             }
             val themeName = Storage.shared.theme()
             levelView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
-            levelView.background = getDrawable(R.drawable.button_rect)
+            levelView.background = ContextCompat.getDrawable(this, R.drawable.button_rect)
             levelView.setOnClickListener {
                 LevelScene.shared.currentLevelIndex = i
             }
@@ -215,10 +213,10 @@ class LevelsActivity: AppCompatActivity(), ConnectionListener {
 
     private fun getBackgroundByDif(dif: Double): Drawable? {
         return when {
-            dif < 3 -> getDrawable(R.drawable.level_easy)
-            dif < 5 -> getDrawable(R.drawable.level_medium)
-            dif < 9 -> getDrawable(R.drawable.level_hard)
-            else -> getDrawable(R.drawable.level_insane)
+            dif < 3 -> ContextCompat.getDrawable(this, R.drawable.level_easy)
+            dif < 5 -> ContextCompat.getDrawable(this, R.drawable.level_medium)
+            dif < 9 -> ContextCompat.getDrawable(this, R.drawable.level_hard)
+            else -> ContextCompat.getDrawable(this, R.drawable.level_insane)
         }
     }
 }

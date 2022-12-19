@@ -10,6 +10,7 @@ import androidx.core.widget.doAfterTextChanged
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.common.*
+import java.lang.ref.WeakReference
 
 class SignUpActivity: AppCompatActivity() {
     private val TAG = "SignUpActivity"
@@ -39,7 +40,7 @@ class SignUpActivity: AppCompatActivity() {
         fullNameView = findViewById(R.id.full_name)
         additionalView = findViewById(R.id.additional)
         signButton = findViewById(R.id.sign_up)
-        GlobalScene.shared.loadingElement = findViewById(R.id.progress)
+        GlobalScene.shared.loadingElementRef = WeakReference(findViewById(R.id.progress))
     }
 
     override fun onResume() {

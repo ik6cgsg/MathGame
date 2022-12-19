@@ -48,9 +48,11 @@ class SimpleMathView: androidx.appcompat.widget.AppCompatTextView {
 
     private fun setDefaults() {
         Logger.d(TAG, "setDefaults")
-        val themeName = Storage.shared.theme()
+        // val themeName = Storage.shared.theme()
         setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
-        typeface = ResourcesCompat.getFont(context, R.font.roboto)
+        if (!isInEditMode) {
+            typeface = ResourcesCompat.getFont(context, R.font.roboto)
+        }
         textSize = Constants.simpleMathViewSize
         setLineSpacing(0f, Constants.mathLineSpacing)
         setPadding(

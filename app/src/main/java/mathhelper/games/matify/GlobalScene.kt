@@ -2,13 +2,13 @@ package mathhelper.games.matify
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Handler
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.gson.Gson
 import kotlinx.coroutines.*
+import mathhelper.games.matify.activities.AbstractPlayableActivity
 import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.SplashActivity
@@ -20,6 +20,7 @@ import mathhelper.games.matify.parser.GsonParser
 import mathhelper.games.matify.statistics.*
 import org.json.JSONObject
 import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -47,7 +48,6 @@ class GlobalScene {
 
     var authStatus = AuthStatus.GUEST
     var googleSignInClient: GoogleSignInClient? = null
-    var tutorialProcessing = false
     var gameMap = hashMapOf<String, Game>()
     var gameOrder = arrayListOf<String>()
     //private var games: ArrayList<Game> = ArrayList()
@@ -66,19 +66,16 @@ class GlobalScene {
             }
             currentGame = gameMap[gameOrder[value]]
             if (currentGame != null) {
-                Handler().postDelayed({
-                    gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
-                }, 100)
+                gamesActivity?.startActivity(Intent(gamesActivity, LevelsActivity::class.java))
             }
         }
     var currentGame: Game? = null
         private set
-    var loadingElement: ProgressBar? = null
+    var loadingElementRef: WeakReference<ProgressBar> = WeakReference(null)
     private val activeJobs = arrayListOf<Job>()
 
     fun init() {
         Request.startWorkCycle()
-        tutorialProcessing = false
         gameMap = hashMapOf()
         gameOrder = arrayListOf()
         authStatus = Storage.shared.authStatus()
@@ -96,7 +93,7 @@ class GlobalScene {
         errorground: () -> (Unit),
         toastError: Boolean = true
     ) {
-        loadingElement?.visibility = View.VISIBLE
+        loadingElementRef.get()?.visibility = View.VISIBLE
         val task = GlobalScope.launch {
             try {
                 background()
@@ -124,7 +121,7 @@ class GlobalScene {
                 }
             } finally {
                 context.runOnUiThread {
-                    loadingElement?.visibility = View.INVISIBLE
+                    loadingElementRef.get()?.visibility = View.INVISIBLE
                 }
             }
         }
@@ -132,9 +129,7 @@ class GlobalScene {
     }
 
     fun resetAll(success: () -> Unit, error: () -> Unit) {
-        if (LevelScene.shared.levelsActivity != null) {
-            LevelScene.shared.back()
-        }
+        LevelScene.shared.levelsActivityRef.get()?.let { LevelScene.shared.back() }
         asyncTask(gamesActivity!!, background = {
             val token = Storage.shared.serverToken()
             Request.resetHistory(RequestData(RequestPage.USER_HISTORY, token, RequestMethod.DELETE))
@@ -147,9 +142,7 @@ class GlobalScene {
     }
 
     fun logout() {
-        if (LevelScene.shared.levelsActivity != null) {
-            LevelScene.shared.back()
-        }
+        LevelScene.shared.levelsActivityRef.get()?.let { LevelScene.shared.back() }
         Storage.shared.resetResults()
         Storage.shared.clearUserInfo()
         Storage.shared.clearAllGames()

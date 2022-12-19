@@ -1,16 +1,10 @@
 package mathhelper.games.matify.mathResolver
 
-import android.graphics.Paint
-import android.graphics.Typeface
-import android.text.style.ScaleXSpan
-import android.util.Log
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.NodeType
-import mathhelper.games.matify.common.Constants
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.mathResolver.mathResolverNodes.*
 import java.lang.Exception
-import java.lang.Math.pow
 import kotlin.math.pow
 
 open class MathResolverNodeBase(
@@ -33,13 +27,15 @@ open class MathResolverNodeBase(
         const val multiplierDif = 0.81f
         private val multiplierMin = multiplierDif.toDouble().pow(2.0).toFloat()
 
-        fun createNode(expression: ExpressionNode, needBrackets: Boolean,
-                       style: VariableStyle, taskType: TaskType, multiplier: Float = 1f): MathResolverNodeBase {
+        fun createNode(
+            expression: ExpressionNode, needBrackets: Boolean,
+            style: VariableStyle, taskType: TaskType, multiplier: Float = 1f
+        ): MathResolverNodeBase {
             val node = if (expression.nodeType == NodeType.VARIABLE) {
                 val (value, customized) = CustomSymbolsHandler.getPrettyValue(expression, style, taskType)
                 val variable = MathResolverNodeBase(expression, false, null, value.length, 1)
                 variable.customized = customized
-                variable.outputValue =  if (customized) {
+                variable.outputValue = if (customized) {
                     value
                 } else {
                     expression.value

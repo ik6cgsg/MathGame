@@ -7,6 +7,48 @@
     android:background="?attr/backgroundColor"
     tools:context=".activities.PasswordActivity">
 
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.12"
+            android:gravity="center"
+            android:onClick="back"
+            android:text="@string/back"
+            android:textColor="@color/light_click"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/levels"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.48"
+            android:gravity="center"
+            android:text="@string/big_password"
+            android:textColor="?attr/textColor"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0.2" />
+    </LinearLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/newInputLayout"
         android:layout_width="0dp"
@@ -17,7 +59,7 @@
         android:textColorHint="?attr/colorHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress"
+        app:layout_constraintTop_toBottomOf="@id/oldInputLayout"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="?attr/colorHint">
 
@@ -59,49 +101,16 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/levels"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/big_password"
-        android:textColor="?attr/textColor"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:typeface="monospace"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:onClick="back"
-        android:text="@string/back"
-        android:textColor="@color/light_click"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:typeface="monospace"
-        app:layout_constraintBottom_toBottomOf="@+id/levels"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <View
-        android:id="@+id/divider"
+        android:id="@+id/divider_bottom"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="?attr/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/levels" />
+        app:layout_constraintTop_toBottomOf="@id/top_bar" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -115,7 +124,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_bottom" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/oldInputLayout"

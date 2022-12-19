@@ -2,7 +2,6 @@ package mathhelper.games.matify.mathResolver
 
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.util.Log
 import mathhelper.twf.api.stringToExpression
 import mathhelper.twf.api.structureStringToExpression
 import mathhelper.twf.expressiontree.ExpressionNode

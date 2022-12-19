@@ -2,34 +2,22 @@ package mathhelper.games.matify.activities
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.common.*
-import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.game.GameResult
 import java.util.*
-import kotlin.collections.ArrayList
 
 class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
     private val TAG = "GamesActivity"
@@ -62,11 +50,11 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
         progress = findViewById(R.id.progress)
-        gameDivider = findViewById(R.id.divider)
+        gameDivider = findViewById(R.id.divider_bottom)
         setLoading(true)
         GlobalScene.shared.gamesActivity = this
         gamesList = findViewById(R.id.games_list)
-        gameDivider = findViewById(R.id.divider)
+        gameDivider = findViewById(R.id.divider_bottom)
         searchView = findViewById(R.id.search)
         searchView.compoundDrawables[Constants.drawableEnd].setVisible(false, true)
         serverDivider = findViewById(R.id.server_divider)
@@ -207,19 +195,19 @@ class GamesActivity: AppCompatActivity(), ConnectionListener, LogStateListener {
         alertInfo?.dismiss()
     }
 
-    private fun askForTutorialDialog() {
-        val builder = AlertDialog.Builder(
-            this, ThemeController.shared.alertDialogTheme
-        )
-        builder
-            .setTitle(R.string.welcome)
-            .setMessage(R.string.wanna_see_tutorial)
-            .setPositiveButton(R.string.yep) { dialog: DialogInterface, id: Int ->
-                TutorialScene.shared.start(this)
-            }
-            .setNegativeButton(R.string.no_i_am_pro) { dialog: DialogInterface, id: Int ->
-            }
-        val dialog = builder.create()
-        AndroidUtil.showDialog(dialog)
-    }
+//    private fun askForTutorialDialog() {
+//        val builder = AlertDialog.Builder(
+//            this, ThemeController.shared.alertDialogTheme
+//        )
+//        builder
+//            .setTitle(R.string.welcome)
+//            .setMessage(R.string.wanna_see_tutorial)
+//            .setPositiveButton(R.string.yep) { dialog: DialogInterface, id: Int ->
+//                TutorialScene.shared.start(this)
+//            }
+//            .setNegativeButton(R.string.no_i_am_pro) { dialog: DialogInterface, id: Int ->
+//            }
+//        val dialog = builder.create()
+//        AndroidUtil.showDialog(dialog)
+//    }
 }

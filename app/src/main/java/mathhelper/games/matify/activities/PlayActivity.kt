@@ -3,141 +3,93 @@ package mathhelper.games.matify.activities
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
-import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BulletSpan
-import android.util.Log
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderScriptBlur
 import mathhelper.games.matify.*
 import mathhelper.games.matify.common.*
+import mathhelper.games.matify.level.History
 import mathhelper.games.matify.level.StateType
-import kotlin.math.max
-import kotlin.math.min
+import mathhelper.games.matify.statistics.Statistics
+import mathhelper.twf.expressiontree.ExpressionNode
+import java.lang.ref.WeakReference
 
-
-class PlayActivity: AppCompatActivity(), ConnectionListener {
-    private val TAG = "PlayActivity"
-    private var needClear = false
+class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneListener, InstrumentSceneListener,
+    TimerListener {
+    override val TAG = "PlayActivity"
     private var loading = false
-    private lateinit var looseDialog: AlertDialog
+    private lateinit var loseDialog: AlertDialog
     private lateinit var winDialog: AlertDialog
     private lateinit var continueDialog: AlertDialog
     private lateinit var progress: ProgressBar
 
-    lateinit var mainView: ConstraintLayout
-    lateinit var mainViewAnim: TransitionDrawable
-    lateinit var globalMathView: GlobalMathView
-    lateinit var endExpressionViewLabel: TextView
-    lateinit var endExpressionMathView: SimpleMathView
-    lateinit var messageView: TextView
-    lateinit var rulesLinearLayout: LinearLayout
-    lateinit var rulesScrollView: ScrollView
-    lateinit var timerView: TextView
-    lateinit var blurView: BlurView
-    lateinit var bottomSheet: LinearLayout
-    lateinit var rulesMsg: TextView
     lateinit var offline: TextView
 
-    private lateinit var restart: TextView
-    private lateinit var back: TextView
-    private lateinit var info: Button
-    private lateinit var previous: TextView
+    lateinit var back: TextView
+    lateinit var info: TextView
+    lateinit var restart: TextView
+    override lateinit var previous: TextView
 
-    private val messageTimer = MessageTimer()
+    private val messageTimer = MessageTimer(this)
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        Logger.d(TAG, "onTouchEvent")
-        if (globalMathView.onTouchEvent(event)) {
-            needClear = false
-            return true
-        }
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                if (!globalMathView.multiselectionMode)
-                    needClear = true
-            }
-            MotionEvent.ACTION_UP -> {
-                if (needClear) {
-                    try {
-                        globalMathView.clearExpression()
-                        PlayScene.shared.clearRules()
-                    } catch (e: Exception) {
-                        Logger.e(TAG, "Error while clearing rules on touch: ${e.message}")
-                        Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-        return true
-    }
-
-    private fun setViews() {
+    override fun setViews() {
+        super.setViews()
         mainView = findViewById(R.id.activity_play)
         mainViewAnim = mainView.background as TransitionDrawable
-        bottomSheet = findViewById(R.id.bottom_sheet)
-        globalMathView = findViewById(R.id.global_expression)
-        endExpressionViewLabel = findViewById(R.id.end_expression_label)
-        endExpressionViewLabel.visibility = View.GONE
-        endExpressionMathView = findViewById(R.id.end_expression_math_view)
-        endExpressionMathView.visibility = View.GONE
-        messageView = findViewById(R.id.message_view)
-        timerView = findViewById(R.id.timer_view)
+
         back = findViewById(R.id.back)
         restart = findViewById(R.id.restart)
         previous = findViewById(R.id.previous)
         previous.isEnabled = false
         info = findViewById(R.id.info)
         progress = findViewById(R.id.progress)
-        blurView = findViewById(R.id.blurView)
         offline = findViewById(R.id.offline)
         offline.visibility = View.GONE
-        rulesLinearLayout = bottomSheet.findViewById(R.id.rules_linear_layout)
-        rulesScrollView = bottomSheet.findViewById(R.id.rules_scroll_view)
-        rulesMsg = bottomSheet.findViewById(R.id.rules_msg)
-        InstrumentScene.shared.init(bottomSheet, this)
         ConnectionChecker.shared.subscribe(this)
+    }
+
+    override fun showMessage(varDescr: Int) {
+        super.showMessage(varDescr)
+        messageTimer.cancel()
+        messageTimer.start()
+    }
+
+    override fun showMessage(str: String) {
+        messageView.text = str
+        messageView.visibility = View.VISIBLE
+        messageTimer.cancel()
+        messageTimer.start()
     }
 
     private fun setLongClick() {
         back.setOnLongClickListener {
-            showMessage(getString(R.string.back_info))
+            showMessage(R.string.back_info)
             true
         }
         previous.setOnLongClickListener {
             showMessage(
-                getString(R.string.previous_multiselect_info),
-                globalMathView.multiselectionMode,
-                getString(R.string.previous_info)
+                if (globalMathView.multiselectionMode)
+                    R.string.previous_multiselect_info
+                else
+                    R.string.previous_info
             )
             true
         }
         restart.setOnLongClickListener {
-            showMessage(getString(R.string.restart_info))
+            showMessage(R.string.restart_info)
             true
         }
         info.setOnLongClickListener {
-            showMessage(getString(R.string.i_info))
+            showMessage(R.string.i_info)
             true
         }
         globalMathView.setOnLongClickListener {
             if (!globalMathView.multiselectionMode) {
-                InstrumentScene.shared.clickInstrument("multi", this)
+                InstrumentScene.shared.clickInstrument("multi")
             }
             AndroidUtil.vibrate(this)
             true
@@ -145,20 +97,18 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Logger.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         AndroidUtil.setLanguage(this)
         setTheme(ThemeController.shared.currentTheme.resId)
         setContentView(R.layout.activity_play_new)
         setViews()
         messageView.visibility = View.GONE
-        looseDialog = createLooseDialog()
+        loseDialog = createLoseDialog()
         winDialog = createWinDialog()
         continueDialog = createContinueDialog()
-        PlayScene.shared.playActivity = this
-        Handler().postDelayed({
-            startCreatingLevelUI()
-        }, 100)
+        PlayScene.shared.listenerRef = WeakReference(this)
+        PlayScene.shared.history = History()
+        startCreatingLevelUI()
         setLongClick()
     }
 
@@ -178,7 +128,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
 
     override fun finish() {
         PlayScene.shared.cancelTimers()
-        PlayScene.shared.playActivity = null
+        PlayScene.shared.listenerRef.clear()
         super.finish()
     }
 
@@ -205,7 +155,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         ConnectionChecker.shared.connectionButtonClick(this, v)
     }
 
-    fun startCreatingLevelUI() {
+    override fun startCreatingLevelUI() {
         if (LevelScene.shared.wasLevelPaused()) {
             AndroidUtil.showDialog(continueDialog)
         } else {
@@ -220,7 +170,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         endExpressionViewLabel.text = ""
         progress.visibility = View.VISIBLE
         try {
-            PlayScene.shared.loadLevel(this, continueGame, resources.configuration.locale.language)
+            PlayScene.shared.loadLevel(continueGame, resources.configuration.locale.language)
         } catch (e: Exception) {
             Logger.e(TAG, "Error while level loading")
             Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show()
@@ -231,7 +181,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
 
     fun clear(v: View?) {
         globalMathView.clearExpression()
-        PlayScene.shared.clearRules()
+        clearRules()
     }
 
     fun previous(v: View?) {
@@ -247,12 +197,8 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
     fun restart(v: View?) {
         if (!loading) {
             globalMathView.scale = 1f
-            PlayScene.shared.restart(this, resources.configuration.locale.language)
+            PlayScene.shared.restart(resources.configuration.locale.language)
         }
-    }
-
-    fun instrumentClick(v: View) {
-        InstrumentScene.shared.clickInstrument(v.tag.toString(), this)
     }
 
     fun detailClick(v: View) {
@@ -264,7 +210,7 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
     }
 
     fun info(v: View?) {
-        PlayScene.shared.info(resources.configuration.locale.language)
+        PlayScene.shared.info(resources.configuration.locale.language, this)
     }
 
     fun back(v: View?) {
@@ -273,34 +219,12 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         }
     }
 
-    fun showMessage(msg: String, flag: Boolean = true, ifFlagFalseMsg: String? = null) {
-        if (flag)
-            messageView.text = msg
-        else
-            messageView.text = ifFlagFalseMsg
-        messageView.visibility = View.VISIBLE
-        messageTimer.cancel()
-        messageTimer.start()
-    }
-
     private fun returnToMenu() {
-        PlayScene.shared.menu()
+        PlayScene.shared.menu(this)
         finish()
     }
 
-    fun showEndExpression(v: View?) {
-        val builder = AlertDialog.Builder(this, ThemeController.shared.alertDialogTheme)
-        builder
-            .setTitle(getString(R.string.goal_description))
-            .setMessage(LevelScene.shared.currentLevel!!.getDescriptionByLanguage(resources.configuration.locale.language, true))
-            .setOnCancelListener {  }
-            .setCancelable(true)
-        val alert = builder.create()
-        AndroidUtil.showDialog(alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
-            blurView = blurView, activity = this)
-    }
-
-    fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
+    override fun onWin(stepsCount: Double, currentTime: Long, state: StateType) {
         Logger.d(TAG, "onWin")
         val msgTitle = resources.getString(R.string.you_finished_level_with)
         val steps = "\n\t${resources.getString(R.string.steps)}: ${stepsCount.toInt()}"
@@ -308,25 +232,21 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         val time = "\n\t${resources.getString(R.string.time)}: ${currentTime / 60}:$sec"
         val spannable = SpannableString("$msgTitle$steps$time\n")
         val spanColor = ThemeController.shared.color(ColorName.PRIMARY_COLOR)
-        spannable.setSpan(BulletSpan(5, spanColor), msgTitle.length + 1,
-            msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(BulletSpan(5, spanColor),
+        spannable.setSpan(
+            BulletSpan(5, spanColor), msgTitle.length + 1,
+            msgTitle.length + steps.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            BulletSpan(5, spanColor),
             msgTitle.length + steps.length + 1, msgTitle.length + steps.length + time.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         winDialog.setMessage(spannable)
         AndroidUtil.showDialog(winDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
     }
 
-    fun onLoose() {
-        AndroidUtil.showDialog(looseDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
-    }
-
-    fun collapseBottomSheet() {
-        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
-    }
-
-    fun halfExpandBottomSheet() {
-        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_HALF_EXPANDED
+    override fun onLose() {
+        AndroidUtil.showDialog(loseDialog, backMode = BackgroundMode.BLUR, blurView = blurView, activity = this)
     }
 
     private fun createWinDialog(): AlertDialog {
@@ -337,14 +257,14 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         builder
             .setTitle(R.string.congratulations)
             .setMessage("")
-            .setPositiveButton(R.string.next) { dialog: DialogInterface, id: Int -> }
-            .setNeutralButton(R.string.menu) { dialog: DialogInterface, id: Int ->
-                PlayScene.shared.menu(false)
+            .setPositiveButton(R.string.next) { _: DialogInterface, _: Int -> }
+            .setNeutralButton(R.string.menu) { _: DialogInterface, _: Int ->
+                PlayScene.shared.menu(this, false)
                 finish()
             }
-            .setNegativeButton(R.string.restart_label) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.restart_label) { _: DialogInterface, _: Int ->
                 globalMathView.scale = 1f
-                PlayScene.shared.restart(this, resources.configuration.locale.language)
+                PlayScene.shared.restart(resources.configuration.locale.language)
             }
             .setCancelable(false)
         val dialog = builder.create()
@@ -362,17 +282,17 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         return dialog
     }
 
-    private fun createLooseDialog(): AlertDialog {
+    private fun createLoseDialog(): AlertDialog {
         Logger.d(TAG, "createLooseDialog")
         val builder = AlertDialog.Builder(
             this, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle(R.string.time_out)
-            .setPositiveButton(R.string.restart) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.restart) { _: DialogInterface, _: Int ->
                 restart(null)
             }
-            .setNegativeButton(R.string.menu) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.menu) { _: DialogInterface, _: Int ->
                 back(null)
             }
             .setCancelable(false)
@@ -387,13 +307,118 @@ class PlayActivity: AppCompatActivity(), ConnectionListener {
         builder
             .setTitle(R.string.welkome_back)
             .setMessage(R.string.continue_from_where_you_stopped)
-            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
                 createLevelUI(true)
             }
-            .setNegativeButton(R.string.no) { dialog: DialogInterface, id: Int ->
+            .setNegativeButton(R.string.no) { _: DialogInterface, _: Int ->
                 createLevelUI(false)
             }
             .setCancelable(false)
         return builder.create()
+    }
+
+    override fun setMultiselectionMode(multi: Boolean) {
+        previous.isEnabled = PlayScene.shared.history.isUndoable()
+        super.setMultiselectionMode(multi)
+    }
+
+    override fun showEndExpression(v: View?) {
+        val builder = AlertDialog.Builder(this, ThemeController.shared.alertDialogTheme)
+        builder
+            .setTitle(getString(R.string.goal_description))
+            .setMessage(
+                LevelScene.shared.currentLevel!!.getDescriptionByLanguage(
+                    resources.configuration.locale.language,
+                    true
+                )
+            )
+            .setOnCancelListener { }
+            .setCancelable(true)
+        val alert = builder.create()
+        AndroidUtil.showDialog(
+            alert, bottomGravity = false, backMode = BackgroundMode.BLUR,
+            blurView = blurView, activity = this
+        )
+
+    }
+
+    override fun onRuleClicked(ruleView: RuleMathView) {
+        Logger.d(TAG, "onRuleClicked")
+        try {
+            val prev = globalMathView.expression!!.clone()
+            val places: List<ExpressionNode> = globalMathView.currentAtoms.toList()
+            val oldSteps = PlayScene.shared.stepsCount
+            var levelPassed = false
+            val res = globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
+            if (res != null) {
+                PlayScene.shared.stepsCount++
+                PlayScene.shared.history.saveState(
+                    PlayScene.shared.stepsCount,
+                    PlayScene.shared.currentTime,
+                    globalMathView.expression!!
+                )
+                previous.isEnabled = true
+                if (LevelScene.shared.currentLevel!!.checkEnd(res)) {
+                    levelPassed = true
+
+                    Statistics.logRule(
+                        oldSteps,
+                        PlayScene.shared.stepsCount,
+                        prev,
+                        globalMathView.expression!!,
+                        ruleView.subst,
+                        places
+                    )
+
+                    PlayScene.shared.onWin()
+                }
+                clearRules()
+                globalMathView.currentRulesToResult = null
+            } else {
+                showMessage(R.string.wrong_subs)
+            }
+
+            if (!levelPassed) {
+                Statistics.logRule(
+                    oldSteps, PlayScene.shared.stepsCount, prev, globalMathView.expression!!,
+                    ruleView.subst, places
+                )
+            }
+        } catch (e: java.lang.Exception) {
+            Logger.e(TAG, "Error during rule usage: ${e.message}")
+            Toast.makeText(this, R.string.misclick_happened_please_retry, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onAtomClicked() {
+        Logger.d(TAG, "onAtomClicked")
+        if (instrumentProcessing && InstrumentScene.shared.currentProcessingInstrument?.type != InstrumentType.MULTI) {
+            InstrumentScene.shared.choosenAtom(globalMathView.currentAtoms, globalMathView.text)
+        } else if (globalMathView.currentAtoms.isNotEmpty()) {
+            val curLvl = LevelScene.shared.currentLevel ?: return
+            if (globalMathView.multiselectionMode) {
+                previous.isEnabled = true
+            }
+            val substitutionApplication = curLvl.getSubstitutionApplication(
+                globalMathView.currentAtoms,
+                globalMathView.expression!!
+            )
+            if (substitutionApplication == null) {
+                showMessage(R.string.no_rules)
+                clearRules()
+                if (!globalMathView.multiselectionMode) {
+                    globalMathView.clearExpression()
+                }
+            } else {
+                val rules =
+                    curLvl.getRulesFromSubstitutionApplication(substitutionApplication)
+                globalMathView.currentRulesToResult =
+                    curLvl.getResultFromSubstitutionApplication(substitutionApplication)
+                redrawRules(rules, LevelScene.shared.currentLevel!!.subjectType)
+            }
+        } else {
+            previous.isEnabled = PlayScene.shared.history.isUndoable()
+        }
+        Statistics.logPlace(PlayScene.shared.stepsCount, globalMathView.expression!!, globalMathView.currentAtoms)
     }
 }
