@@ -7,24 +7,19 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.os.Handler
 import android.view.View
-import android.util.Log
-import mathhelper.twf.expressiontree.SimpleComputationRuleParams
-import mathhelper.twf.expressiontree.ExpressionSubstitution
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import com.google.gson.Gson
 import mathhelper.games.matify.common.*
-import mathhelper.games.matify.tutorial.TutorialPlayActivity
 import mathhelper.games.matify.game.Game
 import mathhelper.games.matify.level.Level
-import mathhelper.games.matify.mathResolver.MathResolver
-import mathhelper.games.matify.mathResolver.TaskType
-import mathhelper.games.matify.statistics.Statistics
-import mathhelper.games.matify.tutorial.TutorialGamesActivity
-import mathhelper.games.matify.tutorial.TutorialLevelsActivity
+import java.lang.ref.WeakReference
+
+interface TutorialSceneListener {
+    fun nextStep(): Boolean
+    fun prevStep(): Boolean
+    fun finish()
+}
 
 class TutorialScene {
     companion object {
@@ -34,275 +29,113 @@ class TutorialScene {
         private const val translate = -30f
     }
 
-    var tutorialGamesActivity: TutorialGamesActivity? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                tutorialDialog = value.dialog
-                leaveDialog = value.leave
-                currentStep = -1
-                nextStep()
-            }
-        }
-    var tutorialLevelsActivity: TutorialLevelsActivity? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                tutorialDialog = value.dialog
-                leaveDialog = value.leave
-                GlobalScope.launch {
-                    val job = async {
-                        val loaded = tutorialGame!!.load(value)
-                        value.runOnUiThread {
-                            if (loaded) {
-                                value.onLoad()
-                                tutorialLevel = tutorialGame!!.levels[0]
-                                nextStep()
-                            }
-                        }
-                    }
-                    job.await()
-                }
-            }
-        }
-    var tutorialPlayActivity: TutorialPlayActivity? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                tutorialDialog = value.tutorialDialog
-                leaveDialog = value.leaveDialog
-                loadLevel()
-                nextStep()
-            }
-        }
+    var listenerRef: WeakReference<TutorialSceneListener> = WeakReference(null)
 
-    fun getNotNullActivity () = if (tutorialGamesActivity != null) {
-        tutorialGamesActivity
-    } else if (tutorialLevelsActivity != null) {
-        tutorialLevelsActivity
-    } else if (tutorialPlayActivity != null) {
-        tutorialPlayActivity
-    } else null
+    private var currentSession: Array<out Class<out TutorialSceneListener>> = arrayOf()
+    var totalSteps: Int = 0
+    var currentStep = -1
+    private var currentListener = -1
+    var currentlyAdvancing = true
 
-    fun getResourceString (id: Int) = getNotNullActivity()?.resources?.getString(id) ?: null
-
-    lateinit var tutorialLevel: Level
+    lateinit var currentLevel: Level
+    var currLevelIndex = 0
 
     var tutorialDialog: AlertDialog? = null
     var leaveDialog: AlertDialog? = null
+    var restartDialog: AlertDialog? = null
     var tutorialGame: Game? = null
 
-    var wantedZoom = false
-    var wantedClick = false
-    var wantedRule = false
-
     private var currentAnim: AnimatorSet? = null
-    private var currentAnimView: View? = null
+    private var currentAnimViewRef: WeakReference<View> = WeakReference(null)
 
-    lateinit var steps: ArrayList<() -> Any>
-    var stepsSize = 0
-    private var currentStep = -1
-
-    private var shouldFinishLevelsActivity = false
-    private var shouldFinishPlayActivity = false
-
-    fun start(context: Context) {
-        GlobalScene.shared.tutorialProcessing = true
-        tutorialGame = null//Game.create("tutorial.json", context)
+    fun loadTutorialLevels(context: Context) {
+        Logger.d(TAG, "loadTutorialLevels")
+        val input = context.assets.open("tutorial.json")
+        val text = input.readBytes().toString(Charsets.UTF_8)
+        input.close()
+        val info = Gson().fromJson(text, TasksetInfo::class.java)
+        tutorialGame = Game.create(info, context)
         if (tutorialGame == null) {
+            Logger.d(TAG, "failed to load tutorial")
             return
         }
-        context.startActivity(Intent(context, TutorialGamesActivity::class.java))
-        steps = arrayListOf(
-            // Games Layout
-            {
-                tutorialGamesActivity!!.tellAboutGameLayout()
-            },
-            {
-                tutorialGamesActivity!!.waitForGameClick()
-            },
-            // Levels layout
-            {
-                shouldFinishLevelsActivity = true
-                tutorialLevelsActivity!!.tellAboutLevelLayout()
-            },
-            {
-                shouldFinishLevelsActivity = false
-                tutorialLevelsActivity!!.waitForLevelClick()
-            },
-            // Play layout
-            {
-                shouldFinishPlayActivity = true
-                tutorialPlayActivity!!.messageTutorial()
-            },
-            {
-                shouldFinishPlayActivity = false
-                tutorialPlayActivity!!.endExpressionTutorial()
-            },
-            {
-                tutorialPlayActivity!!.centralExpressionTutorial()
-            },
-            {
-                tutorialPlayActivity!!.backTutorial()
-            },
-            {
-                tutorialPlayActivity!!.infoTutorial()
-            },
-            {
-                tutorialPlayActivity!!.restartTutorial()
-            },
-            {
-                tutorialPlayActivity!!.undoTutorial()
-            },
-            { tutorialPlayActivity!!.startDynamicTutorial() }
-        )
-        stepsSize = steps.size - 2
+        tutorialGame?.load(context)
+    }
+
+    fun startSession(context: Context, stepsInSession: Int, vararg activitiesToLaunch: Class<out TutorialSceneListener>) {
+        leave()
+        totalSteps = stepsInSession
+        currentSession = activitiesToLaunch
         currentStep = -1
+        currentListener = -1
+        nextStep(context)
     }
 
-    fun nextStep() {
+    fun nextStep(context: Context) {
+        Logger.d(TAG, "nextStep")
+        currentlyAdvancing = true
         currentStep++
-        if (currentStep == steps.size) {
+        if (currentListener == -1) {
+            currentListener = 0
+            context.startActivity(Intent(context, currentSession[currentListener]))
             return
         }
-        tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: ${stepToDisplay()} / $stepsSize")
-        steps[currentStep]()
+        val listener = listenerRef.get() ?: return
+        stopAnimation()
+        if (listener.nextStep()) {
+            return
+        }
+        currentListener++
+        if (currentListener != currentSession.size) {
+            listenerRef.clear()
+            listener.finish()
+            context.startActivity(Intent(context, currentSession[currentListener]))
+        } else {
+            AndroidUtil.showDialog(createFinishDialog(context), backMode = BackgroundMode.NONE)
+        }
     }
 
-    fun prevStep() {
+    fun prevStep(context: Context) {
+        currentlyAdvancing = false
+        Logger.d(TAG, "prevStep")
         currentStep--
-        if (currentStep == -1) {
-            AndroidUtil.showDialog(leaveDialog!!)
-        } else {
-            tutorialDialog!!.setTitle("${getResourceString(R.string.tutorial) ?: "Tutorial"}: ${stepToDisplay()} / $stepsSize")
-            steps[currentStep]()
-        }
-    }
-
-    private fun stepToDisplay() = if (currentStep <=1 ) {
-        1
-    } else if (currentStep > 3) {
-        currentStep - 1
-    } else 2
-
-    fun loadLevel() {
-        Logger.d(TAG, "loadLevel")
-        val activity = tutorialPlayActivity!!
-        clearRules()
-        activity.endExpressionView.text = if (tutorialLevel.goalPattern.isNullOrBlank()) {
-            when (tutorialLevel.subjectType) {
-                TaskType.SET.str -> MathResolver.resolveToPlain(tutorialLevel.endExpression!!, taskType = TaskType.SET).matrix
-                else -> MathResolver.resolveToPlain(tutorialLevel.endExpression!!).matrix
-            }
-        } else {
-            tutorialLevel.goalPattern
-        }
-        if (activity.endExpressionView.visibility != View.VISIBLE) {
-            activity.showEndExpression(null)
-        }
-        tutorialPlayActivity!!.globalMathView.setExpression(tutorialLevel.startExpression.clone(), tutorialLevel.subjectType)
-    }
-
-    fun onRuleClicked(ruleView: RuleMathView) {
-        Logger.d(TAG, "onRuleClicked")
-        val activity = tutorialPlayActivity!!
-        if (ruleView.subst != null) {
-            val res = activity.globalMathView.performSubstitutionForMultiselect(ruleView.subst!!)
-            if (res != null) {
-                if (wantedRule) {
-                    activity.ruleClickSucceeded()
-                }
-                if (tutorialLevel.checkEnd(res)) {
-                    activity.levelPassed()
-                }
-                clearRules()
-            } else {
-                showMessage(activity.resources.getString(R.string.wrong_subs))
-            }
-
-        }
-    }
-
-    fun onAtomClicked() {
-        Logger.d(TAG, "onAtomClicked")
-        if (wantedZoom) {
+        if (currentListener == currentSession.size) {
+            currentListener--
+            context.startActivity(Intent(context, currentSession[currentListener]))
             return
         }
-        val activity = tutorialPlayActivity!!
-        if (activity.globalMathView.currentAtoms.isNotEmpty()) {
-            val substitutionApplication = LevelScene.shared.currentLevel!!.getSubstitutionApplication(
-                activity.globalMathView.currentAtoms,
-                activity.globalMathView.expression!!
-            )
-
-            if (substitutionApplication == null) {
-                showMessage(activity.getString(R.string.no_rules_try_another))
-                clearRules()
-                activity.globalMathView.recolorCurrentAtom(Color.YELLOW)
-            } else {
-                val rules =
-                    LevelScene.shared.currentLevel!!.getRulesFromSubstitutionApplication(substitutionApplication)
-                activity.globalMathView.currentRulesToResult =
-                    LevelScene.shared.currentLevel!!.getResultFromSubstitutionApplication(substitutionApplication)
-
-                activity.noRules.visibility = View.GONE
-                activity.rulesScrollView.visibility = View.VISIBLE
-                if (wantedClick) {
-                    activity.expressionClickSucceeded()
-                } else {
-                    showMessage(activity.resources.getString(R.string.a_good_choice))
-                }
-                redrawRules(rules)
-            }
+        val listener = listenerRef.get() ?: return
+        stopAnimation()
+        if (listener.prevStep()) {
+            return
         }
-    }
-
-
-    fun clearRules() {
-        val activity = tutorialPlayActivity!!
-        activity.rulesScrollView.visibility = View.INVISIBLE
-        activity.noRules.visibility = View.VISIBLE
-    }
-
-    private fun redrawRules(rules: List<ExpressionSubstitution>) {
-        Logger.d(TAG, "redrawRules")
-        val activity = tutorialPlayActivity!!
-        activity.rulesLinearLayout.removeAllViews()
-        for (r in rules) {
-            val rule = RuleMathView(activity)
-            rule.setSubst(r, tutorialLevel.subjectType)
-            activity.rulesLinearLayout.addView(rule)
+        currentListener--
+        if (currentListener != -1) {
+            listenerRef.clear()
+            context.startActivity(Intent(context, currentSession[currentListener]))
+            listener.finish()
+        } else {
+            leave()
         }
-    }
-
-    fun showMessage(msg: String) {
-        val activity = tutorialPlayActivity!!
-        activity.messageView.text = msg
-        activity.messageView.visibility = View.VISIBLE
     }
 
     fun leave() {
-        GlobalScene.shared.tutorialProcessing = false
-        if (tutorialPlayActivity != null) {
-            tutorialPlayActivity!!.finish()
-        }
-        if (tutorialLevelsActivity != null) {
-            tutorialLevelsActivity!!.finish()
-        }
-        if (tutorialGamesActivity != null) {
-            tutorialGamesActivity!!.finish()
-        }
+        listenerRef.get()?.finish()
+        listenerRef.clear()
     }
 
-    fun restart() {
-        if (tutorialPlayActivity != null) {
-            tutorialPlayActivity!!.finish()
-        }
-        if (tutorialLevelsActivity != null) {
-            tutorialLevelsActivity!!.finish()
-        }
+    fun restart(context: Context) {
+        listenerRef.get()?.finish()
+        listenerRef.clear()
         currentStep = -1
-        nextStep()
+        currentListener = -1
+        nextStep(context)
+    }
+
+    fun switchLevel(num: Int) {
+        currLevelIndex = num
+        val game = tutorialGame?:return
+        currentLevel = game.levels[num]
     }
 
     fun animateLeftUp(view: View) {
@@ -318,7 +151,8 @@ class TutorialScene {
         set.duration = duration
         set.start()
         currentAnim = set
-        currentAnimView = view
+        currentAnimViewRef = WeakReference(view)
+        view.visibility = View.VISIBLE
     }
 
     fun animateUp(view: View) {
@@ -330,49 +164,41 @@ class TutorialScene {
         set.duration = duration
         set.start()
         currentAnim = set
-        currentAnimView = view
+        currentAnimViewRef = WeakReference(view)
+        view.visibility = View.VISIBLE
     }
 
     fun stopAnimation() {
-        if (currentAnim != null) {
-            currentAnim!!.removeAllListeners()
-            currentAnim!!.end()
-            currentAnim!!.cancel()
+        currentAnim?.let {
+            it.removeAllListeners()
+            it.end()
+            it.cancel()
             currentAnim = null
-            currentAnimView!!.translationY = 0f
-            currentAnimView!!.translationX = 0f
-            currentAnimView!!.visibility = View.GONE
+            val currentAnimView = currentAnimViewRef.get() ?: return
+            currentAnimView.translationY = 0f
+            currentAnimView.translationX = 0f
+            currentAnimView.visibility = View.GONE
         }
     }
 
-    fun createTutorialDialog(context: Context): AlertDialog {
+    fun createTutorialDialog(context: Context) {
         val builder = AlertDialog.Builder(
             context, ThemeController.shared.alertDialogTheme
         )
         builder
             .setTitle("")
             .setMessage(R.string.got_it)
-            .setPositiveButton(R.string.yep) { dialog: DialogInterface, id: Int ->
-                stopAnimation()
+            .setPositiveButton(R.string.yep) { _: DialogInterface, _: Int ->
                 Handler().postDelayed({
-                    nextStep()
+                    nextStep(context)
                 }, 100)
             }
-            .setNegativeButton(R.string.step_back) { dialog: DialogInterface, id: Int ->
-                stopAnimation()
-                if (shouldFinishPlayActivity && tutorialPlayActivity != null) {
-                    tutorialPlayActivity!!.finish()
-                    currentStep--
-                }
-                if (shouldFinishLevelsActivity && tutorialLevelsActivity != null) {
-                    tutorialLevelsActivity!!.finish()
-                    currentStep--
-                }
+            .setNegativeButton(R.string.step_back) { _: DialogInterface, _: Int ->
                 Handler().postDelayed({
-                    prevStep()
+                    prevStep(context)
                 }, 100)
             }
-            .setNeutralButton(R.string.leave) { dialog: DialogInterface, id: Int ->
+            .setNeutralButton(R.string.leave) { _: DialogInterface, _: Int ->
                 if (leaveDialog != null) {
                     AndroidUtil.showDialog(leaveDialog!!)
                 } else {
@@ -380,26 +206,65 @@ class TutorialScene {
                 }
             }
             .setCancelable(false)
-        return builder.create()
+        tutorialDialog = builder.create()
     }
 
-    fun createLeaveDialog(context: Context): AlertDialog {
+    fun createLeaveDialog(context: Context) {
         Logger.d(TAG, "createLeaveDialog")
         val builder = AlertDialog.Builder(
             context, ThemeController.shared.alertDialogTheme
-            )
+        )
         builder
             .setTitle(R.string.attention)
             .setMessage(R.string.wanna_leave)
-            .setPositiveButton(R.string.yes) { dialog: DialogInterface, id: Int ->
+            .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+                Handler().postDelayed({
+                    leave()
+                }, 100)
+            }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
+            }
+        leaveDialog = builder.create()
+    }
+
+    fun createRestartDialog(context: Context) {
+        Logger.d(TAG, "createRestartDialog")
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.alertDialogTheme
+        )
+        builder
+            .setTitle(R.string.attention)
+            .setMessage(R.string.restart_tutorial)
+            .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+                Handler().postDelayed({
+                    restart(context)
+                }, 100)
+            }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
+            }
+        restartDialog = builder.create()
+    }
+
+    fun createFinishDialog(context: Context): AlertDialog {
+        val builder = AlertDialog.Builder(
+            context, ThemeController.shared.alertDialogTheme
+        )
+        builder
+            .setTitle(R.string.tutorial_chapter_finished)
+            .setMessage(R.string.tutorial_on_level_seems)
+            .setPositiveButton(R.string.tutorial_on_level_i_am_pro) { _: DialogInterface, _: Int ->
                 leave()
             }
-            .setNegativeButton(R.string.cancel) { dialog: DialogInterface, id: Int ->
-                if (currentStep != -1) {
-                    currentStep--
-                }
-                nextStep()
+            .setNegativeButton(R.string.restart_info) { _: DialogInterface, _: Int ->
+                restart(context)
             }
+            .setCancelable(false)
         return builder.create()
+    }
+
+    fun updateDialog(tutorialStr: String) {
+        tutorialDialog?.setTitle(
+            "${tutorialStr}: ${currentStep + 1} / ${totalSteps}"
+        )
     }
 }

@@ -1,27 +1,14 @@
 package mathhelper.games.matify.mathResolver
 
 import android.graphics.Color
-import android.graphics.Typeface
-import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import androidx.core.text.getSpans
 import mathhelper.twf.expressiontree.ExpressionNode
-import mathhelper.games.matify.PlayScene
-import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.common.ColorName
-import mathhelper.games.matify.common.Storage
-import mathhelper.games.matify.common.ThemeController
 
 class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStringBuilder) {
     var height = matrix.count { it == '\n' }
 
     private fun insideBox(x: Int, y: Int, lt: Point, rb: Point): Boolean {
-        if (x >= lt.x && x <= rb.x && y >= lt.y && y <= rb.y) {
-            return true
-        }
-        return false
+        return x >= lt.x && x <= rb.x && y >= lt.y && y <= rb.y
     }
 
     private fun getNode(node: MathResolverNodeBase, x: Int, y: Int): MathResolverNodeBase? {
@@ -38,18 +25,21 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
         return resNode
     }
 
-    private fun findNodeByExpression(currentTree: MathResolverNodeBase?, expressionNode: ExpressionNode): MathResolverNodeBase? {
+    private fun findNodeByExpression(
+        currentTree: MathResolverNodeBase?,
+        expressionNode: ExpressionNode
+    ): MathResolverNodeBase? {
         if (currentTree == null)
             return null
         if (expressionNode.nodeId == currentTree.origin.nodeId)
             return currentTree
         var res: MathResolverNodeBase? = null
         for (child in currentTree.children)
-            res = findNodeByExpression(child, expressionNode)?:res
+            res = findNodeByExpression(child, expressionNode) ?: res
         return res
     }
 
-    private fun applyStyleToMathNode (mathNode: MathResolverNodeBase, styleLambda: (start: Int, end: Int) -> Unit) {
+    private fun applyStyleToMathNode(mathNode: MathResolverNodeBase, styleLambda: (start: Int, end: Int) -> Unit) {
         if (tree != null) {
             for (i in mathNode.leftTop.y..mathNode.rightBottom.y) {
                 val start = i * (tree.length + 1) + mathNode.leftTop.x
@@ -66,7 +56,7 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
 
     fun getColoredAtom(x: Int, y: Int, multiSelectionMode: Boolean = false, color: Int = Color.RED): ExpressionNode? {
         var resNode: ExpressionNode? = null
-        if (tree != null ) {
+        if (tree != null) {
             if (insideBox(x, y, tree.leftTop, tree.rightBottom)) {
                 val mathNode = getNode(tree, x, y) ?: tree
                 resNode = mathNode.origin
@@ -99,5 +89,14 @@ class MathResolverPair(val tree: MathResolverNodeBase?, val matrix: SpannableStr
                 MatifySpan.select(start, end, multiselection = true)
             }
         }
+    }
+
+    fun findNodesByString(currentTree: MathResolverNodeBase?, string: String, res: ArrayList<MathResolverNodeBase>) {
+        if (currentTree == null)
+            return
+        if (string == currentTree.origin.value)
+            res.add(currentTree)
+        for (child in currentTree.children)
+            findNodesByString(child, string, res)
     }
 }

@@ -6,13 +6,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import mathhelper.games.matify.activities.PlayActivity
-import mathhelper.games.matify.common.AndroidUtil
-import mathhelper.games.matify.common.ColorName
-import mathhelper.games.matify.common.SimpleMathView
-import mathhelper.games.matify.common.ThemeController
+import androidx.core.content.ContextCompat
+import mathhelper.games.matify.common.*
 import mathhelper.twf.api.expressionToStructureString
 import mathhelper.twf.expressiontree.ExpressionNode
+import java.lang.ref.WeakReference
+import java.util.*
+import kotlin.collections.HashMap
 
 enum class InstrumentType {
     OPPO, VAR, BRACKET, PERMUTE, MULTI
@@ -72,13 +72,13 @@ class StepInfo(
     }
 
     fun setRequiredStar() {
-        val d = context.getDrawable(R.drawable.required_star)
+        val d = ContextCompat.getDrawable(context, R.drawable.required_star)
         d!!.setBounds(0, 0, 32, 32)
         AndroidUtil.setRightDrawable(msg, d)
     }
 
     fun setPassed() {
-        val d = context.getDrawable(R.drawable.green_tick)
+        val d = ContextCompat.getDrawable(context, R.drawable.green_tick)
         d!!.setBounds(0, 0, 50, 50)
         AndroidUtil.setRightDrawable(msg, d)
     }
@@ -90,6 +90,18 @@ class StepInfo(
             AndroidUtil.toggleVisibility(keyboard)
         }
     }
+}
+
+interface InstrumentSceneListener {
+    var globalMathView: GlobalMathView
+    val ctx: Context
+    fun getString(varDescr: Int): String
+    fun startInstrumentProcessing(setMSMode: Boolean)
+    fun endInstrumentProcessing(collapse: Boolean)
+
+    fun showMessage(varDescr: Int)
+    fun setMultiselectionMode(multi: Boolean)
+    fun halfExpandBottomSheet()
 }
 
 class InstrumentScene {
@@ -104,19 +116,24 @@ class InstrumentScene {
     private lateinit var permuteInstrument: InstrumentInfo
     private lateinit var instruments: HashMap<String, InstrumentInfo>
     private lateinit var steps: HashMap<InstrumentStep, StepInfo>
+
     // Global view
-    private lateinit var instrumentHandleView: View
+    private var instrumentHandleViewRef: WeakReference<View> = WeakReference(null)
+
     // Current
     var currentProcessingInstrument: InstrumentInfo? = null
     private var currentStep: InstrumentStep? = null
-    private var currentDetail: Button? = null
+    private var currentDetailRef: WeakReference<Button> = WeakReference(null)
     private var currentEnteredText = ""
+
     // MathViews
     private lateinit var placeView: SimpleMathView
     private lateinit var paramView: SimpleMathView
+    private lateinit var listenerRef: WeakReference<InstrumentSceneListener>
 
 
-    fun init(bottomSheet: View, activity: PlayActivity) {
+    fun init(bottomSheet: View, listener: InstrumentSceneListener) {
+        listenerRef = WeakReference(listener)
         currentProcessingInstrument = null
         currentStep = null
         // Views
@@ -125,8 +142,9 @@ class InstrumentScene {
         val varInstrumentView = bottomSheet.findViewById<Button>(R.id.var_inst)
         val bracketInstrumentView = bottomSheet.findViewById<Button>(R.id.bracket_inst)
         val permuteInstrumentView = bottomSheet.findViewById<Button>(R.id.permute_inst)
-        instrumentHandleView = bottomSheet.findViewById(R.id.instrument_handle)
-        instrumentHandleView.visibility = View.GONE
+        val instHView: View = bottomSheet.findViewById(R.id.instrument_handle)
+        instrumentHandleViewRef = WeakReference(instHView)
+        instHView.visibility = View.GONE
         placeView = bottomSheet.findViewById(R.id.inst_step_place)
         placeView.text = ""
         paramView = bottomSheet.findViewById(R.id.inst_step_param)
@@ -140,55 +158,61 @@ class InstrumentScene {
         val stepParamView = bottomSheet.findViewById<View>(R.id.inst_step_param_view)
         val stepParamKeyboard = bottomSheet.findViewById<View>(R.id.inst_step_param_keyboard)
         steps = hashMapOf(
-            InstrumentStep.DETAIL to StepInfo(stepDetailText, stepDetailView, context = activity),
-            InstrumentStep.PLACE to StepInfo(stepPlaceText, stepPlaceView, context = activity),
-            InstrumentStep.PARAM to StepInfo(stepParamText, stepParamView, stepParamKeyboard, activity)
+            InstrumentStep.DETAIL to StepInfo(stepDetailText, stepDetailView, context = listener.ctx),
+            InstrumentStep.PLACE to StepInfo(stepPlaceText, stepPlaceView, context = listener.ctx),
+            InstrumentStep.PARAM to StepInfo(stepParamText, stepParamView, stepParamKeyboard, listener.ctx)
         )
         val apply = bottomSheet.findViewById<Button>(R.id.apply)
-        apply.setOnClickListener { apply(activity) }
+        apply.setOnClickListener { apply(listener.ctx) }
         // LongClick
         startStopMultiselectionMode.setOnLongClickListener {
-            activity.showMessage(
-                activity.getString(R.string.end_multiselect_info),
-                activity.globalMathView.multiselectionMode,
-                activity.getString(R.string.start_multiselect_info)
+            listener.showMessage(
+                if (listener.globalMathView.multiselectionMode)
+                    R.string.end_multiselect_info
+                else
+                    R.string.start_multiselect_info
             )
             true
         }
         oppoInstrumentView.setOnLongClickListener {
-            activity.showMessage(activity.getString(R.string.oppo_descr))
+            listener.showMessage(R.string.oppo_descr)
             true
         }
         varInstrumentView.setOnLongClickListener {
-            activity.showMessage(activity.getString(R.string.var_descr))
+            listener.showMessage(R.string.var_descr)
             true
         }
         bracketInstrumentView.setOnLongClickListener {
-            activity.showMessage(activity.getString(R.string.bracket_descr))
+            listener.showMessage(R.string.bracket_descr)
             true
         }
         permuteInstrumentView.setOnLongClickListener {
-            activity.showMessage(activity.getString(R.string.permute_descr))
+            listener.showMessage(R.string.permute_descr)
             true
         }
         // Instruments
-        multiInstrument = InstrumentInfo(InstrumentType.MULTI,
+        multiInstrument = InstrumentInfo(
+            InstrumentType.MULTI,
             detailRequired = false, placeRequired = false, paramRequired = false,
             button = startStopMultiselectionMode
         )
-        oppoInstrument = InstrumentInfo(InstrumentType.OPPO,
+        oppoInstrument = InstrumentInfo(
+            InstrumentType.OPPO,
             detailRequired = true, placeRequired = true, paramRequired = true,
             button = oppoInstrumentView
         )
-        varInstrument = InstrumentInfo(InstrumentType.VAR,
+        varInstrument = InstrumentInfo(
+            InstrumentType.VAR,
             detailRequired = false, placeRequired = true, paramRequired = true,
             button = varInstrumentView
         )
-        bracketInstrument = InstrumentInfo(InstrumentType.BRACKET,
+        bracketInstrument = InstrumentInfo(
+            InstrumentType.BRACKET,
             detailRequired = false, placeRequired = true, paramRequired = false,
             button = bracketInstrumentView
         )
-        permuteInstrument = InstrumentInfo(InstrumentType.PERMUTE,
+        permuteInstrument = InstrumentInfo(
+            InstrumentType.PERMUTE,
             detailRequired = false, placeRequired = true, paramRequired = true,
             button = permuteInstrumentView
         )
@@ -201,25 +225,24 @@ class InstrumentScene {
         )
     }
 
-    fun clickInstrument(tag: String, context: Context) {
-        val inst = instruments[tag.toUpperCase()] ?: return
-        if (inst.isProcessing) turnOffInstrument(inst, context) else turnOnInstrument(inst, context)
+    fun clickInstrument(tag: String) {
+        val inst = instruments[tag.toUpperCase(Locale.ROOT)] ?: return
+        if (inst.isProcessing) turnOffInstrument(inst) else turnOnInstrument(inst)
     }
 
     fun clickDetail(v: Button) {
-        AndroidUtil.vibrateLight(PlayScene.shared.playActivity!!)
+        listenerRef.get()?.let { AndroidUtil.vibrateLight(it.ctx) }
+        val currentDetail = currentDetailRef.get()
         if (currentStep != InstrumentStep.DETAIL || currentDetail == v) return
-        if (currentDetail != null) {
-            currentDetail?.isSelected = false
-        }
+        currentDetail?.isSelected = false
         v.isSelected = true
-        currentDetail = v
+        currentDetailRef = WeakReference(v)
         currentProcessingInstrument?.detail = v.tag.toString()
         steps[InstrumentStep.DETAIL]?.setPassed()
     }
 
     fun clickKeyboard(v: Button) {
-        AndroidUtil.vibrateLight(PlayScene.shared.playActivity!!)
+        listenerRef.get()?.let { AndroidUtil.vibrateLight(it.ctx) }
         if (currentStep != InstrumentStep.PARAM || currentProcessingInstrument?.type == InstrumentType.PERMUTE) return
         if (v.tag is String && v.tag.toString() == "delete") {
             currentEnteredText = ""
@@ -236,11 +259,11 @@ class InstrumentScene {
         }
     }
 
-    fun choosenAtom(nodes: MutableList<ExpressionNode>) {
+    fun choosenAtom(nodes: MutableList<ExpressionNode>, mathViewText: CharSequence) {
         when (currentStep) {
             InstrumentStep.PLACE -> {
                 if (currentProcessingInstrument?.type == InstrumentType.BRACKET) {
-                    placeView.text = if (nodes.isEmpty()) "" else PlayScene.shared.playActivity!!.globalMathView.text
+                    placeView.text = if (nodes.isEmpty()) "" else mathViewText
                 } else {
                     placeView.setExpression(expressionToStructureString(nodes[0]), null)
                 }
@@ -268,57 +291,40 @@ class InstrumentScene {
         }
     }
 
-    fun turnOnInstrument(inst: InstrumentInfo, context: Context) {
+    fun turnOnInstrument(inst: InstrumentInfo) {
         if (currentProcessingInstrument == inst) return
         else {
-            turnOffInstrument(currentProcessingInstrument, context, false)
+            turnOffInstrument(currentProcessingInstrument, false)
         }
         inst.isProcessing = true
         currentProcessingInstrument = inst
         currentStep = null
-        currentDetail?.isSelected = false
-        currentDetail = null
+        currentDetailRef.get()?.isSelected = false
+        currentDetailRef.clear()
         currentEnteredText = ""
-        PlayScene.shared.instrumetProcessing = true
-        PlayScene.shared.clearRules()
-        //startStopMultiselectionMode.text = getText(R.string.end_multiselect)
-        if (inst.type == InstrumentType.MULTI || inst.type == InstrumentType.BRACKET) {
-            PlayScene.shared.setMultiselectionMode(true)
-        } else {
-            PlayScene.shared.setMultiselectionMode(false)
-        }
+
         inst.button.setTextColor(Color.RED)
-        PlayScene.shared.playActivity?.showMessage(context.getString(R.string.inst_enter))
-        PlayScene.shared.playActivity?.rulesMsg?.text = context.getString(R.string.inst_rules_msg)
-        AndroidUtil.vibrate(context)
-        PlayScene.shared.playActivity?.mainViewAnim?.startTransition(300)
-        setInstrumentHandleView(inst, context)
+        val activity = listenerRef.get() ?: return
+        activity.startInstrumentProcessing(inst.type == InstrumentType.MULTI || inst.type == InstrumentType.BRACKET)
+        setInstrumentHandleView(inst, activity.ctx)
     }
 
-    fun turnOffInstrument(inst: InstrumentInfo?, context: Context, collapse: Boolean = true) {
+    fun turnOffInstrument(inst: InstrumentInfo?, collapse: Boolean = true) {
         if (inst == null) return
-        instrumentHandleView.visibility = View.GONE
+        instrumentHandleViewRef.get()?.visibility = View.GONE
         inst.isProcessing = false
         currentProcessingInstrument = null
         inst.button.setTextColor(ThemeController.shared.color(ColorName.PRIMARY_COLOR))
-        PlayScene.shared.setMultiselectionMode(false)
-        PlayScene.shared.instrumetProcessing = false
-        PlayScene.shared.playActivity?.globalMathView?.clearExpression()
-        AndroidUtil.vibrate(context)
-        PlayScene.shared.playActivity?.mainViewAnim?.reverseTransition(300)
-        if (collapse) {
-            PlayScene.shared.playActivity?.collapseBottomSheet()
-            PlayScene.shared.clearRules()
-        }
+        listenerRef.get()?.endInstrumentProcessing(collapse)
     }
 
-    fun turnOffCurrentInstrument(context: Context) {
-        turnOffInstrument(currentProcessingInstrument, context)
+    fun turnOffCurrentInstrument() {
+        turnOffInstrument(currentProcessingInstrument)
     }
 
     fun setInstrumentHandleView(inst: InstrumentInfo, context: Context) {
         if (inst.type == InstrumentType.MULTI) return
-        instrumentHandleView.visibility = View.VISIBLE
+        instrumentHandleViewRef.get()?.visibility = View.VISIBLE
         steps[InstrumentStep.DETAIL]?.set(inst.detailRequired) {
             AndroidUtil.vibrateLight(context)
             activateStep(InstrumentStep.DETAIL)
@@ -336,18 +342,19 @@ class InstrumentScene {
         steps[InstrumentStep.PLACE]?.toggle()
         placeView.text = ""
         paramView.text = ""
-        PlayScene.shared.playActivity?.halfExpandBottomSheet()
+        listenerRef.get()?.halfExpandBottomSheet()
     }
 
     fun apply(context: Context) {
-        if (currentProcessingInstrument == null) return
-        if (currentProcessingInstrument!!.detailRequired && currentProcessingInstrument!!.detail == null ||
-            currentProcessingInstrument!!.placeRequired && currentProcessingInstrument!!.place == null ||
-            currentProcessingInstrument!!.paramRequired && currentProcessingInstrument!!.param == null
-        ) {
-            Toast.makeText(context, context.getString(R.string.inst_fill_req), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "Ready to apply!!!", Toast.LENGTH_SHORT).show()
+        currentProcessingInstrument?.let {
+            if (it.detailRequired && it.detail == null ||
+                it.placeRequired && it.place == null ||
+                it.paramRequired && it.param == null
+            ) {
+                Toast.makeText(context, context.getString(R.string.inst_fill_req), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Ready to apply!!!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

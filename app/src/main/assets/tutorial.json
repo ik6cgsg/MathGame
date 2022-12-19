@@ -1,104 +1,431 @@
 {
-  "gameSpace": "",
-  "gameCode": "tutorial",
-  "name": "Tutorial",
-  "version": 0,
-  "levels": [
-    {
-      "levelCode": "level_tutorial",
-      "name": "Tutorial Level",
-      "difficulty": 0,
-      "type": "algebra",
-      "originalExpression": "(*(+(2;2);2))",
-      "finalExpression": "(8)",
-      "rules":[
-        {"rulePack": "TestPack"}
-      ]
-    }
-  ],
-  "rulePacks": [
-    {
-      "name": "TestPack",
-      "type": "algebra",
-      "rules": [
-        {"left":"(+(2;2))","right":"(4)"},
-        {"left":"(+(2;2))","right":"(+(4;-(1);1))"},
-        {"left":"(+(2;2))","right":"(*(2;2))"},
-        {"left":"(+(2;2))","right":"(^(2;2))"},
-        {"left":"(+(2;2))","right":"(^(4;1))"},
-        {"left":"(+(2;2))","right":"(+(1;1;1;1))"},
-        {"left":"(+(2;2))","right":"(*(^(2;1);^(2;1)))"},
-        {"left":"(+(2;2))","right":"(+(3;1))"},
-
-        {"left":"(*(x;y))","right":"(*(y;x))"},
-        {"left":"(*(y;x))","right":"(*(x;y))"},
-
-        {"left":"(+(4;-(1);1))","right":"(+(2;2))"},
-        {"left":"(+(4;-(1);1))","right":"(4)"},
-        {"left":"(+(4;-(1);1))","right":"(*(2;2))"},
-        {"left":"(+(4;-(1);1))","right":"(^(2;2))"},
-        {"left":"(+(4;-(1);1))","right":"(^(4;1))"},
-        {"left":"(+(4;-(1);1))","right":"(+(1;1;1;1))"},
-        {"left":"(+(4;-(1);1))","right":"(*(^(2;1);^(2;1)))"},
-        {"left":"(+(4;-(1);1))","right":"(+(3;1))"},
-
-        {"left":"(*(2;2))","right":"(+(2;2))"},
-        {"left":"(*(2;2))","right":"(4)"},
-        {"left":"(*(2;2))","right":"(+(4;-(1);1))"},
-        {"left":"(*(2;2))","right":"(^(2;2))"},
-        {"left":"(*(2;2))","right":"(^(4;1))"},
-        {"left":"(*(2;2))","right":"(+(1;1;1;1))"},
-        {"left":"(*(2;2))","right":"(*(^(2;1);^(2;1)))"},
-        {"left":"(*(2;2))","right":"(+(3;1))"},
-
-        {"left":"(^(2;2))","right":"(+(2;2))"},
-        {"left":"(^(2;2))","right":"(4)"},
-        {"left":"(^(2;2))","right":"(+(4;-(1);1))"},
-        {"left":"(^(2;2))","right":"(*(2;2))"},
-        {"left":"(^(2;2))","right":"(^(4;1))"},
-        {"left":"(^(2;2))","right":"(+(1;1;1;1))"},
-        {"left":"(^(2;2))","right":"(*(^(2;1);^(2;1)))"},
-        {"left":"(^(2;2))","right":"(+(3;1))"},
-
-        {"left":"(^(4;1))","right":"(+(2;2))"},
-        {"left":"(^(4;1))","right":"(4)"},
-        {"left":"(^(4;1))","right":"(+(4;-(1);1))"},
-        {"left":"(^(4;1))","right":"(*(2;2))"},
-        {"left":"(^(4;1))","right":"(^(2;2))"},
-        {"left":"(^(4;1))","right":"(+(1;1;1;1))"},
-        {"left":"(^(4;1))","right":"(*(^(2;1);^(2;1)))"},
-        {"left":"(^(4;1))","right":"(+(3;1))"},
-
-        {"left":"(+(1;1;1;1))","right":"(+(2;2))"},
-        {"left":"(+(1;1;1;1))","right":"(4)"},
-        {"left":"(+(1;1;1;1))","right":"(+(4;-(1);1))"},
-        {"left":"(+(1;1;1;1))","right":"(*(2;2))"},
-        {"left":"(+(1;1;1;1))","right":"(^(2;2))"},
-        {"left":"(+(1;1;1;1))","right":"(^(4;1))"},
-        {"left":"(+(1;1;1;1))","right":"(*(^(2;1);^(2;1)))"},
-        {"left":"(+(1;1;1;1))","right":"(+(3;1))"},
-
-        {"left":"(*(^(2;1);^(2;1)))","right":"(+(2;2))"},
-        {"left":"(*(^(2;1);^(2;1)))","right":"(4)"},
-        {"left":"(*(^(2;1);^(2;1)))","right":"(+(4;-(1);1))"},
-        {"left":"(*(^(2;1);^(2;1)))","right":"(*(2;2))"},
-        {"left":"(*(^(2;1);^(2;1)))","right":"(^(2;2))"},
-        {"left":"(*(^(2;1);^(2;1)))","right":"(^(4;1))"},
-        {"left":"(*(^(2;1);^(2;1)))","right":"(+(1;1;1;1))"},
-        {"left":"(*(^(2;1);^(2;1)))","right":"(+(3;1))"},
-
-        {"left":"(+(3;1))","right":"(+(2;2))"},
-        {"left":"(+(3;1))","right":"(4)"},
-        {"left":"(+(3;1))","right":"(+(4;-(1);1))"},
-        {"left":"(+(3;1))","right":"(*(2;2))"},
-        {"left":"(+(3;1))","right":"(^(2;2))"},
-        {"left":"(+(3;1))","right":"(^(4;1))"},
-        {"left":"(+(3;1))","right":"(+(1;1;1;1))"},
-        {"left":"(+(3;1))","right":"(*(^(2;1);^(2;1)))"},
-
-        {"left":"(*(4;2))","right":"(8)"},
-        {"left":"(*(2;4))","right":"(8)"}
-      ]
-    }
-  ]
+    "taskset": {
+        "namespaceCode": "",
+        "code": "tutorial",
+        "version": 0,
+        "nameEn": "Tutorial",
+        "nameRu": "Туториал",
+        "descriptionShortEn": "a simple intro tutorial",
+        "descriptionShortRu": "короткое обучение",
+        "descriptionEn": "A tutorial level which introduces newcomers to Matify",
+        "descriptionRu": "Вводное обучение, знакомящее новичков с Matify",
+        "tasks": [
+            {
+                "code": "tutorial__00",
+                "version": 0,
+                "namespaceCode": "",
+                "nameEn": "Tutorial Level",
+                "nameRu": "Обучение",
+                "descriptionShortEn": "Compute",
+                "descriptionShortRu": "Вычислить",
+                "descriptionEn": "Compute '(2+2)*2'",
+                "descriptionRu": "Вычислить '(2+2)*2'",
+                "subjectType": "standard_math",
+                "tags": [
+                    "computation"
+                ],
+                "originalExpressionStructureString": "(*(+(2;2);2))",
+                "originalExpressionTex": "(2 + 2) \\cdot 2",
+                "originalExpressionPlainTex": "(2+2)*2",
+                "goalType": "computation",
+                "goalPattern": "?:0:?:?N",
+                "goalExpressionStructureString": "(8)",
+                "rulePacks": [
+                    {
+                        "namespaceCode": "",
+                        "rulePackCode": "tutorial"
+                    }
+                ],
+                "difficulty": 0.0
+            },
+            {
+                "code": "tutorial__01",
+                "version": 0,
+                "namespaceCode": "",
+                "nameEn": "Tutorial for MS",
+                "nameRu": "Обучение MS",
+                "descriptionShortEn": "Simplify",
+                "descriptionShortRu": "Упростить",
+                "descriptionEn": "Simplify '6+x-6'",
+                "descriptionRu": "Упростить '6+x-6'",
+                "subjectType": "standard_math",
+                "tags": [],
+                "originalExpressionStructureString": "(+(6;x;-(6)))",
+                "originalExpressionTex": "6+x-6",
+                "originalExpressionPlainTex": "6+x-6",
+                "goalType": "SIMPLIFICATION",
+                "goalExpressionStructureString": "(x)",
+                "rulePacks": [
+                    {
+                        "namespaceCode": "global",
+                        "rulePackCode": "global__ArithmeticAddition"
+                    }
+                ],
+                "rules": [
+                    {
+                        "code": "(+(0;x))__to__(x)",
+                        "leftStructureString": "(+(0;x))",
+                        "rightStructureString": "(x)"
+                    },
+                    {
+                        "code": "(+(x;0))__to__(x)",
+                        "leftStructureString": "(+(x;0))",
+                        "rightStructureString": "(x)"
+                    }
+                ],
+                "difficulty": 0.0
+            }
+        ]
+    },
+    "rulePacks": [
+        {
+            "namespaceCode": "",
+            "code": "tutorial",
+            "version": 0,
+            "nameEn": "Tutorial rules",
+            "nameRu": "Правила для обучения",
+            "rules": [
+                {
+                    "code": "(+(2;2))__to__(4)",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(+(2;2))__to__(+(4;-(1);1))",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(4;-(1);1))"
+                },
+                {
+                    "code": "(+(2;2))__to__(*(2;2))",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(*(2;2))"
+                },
+                {
+                    "code": "(+(2;2))__to__(^(2;2))",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(^(2;2))"
+                },
+                {
+                    "code": "(+(2;2))__to__(^(4;1))",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(^(4;1))"
+                },
+                {
+                    "code": "(+(2;2))__to__(+(1;1;1;1))",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(1;1;1;1))"
+                },
+                {
+                    "code": "(+(2;2))__to__(*(^(2;1);^(2;1)))",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(*(^(2;1);^(2;1)))"
+                },
+                {
+                    "code": "(+(2;2))__to__(+(3;1))",
+                    "leftStructureString": "(+(2;2))",
+                    "rightStructureString": "(+(3;1))"
+                },
+                {
+                    "code": "(*(x;y))__to__(*(y;x))",
+                    "leftStructureString": "(*(x;y))",
+                    "rightStructureString": "(*(y;x))"
+                },
+                {
+                    "code": "(*(y;x))__to__(*(x;y))",
+                    "leftStructureString": "(*(y;x))",
+                    "rightStructureString": "(*(x;y))"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(+(2;2))",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(+(2;2))"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(4)",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(*(2;2))",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(*(2;2))"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(^(2;2))",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(^(2;2))"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(^(4;1))",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(^(4;1))"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(+(1;1;1;1))",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(+(1;1;1;1))"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(*(^(2;1);^(2;1)))",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(*(^(2;1);^(2;1)))"
+                },
+                {
+                    "code": "(+(4;-(1);1))__to__(+(3;1))",
+                    "leftStructureString": "(+(4;-(1);1))",
+                    "rightStructureString": "(+(3;1))"
+                },
+                {
+                    "code": "(*(2;2))__to__(+(2;2))",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(+(2;2))"
+                },
+                {
+                    "code": "(*(2;2))__to__(4)",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(*(2;2))__to__(+(4;-(1);1))",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(+(4;-(1);1))"
+                },
+                {
+                    "code": "(*(2;2))__to__(^(2;2))",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(^(2;2))"
+                },
+                {
+                    "code": "(*(2;2))__to__(^(4;1))",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(^(4;1))"
+                },
+                {
+                    "code": "(*(2;2))__to__(+(1;1;1;1))",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(+(1;1;1;1))"
+                },
+                {
+                    "code": "(*(2;2))__to__(*(^(2;1);^(2;1)))",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(*(^(2;1);^(2;1)))"
+                },
+                {
+                    "code": "(*(2;2))__to__(+(3;1))",
+                    "leftStructureString": "(*(2;2))",
+                    "rightStructureString": "(+(3;1))"
+                },
+                {
+                    "code": "(^(2;2))__to__(+(2;2))",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(+(2;2))"
+                },
+                {
+                    "code": "(^(2;2))__to__(4)",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(^(2;2))__to__(+(4;-(1);1))",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(+(4;-(1);1))"
+                },
+                {
+                    "code": "(^(2;2))__to__(*(2;2))",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(*(2;2))"
+                },
+                {
+                    "code": "(^(2;2))__to__(^(4;1))",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(^(4;1))"
+                },
+                {
+                    "code": "(^(2;2))__to__(+(1;1;1;1))",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(+(1;1;1;1))"
+                },
+                {
+                    "code": "(^(2;2))__to__(*(^(2;1);^(2;1)))",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(*(^(2;1);^(2;1)))"
+                },
+                {
+                    "code": "(^(2;2))__to__(+(3;1))",
+                    "leftStructureString": "(^(2;2))",
+                    "rightStructureString": "(+(3;1))"
+                },
+                {
+                    "code": "(^(4;1))__to__(+(2;2))",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(+(2;2))"
+                },
+                {
+                    "code": "(^(4;1))__to__(4)",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(^(4;1))__to__(+(4;-(1);1))",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(+(4;-(1);1))"
+                },
+                {
+                    "code": "(^(4;1))__to__(*(2;2))",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(*(2;2))"
+                },
+                {
+                    "code": "(^(4;1))__to__(^(2;2))",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(^(2;2))"
+                },
+                {
+                    "code": "(^(4;1))__to__(+(1;1;1;1))",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(+(1;1;1;1))"
+                },
+                {
+                    "code": "(^(4;1))__to__(*(^(2;1);^(2;1)))",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(*(^(2;1);^(2;1)))"
+                },
+                {
+                    "code": "(^(4;1))__to__(+(3;1))",
+                    "leftStructureString": "(^(4;1))",
+                    "rightStructureString": "(+(3;1))"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(+(2;2))",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(+(2;2))"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(4)",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(+(4;-(1);1))",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(+(4;-(1);1))"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(*(2;2))",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(*(2;2))"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(^(2;2))",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(^(2;2))"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(^(4;1))",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(^(4;1))"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(*(^(2;1);^(2;1)))",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(*(^(2;1);^(2;1)))"
+                },
+                {
+                    "code": "(+(1;1;1;1))__to__(+(3;1))",
+                    "leftStructureString": "(+(1;1;1;1))",
+                    "rightStructureString": "(+(3;1))"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(2;2))",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(+(2;2))"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(4)",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(4;-(1);1))",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(+(4;-(1);1))"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(*(2;2))",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(*(2;2))"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(^(2;2))",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(^(2;2))"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(^(4;1))",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(^(4;1))"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(1;1;1;1))",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(+(1;1;1;1))"
+                },
+                {
+                    "code": "(*(^(2;1);^(2;1)))__to__(+(3;1))",
+                    "leftStructureString": "(*(^(2;1);^(2;1)))",
+                    "rightStructureString": "(+(3;1))"
+                },
+                {
+                    "code": "(+(3;1))__to__(+(2;2))",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(+(2;2))"
+                },
+                {
+                    "code": "(+(3;1))__to__(4)",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(4)"
+                },
+                {
+                    "code": "(+(3;1))__to__(+(4;-(1);1))",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(+(4;-(1);1))"
+                },
+                {
+                    "code": "(+(3;1))__to__(*(2;2))",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(*(2;2))"
+                },
+                {
+                    "code": "(+(3;1))__to__(^(2;2))",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(^(2;2))"
+                },
+                {
+                    "code": "(+(3;1))__to__(^(4;1))",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(^(4;1))"
+                },
+                {
+                    "code": "(+(3;1))__to__(+(1;1;1;1))",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(+(1;1;1;1))"
+                },
+                {
+                    "code": "(+(3;1))__to__(*(^(2;1);^(2;1)))",
+                    "leftStructureString": "(+(3;1))",
+                    "rightStructureString": "(*(^(2;1);^(2;1)))"
+                },
+                {
+                    "code": "(*(4;2))__to__(8)",
+                    "leftStructureString": "(*(4;2))",
+                    "rightStructureString": "(8)"
+                },
+                {
+                    "code": "(*(2;4))__to__(8)",
+                    "leftStructureString": "(*(2;4))",
+                    "rightStructureString": "(8)"
+                }
+            ]
+        }
+    ]
 }

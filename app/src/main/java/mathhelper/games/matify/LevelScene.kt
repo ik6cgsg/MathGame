@@ -1,19 +1,13 @@
 package mathhelper.games.matify
 
 import android.content.Intent
-import android.os.Handler
-import android.util.Log
-import android.widget.Toast
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import mathhelper.games.matify.activities.GamesActivity
 import mathhelper.games.matify.activities.LevelsActivity
 import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.ConnectionChecker
 import mathhelper.games.matify.common.Logger
 import mathhelper.games.matify.game.GameResult
 import mathhelper.games.matify.level.*
+import java.lang.ref.WeakReference
 import java.util.*
 
 class LevelScene {
@@ -23,22 +17,24 @@ class LevelScene {
     }
 
     var levels: ArrayList<Level> = ArrayList()
-    var levelsActivity: LevelsActivity? = null
-        set(value) {
-            field = value
-            if (value != null && GlobalScene.shared.currentGame != null) {
-                GlobalScene.shared.requestGameForPlay(GlobalScene.shared.currentGame!!, success = {
-                    levels = GlobalScene.shared.currentGame!!.levels
-                    levelsPassed = GlobalScene.shared.currentGame!!.lastResult?.levelsPassed ?: 0
-                    levelsPaused = GlobalScene.shared.currentGame!!.lastResult?.levelsPaused ?: 0
-                    value.onLevelsLoaded()
-                }, error = {
-                    value.setLoading(false)
-                    Logger.e(TAG, "Error while LevelsActivity initializing")
-                    value.finish()
-                })
-            }
+    var levelsActivityRef: WeakReference<LevelsActivity> = WeakReference(null)
+    fun setLA(la: LevelsActivity?) {
+        levelsActivityRef = WeakReference(la)
+        val curGame = GlobalScene.shared.currentGame
+        if (la != null && curGame != null) {
+            GlobalScene.shared.requestGameForPlay(curGame, success = {
+                levels = curGame.levels
+                levelsPassed = curGame.lastResult?.levelsPassed ?: 0
+                levelsPaused = curGame.lastResult?.levelsPaused ?: 0
+                la.onLevelsLoaded()
+            }, error = {
+                la.setLoading(false)
+                Logger.e(TAG, "Error while LevelsActivity initializing")
+                la.finish()
+            })
         }
+    }
+
     var currentLevel: Level? = null
         private set
     var currentLevelIndex = 0
@@ -47,13 +43,12 @@ class LevelScene {
                 value >= 0 && value < levels.size -> {
                     field = value
                     currentLevel = levels[value]
-                    Handler().postDelayed({
-                        if (PlayScene.shared.playActivity == null) {
-                            levelsActivity?.startActivity(Intent(levelsActivity, PlayActivity::class.java))
-                        } else {
-                            PlayScene.shared.playActivity!!.startCreatingLevelUI()
-                        }
-                    }, 100)
+                    val activity = PlayScene.shared.listenerRef.get()
+                    if (activity == null) {
+                        levelsActivityRef.get()?.let { it.startActivity(Intent(it, PlayActivity::class.java)) }
+                    } else {
+                        activity.startCreatingLevelUI()
+                    }
                 }
                 value < 0 -> {
                 }
@@ -87,12 +82,12 @@ class LevelScene {
         GlobalScene.shared.currentGame?.rulePacks?.clear()
         GlobalScene.shared.currentGame?.levels?.clear()
         GlobalScene.shared.currentGame?.loaded = false
-        levelsActivity?.finish()
+        levelsActivityRef.get()?.finish()
     }
 
     fun refreshGame() {
         if (!ConnectionChecker.shared.isConnected) return
-        val activity = levelsActivity ?: return
+        val activity = levelsActivityRef.get() ?: return
         GlobalScene.shared.requestGameForPlay(GlobalScene.shared.currentGame!!, forceRefresh = true, success = {
             levels = GlobalScene.shared.currentGame!!.levels
             levelsPassed = GlobalScene.shared.currentGame!!.lastResult?.levelsPassed ?: 0
@@ -103,5 +98,9 @@ class LevelScene {
             Logger.e(TAG, "Error while LevelsActivity initializing")
             activity.finish()
         })
+    }
+
+    fun updateResult(result: LevelResult?) {
+        levelsActivityRef.get()?.updateResult(result)
     }
 }

@@ -17,7 +17,7 @@
     tools:context=".activities.AuthActivity">
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/divider_bottom"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
@@ -101,7 +101,7 @@
         android:onClick="onGitHubClicked"
         android:orientation="horizontal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintBottom_toTopOf="@+id/divider_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/google_sign"
@@ -145,7 +145,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_bottom" />
 
     <Button
         android:id="@+id/sign_up"

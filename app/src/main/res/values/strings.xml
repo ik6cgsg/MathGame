@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">Matify</string>
-    <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆\n⬆ Long tap allows to select >1 places ⬆</string>
+    <string name="tap_on_some_place_in_expression">⬆ Tap on some place in expression ⬆</string>
     <string name="end_expression_opened"><b><i>Goal:</i></b> %1$s</string>
     <string name="previous" translatable="false">↪️</string>
-    <string name="restart" translatable="false">🔁 </string>
+    <string name="restart" translatable="false">🔄</string>
     <string name="back" translatable="false">⬅️</string>
     <string name="wrong_subs">❌ Can\'t do this ❌</string>
     <string name="time_out">😢Time out!😢</string>
     <string name="no_rules">🙅 No rules for this 🙅</string>
     <string name="levels">LEVELS</string>
     <string name="gear" translatable="false">⚙️</string>
+    <string name="magnifying_glass" translatable="false">🔍</string>
     <string name="settings">⚙️ SETTINGS ⚙️</string>
     <string name="rate_us">⭐ Rate us</string>
     <string name="version_view" translatable="false">Matify v</string>
@@ -82,6 +83,11 @@
     <string name="continue_from_where_you_stopped">Continue from where you stopped?</string>
 
     <string name="tutorial">Tutorial</string>
+    <string name="tutorial_chapters">Tutorial chapters</string>
+    <string name="tutorial_chapter_finished">Chapter finished</string>
+    <string name="tutorial_navigation">Navigation</string>
+    <string name="tutorial_how_to_play">How to play</string>
+    <string name="tutorial_multiselect">Multiselect</string>
     <string name="tutorial_level">Tutorial Level</string>
     <string name="tutorial_game">Tutorial Game</string>
     <string name="start_tutorial">❔ Start tutorial</string>
@@ -116,8 +122,19 @@
     <string name="tutorial_on_level_tap">👉 Let\'s check it out! 👈\n1. Tap near plus in the expression 👇</string>
     <string name="tutorial_on_level_select">1. Tap near plus in the expression ✅\n2. Now 🔍 rule from a list below</string>
     <string name="tutorial_on_level_win">2. Rule applied ✅\n3. Continue and win! 👏🏆</string>
+    <string name="tutorial_on_level_basic_finished">Nicely done! 🙌\nOnly one last thing to learn...</string>
+    <string name="tutorial_on_level_multiselect_expression">🧐 A trickier expression! 🧐</string>
+    <string name="tutorial_on_level_multiselect_explanation">≡ \'Multiselect\' button helps you find conversions related to specific parts of the expression. ≡\n</string>
+    <string name="tutorial_on_level_multiselect_action">To simplify the expression below go into \'multiselect\' ≡ mode, select both numbers and cancel them out 💥.\n</string>
+    <string name="tutorial_on_level_multiselect_details">🎨 In the \'multiselect\' mode background changes color. 🎨\n</string>
+    <string name="tutorial_on_level_multiselect_button">Press the \'multiselect\' button at the bottom of the screen</string>
+    <string name="tutorial_on_level_multiselect_partial_select">Entered instrument processing.\nSelect 6.</string>
+    <string name="tutorial_on_level_multiselect_digit">Now select the other number</string>
+    <string name="tutorial_on_level_multiselect_select">Cancel them out!</string>
+    <string name="tutorial_on_level_multiselect_click">Correct!\nNow get rid of remaining 0 using multiselect or normal node.</string>
     <string name="tutorial_on_level_seems">Seems you got it all!\n</string>
     <string name="tutorial_on_level_i_am_pro">Yep, now I\'m PRO too 😎</string>
+    <string name="tutorial_advanced_proceed">Bring it!</string>
     <string name="no_i_am_pro">No, I\'m PRO 😎</string>
 
     <string name="parsing_error">parsing error</string>

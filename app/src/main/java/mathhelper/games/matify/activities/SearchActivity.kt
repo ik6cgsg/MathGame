@@ -1,28 +1,16 @@
 package mathhelper.games.matify.activities
 
 import android.app.AlertDialog
-import android.content.Intent
-import android.content.res.Configuration
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.JsonWriter
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isEmpty
-import androidx.core.view.size
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.Gson
 import eightbitlab.com.blurview.BlurView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import mathhelper.games.matify.R
 import java.util.*
-import kotlinx.coroutines.launch
 import mathhelper.games.matify.GlobalScene
 import mathhelper.games.matify.SearchType
 import mathhelper.games.matify.common.*
@@ -59,7 +47,7 @@ class SearchActivity: AppCompatActivity(), SearchView.OnQueryTextListener, Conne
         setTheme(ThemeController.shared.currentTheme.resId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        divider = findViewById(R.id.divider)
+        divider = findViewById(R.id.divider_bottom)
         progress = findViewById(R.id.progress)
         localGamesList = findViewById(R.id.games_list)
         serverGamesList = findViewById(R.id.server_games_list)

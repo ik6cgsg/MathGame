@@ -1,27 +1,26 @@
 package mathhelper.games.matify.common
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
-import android.text.TextUtils
-import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
-import android.util.Log
-import android.view.MotionEvent
 import android.widget.HorizontalScrollView
-import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import mathhelper.twf.api.expressionSubstitutionFromStructureStrings
 import mathhelper.twf.expressiontree.ExpressionSubstitution
-import mathhelper.games.matify.PlayScene
 import mathhelper.games.matify.R
+import mathhelper.games.matify.activities.AbstractPlayableActivity
 import mathhelper.games.matify.mathResolver.MathResolver
-import mathhelper.games.matify.mathResolver.TaskType
 import mathhelper.games.matify.mathResolver.VariableStyle
 import java.lang.Exception
+import java.lang.ref.WeakReference
 
-class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatTextView {
+interface RuleMathViewListener {
+    fun onRuleClicked(ruleView: RuleMathView)
+}
+
+class RuleMathView : HorizontalScrollView {
+    //androidx.appcompat.widget.AppCompatTextView {
     private val TAG = "RuleMathView"
     private val moveTreshold = 10
     var subst: ExpressionSubstitution? = null
@@ -29,13 +28,15 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     lateinit var ruleView: TextView
     private var needClick = false
     private var moveCnt = 0
+    lateinit var listenerRef: WeakReference<RuleMathViewListener>
 
     /** INITIALIZATION **/
-    constructor(context: Context): super(context) {
-        setDefaults(context)
+    constructor(activity: AbstractPlayableActivity) : super(activity) {
+        this.listenerRef = WeakReference(activity)
+        setDefaults(activity)
     }
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         val params = context.obtainStyledAttributes(attrs, R.styleable.RuleMathView)
         val substFrom = params.getString(R.styleable.RuleMathView_substFrom)
         val substTo = params.getString(R.styleable.RuleMathView_substTo)
@@ -46,7 +47,7 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
     private fun setDefaults(context: Context) {
         scrollBarSize = 20
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            horizontalScrollbarThumbDrawable = context.getDrawable(R.drawable.alert_shape)
+            horizontalScrollbarThumbDrawable = ContextCompat.getDrawable(context, R.drawable.alert_shape)
         }
         isScrollbarFadingEnabled = false
         isFillViewport = true
@@ -54,16 +55,17 @@ class RuleMathView: HorizontalScrollView {//androidx.appcompat.widget.AppCompatT
         ruleView.textSize = Constants.ruleDefaultSize
         ruleView.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         ruleView.typeface = ResourcesCompat.getFont(context, R.font.roboto)
-        ruleView.background = context.getDrawable(R.drawable.row_clickable)
+        ruleView.background = ContextCompat.getDrawable(context, R.drawable.row_clickable)
         ruleView.isClickable = true
         ruleView.isFocusable = true
         ruleView.setOnClickListener {
-            PlayScene.shared.setCurrentRuleView(context, this)
+            listenerRef.get()?.onRuleClicked(this)
         }
         ruleView.setLineSpacing(0f, Constants.mathLineSpacing)
         ruleView.setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
-            Constants.defaultPadding, Constants.defaultPadding)
+            Constants.defaultPadding, Constants.defaultPadding
+        )
         ruleView.includeFontPadding = false
         /*setPadding(
             Constants.defaultPadding, Constants.defaultPadding,
