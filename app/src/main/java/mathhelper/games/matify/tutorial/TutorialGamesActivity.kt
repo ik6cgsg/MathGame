@@ -37,8 +37,13 @@ class TutorialGamesActivity : AppCompatActivity(), TutorialSceneListener {
         TutorialScene.shared.createTutorialDialog(this)
 
         TutorialScene.shared.listenerRef = WeakReference(this)
-        currentStep = -1
-        nextStep()
+        if (TutorialScene.shared.currentlyAdvancing) {
+            currentStep = -1
+            nextStep()
+        } else {
+            currentStep = steps.size
+            prevStep()
+        }
     }
 
     override fun onBackPressed() {

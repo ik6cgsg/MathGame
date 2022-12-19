@@ -1,16 +1,10 @@
 package mathhelper.games.matify.tutorial
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 import mathhelper.games.matify.R
 import mathhelper.games.matify.TutorialScene
 import mathhelper.games.matify.TutorialSceneListener
@@ -24,8 +18,6 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
     private val TAG = "TutorialLevelsActivity"
     private lateinit var pointer: TextView
     lateinit var button: Button
-    lateinit var progress: ProgressBar
-    var loading = false
 
     companion object {
         const val totalSteps = 2
@@ -45,22 +37,14 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
         TutorialScene.shared.createTutorialDialog(this)
         TutorialScene.shared.createLeaveDialog(this)
         button = findViewById(R.id.tutorial_level)
-        button.visibility = View.GONE
-        progress = findViewById(R.id.progress)
-        loading = true
 
-        val tla = this
-        lifecycleScope.launch {
-            val game = TutorialScene.shared.tutorialGame!!
-            if (game.load(tla)) {
-                tla.runOnUiThread {
-                    tla.onLoad()
-                    TutorialScene.shared.currentLevel = game.levels[0]
-                    TutorialScene.shared.listenerRef = WeakReference(tla)
-                    currentStep = -1
-                    nextStep()
-                }
-            }
+        TutorialScene.shared.listenerRef = WeakReference(this)
+        if (TutorialScene.shared.currentlyAdvancing) {
+            currentStep = -1
+            nextStep()
+        } else {
+            currentStep = steps.size
+            prevStep()
         }
     }
 
@@ -89,16 +73,9 @@ class TutorialLevelsActivity : AppCompatActivity(), TutorialSceneListener {
     }
 
     fun back(v: View?) {
-        if (!loading) {
-            TutorialScene.shared.leaveDialog?.let {
-                AndroidUtil.showDialog(it)
-            }
+        TutorialScene.shared.leaveDialog?.let {
+            AndroidUtil.showDialog(it)
         }
-    }
-
-    private fun onLoad() {
-        progress.visibility = View.GONE
-        button.visibility = View.VISIBLE
     }
 
     fun startLevel(v: View?) {
