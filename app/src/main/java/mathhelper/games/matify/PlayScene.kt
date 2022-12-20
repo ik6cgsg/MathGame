@@ -11,6 +11,7 @@ import mathhelper.games.matify.activities.PlayActivity
 import mathhelper.games.matify.common.*
 import mathhelper.games.matify.level.*
 import mathhelper.games.matify.statistics.Statistics
+import mathhelper.twf.expressiontree.ExpressionNode
 import java.lang.ref.WeakReference
 
 interface PlaySceneListener : TimerListener {
@@ -23,6 +24,8 @@ interface PlaySceneListener : TimerListener {
     var instrumentProcessing: Boolean
     val ctx: Context
 
+    fun setExpression(expr: String, type: String?, center: Boolean)
+    fun setExpression(expr: ExpressionNode, type: String?, resetSize: Boolean, center: Boolean)
     fun clearRules()
     fun showMessage(varDescr: Int)
     fun showMessage(str: String)
@@ -89,8 +92,7 @@ class PlayScene {
     private fun loadFinite() {
         val listener = listenerRef.get() ?: return
         val currentLevel = LevelScene.shared.currentLevel!!
-        listener.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
-        listener.globalMathView.center()
+        listener.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType, true, true)
         stepsCount = 0.0
         currentTime = 0
         downTimer = MathDownTimer(listener, currentLevel.time, 1)
@@ -106,12 +108,10 @@ class PlayScene {
         ) {
             stepsCount = lastRes.steps
             currentTime = lastRes.time
-            listener.globalMathView.setExpression(lastRes.expression, currentLevel.subjectType)
-            listener.globalMathView.center()
+            listener.setExpression(lastRes.expression, currentLevel.subjectType, true)
         } else {
             LevelScene.shared.levelsActivityRef.get()?.updateResult(null)
-            listener.globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
-            listener.globalMathView.center()
+            listener.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType, true, true)
             stepsCount = 0.0
             currentTime = 0
         }

@@ -65,35 +65,14 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         messageTimer.start()
     }
 
-    private fun setLongClick() {
-        back.setOnLongClickListener {
-            showMessage(R.string.back_info)
-            true
-        }
-        previous.setOnLongClickListener {
-            showMessage(
-                if (globalMathView.multiselectionMode)
-                    R.string.previous_multiselect_info
-                else
-                    R.string.previous_info
-            )
-            true
-        }
-        restart.setOnLongClickListener {
-            showMessage(R.string.restart_info)
-            true
-        }
-        info.setOnLongClickListener {
-            showMessage(R.string.i_info)
-            true
-        }
-        globalMathView.setOnLongClickListener {
-            if (!globalMathView.multiselectionMode) {
-                InstrumentScene.shared.clickInstrument("multi")
-            }
-            AndroidUtil.vibrate(this)
-            true
-        }
+    override fun setExpression(expr: String, type: String?, center: Boolean) {
+        globalMathView.setExpression(expr, type)
+        if (center) centerMathViewAsync()
+    }
+
+    override fun setExpression(expr: ExpressionNode, type: String?, resetSize: Boolean, center: Boolean) {
+        globalMathView.setExpression(expr, type, resetSize)
+        if (center) centerMathViewAsync()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,8 +87,8 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
         continueDialog = createContinueDialog()
         PlayScene.shared.listenerRef = WeakReference(this)
         PlayScene.shared.history = History()
-        startCreatingLevelUI()
         setLongClick()
+        startCreatingLevelUI()
     }
 
     override fun onResume() {
@@ -160,6 +139,37 @@ class PlayActivity : AbstractPlayableActivity(), ConnectionListener, PlaySceneLi
             AndroidUtil.showDialog(continueDialog)
         } else {
             createLevelUI(false)
+        }
+    }
+
+    private fun setLongClick() {
+        back.setOnLongClickListener {
+            showMessage(R.string.back_info)
+            true
+        }
+        previous.setOnLongClickListener {
+            showMessage(
+                if (globalMathView.multiselectionMode)
+                    R.string.previous_multiselect_info
+                else
+                    R.string.previous_info
+            )
+            true
+        }
+        restart.setOnLongClickListener {
+            showMessage(R.string.restart_info)
+            true
+        }
+        info.setOnLongClickListener {
+            showMessage(R.string.i_info)
+            true
+        }
+        globalMathView.setOnLongClickListener {
+            if (!globalMathView.multiselectionMode) {
+                InstrumentScene.shared.clickInstrument("multi")
+            }
+            AndroidUtil.vibrate(this)
+            true
         }
     }
 

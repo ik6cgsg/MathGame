@@ -97,7 +97,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
             currentLevel.subjectType,
             true
         )
-        globalMathView.center()
+        centerMathViewAsync()
     }
 
     override fun onBackPressed() {
@@ -184,7 +184,7 @@ class TutorialMultiselectActivity : AbstractPlayableActivity(), TutorialSceneLis
     private fun levelPassed() {
         Logger.d(TAG, "tutorial over")
         showMessage(R.string.congratulations)
-        globalMathView.center()
+        centerMathViewAsync()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         TutorialScene.shared.nextStep(this)
     }

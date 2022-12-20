@@ -1,20 +1,21 @@
 package mathhelper.games.matify.common
 
 import android.content.Context
+import android.text.Layout
+import android.text.StaticLayout
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import mathhelper.games.matify.R
+import mathhelper.games.matify.mathResolver.*
 import mathhelper.twf.api.findLowestSubtreeTopOfSelectedNodesInExpression
 import mathhelper.twf.api.structureStringToExpression
 import mathhelper.twf.expressiontree.ExpressionNode
 import mathhelper.twf.expressiontree.ExpressionSubstitution
-import mathhelper.games.matify.R
-import mathhelper.games.matify.mathResolver.*
 import java.lang.ref.WeakReference
 import kotlin.math.*
 
@@ -42,6 +43,7 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
     private lateinit var scaleDetector: ScaleGestureDetector
     private var ignoreUpAfterDrag = 0
     private var dragged = 0f
+    private var parentWidth = 0f
     var listenerRef: WeakReference<GlobalMathViewListener> = WeakReference(null)
 
     /** INITIALIZATION **/
@@ -53,26 +55,6 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         Logger.d(TAG, "constructor from attrs")
         setDefaults(context)
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        Logger.d(TAG, "onSizeChanged")
-        super.onSizeChanged(w, h, oldw, oldh)
-        if (w == 0 || h == 0 || oldw > 0 || oldh > 0) {
-            return
-        }
-        measureTextAndResetSize()
-    }
-
-    private fun measureTextAndResetSize() {
-        var parw = (parent as ConstraintLayout).width * 1f
-        if (abs(parw - 0f) > 1e-7) {
-            val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
-            parw -= parw / 20
-            if (curw > parw) {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * parw / curw))
-            }
-        }
     }
 
     private fun setDefaults(context: Context) {
@@ -108,10 +90,6 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionNode: ExpressionNode, type: String?, resetSize: Boolean = true) {
         Logger.d(TAG, "setExpression from node")
-        if (centerX == null || centerY == null) {
-            centerX = x
-            centerY = y
-        }
         this.type = type
         expression = expressionNode
         if (resetSize) {
@@ -157,6 +135,10 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         Logger.d(TAG, "onTouchEvent")
         var res = false
+        if (centerX == null || centerY == null) {
+            centerX = x
+            centerY = y
+        }
         scaleDetector.onTouchEvent(event)
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -198,15 +180,26 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
         return res
     }
 
-    fun center() {
+    private fun measureTextAndResetSize() {
+        if (abs(parentWidth - 0f) > 1e-7) {
+            val layout = StaticLayout.Builder.obtain(mathPair!!.matrix, 0, mathPair!!.matrix.length, paint, width).build()
+            val curw = layout.getLineWidth(0)
+            val w = parentWidth - parentWidth / 20f
+            if (curw > w) {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * w / curw))
+            }
+        }
+    }
+
+    fun center(parw: Float) {
         Logger.d(TAG, "center")
+        parentWidth = parw
+        measureTextAndResetSize()
         animate()
             .scaleX(scale)
             .scaleY(scale)
             .x(centerX ?: return)
             .y(centerY ?: return)
-            .translationX(0f)
-            .translationY(0f)
             .setDuration(100)
             .start()
     }

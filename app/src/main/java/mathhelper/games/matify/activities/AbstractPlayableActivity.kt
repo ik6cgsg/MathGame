@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.doOnLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import eightbitlab.com.blurview.BlurView
 import mathhelper.games.matify.InstrumentScene
@@ -172,5 +173,11 @@ abstract class AbstractPlayableActivity : AppCompatActivity(), InstrumentSceneLi
         halfExpandBottomSheet()
         rulesMsg.text = if (rules.isEmpty()) getString(R.string.no_rules_msg)
         else getString(R.string.rules_found_msg)
+    }
+
+    fun centerMathViewAsync() {
+        window.decorView.doOnLayout {
+            globalMathView.center(it.width * 1f)
+        }
     }
 }

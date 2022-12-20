@@ -109,7 +109,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
             endExpressionMathView.visibility = View.VISIBLE
         }
         globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
-        globalMathView.center()
+        centerMathViewAsync()
     }
 
     override fun onBackPressed() {
@@ -256,7 +256,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
     private fun levelPassed() {
         Logger.d(TAG, "levelPassed")
         showMessage(R.string.congratulations)
-        globalMathView.center()
+        centerMathViewAsync()
         TutorialScene.shared.animateLeftUp(pointerCentralView)
         TutorialScene.shared.nextStep(this)
     }
