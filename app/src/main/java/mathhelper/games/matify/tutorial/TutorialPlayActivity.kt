@@ -96,7 +96,6 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
         Logger.d(TAG, "loadLevel")
         clearRules()
         val currentLevel = TutorialScene.shared.currentLevel
-
         endExpressionViewLabel.text = Html.fromHtml(
             String.format(
                 Html.toHtml(SpannedString(getText(R.string.end_expression_opened))),
@@ -109,12 +108,7 @@ class TutorialPlayActivity : AbstractPlayableActivity(), TutorialSceneListener {
             endExpressionMathView.setExpression(currentLevel.goalExpressionStructureString!!, null)
             endExpressionMathView.visibility = View.VISIBLE
         }
-
-        globalMathView.setExpression(
-            currentLevel.startExpression.clone(),
-            currentLevel.subjectType,
-            true
-        )
+        globalMathView.setExpression(currentLevel.startExpression.clone(), currentLevel.subjectType)
         globalMathView.center()
     }
 

@@ -53,8 +53,7 @@ class SearchActivity: AppCompatActivity(), androidx.appcompat.widget.SearchView.
         serverGamesList = findViewById(R.id.server_games_list)
         searchView = findViewById(R.id.search)
         searchView.setOnQueryTextListener(this)
-        val id = searchView.context.resources.getIdentifier("android:id/search_src_text", null, null)
-        val query = searchView.findViewById<TextView>(id)
+        val query = searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
         query.typeface = Typeface.MONOSPACE
         query.setTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))
         query.setHintTextColor(ThemeController.shared.color(ColorName.TEXT_COLOR))

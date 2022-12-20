@@ -61,47 +61,47 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_weight="0.12"
+            android:layout_weight="0.1"
             android:gravity="center"
             android:onClick="back"
             android:text="@string/back"
             android:textAlignment="center"
             android:textColor="@color/light_click"
             android:textSize="25sp"
-            android:typeface="monospace"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/levels"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.48"
-            android:gravity="center|center_horizontal"
-            android:maxLines="1"
-            android:text="@string/levels"
-            android:textColor="?attr/textColor"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:typeface="monospace" />
+
+        <HorizontalScrollView
+            android:id="@+id/levels_scroll"
+            android:layout_weight="0.8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fillViewport="true"
+            android:scrollbars="none">
+            <TextView
+                android:id="@+id/levels"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/levels"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp"
+                android:gravity="center_horizontal"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:typeface="monospace" />
+        </HorizontalScrollView>
 
         <TextView
             android:id="@+id/settings"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="0.12"
+            android:layout_weight="0.1"
             android:gravity="center"
             android:onClick="settings"
             android:text="@string/gear"
             android:textColor="?attr/textColor"
             android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/previous"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold" />
 
     </LinearLayout>
 

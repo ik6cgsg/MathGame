@@ -74,7 +74,6 @@ class MathUpTimer(listener: TimerListener, val interval: Long) {
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                Logger.d(TAG, "run")
                 PlayScene.shared.currentTime++
                 val start = "⏰ "
                 val sec = "${PlayScene.shared.currentTime % 60}".padStart(2, '0')

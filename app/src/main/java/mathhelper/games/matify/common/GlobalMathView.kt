@@ -2,6 +2,7 @@ package mathhelper.games.matify.common
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -60,11 +61,17 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
         if (w == 0 || h == 0 || oldw > 0 || oldh > 0) {
             return
         }
-        val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
+        measureTextAndResetSize()
+    }
+
+    private fun measureTextAndResetSize() {
         var parw = (parent as ConstraintLayout).width * 1f
-        parw -= parw / 20
-        if (curw > parw) {
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * parw / curw))
+        if (abs(parw - 0f) > 1e-7) {
+            val curw = paint.measureText(mathPair!!.matrix.toString().substringBefore("\n"))
+            parw -= parw / 20
+            if (curw > parw) {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, floor(textSize * parw / curw))
+            }
         }
     }
 
@@ -94,10 +101,6 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
 
     fun setExpression(expressionStr: String, type: String?) {
         Logger.d(TAG, "setExpression from str")
-        if (centerX == null && centerY == null) {
-            centerX = x
-            centerY = y
-        }
         if (expressionStr.isNotEmpty()) {
             setExpression(structureStringToExpression(expressionStr), type, true)
         }
@@ -197,7 +200,6 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
 
     fun center() {
         Logger.d(TAG, "center")
-        scale = 1f
         animate()
             .scaleX(scale)
             .scaleY(scale)
@@ -296,6 +298,7 @@ class GlobalMathView : androidx.appcompat.widget.AppCompatTextView {
 
     private fun setTextFromMathPair(animated: Boolean = false) {
         typeface = ResourcesCompat.getFont(context, R.font.roboto_mono_regular)
+        measureTextAndResetSize()
         if (animated) {
             animate()
                 .alpha(0f)
